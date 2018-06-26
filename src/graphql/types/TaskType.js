@@ -13,19 +13,47 @@ module.exports = new GraphQLObjectType({
     },
     title: {
       type: GraphQLString,
-      resolve: ({ fields }) => fields.find(({ fieldId }) => fieldId === 'TITLE').value.text,
+      resolve: ({ fields }) => {
+        const field = fields.find(({ fieldId }) => fieldId === 'TITLE');
+        if (field) {
+          return field.value.text;
+        }
+
+        return null;
+      },
     },
     note: {
       type: GraphQLString,
-      resolve: ({ fields }) => fields.find(({ fieldId }) => fieldId === 'NOTE').value.text,
+      resolve: ({ fields }) => {
+        const field = fields.find(({ fieldId }) => fieldId === 'NOTE');
+        if (field) {
+          return field.value.text;
+        }
+
+        return null;
+      },
     },
     priority: {
       type: GraphQLBoolean,
-      resolve: ({ fields }) => fields.find(({ fieldId }) => fieldId === 'PRIORITY').value.bool,
+      resolve: ({ fields }) => {
+        const field = fields.find(({ fieldId }) => fieldId === 'PRIORITY');
+        if (field) {
+          return field.value.bool;
+        }
+
+        return null;
+      },
     },
     status: {
       type: GraphQLString,
-      resolve: ({ fields }) => fields.find(({ fieldId }) => fieldId === 'STATUS').value.id,
+      resolve: ({ fields }) => {
+        const field = fields.find(({ fieldId }) => fieldId === 'STATUS');
+        if (field) {
+          return field.value.id;
+        }
+
+        return null;
+      },
     },
     fields: {
       type: new GraphQLList(FieldType),
