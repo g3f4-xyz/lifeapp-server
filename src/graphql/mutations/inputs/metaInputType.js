@@ -1,5 +1,6 @@
-const { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLInputObjectType, GraphQLString } = require('graphql');
+const { GraphQLList, GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLInputObjectType, GraphQLString } = require('graphql');
 const optionsInputType = require('./optionsInputType');
+const ChoiceOptionsInputType = require('./ChoiceOptionsInputType');
 
 module.exports = new GraphQLInputObjectType({
   name: 'metaInputType',
@@ -23,8 +24,28 @@ module.exports = new GraphQLInputObjectType({
     defaultValue: {
       type: GraphQLString,
     },
+    parentId: {
+      type: GraphQLString,
+    },
     options: {
       type: optionsInputType,
+    },
+    optionsSet: {
+      description: 'optionsSet',
+      type: new GraphQLList(new GraphQLInputObjectType({
+        name: 'metaOptionsSetInputType',
+        fields: () => ({
+          customValueOptionMask: {
+            type: GraphQLString,
+          },
+          parentValue: {
+            type: GraphQLString,
+          },
+          options: {
+            type: ChoiceOptionsInputType,
+          },
+        }),
+      })),
     },
   }),
 });

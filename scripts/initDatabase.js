@@ -141,19 +141,6 @@ const FIELDS = {
       maxLen: 100,
     },
   },
-  CYCLE: {
-    fieldId: 'CYCLE',
-    format: 'TEXT',
-    type: 'text',
-    order: 5,
-    label: 'Cycle',
-    helperText: 'Określ w jakich cyklach ma występować akcja',
-    meta: {
-      required: true,
-      minLen: 3,
-      maxLen: 100,
-    },
-  },
   ACTION: {
     fieldId: 'ACTION',
     format: 'TEXT',
@@ -167,17 +154,113 @@ const FIELDS = {
       maxLen: 100,
     },
   },
+  CYCLE: {
+    fieldId: 'CYCLE',
+    format: 'CHOICE',
+    type: 'select',
+    order: 5,
+    label: 'Cycle',
+    helperText: 'Określ w jakich cyklach ma występować akcja',
+    meta: {
+      defaultValue: 'WEEK',
+      required: true,
+      options: [{
+        text: 'Time',
+        value: 'TIME'
+      }, {
+        text: 'Day',
+        value: 'DAY'
+      }, {
+        text: 'Week',
+        value: 'WEEK'
+      }, {
+        text: 'Month',
+        value: 'MONTH'
+      }],
+    },
+  },
   WHEN: {
     fieldId: 'WHEN',
-    format: 'TEXT',
-    type: 'text',
+    format: 'MULTIPLE_CHOICE_WITH_PARENT',
+    type: 'multiple-select-with-parent',
     order: 5,
-    label: 'When / How often',
-    helperText: 'Określ jak często powtarzać cykl',
+    label: 'When',
+    helperText: 'Określ kiedy powtarzać cykl',
     meta: {
-      required: true,
-      minLen: 3,
-      maxLen: 100,
+      parentId: 'CYCLE',
+      optionsSet: [{
+        customValueOptionMask: '9999',
+        parentValue: 'TIME',
+        options: [{
+          text: 'Half an hour',
+          value: 'HALF_HOUR'
+        }, {
+          text: 'Hour',
+          value: 'HOUR'
+        }, {
+          text: '3 hours',
+          value: 'HOURS_3'
+        }, {
+          text: '12 hours',
+          value: 'HOURS_12'
+        }, {
+          text: 'Interval in minutes',
+          value: ''
+        }],
+      }, {
+        customValueOptionMask: '99:99',
+        parentValue: 'DAY',
+        options: [{
+          text: 'Morning',
+          value: 'MORNING'
+        }, {
+          text: 'Noon',
+          value: 'NOON'
+        }, {
+          text: 'Evening',
+          value: 'EVENING'
+        }, {
+          text: 'Time',
+          value: ''
+        }],
+      }, {
+        parentValue: 'WEEK',
+        options: [{
+          text: 'Workday',
+          value: 'WORKDAY'
+        }, {
+          text: 'Weekend',
+          value: 'NOON'
+        }, {
+          text: 'Monday',
+          value: 'MONDAY'
+        }, {
+          text: 'Tuesday',
+          value: 'TUESDAY'
+        }, {
+          text: 'Saturday',
+          value: 'SATURDAY'
+        }, {
+          text: 'Sunday',
+          value: 'SUNDAY'
+        }],
+      }, {
+        customValueOptionMask: '99',
+        parentValue: 'MONTH',
+        options: [{
+          text: 'At the begging',
+          value: 'BEGIN'
+        }, {
+          text: 'In the middle',
+          value: 'MIDDLE'
+        }, {
+          text: 'At the end',
+          value: 'END'
+        }, {
+          text: 'Day',
+          value: ''
+        }],
+      }],
     },
   },
 };
@@ -185,28 +268,40 @@ const FIELDS = {
 const assignFieldValue = (field, value = null) => {
   const { format } = field;
 
-  if (format === 'TEXT') {
-    return Object.assign({
-      value: {
-        text: value,
-      },
-    }, field);
-  } else if (format === 'BOOL') {
+  if (format === 'BOOL') {
     return Object.assign({
       value: {
         bool: value,
       },
     }, field);
-  } else if (format === 'CHOICE') {
+  }
+  else if (format === 'CHOICE') {
     return Object.assign({
       value: {
         id: value,
       },
     }, field);
-  } else if (format === 'NUMBER') {
+  }
+  else if (format === 'NUMBER') {
     return Object.assign({
       value: {
         number: value,
+      },
+    }, field);
+  }
+  else if (format === 'MULTIPLE_CHOICE_WITH_PARENT') {
+    return Object.assign({
+      value: {
+        ids: value,
+        parentValue: null,
+        customValueOptionValue: null,
+      },
+    }, field);
+  }
+  else if (format === 'TEXT') {
+    return Object.assign({
+      value: {
+        text: value,
       },
     }, field);
   }
@@ -314,7 +409,7 @@ dbHook.tasktypes.insert([{
   order: 3,
   isCustom: false,
   parentId: 'PRIORITY',
-  fields: [FIELDS.NOTE, FIELDS.CYCLE, FIELDS.WHEN, FIELDS.ACTION, FIELDS.ACTIVE],
+  fields: [FIELDS.CYCLE, FIELDS.WHEN, FIELDS.ACTION, FIELDS.ACTIVE],
 }]);
 
 print('Collections:');

@@ -1,4 +1,4 @@
-const { GraphQLBoolean, GraphQLString, GraphQLInt, GraphQLInputObjectType } = require('graphql');
+const { GraphQLList, GraphQLBoolean, GraphQLString, GraphQLInt, GraphQLInputObjectType } = require('graphql');
 
 module.exports = new GraphQLInputObjectType({
   name: 'valueInputType',
@@ -7,13 +7,22 @@ module.exports = new GraphQLInputObjectType({
     bool: {
       type: GraphQLBoolean,
     },
-    text: {
+    id: {
+      type: GraphQLString,
+    },
+    ids: {
+      type: new GraphQLList(GraphQLString),
+    },
+    customValueOptionValue: {
       type: GraphQLString,
     },
     number: {
       type: GraphQLInt,
     },
-    id: {
+    parentValue: {
+      type: GraphQLString,
+    },
+    text: {
       type: GraphQLString,
     },
   }),
