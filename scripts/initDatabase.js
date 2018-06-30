@@ -230,7 +230,7 @@ const FIELDS = {
           value: 'WORKDAY'
         }, {
           text: 'Weekend',
-          value: 'NOON'
+          value: 'WEEKEND'
         }, {
           text: 'Monday',
           value: 'MONDAY'

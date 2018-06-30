@@ -32,7 +32,7 @@ const addTask = async task => {
 
     await newTask.save();
 
-    emitter.emit('task:added', newTask);
+    emitter.emit('task:added', newTask.toJSON());
 
     return newTask;
   }

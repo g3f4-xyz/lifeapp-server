@@ -2,10 +2,77 @@ const Agenda = require('agenda');
 const moment = require('moment');
 const webPush = require('web-push');
 const { DB_HOST } = require('./config');
+const { TASK_TYPES } = require('./constants');
 const emitter = require('./api/emitter');
 
 let agenda = new Agenda({ db: { address: DB_HOST } });
-
+const calculateInterval = (cycle, when, customValueOptionValue) => {
+  if (cycle === 'TIME') {
+    if (when === 'HALF_HOUR') {
+      return `30 minutes`;
+    }
+    else if (when === 'HOUR') {
+      return `1 hour`;
+    }
+    else if (when === 'HOURS_3') {
+      return `3 hour`;
+    }
+    else if (when === 'HOURS_12') {
+      return `12 hour`;
+    }
+    else if (when === 'CUSTOM') {
+      return `${customValueOptionValue} minutes`;
+    }
+  }
+  else if (cycle === 'DAY') {
+    if (when === 'MORNING') {
+      return `morning`;
+    }
+    else if (when === 'NOON') {
+      return `noon`;
+    }
+    else if (when === 'EVENING') {
+      return `evening`;
+    }
+    else if (when === 'CUSTOM') {
+      return `at ${customValueOptionValue}`;
+    }
+  }
+  else if (cycle === 'WEEK') {
+    if (when === 'WORKDAY') {
+      return `morning`;
+    }
+    else if (when === 'WEEKEND') {
+      return `noon`;
+    }
+    else if (when === 'MONDAY') {
+      return `evening`;
+    }
+    else if (when === 'TUESDAY') {
+      return `evening`;
+    }
+    else if (when === 'SATURDAY') {
+      return `evening`;
+    }
+    else if (when === 'CUSTOM') {
+      return `at ${customValueOptionValue}`;
+    }
+  }
+  else if (cycle === 'WEEK') {
+    if (when === 'BEGIN') {
+      return `morning`;
+    }
+    else if (when === 'MIDDLE') {
+      return `noon`;
+    }
+    else if (when === 'END') {
+      return `evening`;
+    }
+    else if (when === 'CUSTOM') {
+      return `at ${customValueOptionValue}`;
+    }
+  }
+};
 agenda.define('notification', async (job, done) => {
   console.log(['agenda:job:notification'], job.attrs);
   const { getSubscriptions } = require('./api');
@@ -45,7 +112,7 @@ process.on('SIGINT' , graceful);
 
 emitter.on('task:added', (task) => {
   console.log(['api:emitter:on:task:added'], task);
-  if (task.taskType === 'MEETING') {
+  if (task.taskType === TASK_TYPES.MEETING) {
     const date = task.fields.find(({ fieldId }) => fieldId === 'DATE_TIME').value.text;
     const person = task.fields.find(({ fieldId }) => fieldId === 'PERSON').value.text;
     const location = task.fields.find(({ fieldId }) => fieldId === 'LOCATION').value.text;
@@ -59,6 +126,28 @@ emitter.on('task:added', (task) => {
         body: `Time: ${date} | Location: ${location}`,
         title: `You have meeting with ${person}`,
       },
+    });
+  }
+  else if (task.taskType === TASK_TYPES.ROUTINE) {
+    console.log(['dodano rutyne'], task);
+    const title = task.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
+    const action = task.fields.find(({ fieldId }) => fieldId === 'ACTION').value.text;
+    const cycle = task.fields.find(({ fieldId }) => fieldId === 'CYCLE').value.id;
+    // const when = task.fields.find(({ fieldId }) => fieldId === 'WHEN').value.ids || [];
+    const { value: { ids: when, customValueOptionValue } } =
+      task.fields.find(({ fieldId }) => fieldId === 'WHEN') || {};
+
+    console.log(['api:addTask:ROUTINE'], { title, action, cycle, when });
+
+    when.forEach(when => {
+      const interval = calculateInterval(cycle, when, customValueOptionValue);
+      agenda.every(interval, 'notification', {
+        ownerId: task.ownerId,
+        notification: {
+          body: `Action: ${action}`,
+          title,
+        },
+      });
     });
   }
 });
