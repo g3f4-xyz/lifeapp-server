@@ -138,8 +138,8 @@ const FIELDS_TYPES = {
   DATETIME_LOCAL: 'datetime-local',
 };
 
-const getEmptyTask = async taskType => {
-  console.log(['api:getEmptyTask'], taskType);
+const getEmptyTask = async taskTypeId => {
+  console.log(['api:getEmptyTask'], taskTypeId);
   const defaultValueByTaskTypeAndFieldId = {
     MEETING: {
       TITLE: {
@@ -170,7 +170,7 @@ const getEmptyTask = async taskType => {
     console.log(['mapFieldDefaultValue'], field);
     const { fieldId, type } = field;
     const defaultValue =
-      defaultValueByTaskTypeAndFieldId[taskType] && defaultValueByTaskTypeAndFieldId[taskType][fieldId] ||
+      defaultValueByTaskTypeAndFieldId[taskTypeId] && defaultValueByTaskTypeAndFieldId[taskTypeId][fieldId] ||
       defaultValueByFieldId[fieldId] ||
       defaultValuesByTypeMap[type];
 
@@ -180,23 +180,37 @@ const getEmptyTask = async taskType => {
     };
   };
   try {
-    const taskTypeModel = await TaskTypeModel.findOne({ typeId: taskType });
     const taskTypeList = await TaskTypeModel.find().sort({ _id : -1 });
-    const getTypeRelatedFields = (type, aggregator = []) => {
-      const { parentId, fields = [] } = type.toJSON();
-      aggregator.push(...fields);
-
-      if (parentId) {
-        const parentType = taskTypeList.find(task => task.get('typeId') === parentId);
-        getTypeRelatedFields(parentType, aggregator);
+    const type = taskTypeList.find(type => type.get('typeId') === taskTypeId);
+    const getParentFieldsRecursive = id => {
+      if (!id) {
+        return [];
       }
 
-      return aggregator;
+      if (Array.isArray(id)) {
+        return id.map(getParentFieldsRecursive).reduce((acc, fields) => [...acc, ...fields], []);
+      }
+
+      const { fields, parentId } = taskTypeList.find(task => task.get('typeId') === id).toJSON();
+
+      return [
+        ...fields,
+        ...getParentFieldsRecursive(parentId),
+      ];
     };
 
+    const { parentId, fields } = type.toJSON();
+    const parentFields = getParentFieldsRecursive(parentId).filter((item, idx, arr) => {
+      const index = arr.findIndex(it => {
+        return it.fieldId === item.fieldId;
+      });
+
+      return index === idx
+    });
+
     return {
-      taskType,
-      fields: getTypeRelatedFields(taskTypeModel).map(mapFieldDefaultValue),
+      taskType: taskTypeId,
+      fields: [...fields, ...parentFields].map(mapFieldDefaultValue),
     };
   }
 
@@ -238,26 +252,37 @@ const getTaskType = async id => {
     return error;
   }
 };
-const getTaskTypeList = async () => {
+const getTaskTypeList = async ({ withParent = true } = {}) => {
   console.log(['api:getTaskTypeList']);
   try {
     const taskTypeList = await TaskTypeModel.find().sort({ _id : -1 });
-    const getTypeRelatedFields = (type, aggregator = []) => {
-      const { parentId, fields = [] } = type.toJSON();
-      aggregator.push(...fields);
-
-      if (parentId) {
-        const parentType = taskTypeList.find(task => task.get('typeId') === parentId);
-        getTypeRelatedFields(parentType, aggregator);
+    const getParentFieldsRecursive = id => {
+      if (!id) {
+        return [];
       }
 
-      return aggregator;
+      if (Array.isArray(id)) {
+        return id.map(getParentFieldsRecursive).reduce((acc, fields) => [...acc, ...fields], []);
+      }
+
+      const { fields, parentId } = taskTypeList.find(task => task.get('typeId') === id).toJSON();
+
+      return [
+        ...fields,
+        ...getParentFieldsRecursive(parentId),
+      ]
     };
 
-    return taskTypeList.map(type => ({
-      ...type.toJSON(),
-      fields: getTypeRelatedFields(type),
-    }));
+    return taskTypeList
+      .filter(type => withParent ? type.get('parentId') && type.get('name') : true)
+      .map(type => {
+        const { parentId, fields } = type.toJSON();
+
+        return {
+          ...type.toJSON(),
+          fields: [...fields, getParentFieldsRecursive(parentId)],
+        };
+      });
   }
 
   catch (error) {

@@ -1,355 +1,415 @@
 /* eslint no-undef: 0 */
-/* eslint quotes: [0, "double"] */
+/* eslint quotes: [0, 'double'] */
 const dbHook = db.getSiblingDB(DB_NAME);
 
 print(`Initializing db with name: ${DB_NAME}`);
 
 if (dbHook.tasks) {
+  dbHook.fieldtypes.drop();
   dbHook.tasks.drop();
   dbHook.tasktypes.drop();
 } else {
-  dbHook.createCollection("tasks");
-  dbHook.createCollection("tasktypes");
+  dbHook.createCollection('fieldtypes');
+  dbHook.createCollection('tasks');
+  dbHook.createCollection('tasktypes');
 }
 
+const FIELDS = {
+  TITLE: {
+    fieldId: 'TITLE',
+    format: 'TEXT',
+    type: 'text',
+    order: 1,
+    label: 'Title',
+    helperText: 'Informacje o testowym polu Title',
+    meta: {
+      required: true,
+      minLen: 0,
+      maxLen: 400,
+    },
+  },
+  PRIORITY: {
+    fieldId: 'PRIORITY',
+    format: 'BOOL',
+    type: 'switch',
+    order: 0,
+    label: 'Important',
+    helperText: 'Informacje o testowym polu Priority',
+    meta: {
+      required: true,
+    },
+  },
+  ACTIVE: {
+    fieldId: 'ACTIVE',
+    format: 'BOOL',
+    type: 'switch',
+    order: 0,
+    label: 'Active',
+    helperText: 'Informacje o testowym polu Active',
+    meta: {
+      required: true,
+    },
+  },
+  STATUS: {
+    fieldId: 'STATUS',
+    format: 'CHOICE',
+    order: 0,
+    type: 'select',
+    label: 'Status',
+    helperText: 'Informacje o testowym polu Status',
+    meta: {
+      required: true,
+      options: [{
+        text: 'To do',
+        value: 'TODO',
+      }, {
+        text: 'Done',
+        value: 'DONE',
+      }, {
+        text: 'In progress',
+        value: 'IN_PROGRESS',
+      }],
+    },
+  },
+  DATE: {
+    fieldId: 'DATE',
+    format: 'TEXT',
+    type: 'date-local',
+    order: 4,
+    label: 'Date',
+    helperText: 'Informacje o testowym polu Date',
+    meta: {
+      required: false,
+    },
+  },
+  DATE_TIME: {
+    fieldId: 'DATE_TIME',
+    format: 'TEXT',
+    type: 'datetime-local',
+    order: 3,
+    label: 'Date',
+    helperText: 'Informacje o testowym polu Date',
+    meta: {
+      required: false,
+    },
+  },
+  DURATION: {
+    fieldId: 'DURATION',
+    format: 'TEXT',
+    type: 'text',
+    order: 3,
+    label: 'Duration',
+    helperText: 'Informacje o testowym polu Duration',
+    meta: {
+      required: false,
+    },
+  },
+  LOCATION: {
+    fieldId: 'LOCATION',
+    format: 'TEXT',
+    type: 'text',
+    order: 3,
+    label: 'Location',
+    helperText: 'Informacje o testowym polu Location',
+    meta: {
+      required: false,
+      minLen: 3,
+      maxMax: 100,
+    },
+  },
+  PERSON: {
+    fieldId: 'PERSON',
+    format: 'TEXT',
+    order: 4,
+    type: 'text',
+    label: 'Person',
+    helperText: 'Person helperText',
+    meta: {
+      required: true,
+    },
+  },
+  NOTE: {
+    fieldId: 'NOTE',
+    format: 'TEXT',
+    type: 'text',
+    order: 2,
+    label: 'Note',
+    helperText: 'Informacje o testowym polu Description',
+    meta: {
+      required: false,
+      minLen: 3,
+      maxLen: 100,
+    },
+  },
+  ACTION: {
+    fieldId: 'ACTION',
+    format: 'TEXT',
+    type: 'text',
+    order: 6,
+    label: 'Action',
+    helperText: 'Określ jaka akcja ma nastąpić podczas każdego cyklu',
+    meta: {
+      required: true,
+      minLen: 3,
+      maxLen: 100,
+    },
+  },
+  CYCLE: {
+    fieldId: 'CYCLE',
+    format: 'CHOICE',
+    type: 'select',
+    order: 5,
+    label: 'Cycle',
+    helperText: 'Określ w jakich cyklach ma występować akcja',
+    meta: {
+      defaultValue: 'WEEK',
+      required: true,
+      options: [{
+        text: 'Time',
+        value: 'TIME'
+      }, {
+        text: 'Day',
+        value: 'DAY'
+      }, {
+        text: 'Week',
+        value: 'WEEK'
+      }, {
+        text: 'Month',
+        value: 'MONTH'
+      }],
+    },
+  },
+  WHEN: {
+    fieldId: 'WHEN',
+    format: 'MULTIPLE_CHOICE_WITH_PARENT',
+    type: 'multiple-select-with-parent',
+    order: 5,
+    label: 'When',
+    helperText: 'Określ kiedy powtarzać cykl',
+    meta: {
+      parentId: 'CYCLE',
+      optionsSet: [{
+        customValueOptionMask: '9999',
+        parentValue: 'TIME',
+        options: [{
+          text: 'Half an hour',
+          value: 'HALF_HOUR'
+        }, {
+          text: 'Hour',
+          value: 'HOUR'
+        }, {
+          text: '3 hours',
+          value: 'HOURS_3'
+        }, {
+          text: '12 hours',
+          value: 'HOURS_12'
+        }, {
+          text: 'Interval in minutes',
+          value: ''
+        }],
+      }, {
+        customValueOptionMask: '99:99',
+        parentValue: 'DAY',
+        options: [{
+          text: 'Morning',
+          value: 'MORNING'
+        }, {
+          text: 'Noon',
+          value: 'NOON'
+        }, {
+          text: 'Evening',
+          value: 'EVENING'
+        }, {
+          text: 'Time',
+          value: ''
+        }],
+      }, {
+        parentValue: 'WEEK',
+        options: [{
+          text: 'Workday',
+          value: 'WORKDAY'
+        }, {
+          text: 'Weekend',
+          value: 'NOON'
+        }, {
+          text: 'Monday',
+          value: 'MONDAY'
+        }, {
+          text: 'Tuesday',
+          value: 'TUESDAY'
+        }, {
+          text: 'Saturday',
+          value: 'SATURDAY'
+        }, {
+          text: 'Sunday',
+          value: 'SUNDAY'
+        }],
+      }, {
+        customValueOptionMask: '99',
+        parentValue: 'MONTH',
+        options: [{
+          text: 'At the begging',
+          value: 'BEGIN'
+        }, {
+          text: 'In the middle',
+          value: 'MIDDLE'
+        }, {
+          text: 'At the end',
+          value: 'END'
+        }, {
+          text: 'Day',
+          value: ''
+        }],
+      }],
+    },
+  },
+};
+
+const assignFieldValue = (field, value = null) => {
+  const { format } = field;
+
+  if (format === 'BOOL') {
+    return Object.assign({
+      value: {
+        bool: value,
+      },
+    }, field);
+  }
+  else if (format === 'CHOICE') {
+    return Object.assign({
+      value: {
+        id: value,
+      },
+    }, field);
+  }
+  else if (format === 'NUMBER') {
+    return Object.assign({
+      value: {
+        number: value,
+      },
+    }, field);
+  }
+  else if (format === 'MULTIPLE_CHOICE_WITH_PARENT') {
+    return Object.assign({
+      value: {
+        ids: value,
+        parentValue: null,
+        customValueOptionValue: null,
+      },
+    }, field);
+  }
+  else if (format === 'TEXT') {
+    return Object.assign({
+      value: {
+        text: value,
+      },
+    }, field);
+  }
+
+  print(['assignFieldValue:error'], `Nie znany format pola ${format}`);
+};
+
 // DANE TESTOWE
+dbHook.fieldtypes.insert(FIELDS);
 dbHook.tasks.insert([
   {
-    taskType: "TODO",
-    ownerId: "1234567890",
+    taskType: 'TODO',
+    ownerId: '1234567890',
     fields: [
       {
-        fieldId: "TITLE",
-        format: "TEXT",
-        type: "text",
-        order: -1,
-        label: "Title",
-        helperText: "Informacje o testowym polu Title",
-        meta: {
-          required: true,
-          minLen: 0,
-          maxLen: 400,
-        },
-        value: {
-          text: "Wartość testowa pola Title",
-        },
+        key: 'TITLE',
+        value: 'To jest tytuł zadania typu ToDo'
       }, {
-        fieldId: "PRIORITY",
-        format: "BOOL",
-        type: "switch",
-        order: -2,
-        label: "Important",
-        helperText: "Informacje o testowym polu Priority",
-        meta: {
-          required: true,
-        },
-        value: {
-          bool: false,
-        },
-      },
-      {
-        fieldId: "STATUS",
-        format: "CHOICE",
-        order: -1,
-        type: "select",
-        label: "Status",
-        helperText: "Informacje o testowym polu Status",
-        meta: {
-          required: true,
-          options: [{
-            text: "To do",
-            value: "TODO",
-          }, {
-            text: "Done",
-            value: "DONE",
-          }, {
-            text: "In progress",
-            value: "IN_PROGRESS",
-          }],
-        },
-        value: {
-          id: "IN_PROGRESS",
-        },
-      },
-      {
-        fieldId: "NOTE",
-        format: "TEXT",
-        type: "text",
-        order: 2,
-        label: "Note",
-        helperText: "Informacje o testowym polu Description",
-        meta: {
-          required: false,
-          minLen: 3,
-          maxLen: 100,
-        },
-        value: {
-          text: "Wartość testowa pola Description",
-        },
-      },
-    ],
+        key: 'PRIORITY',
+        value: true,
+      }, {
+        key: 'STATUS',
+        value: 'TODO',
+      }, {
+        key: 'NOTE',
+        value: 'Notakta testowa. Może być długa i zawierać wiele wierszy.'
+      }
+    ].map(({ key, value }) => assignFieldValue(FIELDS[key], value)),
   },
   {
-    taskType: "TODO",
-    ownerId: "1234567890",
+    taskType: 'TODO',
+    ownerId: '1234567890',
     fields: [
       {
-        fieldId: "TITLE",
-        format: "TEXT",
-        type: "text",
-        order: -1,
-        label: "Title",
-        helperText: "Informacje o testowym polu Title",
-        meta: {
-          required: true,
-          minLen: 0,
-          maxLen: 400,
-        },
-        value: {
-          text: "Wartość testowa pola Title",
-        },
+        key: 'TITLE',
+        value: 'a To jest INNE zadanie typu ToDo'
       }, {
-        fieldId: "PRIORITY",
-        format: "BOOL",
-        type: "switch",
-        order: -2,
-        label: "Important",
-        helperText: "Informacje o testowym polu Priority",
-        meta: {
-          required: true,
-        },
-        value: {
-          bool: false,
-        },
-      },
-      {
-        fieldId: "STATUS",
-        format: "CHOICE",
-        order: -1,
-        type: "select",
-        label: "Status",
-        helperText: "Informacje o testowym polu Status",
-        meta: {
-          required: true,
-          options: [{
-            text: "To do",
-            value: "TODO",
-          }, {
-            text: "Done",
-            value: "DONE",
-          }, {
-            text: "In progress",
-            value: "IN_PROGRESS",
-          }],
-        },
-        value: {
-          id: "DONE",
-        },
-      },
-      {
-        fieldId: "NOTE",
-        format: "TEXT",
-        type: "text",
-        order: 2,
-        label: "Note",
-        helperText: "Informacje o testowym polu Description",
-        meta: {
-          required: false,
-          minLen: 3,
-          maxMax: 100,
-        },
-        value: {
-          text: "Wartość testowa pola Description",
-        },
-      },
-      {
-        fieldId: "LOCATION",
-        format: "TEXT",
-        type: "text",
-        order: 3,
-        label: "Location",
-        helperText: "Informacje o testowym polu Location",
-        meta: {
-          required: false,
-          minLen: 3,
-          maxMax: 100,
-        },
-        value: {
-          text: "Wartość testowa pola Location",
-        },
-      },
-      {
-        fieldId: "DATE",
-        format: "TEXT",
-        type: "datetime-local",
-        order: 4,
-        label: "Date",
-        helperText: "Informacje o testowym polu Date",
-        meta: {
-          required: false,
-        },
-        value: {
-          text: "Wartość testowa pola Date",
-        },
-      },
-    ],
+        key: 'PRIORITY',
+        value: false,
+      }, {
+        key: 'STATUS',
+        value: 'TODO',
+      }, {
+        key: 'NOTE',
+        value: 'Super extra notatka wowow efekt placebo i kosmici. Notakta testowa. Może być długa i zawierać wiele wierszy.'
+      }
+    ].map(({ key, value }) => assignFieldValue(FIELDS[key], value)),
   },
 ]);
 
 // KONFIGURACJA
 // TYPY ZADAŃ
 dbHook.tasktypes.insert([{
-  typeId: "TODO",
-  name: "ToDo",
-  description: "Bazowe zadanie. Pozwala na ustawienie tytułu, priorytetu oraz sterowanie statusem. oraz dodanie opisu",
+  typeId: 'TASK',
+  name: '',
+  description: 'Baza z tytułem',
   order: 0,
   isCustom: false,
   parentId: null,
-  fields: [{
-    fieldId: "TITLE",
-    format: "TEXT",
-    order: 1,
-    type: "text",
-    label: "Title",
-    helperText: "Title helperText",
-    meta: {
-      required: true,
-      min: 0,
-      max: 100,
-    },
-    value: {
-      text: "",
-    },
-  }, {
-    fieldId: "STATUS",
-    format: "CHOICE",
-    order: 0,
-    type: "select",
-    label: "Status",
-    helperText: "Status helperText",
-    meta: {
-      required: true,
-      options: [{
-        text: "To do",
-        value: "TODO",
-      }, {
-        text: "Done",
-        value: "DONE",
-      }, {
-        text: "In progress",
-        value: "IN_PROGRESS",
-      }],
-    },
-    value: {
-      id: "TODO",
-    },
-  }, {
-    fieldId: "PRIORITY",
-    format: "BOOL",
-    type: "switch",
-    order: 0,
-    label: "Important",
-    helperText: "Informacje o testowym polu Priority",
-    meta: {
-      required: true,
-    },
-    value: {
-      bool: false,
-    },
-  }, {
-    fieldId: "NOTE",
-    format: "TEXT",
-    order: 2,
-    type: "text",
-    label: "Note",
-    helperText: "Note helperText",
-    meta: {
-      required: false,
-      min: 0,
-      max: 400,
-    },
-    value: {
-      text: "",
-    },
-  }],
+  fields: [FIELDS.TITLE],
 }, {
-  typeId: "EVENT",
-  name: "Event",
-  description: "Wydarzenie pozwala na ustawienie zadania, które posiada możliwość zdefiniowania miejsca i czasu.",
+  typeId: 'PRIORITY',
+  name: '',
+  description: 'Baza z priorytetem',
+  order: 0,
+  isCustom: false,
+  parentId: 'TASK',
+  fields: [FIELDS.PRIORITY],
+}, {
+  typeId: 'STATUS',
+  name: '',
+  description: 'Baza ze statusem',
+  order: 0,
+  isCustom: false,
+  parentId: 'TASK',
+  fields: [FIELDS.STATUS],
+}, {
+  typeId: 'TODO',
+  name: 'ToDo',
+  description: 'Pozwala na ustawienie tytułu, priorytetu oraz sterowanie statusem. oraz dodanie opisu',
+  order: 0,
+  isCustom: false,
+  parentId: ['STATUS', 'PRIORITY'],
+  fields: [FIELDS.NOTE],
+}, {
+  typeId: 'EVENT',
+  name: 'Event',
+  description: 'Wydarzenie pozwala na ustawienie zadania, które posiada możliwość zdefiniowania miejsca i czasu.',
   order: 1,
   isCustom: false,
-  parentId: "TODO",
-  fields: [{
-    fieldId: "LOCATION",
-    format: "TEXT",
-    order: 3,
-    type: "text",
-    label: "Location",
-    helperText: "Location helperText",
-    meta: {
-      required: false,
-    },
-    value: {
-      text: "",
-    },
-  }, {
-    fieldId: "DATE_TIME",
-    format: "TEXT",
-    order: 3,
-    type: "datetime-local",
-    label: "Date and time",
-    helperText: "Date and time helperText",
-    meta: {
-      required: false,
-    },
-    value: {
-      text: "",
-    },
-  }],
+  parentId: 'PRIORITY',
+  fields: [FIELDS.LOCATION, FIELDS.DATE_TIME, FIELDS.DURATION],
 }, {
-  typeId: "MEETING",
-  name: "Meeting",
-  description: "Zadanie typu spotkanie pozwala na zapisanie spotkania. Ustal osobę oraz czas i miejsce spotkania.",
+  typeId: 'MEETING',
+  name: 'Meeting',
+  description: 'Zadanie typu spotkanie pozwala na zapisanie spotkania. Ustal osobę oraz czas i miejsce spotkania.',
   order: 2,
   isCustom: false,
-  parentId: "EVENT",
-  fields: [{
-    fieldId: "PERSON",
-    format: "TEXT",
-    order: 4,
-    type: "text",
-    label: "Person",
-    helperText: "Person helperText",
-    meta: {
-      required: true,
-    },
-    value: {
-      text: "",
-    },
-  }],
+  parentId: 'EVENT',
+  fields: [FIELDS.PERSON],
 }, {
-  typeId: "CHECK_LIST",
-  name: "Check list",
-  description: "Zbiór pozwiązanych zadań do wykonania. Aby wykonać takie, należy wykonać wszystkie zadania powiązane.",
+  typeId: 'ROUTINE',
+  name: 'Routine',
+  description: 'Zadanie typu rutyna pozwala na ustawienie akcji do wykonania w danych cyklu.',
   order: 3,
   isCustom: false,
-  parentId: "TODO",
-  fields: [{
-    fieldId: "RELATED_TASKS",
-    format: "TEXT",
-    order: 3,
-    type: "text",
-    label: "Related tasks",
-    helperText: "Related tasks helperText",
-    meta: {
-      required: true,
-      min: 1,
-      max: 100,
-    },
-    value: {
-      text: "",
-    },
-  }],
+  parentId: 'PRIORITY',
+  fields: [FIELDS.CYCLE, FIELDS.WHEN, FIELDS.ACTION, FIELDS.ACTIVE],
 }]);
 
 print('Collections:');
