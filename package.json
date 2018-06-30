@@ -13,6 +13,7 @@
     "init:db:remote": "mongo --eval \"var DB_NAME='mo1563_lifeapp'\" --port 27017 -u mo1563_lifeapp -p Gitara15 --host 85.194.240.29 mo1563_lifeapp scripts/initDatabase.js",
     "start": "npm run client:build:heroku && DB=remote node src",
     "start:local": "npm run client:build:local && DB=remote node src",
+    "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "keywords": [
