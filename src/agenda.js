@@ -110,7 +110,7 @@ const graceful = () => {
 process.on('SIGTERM', graceful);
 process.on('SIGINT' , graceful);
 
-emitter.on('task:added', (task) => {
+emitter.on('task:added', async task => {
   console.log(['api:emitter:on:task:added'], task);
   if (task.taskType === TASK_TYPES.MEETING) {
     const date = task.fields.find(({ fieldId }) => fieldId === 'DATE_TIME').value.text;
@@ -129,25 +129,24 @@ emitter.on('task:added', (task) => {
     });
   }
   else if (task.taskType === TASK_TYPES.ROUTINE) {
-    console.log(['dodano rutyne'], task);
     const title = task.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
     const action = task.fields.find(({ fieldId }) => fieldId === 'ACTION').value.text;
     const cycle = task.fields.find(({ fieldId }) => fieldId === 'CYCLE').value.id;
-    // const when = task.fields.find(({ fieldId }) => fieldId === 'WHEN').value.ids || [];
     const { value: { ids: when, customValueOptionValue } } =
       task.fields.find(({ fieldId }) => fieldId === 'WHEN') || {};
 
     console.log(['api:addTask:ROUTINE'], { title, action, cycle, when });
 
-    when.forEach(when => {
+    await when.forEach(async when => {
       const interval = calculateInterval(cycle, when, customValueOptionValue);
-      agenda.every(interval, 'notification', {
+      const routine = agenda.create('notification', {
         ownerId: task.ownerId,
         notification: {
           body: `Action: ${action}`,
           title,
-        },
+        }
       });
+      await routine.repeatEvery(interval).save();
     });
   }
 });
