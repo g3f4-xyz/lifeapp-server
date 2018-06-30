@@ -189,7 +189,7 @@ const FIELDS = {
     meta: {
       parentId: 'CYCLE',
       optionsSet: [{
-        customValueOptionMask: '9999',
+        customValueOptionMask: '9',
         parentValue: 'TIME',
         options: [{
           text: 'Half an hour',
@@ -205,7 +205,7 @@ const FIELDS = {
           value: 'HOURS_12'
         }, {
           text: 'Interval in minutes',
-          value: ''
+          value: 'CUSTOM'
         }],
       }, {
         customValueOptionMask: '99:99',
@@ -221,7 +221,7 @@ const FIELDS = {
           value: 'EVENING'
         }, {
           text: 'Time',
-          value: ''
+          value: 'CUSTOM'
         }],
       }, {
         parentValue: 'WEEK',
@@ -258,7 +258,7 @@ const FIELDS = {
           value: 'END'
         }, {
           text: 'Day',
-          value: ''
+          value: 'CUSTOM'
         }],
       }],
     },
