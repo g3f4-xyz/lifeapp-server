@@ -25,12 +25,25 @@ const addSubscription = async (ownerId, subscription) => {
     return error;
   }
 };
+const addSettings = async settings => {
+  console.log(['api:addSettings'], { settings });
+  try {
+    const newSettings = new SettingsModel(settings);
+
+    await newSettings.save();
+
+    return newSettings.toJSON();
+  }
+
+  catch (error) {
+    console.error(['api:addSettings:error'], error);
+    return error;
+  }
+};
 const addTask = async task => {
   console.log(['api:addTask'], { task });
   try {
     const newTask = new TaskModel(task);
-
-
 
     await newTask.save();
 
@@ -315,6 +328,17 @@ const getTaskTypeList = async ({ withParent = true } = {}) => {
   }
 };
 
+const saveSettings = async ({ ownerId, settings, isNew = true }) => {
+  console.log(['api:saveSettings'], { ownerId, settings, isNew });
+  try {
+    return await (isNew ? addTask(settings) : TaskModel.findOneAndUpdate({ ownerId }, settings)).toJSON();
+  }
+
+  catch (error) {
+    console.error(['api:saveSettings:error'], error);
+    return error;
+  }
+};
 const saveTask = async ({ taskId, task, isNew = true }) => {
   console.log(['api:saveTask'], { taskId, task, isNew });
   try {
@@ -344,6 +368,7 @@ const saveTaskType = async ({ taskTypeId, taskType, isNew = true }) => {
 
 module.exports = {
   addSubscription,
+  addSettings,
   addTask,
   addTaskType,
   deleteSettings,
@@ -358,6 +383,7 @@ module.exports = {
   getTaskList,
   getTaskType,
   getTaskTypeList,
+  saveSettings,
   saveTask,
   saveTaskType,
 };
