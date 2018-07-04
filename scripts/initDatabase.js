@@ -6,10 +6,12 @@ print(`Initializing db with name: ${DB_NAME}`);
 
 if (dbHook.tasks) {
   dbHook.fieldtypes.drop();
+  dbHook.settings.drop();
   dbHook.tasks.drop();
   dbHook.tasktypes.drop();
 } else {
   dbHook.createCollection('fieldtypes');
+  dbHook.createCollection('settings');
   dbHook.createCollection('tasks');
   dbHook.createCollection('tasktypes');
 }
@@ -311,6 +313,27 @@ const assignFieldValue = (field, value = null) => {
 
 // DANE TESTOWE
 dbHook.fieldtypes.insert(FIELDS);
+dbHook.settings.insert([{
+  authentication: {
+    provider: 'fake',
+  },
+  notifications: {
+    show: true,
+    daily: {
+      events: false,
+      meetings: true,
+      todo: true,
+      routines: false,
+    },
+    single: {
+      events: true,
+      meetings: false,
+      todo: true,
+      routines: false,
+    },
+  },
+  ownerId: '1234567890',
+}]);
 dbHook.tasks.insert([
   {
     taskType: 'TODO',
