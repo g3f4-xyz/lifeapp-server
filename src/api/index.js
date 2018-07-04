@@ -1,4 +1,6 @@
 const moment = require('moment');
+const { FIELDS_TYPES } = require('../constants');
+const SettingsModel = require('./models/SettingsModel');
 const SubscriptionModel = require('.//models/SubscriptionModel');
 const TaskModel = require('.//models/TaskModel');
 const TaskTypeModel = require('.//models/TaskTypeModel');
@@ -15,7 +17,7 @@ const addSubscription = async (ownerId, subscription) => {
 
     const newSubscription = new SubscriptionModel({ ownerId, subscription });
 
-    return await newSubscription.save();
+    return await newSubscription.save().toJSON();
   }
 
   catch (error) {
@@ -34,7 +36,7 @@ const addTask = async task => {
 
     emitter.emit('task:added', newTask.toJSON());
 
-    return newTask;
+    return newTask.toJSON();
   }
 
   catch (error) {
@@ -47,7 +49,7 @@ const addTaskType = async taskType => {
   try {
     const newTaskType = new TaskTypeModel(taskType);
 
-    return await newTaskType.save();
+    return await newTaskType.save().toJSON();
   }
 
   catch (error) {
@@ -56,6 +58,21 @@ const addTaskType = async taskType => {
   }
 };
 
+const deleteSettings = async ownerId => {
+  console.log(['api:deleteTask'], ownerId);
+  try {
+    const settings = await getSettings(ownerId);
+
+    await settings.remove();
+
+    return ownerId;
+  }
+
+  catch (error) {
+    console.error(['api:deleteTask:error'], error);
+    return error;
+  }
+};
 const deleteTask = async id => {
   console.log(['api:deleteTask'], id);
   try {
@@ -108,7 +125,7 @@ const getSubscription = async id => {
     const subscription = await SubscriptionModel.findById(id);
     console.log(['api:getSubscription:subscription'], subscription);
 
-    return subscription;
+    return subscription.toJSON();
   }
 
   catch (error) {
@@ -122,20 +139,13 @@ const getSubscriptions = async ownerId => {
     const subscriptions = await SubscriptionModel.find({ ownerId });
     console.log(['api:getSubscription:subscriptions'], subscriptions);
 
-    return subscriptions;
+    return subscriptions.toJSON();
   }
 
   catch (error) {
     console.error(['api:getSubscriptions:error'], error);
     return error;
   }
-};
-
-const FIELDS_TYPES = {
-  TEXT: 'text',
-  SELECT: 'select',
-  SWITCH: 'switch',
-  DATETIME_LOCAL: 'datetime-local',
 };
 
 const getEmptyTask = async taskTypeId => {
@@ -219,6 +229,20 @@ const getEmptyTask = async taskTypeId => {
     return error;
   }
 };
+const getSettings = async ownerId => {
+  console.log(['api:getSettings'], ownerId);
+  try {
+    const settings = await SettingsModel.findOne({ ownerId });
+    console.log(['api:getSettings:settings'], settings);
+
+    return settings.toJSON();
+  }
+
+  catch (error) {
+    console.error(['api:getTask:error'], error);
+    return error;
+  }
+};
 const getTask = async id => {
   console.log(['api:getTask'], id);
   try {
@@ -233,7 +257,7 @@ const getTask = async id => {
 const getTaskList = async ({ ownerId }) => {
   console.log(['api:getTaskList'], ownerId);
   try {
-    return await TaskModel.find({ ownerId }).sort({ _id : -1 });
+    return await TaskModel.find({ ownerId }).sort({ _id : -1 }).toJSON();
   }
 
   catch (error) {
@@ -244,7 +268,7 @@ const getTaskList = async ({ ownerId }) => {
 const getTaskType = async id => {
   console.log(['api:getTaskType'], id);
   try {
-    return await TaskTypeModel.findById(id);
+    return await TaskTypeModel.findById(id).toJSON();
   }
 
   catch (error) {
@@ -296,7 +320,7 @@ const saveTask = async ({ taskId, task, isNew = true }) => {
   try {
     const { fields } = task;
 
-    return await (isNew ? addTask(task) : TaskModel.findByIdAndUpdate(taskId, { fields }));
+    return await (isNew ? addTask(task) : TaskModel.findByIdAndUpdate(taskId, { fields })).toJSON();
   }
 
   catch (error) {
@@ -309,7 +333,7 @@ const saveTaskType = async ({ taskTypeId, taskType, isNew = true }) => {
   try {
     const { fields } = taskType;
 
-    return await (isNew ? addTask(taskType) : TaskTypeModel.findByIdAndUpdate(taskTypeId, { fields }));
+    return await (isNew ? addTask(taskType) : TaskTypeModel.findByIdAndUpdate(taskTypeId, { fields })).toJSON();
   }
 
   catch (error) {
@@ -322,12 +346,14 @@ module.exports = {
   addSubscription,
   addTask,
   addTaskType,
+  deleteSettings,
+  deleteSubscription,
   deleteTask,
   deleteTaskType,
-  deleteSubscription,
+  getEmptyTask,
+  getSettings,
   getSubscription,
   getSubscriptions,
-  getEmptyTask,
   getTask,
   getTaskList,
   getTaskType,

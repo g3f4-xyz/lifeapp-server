@@ -5,6 +5,12 @@ const DEMO_USER = {
   id: '1234567890',
   displayName: 'Demo User',
 };
+const FIELDS_TYPES = {
+  TEXT: 'text',
+  SELECT: 'select',
+  SWITCH: 'switch',
+  DATETIME_LOCAL: 'datetime-local',
+};
 const HOST = process.env.HOST || 'http://localhost:30000';
 const PORT = process.env.PORT || 30000;
 const PUBLIC_PATH = `${process.cwd()}/build`;
@@ -34,6 +40,7 @@ const SESSION = {
 module.exports = {
   DB_HOST,
   DEMO_USER,
+  FIELDS_TYPES,
   HTML_PATHS,
   HOST,
   PORT,

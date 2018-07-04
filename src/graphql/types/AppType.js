@@ -1,6 +1,7 @@
 const { GraphQLID, GraphQLObjectType, GraphQLString } = require('graphql');
 const { globalIdField, fromGlobalId } = require('graphql-relay');
-const { getEmptyTask, getTask } = require('../../api');
+const { getEmptyTask, getSettings, getTask } = require('../../api');
+const SettingsType = require('./SettingsType');
 const TaskType = require('./TaskType');
 const TaskListType = require('./TaskListType');
 const TaskTypeListType = require('./TaskTypeListType');
@@ -10,6 +11,10 @@ module.exports = new GraphQLObjectType({
   description: 'Application entry point',
   fields: () => ({
     id: globalIdField('App'),
+    settings: {
+      type: SettingsType,
+      resolve: async ({ id }) => await getSettings(id)
+    },
     task: {
       type: TaskType,
       args: {
