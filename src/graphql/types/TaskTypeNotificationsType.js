@@ -6,7 +6,7 @@ module.exports = new GraphQLObjectType({
   name: 'DailyNotificationsType',
   description: 'notifications type',
   fields: () => ({
-    id: globalIdField('DailyNotificationsType', ({ _id }) => _id),
+    id: globalIdField('DailyNotificationsType', ({ id }) => id),
     events: {
       type: GraphQLBoolean,
     },
