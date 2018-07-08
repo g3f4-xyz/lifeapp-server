@@ -328,10 +328,19 @@ const getTaskTypeList = async ({ withParent = true } = {}) => {
   }
 };
 
-const saveSettings = async ({ ownerId, settings, isNew = true }) => {
-  console.log(['api:saveSettings'], { ownerId, settings, isNew });
+const saveSettings = async (settingsId, { settings, isNew = true }) => {
+  console.log(['api:saveSettings'], { settingsId, settings, isNew });
   try {
-    return await (isNew ? addTask(settings) : TaskModel.findOneAndUpdate({ ownerId }, settings)).toJSON();
+    if (isNew) {
+      return addSettings(settings);
+    }
+    const savedSettings = await SettingsModel.findByIdAndUpdate(
+      settingsId,
+      settings,
+      { new: true }
+    );
+
+    return savedSettings.toJSON();
   }
 
   catch (error) {
@@ -343,8 +352,12 @@ const saveTask = async ({ taskId, task, isNew = true }) => {
   console.log(['api:saveTask'], { taskId, task, isNew });
   try {
     const { fields } = task;
+    const savedTask = await (isNew
+        ? addTask(task)
+        : TaskModel.findByIdAndUpdate(taskId, { fields }, { new: true })
+    );
 
-    return await (isNew ? addTask(task) : TaskModel.findByIdAndUpdate(taskId, { fields })).toJSON();
+    return savedTask.toJSON();
   }
 
   catch (error) {
@@ -356,8 +369,12 @@ const saveTaskType = async ({ taskTypeId, taskType, isNew = true }) => {
   console.log(['api:saveTaskType'], { taskType, isNew });
   try {
     const { fields } = taskType;
+    const savedTaskType = await (isNew
+        ? addTask(taskType) :
+        TaskTypeModel.findByIdAndUpdate(taskTypeId, { fields }, { new: true })
+    );
 
-    return await (isNew ? addTask(taskType) : TaskTypeModel.findByIdAndUpdate(taskTypeId, { fields })).toJSON();
+    return savedTaskType.toJSON();
   }
 
   catch (error) {

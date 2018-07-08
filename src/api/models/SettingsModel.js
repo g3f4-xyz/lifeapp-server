@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const settingsModel = mongoose.Schema({
   ownerId: String,
-  notification: Object,
+  notifications: Object,
   authentication: Object,
 });
 const SettingsModel = mongoose.model('Settings', settingsModel);

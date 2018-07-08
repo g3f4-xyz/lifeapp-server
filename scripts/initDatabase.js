@@ -322,13 +322,13 @@ dbHook.settings.insert([{
     daily: {
       events: false,
       meetings: true,
-      todo: true,
+      todos: true,
       routines: false,
     },
     single: {
       events: true,
       meetings: false,
-      todo: true,
+      todos: true,
       routines: false,
     },
   },
