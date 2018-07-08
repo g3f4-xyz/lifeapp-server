@@ -132,6 +132,22 @@ const deleteSubscription = async id => {
     return error;
   }
 };
+const deleteSubscriptions = async ownerId => {
+  console.log(['api:deleteSubscription:ownerId'], ownerId);
+  try {
+    const subscriptions = await getSubscriptions(ownerId);
+    console.log(['api:deleteSubscriptions:user'], subscriptions);
+
+    await subscriptions.forEach(async model => await model.remove());
+
+    return ownerId;
+  }
+
+  catch (error) {
+    console.error(['api:deleteSubscription:error'], error);
+    return error;
+  }
+};
 const getSubscription = async id => {
   console.log(['api:getSubscription:id'], id);
   try {
@@ -152,7 +168,7 @@ const getSubscriptions = async ownerId => {
     const subscriptions = await SubscriptionModel.find({ ownerId });
     console.log(['api:getSubscription:subscriptions'], subscriptions);
 
-    return subscriptions.toJSON();
+    return subscriptions ? subscriptions.map(model => model.toJSON()) : [];
   }
 
   catch (error) {
@@ -392,6 +408,7 @@ module.exports = {
   addTaskType,
   deleteSettings,
   deleteSubscription,
+  deleteSubscriptions,
   deleteTask,
   deleteTaskType,
   getEmptyTask,
