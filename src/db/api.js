@@ -368,11 +368,14 @@ const getTaskTypeList = async ({ withParent = true } = {}) => {
   }
 };
 
-const saveSettings = async (settingsId, { settings, isNew = true }) => {
-  console.log(['api:saveSettings'], { settingsId, settings, isNew });
+const saveSettings = async (settingsId, { settings, ownerId, isNew = true }) => {
+  console.log(['api:saveSettings'], { ownerId, settingsId, settings, isNew });
   try {
-    if (isNew) {
-      return addSettings(settings);
+    if (isNew || !Boolean(settingsId)) {
+      return addSettings({
+        ...settings,
+        ownerId,
+      });
     }
     const savedSettings = await SettingsModel.findByIdAndUpdate(
       settingsId,
