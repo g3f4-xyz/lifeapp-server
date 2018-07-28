@@ -1,5 +1,5 @@
-const TaskModel = require('../../api/models/TaskModel');
-const TaskTypeModel = require('../../api/models/TaskTypeModel');
+const TaskModel = require('../../db/models/TaskModel');
+const TaskTypeModel = require('../../db/models/TaskTypeModel');
 
 module.exports = obj => {
   if (obj instanceof TaskModel) {

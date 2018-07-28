@@ -264,7 +264,29 @@ const getSettings = async ownerId => {
     const settings = await SettingsModel.findOne({ ownerId });
     console.log(['api:getSettings:settings'], settings);
 
-    return settings.toJSON();
+    return settings ? settings.toJSON() : (
+      {
+        ownerId,
+        authentication: {
+          provider: null,
+        },
+        notifications: {
+          show: null,
+          daily: {
+            events: null,
+            meetings: null,
+            routines: null,
+            todos: null,
+          },
+          single: {
+            events: null,
+            meetings: null,
+            routines: null,
+            todos: null,
+          },
+        },
+      }
+    );
   }
 
   catch (error) {

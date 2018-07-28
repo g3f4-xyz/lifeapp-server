@@ -2,7 +2,7 @@ const { GraphQLBoolean, GraphQLString, GraphQLInt, GraphQLID } = require('graphq
 const { fromGlobalId, mutationWithClientMutationId, cursorForObjectInConnection } = require('graphql-relay');
 const TaskTypeListType = require('../types/TaskTypeListType');
 const { TaskTypeTypeEdge } = require('../connections');
-const { saveTaskType, getTaskTypeList } = require('../../api');
+const { saveTaskType, getTaskTypeList } = require('../../db/api');
 const fieldsInputType = require('./inputs/fieldsInputType');
 
 module.exports = mutationWithClientMutationId({

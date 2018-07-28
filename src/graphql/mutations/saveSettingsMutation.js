@@ -2,7 +2,7 @@ const { GraphQLBoolean, GraphQLString } = require('graphql');
 const { fromGlobalId, mutationWithClientMutationId } = require('graphql-relay');
 const SettingsType = require('../types/SettingsType');
 const SettingsInputType = require('./inputs/SettingsInputType');
-const { saveSettings } = require('../../api');
+const { saveSettings } = require('../../db/api');
 
 module.exports = mutationWithClientMutationId({
   name: 'saveSettingsMutation',

@@ -3,7 +3,7 @@ const moment = require('moment');
 const webPush = require('web-push');
 const { DB_HOST } = require('./config');
 const { TASK_TYPES } = require('./constants');
-const emitter = require('./api/emitter');
+const emitter = require('./db/emitter');
 
 let agenda = new Agenda({ db: { address: DB_HOST } });
 const calculateInterval = (cycle, when, customValueOptionValue) => {
@@ -75,7 +75,7 @@ const calculateInterval = (cycle, when, customValueOptionValue) => {
 };
 agenda.define('notification', async (job, done) => {
   console.log(['agenda:job:notification'], job.attrs);
-  const { getSubscriptions } = require('./api');
+  const { getSubscriptions } = require('./db/api');
   const { ownerId, notification: { body, title } } = job.attrs.data;
   const payload = JSON.stringify({
     title,

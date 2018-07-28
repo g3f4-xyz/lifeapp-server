@@ -2,7 +2,7 @@ const { GraphQLObjectType } = require('graphql');
 const { connectionArgs, connectionFromArray, globalIdField } = require('graphql-relay');
 const { TaskTypeTypeConnection } = require('../connections');
 const { nodeInterface } = require('../nodeDefinitions');
-const { getTaskTypeList } = require('../../api');
+const { getTaskTypeList } = require('../../db/api');
 
 module.exports = new GraphQLObjectType({
   name: 'TaskTypeListType',

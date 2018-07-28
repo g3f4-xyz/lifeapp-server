@@ -1,6 +1,6 @@
 const { GraphQLString, GraphQLID } = require('graphql');
 const { fromGlobalId, mutationWithClientMutationId } = require('graphql-relay');
-const { deleteTask } = require('../../api');
+const { deleteTask } = require('../../db/api');
 
 module.exports = mutationWithClientMutationId({
   name: 'deleteTaskMutation',

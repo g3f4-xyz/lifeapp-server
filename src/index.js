@@ -1,4 +1,4 @@
-require('./api/connect');
+require('./db/connect');
 require('./agenda');
 require('./authentication');
 require('./initWebPush');
