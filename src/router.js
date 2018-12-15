@@ -25,6 +25,6 @@ router.get(ROUTES.AUTH, (req, res) => res.sendFile(HTML_PATHS.LOGIN));
 
 router.use(ROUTES.AUTH, authRouter);
 router.use(ROUTES.GRAPHQL, cors(), graphql);
-router.use(ROUTES.NOTIFICATIONS, notifications);
+router.use(ROUTES.NOTIFICATIONS, cors(), notifications);
 
 module.exports = router;

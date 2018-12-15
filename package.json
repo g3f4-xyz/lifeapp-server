@@ -44,6 +44,7 @@
     "agenda": "1.0.3",
     "body-parser": "1.18.3",
     "cors": "2.8.4",
+    "device": "^0.3.9",
     "express": "4.16.3",
     "express-graphql": "0.6.12",
     "express-session": "1.15.6",
@@ -54,6 +55,7 @@
     "morgan": "1.9.0",
     "passport": "0.4.0",
     "passport-google-oauth20": "1.0.0",
+    "useragent": "^2.3.0",
     "web-push": "3.3.1"
   }
 }

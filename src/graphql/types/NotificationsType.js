@@ -1,7 +1,8 @@
-const { GraphQLBoolean, GraphQLObjectType } = require('graphql');
+const { GraphQLBoolean, GraphQLList, GraphQLObjectType } = require('graphql');
 const { globalIdField } = require('graphql-relay');
 const { nodeInterface } = require('../nodeDefinitions');
 const TaskTypeNotificationsType = require('./TaskTypeNotificationsType');
+const SubscriptionType = require('./SubscriptionType');
 
 module.exports = new GraphQLObjectType({
   name: 'NotificationsType',
@@ -18,6 +19,9 @@ module.exports = new GraphQLObjectType({
     single: {
       type: TaskTypeNotificationsType,
       resolve: ({ single }) => ({ id: 'single', ...single })
+    },
+    subscriptions: {
+      type: new GraphQLList(SubscriptionType),
     },
   }),
   interfaces: [nodeInterface],

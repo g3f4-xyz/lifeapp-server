@@ -6,18 +6,27 @@ const TaskModel = require('.//models/TaskModel');
 const TaskTypeModel = require('.//models/TaskTypeModel');
 const emitter = require('./emitter');
 
-const addSubscription = async (ownerId, subscription) => {
+const addSubscription = async (ownerId, subscription, userAgent, userDeviceType) => {
   console.log(['api:addSubscription'], { ownerId, subscription });
   try {
-    const previousSubscription = await SubscriptionModel.findOne({ subscription });
+    const previousSubscription = await SubscriptionModel.findOne({
+      subscription,
+      userAgent,
+      userDeviceType,
+    });
 
     if (previousSubscription) {
       return previousSubscription;
     }
 
-    const newSubscription = new SubscriptionModel({ ownerId, subscription });
+    const newSubscription = new SubscriptionModel({
+      ownerId,
+      subscription,
+      userAgent,
+      userDeviceType,
+    });
 
-    return await newSubscription.save().toJSON();
+    return await newSubscription.save();
   }
 
   catch (error) {
@@ -258,13 +267,19 @@ const getEmptyTask = async taskTypeId => {
     return error;
   }
 };
+
+// metoda api agregująca kolekcje.
+// kolekcja subskrypcji jest oddzielona dla agendy.
+// zamienić na powiązanie przez ownerId
 const getSettings = async ownerId => {
   console.log(['api:getSettings'], ownerId);
   try {
     const settings = await SettingsModel.findOne({ ownerId });
+    const subscriptions = await getSubscriptions(ownerId);
     console.log(['api:getSettings:settings'], settings);
+    console.log(['api:getSettings:subscriptions'], subscriptions);
 
-    return settings ? settings.toJSON() : (
+    const result = settings ? settings.toJSON() : (
       {
         ownerId,
         authentication: {
@@ -284,9 +299,18 @@ const getSettings = async ownerId => {
             routines: null,
             todos: null,
           },
+          subscriptions: [],
         },
       }
     );
+
+    return {
+      ...result,
+      notifications: {
+        ...result.notifications,
+        subscriptions,
+      },
+    };
   }
 
   catch (error) {

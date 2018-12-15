@@ -144,7 +144,7 @@ emitter.on('task:added', async task => {
         notification: {
           body: `Action: ${action}`,
           title,
-        }
+        },
       });
       await routine.repeatEvery(interval).save();
     });
