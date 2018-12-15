@@ -308,9 +308,7 @@ const getTask = async id => {
 const getTaskList = async ({ ownerId }) => {
   console.log(['api:getTaskList'], ownerId);
   try {
-    const tasks = await TaskModel.find({ ownerId });
-
-    return tasks.sort({ _id : -1 }).map(model => model.toJSON());
+    return await TaskModel.find({ ownerId }).sort({ _id : -1 });
   }
 
   catch (error) {

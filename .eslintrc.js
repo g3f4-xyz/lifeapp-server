@@ -5,7 +5,7 @@ module.exports = {
     "node": true,
     "mocha": true,
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": ["eslint:recommended"],
   "rules": {
     "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": 0,
