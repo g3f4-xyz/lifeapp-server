@@ -6,6 +6,7 @@ const deleteTask = require('./mutations/deleteTaskMutation');
 const saveSettings = require('./mutations/saveSettingsMutation');
 const saveTask = require('./mutations/saveTaskMutation');
 const saveTaskType = require('./mutations/saveTaskTypeMutation');
+const testSubscriptionMutation = require('./mutations/testSubscriptionMutation');
 
 module.exports = new GraphQLObjectType({
   name: 'Mutation',
@@ -17,5 +18,6 @@ module.exports = new GraphQLObjectType({
     saveSettings,
     saveTask,
     saveTaskType,
+    testSubscriptionMutation,
   }),
 });

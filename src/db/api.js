@@ -1,8 +1,8 @@
 const moment = require('moment');
 const { FIELDS_TYPES } = require('../constants');
 const SettingsModel = require('./models/SettingsModel');
-const SubscriptionModel = require('.//models/SubscriptionModel');
-const TaskModel = require('.//models/TaskModel');
+const SubscriptionModel = require('./models/SubscriptionModel');
+const TaskModel = require('./models/TaskModel');
 const TaskTypeModel = require('.//models/TaskTypeModel');
 const emitter = require('./emitter');
 

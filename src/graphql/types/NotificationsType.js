@@ -12,23 +12,20 @@ module.exports = new GraphQLObjectType({
     id: globalIdField('NotificationsType', ({ _id }) => _id),
     daily: {
       type: TaskTypeNotificationsType,
-      resolve: ({ daily }) => ({ id: 'daily', ...daily })
+      resolve: ({ daily }) => ({ id: 'daily', ...daily }),
     },
     show: {
       type: GraphQLBoolean,
     },
     single: {
       type: TaskTypeNotificationsType,
-      resolve: ({ single }) => ({ id: 'single', ...single })
+      resolve: ({ single }) => ({ id: 'single', ...single }),
     },
     subscriptions: {
       type: SubscriptionTypeConnection,
       description: 'subscriptions connection type',
       args: connectionArgs,
-      resolve: ({ subscriptions }, args) => {
-        console.log(['{ subscriptions }'], { subscriptions })
-        return connectionFromArray(subscriptions, args);
-      },
+      resolve: ({ subscriptions }, args) => connectionFromArray(subscriptions, args),
     },
   }),
   interfaces: [nodeInterface],
