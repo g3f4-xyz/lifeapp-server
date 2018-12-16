@@ -112,6 +112,7 @@ process.on('SIGINT' , graceful);
 
 emitter.on('task:added', async task => {
   console.log(['api:emitter:on:task:added'], task);
+
   if (task.taskType === TASK_TYPES.MEETING) {
     const date = task.fields.find(({ fieldId }) => fieldId === 'DATE_TIME').value.text;
     const person = task.fields.find(({ fieldId }) => fieldId === 'PERSON').value.text;
@@ -128,7 +129,26 @@ emitter.on('task:added', async task => {
       },
     });
   }
-  else if (task.taskType === TASK_TYPES.ROUTINE) {
+
+  if (task.taskType === TASK_TYPES.EVENT) {
+    const date = task.fields.find(({ fieldId }) => fieldId === 'DATE_TIME').value.text;
+    const title = task.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
+    const duration = task.fields.find(({ fieldId }) => fieldId === 'DURATION').value.text;
+    const location = task.fields.find(({ fieldId }) => fieldId === 'LOCATION').value.text;
+    const when = new Date(moment(date).startOf('day').add(8, 'hour').toString());
+
+    console.log(['api:addTask:EVENT'], { date, when, duration, location });
+
+    agenda.schedule(when, 'notification', {
+      ownerId: task.ownerId,
+      notification: {
+        body: `Time: ${date} | Location: ${location} | Duration: ${duration}`,
+        title: `Upcoming event today: ${title}`,
+      },
+    });
+  }
+
+  if (task.taskType === TASK_TYPES.ROUTINE) {
     const title = task.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
     const action = task.fields.find(({ fieldId }) => fieldId === 'ACTION').value.text;
     const cycle = task.fields.find(({ fieldId }) => fieldId === 'CYCLE').value.id;

@@ -417,11 +417,11 @@ const saveTask = async ({ taskId, task, isNew = true }) => {
   try {
     const { fields } = task;
     const savedTask = await (isNew
-        ? addTask(task)
-        : TaskModel.findByIdAndUpdate(taskId, { fields }, { new: true })
+      ? addTask(task)
+      : TaskModel.findByIdAndUpdate(taskId, { fields }, { new: true })
     );
 
-    return savedTask.toJSON();
+    return savedTask;
   }
 
   catch (error) {
