@@ -13,7 +13,7 @@ module.exports = mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async ({ ownerId }) => {
-    console.log(['deleteTaskMutation:mutateAndGetPayload'], ownerId);
+    console.log(['deleteSubscriptionsMutation:mutateAndGetPayload'], ownerId);
     try {
       await deleteSubscriptions(ownerId);
 
@@ -23,7 +23,7 @@ module.exports = mutationWithClientMutationId({
     }
 
     catch (error) {
-      console.error(['deleteTaskMutation:mutateAndGetPayload:error'], error);
+      console.error(['deleteSubscriptionsMutation:mutateAndGetPayload:error'], error);
 
       return error;
     }

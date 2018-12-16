@@ -1,29 +1,29 @@
 const { GraphQLString, GraphQLID } = require('graphql');
-const { mutationWithClientMutationId } = require('graphql-relay');
-const { deleteSubscriptions } = require('../../db/api');
+const { fromGlobalId, mutationWithClientMutationId } = require('graphql-relay');
+const { deleteSubscription } = require('../../db/api');
 
 module.exports = mutationWithClientMutationId({
-  name: 'deleteSubscriptionsMutation',
+  name: 'deleteSubscriptionMutation',
   inputFields: {
-    id: { type: GraphQLID },
+    subscriptionId: { type: GraphQLID },
   },
   outputFields: {
-    id: {
+    subscriptionId: {
       type: GraphQLString,
     },
   },
-  mutateAndGetPayload: async ({ id }) => {
-    console.log(['deleteTaskMutation:mutateAndGetPayload'], ownerId);
+  mutateAndGetPayload: async ({ subscriptionId }) => {
+    console.log(['deleteSubscriptionMutation:mutateAndGetPayload'], subscriptionId);
     try {
-      await deleteSubscriptions(id);
+      const { id } = await fromGlobalId(subscriptionId);
 
-      return {
-        id,
-      };
+      await deleteSubscription(id);
+
+      return { subscriptionId };
     }
 
     catch (error) {
-      console.error(['deleteTaskMutation:mutateAndGetPayload:error'], error);
+      console.error(['deleteSubscriptionMutation:mutateAndGetPayload:error'], error);
 
       return error;
     }

@@ -125,15 +125,15 @@ const deleteTaskType = async id => {
     return error;
   }
 };
-const deleteSubscription = async id => {
-  console.log(['api:deleteSubscription:id'], id);
+const deleteSubscription = async subscriptionId => {
+  console.log(['api:deleteSubscription:subscriptionId'], subscriptionId);
   try {
-    const subscription = await getSubscription(id);
-    console.log(['api:deleteSubscription:user'], subscription);
+    const subscription = await SubscriptionModel.findById(subscriptionId);
+    console.log(['api:deleteSubscription:subscription'], subscription);
 
     await subscription.remove();
 
-    return id;
+    return subscriptionId;
   }
 
   catch (error) {
