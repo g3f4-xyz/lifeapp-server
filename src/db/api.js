@@ -35,6 +35,7 @@ const addSubscription = async (ownerId, subscription, userAgent, userDeviceType)
     return error;
   }
 };
+
 const addSettings = async settings => {
   console.log(['api:addSettings'], { settings });
   try {
@@ -50,6 +51,7 @@ const addSettings = async settings => {
     return error;
   }
 };
+
 const addTask = async task => {
   console.log(['api:addTask'], { task });
   try {
@@ -67,6 +69,7 @@ const addTask = async task => {
     return error;
   }
 };
+
 const addTaskType = async taskType => {
   console.log(['api:addTaskType'], taskType);
   try {
@@ -81,21 +84,36 @@ const addTaskType = async taskType => {
   }
 };
 
-const deleteSettings = async ownerId => {
-  console.log(['api:deleteTask'], ownerId);
+const cleanApplication = async ownerId => {
+  console.log(['api:cleanApplication:ownerId'], ownerId);
   try {
-    const settings = await getSettings(ownerId);
-
-    await settings.remove();
+    await deleteSubscriptions(ownerId);
+    await deleteSettings(ownerId);
+    await deleteTasks({ ownerId });
 
     return ownerId;
   }
 
   catch (error) {
-    console.error(['api:deleteTask:error'], error);
+    console.error(['api:deleteSubscription:error'], error);
     return error;
   }
 };
+
+const deleteSettings = async ownerId => {
+  console.log(['api:deleteSettings'], ownerId);
+  try {
+    await SettingsModel.findOne({ ownerId }).remove();
+
+    return ownerId;
+  }
+
+  catch (error) {
+    console.error(['api:deleteSettings:error'], error);
+    return error;
+  }
+};
+
 const deleteTask = async id => {
   console.log(['api:deleteTask'], id);
   try {
@@ -111,6 +129,24 @@ const deleteTask = async id => {
     return error;
   }
 };
+
+
+const deleteTasks = async ({ ownerId }) => {
+  console.log(['api:deleteTasks'], ownerId);
+  try {
+    const tasks = await TaskModel.find({ ownerId });
+
+    tasks.forEach(model => model.remove());
+
+    return ownerId;
+  }
+
+  catch (error) {
+    console.error(['api:deleteTasks:error'], error);
+    return error;
+  }
+};
+
 const deleteTaskType = async id => {
   console.log(['api:deleteTaskType'], id);
   try {
@@ -126,6 +162,7 @@ const deleteTaskType = async id => {
     return error;
   }
 };
+
 const deleteSubscription = async subscriptionId => {
   console.log(['api:deleteSubscription:subscriptionId'], subscriptionId);
   try {
@@ -142,22 +179,23 @@ const deleteSubscription = async subscriptionId => {
     return error;
   }
 };
-const deleteSubscriptions = async ownerId => {
-  console.log(['api:deleteSubscription:ownerId'], ownerId);
-  try {
-    const subscriptions = await getSubscriptions(ownerId);
-    console.log(['api:deleteSubscriptions:user'], subscriptions);
 
-    await subscriptions.forEach(async model => await model.remove());
+const deleteSubscriptions = async ownerId => {
+  console.log(['api:deleteSubscriptions:ownerId'], ownerId);
+  try {
+    const subscriptions = await SubscriptionModel.find({ ownerId });
+
+    subscriptions.forEach(async model => await model.remove());
 
     return ownerId;
   }
 
   catch (error) {
-    console.error(['api:deleteSubscription:error'], error);
+    console.error(['api:deleteSubscriptions:error'], error);
     return error;
   }
 };
+
 const getSubscription = async id => {
   console.log(['api:getSubscription:id'], id);
   try {
@@ -172,6 +210,7 @@ const getSubscription = async id => {
     return error;
   }
 };
+
 const getSubscriptions = async ownerId => {
   console.log(['api:getSubscriptions:ownerId'], ownerId);
   try {
@@ -316,6 +355,7 @@ const getSettings = async ownerId => {
     return error;
   }
 };
+
 const getTask = async id => {
   console.log(['api:getTask'], id);
   try {
@@ -327,6 +367,7 @@ const getTask = async id => {
     return error;
   }
 };
+
 const getTaskList = async ({ ownerId }) => {
   console.log(['api:getTaskList'], ownerId);
   try {
@@ -338,6 +379,7 @@ const getTaskList = async ({ ownerId }) => {
     return error;
   }
 };
+
 const getTaskType = async id => {
   console.log(['api:getTaskType'], id);
   try {
@@ -349,6 +391,7 @@ const getTaskType = async id => {
     return error;
   }
 };
+
 const getTaskTypeList = async ({ withParent = true } = {}) => {
   console.log(['api:getTaskTypeList']);
   try {
@@ -412,6 +455,7 @@ const saveSettings = async (settingsId, { settings, ownerId, isNew = true }) => 
     return error;
   }
 };
+
 const saveTask = async ({ taskId, task, isNew = true }) => {
   console.log(['api:saveTask'], { taskId, task, isNew });
   try {
@@ -429,6 +473,7 @@ const saveTask = async ({ taskId, task, isNew = true }) => {
     return error;
   }
 };
+
 const saveTaskType = async ({ taskTypeId, taskType, isNew = true }) => {
   console.log(['api:saveTaskType'], { taskType, isNew });
   try {
@@ -452,6 +497,7 @@ module.exports = {
   addSettings,
   addTask,
   addTaskType,
+  cleanApplication,
   deleteSettings,
   deleteSubscription,
   deleteSubscriptions,
