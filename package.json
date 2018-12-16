@@ -4,8 +4,8 @@
   "description": "Level up with LifeApp server repository",
   "main": "lifeapp",
   "scripts": {
-    "client:build:heroku": "tar -zxvf client-packages/client-package-heroku-1.1.4.tar.gz",
-    "client:build:local": "tar -zxvf client-packages/client-package-local-1.1.4.tar.gz",
+    "client:build:heroku": "tar -zxvf client-packages/client-package-heroku-1.1.5.tar.gz",
+    "client:build:local": "tar -zxvf client-packages/client-package-local-1.1.5.tar.gz",
     "dev": "NODE_ENV=development nodemon src --watch ./src",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
