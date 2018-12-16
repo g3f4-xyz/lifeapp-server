@@ -1,3 +1,5 @@
+// ten plik jest redudantny. spłaszczyć odpowiedź anologicznie do tego commita
+// pole subscriptions w NotificationsType
 const { GraphQLObjectType } = require('graphql');
 const { connectionArgs, connectionFromArray, globalIdField } = require('graphql-relay');
 const { TaskTypeConnection } = require('../connections');
