@@ -1,7 +1,6 @@
 const { GraphQLBoolean, GraphQLString } = require('graphql');
 const { fromGlobalId, mutationWithClientMutationId } = require('graphql-relay');
 const { DEMO_USER } = require('../../config');
-const SettingsType = require('../types/SettingsType');
 const SettingsInputType = require('./inputs/SettingsInputType');
 const { saveSettings } = require('../../db/api');
 
@@ -19,8 +18,8 @@ module.exports = mutationWithClientMutationId({
     },
   },
   outputFields: {
-    settings: {
-      type: SettingsType,
+    settingsId: {
+      type: GraphQLString,
     },
   },
   mutateAndGetPayload: async ({ isNew, hashId, settings }, { user = DEMO_USER }) => {
@@ -29,8 +28,10 @@ module.exports = mutationWithClientMutationId({
       const { id: ownerId } = user;
       const { id } = fromGlobalId(hashId);
 
+      await saveSettings(id, { isNew, settings, ownerId });
+
       return {
-        settings: await saveSettings(id, { isNew, settings, ownerId }),
+        settingsId: hashId,
       };
     }
 

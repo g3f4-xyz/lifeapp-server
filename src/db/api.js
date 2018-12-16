@@ -1,4 +1,5 @@
 const moment = require('moment');
+
 const { FIELDS_TYPES } = require('../constants');
 const SettingsModel = require('./models/SettingsModel');
 const SubscriptionModel = require('./models/SubscriptionModel');
@@ -286,14 +287,11 @@ const getSettings = async ownerId => {
           provider: null,
         },
         notifications: {
-          show: null,
-          daily: {
-            events: null,
-            meetings: null,
-            routines: null,
-            todos: null,
+          general: {
+            show: null,
+            vibrate: null,
           },
-          single: {
+          types: {
             events: null,
             meetings: null,
             routines: null,
@@ -393,16 +391,17 @@ const getTaskTypeList = async ({ withParent = true } = {}) => {
 const saveSettings = async (settingsId, { settings, ownerId, isNew = true }) => {
   console.log(['api:saveSettings'], { ownerId, settingsId, settings, isNew });
   try {
-    if (isNew || !Boolean(settingsId)) {
+    if (isNew || !settingsId) {
       return addSettings({
         ...settings,
         ownerId,
       });
     }
+
     const savedSettings = await SettingsModel.findByIdAndUpdate(
       settingsId,
       settings,
-      { new: true }
+      { new: false }
     );
 
     return savedSettings.toJSON();

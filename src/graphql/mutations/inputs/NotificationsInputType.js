@@ -1,17 +1,16 @@
-const { GraphQLBoolean, GraphQLInputObjectType } = require('graphql');
-const TaskTypeNotificationsInputType = require('./TaskTypeNotificationsInputType');
+const { GraphQLInputObjectType } = require('graphql');
+
+const NotificationsGeneralInputType = require('./NotificationsGeneralInputType');
+const TaskTypeNotificationsInputType = require('./NotificationsTypesInputType');
 
 module.exports = new GraphQLInputObjectType({
   name: 'NotificationsInputType',
   description: 'notifications input type',
   fields: () => ({
-    daily: {
-      type: TaskTypeNotificationsInputType,
+    general: {
+      type: NotificationsGeneralInputType,
     },
-    show: {
-      type: GraphQLBoolean,
-    },
-    single: {
+    types: {
       type: TaskTypeNotificationsInputType,
     },
   }),
