@@ -11,6 +11,7 @@ const addSubscription = async (ownerId, subscription, userAgent, userDeviceType)
   console.log(['api:addSubscription'], { ownerId, subscription });
   try {
     const previousSubscription = await SubscriptionModel.findOne({
+      ownerId,
       subscription,
       userAgent,
       userDeviceType,
