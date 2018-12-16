@@ -276,9 +276,8 @@ const getSettings = async ownerId => {
   console.log(['api:getSettings'], ownerId);
   try {
     const settings = await SettingsModel.findOne({ ownerId });
-    const subscriptions = await getSubscriptions(ownerId);
     console.log(['api:getSettings:settings'], settings);
-    console.log(['api:getSettings:subscriptions'], subscriptions);
+    const subscriptions = await getSubscriptions(ownerId);
 
     const result = settings ? settings.toJSON() : (
       {
@@ -288,14 +287,15 @@ const getSettings = async ownerId => {
         },
         notifications: {
           general: {
-            show: null,
-            vibrate: null,
+            show: true,
+            vibrate: false,
           },
           types: {
-            events: null,
-            meetings: null,
-            routines: null,
-            todos: null,
+            events: true,
+            meetings: true,
+            routines: true,
+            todos: true,
+            custom: false,
           },
           subscriptions: [],
         },

@@ -75,8 +75,8 @@ const calculateInterval = (cycle, when, customValueOptionValue) => {
 };
 agenda.define('notification', async (job, done) => {
   console.log(['agenda:job:notification'], job.attrs);
-  const { getSubscriptions } = require('./db/api');
-  const { ownerId, notification: { body, title } } = job.attrs.data;
+  const { getSubscriptions, getSettings } = require('./db/api');
+  const { ownerId, taskType, notification: { body, title } } = job.attrs.data;
   const payload = JSON.stringify({
     title,
     notification: {
@@ -86,12 +86,34 @@ agenda.define('notification', async (job, done) => {
   });
 
   const subscriptions = await getSubscriptions(ownerId);
+  const {
+    notifications: {
+      general: {
+        show,
+        // vibrate,
+      },
+      types: {
+        events,
+        meetings,
+        // todos,
+        routines,
+      },
+    },
+  } = await getSettings(ownerId);
 
-  subscriptions.map(({ subscription }) => {
-    webPush
-      .sendNotification(subscription, payload)
-      .catch(err => console.error(err));
-  });
+  if (show) {
+    if (
+      taskType === TASK_TYPES.EVENT && events ||
+      taskType === TASK_TYPES.MEETING && meetings ||
+      taskType === TASK_TYPES.ROUTINE && routines
+    ) {
+      subscriptions.map(({ subscription }) => {
+        webPush
+          .sendNotification(subscription, payload)
+          .catch(err => console.error(err));
+      });
+    }
+  }
 
   done();
 });
@@ -111,7 +133,7 @@ process.on('SIGTERM', graceful);
 process.on('SIGINT' , graceful);
 
 emitter.on('task:added', async task => {
-  console.log(['api:emitter:on:task:added'], task);
+  console.log(['agenda:api:emitter:on:task:added'], task);
 
   if (task.taskType === TASK_TYPES.MEETING) {
     const date = task.fields.find(({ fieldId }) => fieldId === 'DATE_TIME').value.text;
@@ -119,14 +141,13 @@ emitter.on('task:added', async task => {
     const location = task.fields.find(({ fieldId }) => fieldId === 'LOCATION').value.text;
     const when = new Date(moment(date).subtract(1, 'hour').toString());
 
-    console.log(['api:addTask:MEETING'], { date, when });
-
     agenda.schedule(when, 'notification', {
       ownerId: task.ownerId,
       notification: {
         body: `Time: ${date} | Location: ${location}`,
         title: `You have meeting with ${person}`,
       },
+      taskType: task.taskType,
     });
   }
 
@@ -137,14 +158,13 @@ emitter.on('task:added', async task => {
     const location = task.fields.find(({ fieldId }) => fieldId === 'LOCATION').value.text;
     const when = new Date(moment(date).startOf('day').add(8, 'hour').toString());
 
-    console.log(['api:addTask:EVENT'], { date, when, duration, location });
-
     agenda.schedule(when, 'notification', {
       ownerId: task.ownerId,
       notification: {
         body: `Time: ${date} | Location: ${location} | Duration: ${duration}`,
         title: `Upcoming event today: ${title}`,
       },
+      taskType: task.taskType,
     });
   }
 
@@ -155,8 +175,6 @@ emitter.on('task:added', async task => {
     const { value: { ids: when, customValueOptionValue } } =
       task.fields.find(({ fieldId }) => fieldId === 'WHEN') || {};
 
-    console.log(['api:addTask:ROUTINE'], { title, action, cycle, when });
-
     await when.forEach(async when => {
       const interval = calculateInterval(cycle, when, customValueOptionValue);
       const routine = agenda.create('notification', {
@@ -165,7 +183,9 @@ emitter.on('task:added', async task => {
           body: `Action: ${action}`,
           title,
         },
+        taskType: task.taskType,
       });
+
       await routine.repeatEvery(interval).save();
     });
   }
