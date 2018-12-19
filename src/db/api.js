@@ -335,7 +335,6 @@ const getSettings = async ownerId => {
             meetings: true,
             routines: true,
             todos: true,
-            custom: false,
           },
           subscriptions: [],
         },

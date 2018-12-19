@@ -10,8 +10,6 @@ module.exports = async (req, res) => {
 
   const { family: userAgent } = useragent.parse(req.headers['user-agent']);
   const { type: userDeviceType } = device(req.headers['user-agent']);
-  console.log(['userAgent'], userAgent)
-  console.log(['userDeviceType'], userDeviceType)
   // save subscription for agenda
   const { id: ownerId } = req.user || DEMO_USER;
   await addSubscription(ownerId, subscription, userAgent, userDeviceType);

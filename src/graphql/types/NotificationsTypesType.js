@@ -20,9 +20,6 @@ module.exports = new GraphQLObjectType({
     routines: {
       type: GraphQLBoolean,
     },
-    custom: {
-      type: GraphQLBoolean,
-    },
   }),
   interfaces: [nodeInterface],
 });
