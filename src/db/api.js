@@ -322,9 +322,6 @@ const getSettings = async ownerId => {
     const result = settings ? settings.toJSON() : (
       {
         ownerId,
-        authentication: {
-          provider: null,
-        },
         notifications: {
           general: {
             show: true,

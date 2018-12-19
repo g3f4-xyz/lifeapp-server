@@ -314,9 +314,6 @@ const assignFieldValue = (field, value = null) => {
 // DANE TESTOWE
 dbHook.fieldtypes.insert(FIELDS);
 dbHook.settings.insert([{
-  authentication: {
-    provider: 'fake',
-  },
   notifications: {
     show: true,
     daily: {
