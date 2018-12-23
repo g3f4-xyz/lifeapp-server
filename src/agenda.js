@@ -75,7 +75,7 @@ const calculateInterval = (cycle, when, customValueOptionValue) => {
 };
 agenda.define('notification', async (job, done) => {
   console.log(['agenda:job:notification'], job.attrs);
-  const { getSubscriptions, getSettings } = require('./db/api');
+  const { getSettings } = require('./db/api');
   const { ownerId, taskType, notification: { body, title } } = job.attrs.data;
   const payload = JSON.stringify({
     title,
@@ -85,7 +85,6 @@ agenda.define('notification', async (job, done) => {
     },
   });
 
-  const subscriptions = await getSubscriptions(ownerId);
   const {
     notifications: {
       general: {
@@ -98,6 +97,7 @@ agenda.define('notification', async (job, done) => {
         // todos,
         routines,
       },
+      subscriptions,
     },
   } = await getSettings(ownerId);
 

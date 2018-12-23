@@ -2,9 +2,9 @@ const webpush = require('web-push');
 
 const { getSubscription } = require('../db/api');
 
-module.exports = async subscriptionId => {
+module.exports = async (ownerId, subscriptionModelId) => {
   try {
-    const { subscription } = await getSubscription(subscriptionId);
+    const { subscription } = await getSubscription(ownerId, subscriptionModelId);
 
     const payload = JSON.stringify({
       title: 'Welcome to LifeApp!',

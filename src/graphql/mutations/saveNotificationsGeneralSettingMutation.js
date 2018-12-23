@@ -1,9 +1,10 @@
 const { mutationWithClientMutationId } = require('graphql-relay');
 const NotificationsGeneralSettingInputType = require('./inputs/NotificationsGeneralSettingInputType');
+const NotificationsGeneralSettingType = require('../types/NotificationsGeneralSettingType');
 const { saveNotificationsGeneralSetting } = require('../../db/api');
 
 module.exports = mutationWithClientMutationId({
-  name: 'saveNotificationsGeneralSettingsMutation',
+  name: 'saveNotificationsGeneralSettingMutation',
   inputFields: {
     general: {
       type: NotificationsGeneralSettingInputType,

@@ -3,8 +3,8 @@ const { connectionArgs, connectionFromArray, globalIdField } = require('graphql-
 
 const { nodeInterface } = require('../nodeDefinitions');
 const { SubscriptionTypeConnection } = require('../connections');
-const NotificationsTypesType = require('./NotificationsTypesType');
-const NotificationsGeneralType = require('./NotificationsGeneralType');
+const NotificationsGeneralSettingType = require('./NotificationsGeneralSettingType');
+const NotificationsTypesSettingType = require('./NotificationsTypesSettingType');
 
 module.exports = new GraphQLObjectType({
   name: 'NotificationsType',
@@ -12,10 +12,10 @@ module.exports = new GraphQLObjectType({
   fields: () => ({
     id: globalIdField('NotificationsType', ({ _id }) => _id),
     types: {
-      type: NotificationsTypesType,
+      type: NotificationsTypesSettingType,
     },
     general: {
-      type: NotificationsGeneralType,
+      type: NotificationsGeneralSettingType,
     },
     subscriptions: {
       type: SubscriptionTypeConnection,

@@ -315,19 +315,17 @@ const assignFieldValue = (field, value = null) => {
 dbHook.fieldtypes.insert(FIELDS);
 dbHook.settings.insert([{
   notifications: {
-    show: true,
-    daily: {
-      events: false,
-      meetings: true,
-      todos: true,
-      routines: false,
+    general: {
+      show: true,
+      vibrate: true,
     },
-    single: {
+    types: {
       events: true,
       meetings: false,
       todos: true,
       routines: false,
     },
+    subscriptions: [],
   },
   ownerId: '1234567890',
 }]);

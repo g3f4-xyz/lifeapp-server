@@ -5,7 +5,10 @@ const deleteSettings = require('./mutations/deleteSettingsMutation');
 const deleteSubscription = require('./mutations/deleteSubscriptionMutation');
 const deleteSubscriptions = require('./mutations/deleteSubscriptionsMutation');
 const deleteTask = require('./mutations/deleteTaskMutation');
-const saveSettings = require('./mutations/saveSettingsMutation');
+const saveNotificationsGeneralSetting =
+  require('./mutations/saveNotificationsGeneralSettingMutation');
+const saveNotificationsTypesSetting =
+  require('./mutations/saveNotificationsTypesSettingMutation');
 const saveTask = require('./mutations/saveTaskMutation');
 const saveTaskType = require('./mutations/saveTaskTypeMutation');
 const testSubscription = require('./mutations/testSubscriptionMutation');
@@ -18,7 +21,8 @@ module.exports = new GraphQLObjectType({
     deleteSubscription,
     deleteSubscriptions,
     deleteTask,
-    saveSettings,
+    saveNotificationsGeneralSetting,
+    saveNotificationsTypesSetting,
     saveTask,
     saveTaskType,
     testSubscription,

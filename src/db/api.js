@@ -10,29 +10,17 @@ const emitter = require('./emitter');
 const addSubscription = async (ownerId, subscription, userAgent, userDeviceType) => {
   console.log(['api:addSubscription'], { ownerId, subscription });
   try {
-    const previousSubscription = await SubscriptionModel.findOne({
+    return await SettingsModel.findOneAndUpdate({
       ownerId,
-      subscription,
-      userAgent,
-      userDeviceType,
-    });
-
-    if (previousSubscription) {
-      return previousSubscription;
-    }
-
-    const newSubscription = new SubscriptionModel({
-      ownerId,
-      subscription,
-      userAgent,
-      userDeviceType,
-    });
-
-    return await newSubscription.save();
+    }, {
+      $push: {
+        ['notifications.subscriptions']: { subscription, userAgent, userDeviceType },
+      },
+    },);
   }
 
   catch (error) {
-    console.error(['api:addTask:error'], error);
+    console.error(['api:addSubscription:error'], error);
     return error;
   }
 };
@@ -44,7 +32,7 @@ const addSettings = async settings => {
 
     await newSettings.save();
 
-    return newSettings.toJSON();
+    return newSettings;
   }
 
   catch (error) {
@@ -197,32 +185,16 @@ const deleteSubscriptions = async ownerId => {
   }
 };
 
-const getSubscription = async id => {
-  console.log(['api:getSubscription:id'], id);
+const getSubscription = async (ownerId, subscriptionId) => {
+  console.log(['api:getSubscription'], { ownerId, subscriptionId });
   try {
-    const subscription = await SubscriptionModel.findById(id);
-    console.log(['api:getSubscription:subscription'], subscription);
+    const settings = await SettingsModel.findOne({ ownerId });
 
-    return subscription.toJSON();
+    return settings.notifications.subscriptions.id(subscriptionId);
   }
 
   catch (error) {
     console.error(['api:getSubscription:error'], error);
-    return error;
-  }
-};
-
-const getSubscriptions = async ownerId => {
-  console.log(['api:getSubscriptions:ownerId'], ownerId);
-  try {
-    const subscriptions = await SubscriptionModel.find({ ownerId });
-    console.log(['api:getSubscription:subscriptions'], subscriptions);
-
-    return subscriptions ? subscriptions.map(model => model.toJSON()) : [];
-  }
-
-  catch (error) {
-    console.error(['api:getSubscriptions:error'], error);
     return error;
   }
 };
@@ -315,36 +287,31 @@ const getEmptyTask = async taskTypeId => {
 const getSettings = async ownerId => {
   console.log(['api:getSettings'], ownerId);
   try {
-    const settings = await SettingsModel.findOne({ ownerId });
-    console.log(['api:getSettings:settings'], settings);
-    const subscriptions = await getSubscriptions(ownerId);
+    const settingsModel = await SettingsModel.findOne({ ownerId });
+    console.log(['api:getSettings:settingsModel'], settingsModel);
 
-    const result = settings ? settings.toJSON() : (
-      {
-        ownerId,
-        notifications: {
-          general: {
-            show: true,
-            vibrate: false,
-          },
-          types: {
-            events: true,
-            meetings: true,
-            routines: true,
-            todos: true,
-          },
-          subscriptions: [],
-        },
-      }
-    );
+    if (settingsModel) {
+      return settingsModel;
+    }
 
-    return {
-      ...result,
+    const settings = {
+      ownerId,
       notifications: {
-        ...result.notifications,
-        subscriptions,
+        general: {
+          show: true,
+          vibrate: false,
+        },
+        types: {
+          events: true,
+          meetings: true,
+          routines: true,
+          todos: true,
+        },
+        subscriptions: [],
       },
     };
+
+    return await addSettings(settings);
   }
 
   catch (error) {
@@ -407,7 +374,7 @@ const getTaskTypeList = async ({ withParent = true } = {}) => {
       return [
         ...fields,
         ...getParentFieldsRecursive(parentId),
-      ]
+      ];
     };
 
     return taskTypeList
@@ -428,27 +395,42 @@ const getTaskTypeList = async ({ withParent = true } = {}) => {
   }
 };
 
-const saveSettings = async (settingsId, { settings, ownerId, isNew = true }) => {
-  console.log(['api:saveSettings'], { ownerId, settingsId, settings, isNew });
+const saveNotificationsGeneralSetting = async (ownerId, general) => {
+  console.log(['api:saveNotificationsGeneralSetting'], { ownerId, general });
   try {
-    if (isNew || !settingsId) {
-      return addSettings({
-        ...settings,
-        ownerId,
-      });
-    }
+    await SettingsModel.findOneAndUpdate({
+      ownerId,
+    }, {
+      $set: {
+        notifications: { general },
+      },
+    });
 
-    const savedSettings = await SettingsModel.findByIdAndUpdate(
-      settingsId,
-      settings,
-      { new: false }
-    );
-
-    return savedSettings.toJSON();
+    return general;
   }
 
   catch (error) {
-    console.error(['api:saveSettings:error'], error);
+    console.error(['api:saveNotificationsGeneralSetting:error'], error);
+    return error;
+  }
+};
+
+const saveNotificationsTypesSetting = async (ownerId, types) => {
+  console.log(['api:saveNotificationsTypesSetting'], { ownerId, types });
+  try {
+    await SettingsModel.findOneAndUpdate({
+      ownerId,
+    }, {
+      $set: {
+        notifications: { types },
+      },
+    });
+
+    return types;
+  }
+
+  catch (error) {
+    console.error(['api:saveNotificationsTypesSetting:error'], error);
     return error;
   }
 };
@@ -476,8 +458,8 @@ const saveTaskType = async ({ taskTypeId, taskType, isNew = true }) => {
   try {
     const { fields } = taskType;
     const savedTaskType = await (isNew
-        ? addTask(taskType) :
-        TaskTypeModel.findByIdAndUpdate(taskTypeId, { fields }, { new: true })
+      ? addTask(taskType) :
+      TaskTypeModel.findByIdAndUpdate(taskTypeId, { fields }, { new: true })
     );
 
     return savedTaskType.toJSON();
@@ -503,12 +485,12 @@ module.exports = {
   getEmptyTask,
   getSettings,
   getSubscription,
-  getSubscriptions,
   getTask,
   getTaskList,
   getTaskType,
   getTaskTypeList,
-  saveSettings,
+  saveNotificationsGeneralSetting,
+  saveNotificationsTypesSetting,
   saveTask,
   saveTaskType,
 };

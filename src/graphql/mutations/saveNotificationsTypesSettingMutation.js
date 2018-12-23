@@ -1,28 +1,28 @@
 const { mutationWithClientMutationId } = require('graphql-relay');
-const NotificationsGeneralSettingInputType = require('./inputs/NotificationsGeneralSettingInputType');
-const NotificationsGeneralSettingType = require('../types/NotificationsGeneralSettingType');
-const { saveNotificationsGeneralSetting } = require('../../db/api');
+const NotificationsTypesSettingInputType = require('./inputs/NotificationsTypesSettingInputType');
+const NotificationsTypesSettingType = require('../types/NotificationsTypesSettingType');
+const { saveNotificationsTypesSetting } = require('../../db/api');
 
 module.exports = mutationWithClientMutationId({
-  name: 'saveNotificationsGeneralSettingMutation',
+  name: 'saveNotificationsTypesSettingMutation',
   inputFields: {
-    general: {
-      type: NotificationsGeneralSettingInputType,
+    types: {
+      type: NotificationsTypesSettingInputType,
     },
   },
   outputFields: {
-    savedGeneral: {
-      type: NotificationsGeneralSettingType,
+    savedTypes: {
+      type: NotificationsTypesSettingType,
     },
   },
-  mutateAndGetPayload: async ({ general }, { user }) => {
-    console.log(['saveNotificationsGeneralSettingsMutation:mutateAndGetPayload'], { general, user });
+  mutateAndGetPayload: async ({ types }, { user }) => {
+    console.log(['saveNotificationsTypesSettingsMutation:mutateAndGetPayload'], { types, user });
     try {
       const { id: ownerId } = user;
 
-      const savedGeneral = await saveNotificationsGeneralSetting(ownerId, general);
+      const savedTypes = await saveNotificationsTypesSetting(ownerId, types);
 
-      return { savedGeneral };
+      return { savedTypes };
     }
 
     catch (error) {

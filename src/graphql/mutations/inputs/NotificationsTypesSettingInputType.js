@@ -1,13 +1,19 @@
 const { GraphQLBoolean, GraphQLInputObjectType } = require('graphql');
 
 module.exports = new GraphQLInputObjectType({
-  name: 'NotificationsGeneralInputType',
-  description: 'notifications general input type',
+  name: 'NotificationsTypesInputType',
+  description: 'notifications types input type',
   fields: () => ({
-    show: {
+    events: {
       type: GraphQLBoolean,
     },
-    vibrate: {
+    meetings: {
+      type: GraphQLBoolean,
+    },
+    todos: {
+      type: GraphQLBoolean,
+    },
+    routines: {
       type: GraphQLBoolean,
     },
   }),

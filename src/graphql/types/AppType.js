@@ -13,7 +13,7 @@ module.exports = new GraphQLObjectType({
     id: globalIdField('App'),
     settings: {
       type: SettingsType,
-      resolve: async ({ id }) => await getSettings(id)
+      resolve: async ({ id: ownerId }) => await getSettings(ownerId),
     },
     task: {
       type: TaskType,

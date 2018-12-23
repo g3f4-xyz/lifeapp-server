@@ -4,10 +4,10 @@ const { globalIdField } = require('graphql-relay');
 const { nodeInterface } = require('../nodeDefinitions');
 
 module.exports = new GraphQLObjectType({
-  name: 'NotificationsGeneralType',
-  description: 'notifications general type',
+  name: 'NotificationsGeneralSettingType',
+  description: 'notifications general setting type',
   fields: () => ({
-    id: globalIdField('NotificationsGeneralType', ({ _id }) => _id),
+    id: globalIdField('NotificationsGeneralSettingType', ({ _id }) => _id),
     show: {
       type: GraphQLBoolean,
     },

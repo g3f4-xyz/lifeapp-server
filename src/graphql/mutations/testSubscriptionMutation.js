@@ -12,12 +12,13 @@ module.exports = mutationWithClientMutationId({
       type: GraphQLString,
     },
   },
-  mutateAndGetPayload: async ({ subscriptionId }) => {
+  mutateAndGetPayload: async ({ subscriptionId }, { user }) => {
     console.log(['testSubscriptionMutation:mutateAndGetPayload'], subscriptionId);
     try {
-      const { id } = await fromGlobalId(subscriptionId);
+      const { id: ownerId } = user;
+      const { id: subscriptionModelId } = await fromGlobalId(subscriptionId);
 
-      const statusCode = await testSubscription(id);
+      const statusCode = await testSubscription(ownerId, subscriptionModelId);
 
       console.log(['testSubscriptionMutation:mutateAndGetPayload:statusCode'], statusCode)
 

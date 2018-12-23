@@ -1,6 +1,6 @@
 const { GraphQLInputObjectType } = require('graphql');
 
-const NotificationsGeneralInputType = require('./NotificationsGeneralInputType');
+const NotificationsGeneralInputType = require('./NotificationsGeneralSettingInputType');
 const TaskTypeNotificationsInputType = require('./NotificationsTypesInputType');
 
 module.exports = new GraphQLInputObjectType({
