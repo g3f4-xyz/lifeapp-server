@@ -1,0 +1,18 @@
+import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { globalIdField } from 'graphql-relay';
+import { nodeInterface } from '../nodeDefinitions';
+
+export const SubscriptionType = new GraphQLObjectType({
+  name: 'SubscriptionType',
+  description: 'subscription type',
+  fields: () => ({
+    id: globalIdField('SubscriptionType', ({ _id }) => _id),
+    userAgent: {
+      type: GraphQLString,
+    },
+    userDeviceType: {
+      type: GraphQLString,
+    },
+  }),
+  interfaces: [nodeInterface],
+});

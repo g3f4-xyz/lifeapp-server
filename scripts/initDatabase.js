@@ -189,7 +189,7 @@ const FIELDS = {
     label: 'When',
     helperText: 'Określ kiedy powtarzać cykl',
     meta: {
-      parentId: 'CYCLE',
+      parentID: 'CYCLE',
       optionsSet: [{
         customValueOptionMask: '9',
         parentValue: 'TIME',
@@ -378,7 +378,7 @@ dbHook.tasktypes.insert([{
   description: 'Baza z tytułem',
   order: 0,
   isCustom: false,
-  parentId: null,
+  parentID: [],
   fields: [FIELDS.TITLE],
 }, {
   typeId: 'PRIORITY',
@@ -386,7 +386,7 @@ dbHook.tasktypes.insert([{
   description: 'Baza z priorytetem',
   order: 0,
   isCustom: false,
-  parentId: 'TASK',
+  parentID: ['TASK'],
   fields: [FIELDS.PRIORITY],
 }, {
   typeId: 'STATUS',
@@ -394,7 +394,7 @@ dbHook.tasktypes.insert([{
   description: 'Baza ze statusem',
   order: 0,
   isCustom: false,
-  parentId: 'TASK',
+  parentID: ['TASK'],
   fields: [FIELDS.STATUS],
 }, {
   typeId: 'TODO',
@@ -402,7 +402,7 @@ dbHook.tasktypes.insert([{
   description: 'Pozwala na ustawienie tytułu, priorytetu oraz sterowanie statusem. oraz dodanie opisu',
   order: 0,
   isCustom: false,
-  parentId: ['STATUS', 'PRIORITY'],
+  parentID: ['STATUS', 'PRIORITY'],
   fields: [FIELDS.NOTE],
 }, {
   typeId: 'EVENT',
@@ -410,7 +410,7 @@ dbHook.tasktypes.insert([{
   description: 'Wydarzenie pozwala na ustawienie zadania, które posiada możliwość zdefiniowania miejsca i czasu.',
   order: 1,
   isCustom: false,
-  parentId: 'PRIORITY',
+  parentID: ['PRIORITY'],
   fields: [FIELDS.LOCATION, FIELDS.DATE_TIME, FIELDS.DURATION],
 }, {
   typeId: 'MEETING',
@@ -418,7 +418,7 @@ dbHook.tasktypes.insert([{
   description: 'Zadanie typu spotkanie pozwala na zapisanie spotkania. Ustal osobę oraz czas i miejsce spotkania.',
   order: 2,
   isCustom: false,
-  parentId: 'EVENT',
+  parentID: ['EVENT'],
   fields: [FIELDS.PERSON],
 }, {
   typeId: 'ROUTINE',
@@ -426,7 +426,7 @@ dbHook.tasktypes.insert([{
   description: 'Zadanie typu rutyna pozwala na ustawienie akcji do wykonania w danych cyklu.',
   order: 3,
   isCustom: false,
-  parentId: 'PRIORITY',
+  parentID: ['PRIORITY'],
   fields: [FIELDS.CYCLE, FIELDS.WHEN, FIELDS.ACTION, FIELDS.ACTIVE],
 }]);
 
