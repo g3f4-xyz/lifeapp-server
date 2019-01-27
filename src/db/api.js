@@ -2,7 +2,6 @@ const moment = require('moment');
 
 const { FIELDS_TYPES } = require('../constants');
 const SettingsModel = require('./models/SettingsModel');
-const SubscriptionModel = require('./models/SubscriptionModel');
 const TaskModel = require('./models/TaskModel');
 const TaskTypeModel = require('.//models/TaskTypeModel');
 const emitter = require('./emitter');
@@ -152,35 +151,20 @@ const deleteTaskType = async id => {
   }
 };
 
-const deleteSubscription = async subscriptionId => {
-  console.log(['api:deleteSubscription:subscriptionId'], subscriptionId);
+const deleteSubscription = async (ownerId, subscriptionId) => {
+  console.log(['api:deleteSubscription'], { ownerId, subscriptionId });
   try {
-    const subscription = await SubscriptionModel.findById(subscriptionId);
-    console.log(['api:deleteSubscription:subscription'], subscription);
-
-    await subscription.remove();
-
-    return subscriptionId;
+    return await SettingsModel.findOneAndUpdate({
+      ownerId,
+    }, {
+      $pull: {
+        ['notifications.subscriptions']: { subscriptionId },
+      },
+    });
   }
 
   catch (error) {
     console.error(['api:deleteSubscription:error'], error);
-    return error;
-  }
-};
-
-const deleteSubscriptions = async ownerId => {
-  console.log(['api:deleteSubscriptions:ownerId'], ownerId);
-  try {
-    const subscriptions = await SubscriptionModel.find({ ownerId });
-
-    subscriptions.forEach(async model => await model.remove());
-
-    return ownerId;
-  }
-
-  catch (error) {
-    console.error(['api:deleteSubscriptions:error'], error);
     return error;
   }
 };
@@ -479,7 +463,6 @@ module.exports = {
   cleanApplication,
   deleteSettings,
   deleteSubscription,
-  deleteSubscriptions,
   deleteTask,
   deleteTaskType,
   getEmptyTask,

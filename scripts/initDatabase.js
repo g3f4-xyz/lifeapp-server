@@ -346,7 +346,7 @@ dbHook.tasks.insert([
       }, {
         key: 'NOTE',
         value: 'Notakta testowa. Może być długa i zawierać wiele wierszy.'
-      }
+      },
     ].map(({ key, value }) => assignFieldValue(FIELDS[key], value)),
   },
   {
@@ -365,7 +365,7 @@ dbHook.tasks.insert([
       }, {
         key: 'NOTE',
         value: 'Super extra notatka wowow efekt placebo i kosmici. Notakta testowa. Może być długa i zawierać wiele wierszy.'
-      }
+      },
     ].map(({ key, value }) => assignFieldValue(FIELDS[key], value)),
   },
 ]);

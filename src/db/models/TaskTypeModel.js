@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const FieldSchema = require('../schemas/FieldSchema');
+
 const taskTypeModel = mongoose.Schema({
   name: String,
   typeId: String,
@@ -7,7 +9,7 @@ const taskTypeModel = mongoose.Schema({
   order: Number,
   isCustom: Boolean,
   parentID: String,
-  fields: Array,
+  fields: [FieldSchema],
 });
 const TaskTypeModel = mongoose.model('TaskType', taskTypeModel);
 

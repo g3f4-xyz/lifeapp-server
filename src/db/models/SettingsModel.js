@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const SubscriptionSchema = require('../schemas/SubscriptionSchema');
 
 const settingsModel = mongoose.Schema({
   ownerId: String,
@@ -14,7 +15,7 @@ const settingsModel = mongoose.Schema({
       routines: Boolean,
     },
     subscriptions: [{
-      subscription: Object,
+      subscription: SubscriptionSchema,
       userAgent: String,
       userDeviceType: String,
     }],
