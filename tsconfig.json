@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "pretty": true,
+    "removeComments": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es6",
+    "lib": ["dom", "es7", "scripthost", "es2017.object"],
+    "allowJs": true,
+    "jsx": "react",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "preserveConstEnums": true,
+    "noUnusedParameters": true,
+    "noEmit": true
+  }
+}
