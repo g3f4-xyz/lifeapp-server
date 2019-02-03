@@ -16,11 +16,16 @@ export const testSubscription = async (ownerId: string, subscriptionModelId: str
       },
     });
 
+    // console.log(['subscriptionData'], subscriptionData)
+
     // Pass subscription into sendNotification
-    const { statusCode } = await sendNotification(subscriptionData, payload);
+    const { statusCode, body, headers } = await sendNotification(subscriptionData, payload);
+
+    console.log(['{ statusCode, body, headers }'], { statusCode, body, headers });
 
     return statusCode;
   } catch (error) {
+    console.log(['error'], error)
     return error.statusCode;
   }
 };

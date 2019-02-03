@@ -6,7 +6,6 @@ export const DB_HOST: string = process.env.DB === 'remote'
   : 'mongodb://localhost/lifeapp';
 export const DEMO_USER: IConfigMap<string> = {
   id: '1234567890',
-  displayName: 'Demo User',
 };
 export const HOST: string = process.env.HOST || 'http://localhost:30000';
 export const PORT: string = process.env.PORT || '30000';
@@ -20,8 +19,7 @@ export const ROUTES: IConfigMap<string> = {
   ROOT: '/',
 };
 export const HTML_PATHS: IConfigMap<string> = {
-  APP: `${PUBLIC_PATH}/app.html`,
-  LOGIN: `${PUBLIC_PATH}/login.html`,
+  APP: `${PUBLIC_PATH}/index.html`,
 };
 export const SUB_ROUTES: IConfigMap<string> = {
   GOOGLE_AUTH: '/google',

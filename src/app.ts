@@ -2,6 +2,7 @@ import { Application } from 'express';
 
 // create server
 import { json } from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import * as session from 'express-session';
 import * as morgan from 'morgan';
@@ -22,6 +23,7 @@ app.use(express.static(PUBLIC_PATH));
 
 // set body parser
 app.use(json());
+app.use(cookieParser());
 
 // express Session
 app.use(session(SESSION));

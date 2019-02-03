@@ -8,21 +8,21 @@ import { notificationMiddleware } from './middlewares/notificationMiddleware';
 
 export const router = Router();
 
+const LOGGED_COOKIE_KEY = 'logged';
+
 router.get(ROUTES.ROOT, (req, res) => {
-  if (req.isAuthenticated()) {
-    res.sendFile(HTML_PATHS.APP);
-  } else {
-    res.redirect(ROUTES.AUTH);
-  }
+  res.cookie(LOGGED_COOKIE_KEY, req.isAuthenticated());
+  res.sendFile(HTML_PATHS.APP);
 });
 router.get(ROUTES.DEMO, (_, res) => {
+  res.cookie(LOGGED_COOKIE_KEY, true);
   res.sendFile(HTML_PATHS.APP);
 });
 router.get(ROUTES.LOGOUT, (req, res) => {
   req.logout();
+  res.cookie(LOGGED_COOKIE_KEY, false);
   res.redirect(ROUTES.ROOT);
 });
-router.get(ROUTES.AUTH, (_, res) => res.sendFile(HTML_PATHS.LOGIN));
 
 router.use(ROUTES.AUTH, authRouter);
 router.use(ROUTES.GRAPHQL, cors(), graphqlMiddleware);

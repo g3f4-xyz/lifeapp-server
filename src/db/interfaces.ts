@@ -98,7 +98,6 @@ export interface ISettings<S = ISubscription[]> {
 
 export interface IUser {
   id: string;
-  displayName: string;
 }
 
 export interface IContext {
