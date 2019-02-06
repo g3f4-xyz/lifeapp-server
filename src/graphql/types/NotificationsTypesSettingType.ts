@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { nodeInterface } from '../nodeDefinitions';
 
@@ -8,16 +8,16 @@ export const NotificationsTypesSettingType = new GraphQLObjectType({
   fields: () => ({
     id: globalIdField('NotificationsTypesSettingType', ({ _id }) => _id),
     events: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     meetings: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     todos: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     routines: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),
   interfaces: [nodeInterface],

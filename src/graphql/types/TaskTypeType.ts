@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { nodeInterface } from '../nodeDefinitions';
 import { FieldType } from './FieldType';
@@ -9,25 +9,22 @@ export const TaskTypeType = new GraphQLObjectType({
   fields: () => ({
     id: globalIdField('TaskTypeType', ({ _id }) => _id),
     typeId: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     name: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     description: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     order: {
-      type: GraphQLInt,
-    },
-    isCustom: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLInt),
     },
     parentID: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
     },
     fields: {
-      type: new GraphQLList(FieldType),
+      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldType))),
     },
   }),
   interfaces: [nodeInterface],

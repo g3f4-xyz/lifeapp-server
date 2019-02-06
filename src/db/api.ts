@@ -266,7 +266,7 @@ const getParentFieldsRecursive = async (ids: string | string[]): Promise<ITaskFi
   }
 
   const taskType = await TaskTypeModel.findOne({ typeId: ids });
-  const { fields, parentID } = taskType.toJSON() || { fields: [] as ITaskField[], parentID: null };
+  const { fields, parentID } = taskType.toJSON() || { fields: [] as ITaskField[], parentID: [] };
 
   return [
     ...fields,

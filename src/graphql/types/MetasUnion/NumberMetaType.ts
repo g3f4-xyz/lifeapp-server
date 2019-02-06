@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLFloat, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLFloat, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
 export const NumberMetaType = new GraphQLObjectType({
   name: 'NumberMetaType',
@@ -6,15 +6,15 @@ export const NumberMetaType = new GraphQLObjectType({
   fields: () => ({
     required: {
       description: 'required',
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     min: {
       description: 'min',
-      type: GraphQLFloat,
+      type: new GraphQLNonNull(GraphQLFloat),
     },
     max: {
       description: 'max',
-      type: GraphQLFloat,
+      type: new GraphQLNonNull(GraphQLFloat),
     },
   }),
 });

@@ -58,8 +58,7 @@ export interface ITaskType {
   typeId: string;
   description: string;
   order: number;
-  isCustom: boolean;
-  parentID: string;
+  parentID: string[];
   fields: ITaskField[];
 }
 

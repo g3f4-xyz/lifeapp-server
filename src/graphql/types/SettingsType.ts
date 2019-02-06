@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { IContext, ISettings } from '../../db/interfaces';
 import { nodeInterface } from '../nodeDefinitions';
@@ -10,10 +10,10 @@ export const SettingsType = new GraphQLObjectType<ISettings, IContext>({
   fields: () => ({
     id: globalIdField('SettingsType', ({ _id }) => _id),
     notifications: {
-      type: NotificationsType,
+      type: new GraphQLNonNull(NotificationsType),
     },
     ownerId: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
   }),
   interfaces: [nodeInterface],

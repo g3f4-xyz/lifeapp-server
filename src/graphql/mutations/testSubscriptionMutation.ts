@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 
 import { testSubscription } from '../../webPush/testSubscription';
@@ -10,7 +10,7 @@ export const testSubscriptionMutation = mutationWithClientMutationId({
   },
   outputFields: {
     statusCode: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
   },
   mutateAndGetPayload: async ({ subscriptionId }, { user }) => {

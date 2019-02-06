@@ -10,7 +10,6 @@ export const TaskTypeSchema: Schema<ITaskType> = new Schema({
   typeId: String,
   description: String,
   order: Number,
-  isCustom: Boolean,
   parentID: [String],
   fields: [FieldSchema],
 });

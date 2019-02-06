@@ -1,3 +1,4 @@
+import { GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { saveNotificationsTypesSetting } from '../../db/api';
 import { NotificationsTypesSettingType } from '../types/NotificationsTypesSettingType';
@@ -12,7 +13,7 @@ export const saveNotificationsTypesSettingMutation = mutationWithClientMutationI
   },
   outputFields: {
     savedTypes: {
-      type: NotificationsTypesSettingType,
+      type: new GraphQLNonNull(NotificationsTypesSettingType),
     },
   },
   mutateAndGetPayload: async ({ types }, { user }) => {

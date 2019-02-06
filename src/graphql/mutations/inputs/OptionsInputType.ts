@@ -1,14 +1,14 @@
-import { GraphQLInputObjectType, GraphQLString } from 'graphql';
+import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 export const OptionsInputType = new GraphQLInputObjectType({
   name: 'OptionsInputType',
   description: 'options input type',
   fields: () => ({
     text: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     value: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
   }),
 });

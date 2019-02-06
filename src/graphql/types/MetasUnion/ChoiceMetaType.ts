@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { ChoiceOptionsMetaType } from './ChoiceOptionsType';
 
 export const ChoiceMetaType = new GraphQLObjectType({
@@ -7,7 +7,7 @@ export const ChoiceMetaType = new GraphQLObjectType({
   fields: () => ({
     required: {
       description: 'required',
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     defaultValue: {
       description: 'defaultValue',
@@ -15,7 +15,7 @@ export const ChoiceMetaType = new GraphQLObjectType({
     },
     options: {
       description: 'options',
-      type: new GraphQLList(ChoiceOptionsMetaType),
+      type: new GraphQLNonNull(new GraphQLList(ChoiceOptionsMetaType)),
     },
   }),
 });

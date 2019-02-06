@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { nodeInterface } from '../nodeDefinitions';
 
@@ -8,10 +8,10 @@ export const NotificationsGeneralSettingType = new GraphQLObjectType({
   fields: () => ({
     id: globalIdField('NotificationsGeneralSettingType', ({ _id }) => _id),
     show: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     vibrate: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),
   interfaces: [nodeInterface],

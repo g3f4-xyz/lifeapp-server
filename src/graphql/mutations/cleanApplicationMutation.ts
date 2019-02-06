@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { ROUTES } from '../../config';
 import { cleanApplication } from '../../db/api';
@@ -10,7 +10,7 @@ export const cleanApplicationMutation = mutationWithClientMutationId({
   },
   outputFields: {
     navigationUrl: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
   },
   mutateAndGetPayload: async ({ ownerId }: any) => {

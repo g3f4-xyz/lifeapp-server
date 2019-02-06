@@ -9,7 +9,7 @@ passport.use(new GoogleStrategy({
   clientSecret: 'zW2ebcvBaxAZFqMu00OTb9-d', // #TODO jw.
   callbackURL: `${HOST}${ROUTES.AUTH}${SUB_ROUTES.GOOGLE_LOGGED}`,
 },
-(_: any, __: any, profile: any, cb: any) => {
+(_accessToken: any, _refreshToken: any, profile: any, cb: any) => {
   cb(null, { id: profile.id });
 }));
 

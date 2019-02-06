@@ -1,20 +1,20 @@
-import { GraphQLBoolean, GraphQLInputObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLNonNull } from 'graphql';
 
 export const SettingsNotificationsTypesInputType = new GraphQLInputObjectType({
   name: 'SettingsNotificationsTypesInputType',
   description: 'settings notifications types input type',
   fields: () => ({
     events: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     meetings: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     todos: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     routines: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),
 });

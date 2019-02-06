@@ -1,4 +1,4 @@
-import { GraphQLInputObjectType, GraphQLInt, GraphQLString } from 'graphql';
+import { GraphQLInputObjectType, GraphQLInt, GraphQLNonNull, GraphQLString } from 'graphql';
 import { MetaInputType } from './MetaInputType';
 import { ValueInputType } from './ValueInputType';
 
@@ -7,28 +7,28 @@ export const FieldsInputType = new GraphQLInputObjectType({
   description: 'fields input type',
   fields: () => ({
     fieldId: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     format: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     order: {
-      type: GraphQLInt,
+      type: new GraphQLNonNull(GraphQLInt),
     },
     type: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     label: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     value: {
-      type: ValueInputType,
+      type: new GraphQLNonNull(ValueInputType),
     },
     helperText: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     meta: {
-      type: MetaInputType,
+      type: new GraphQLNonNull(MetaInputType),
     },
   }),
 });

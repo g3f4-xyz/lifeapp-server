@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
 export const BoolMetaType = new GraphQLObjectType({
   name: 'BoolMetaType',
@@ -6,7 +6,7 @@ export const BoolMetaType = new GraphQLObjectType({
   fields: () => ({
     required: {
       description: 'required',
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),
 });

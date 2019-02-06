@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { deleteTask } from '../../db/api';
 
@@ -9,8 +9,7 @@ export const deleteTaskMutation = mutationWithClientMutationId({
   },
   outputFields: {
     deletedTaskId: {
-      type: GraphQLString,
-      resolve: ({ id }) => id,
+      type: new GraphQLNonNull(GraphQLString),
     },
   },
   mutateAndGetPayload: async ({ id: hashId }) => {
@@ -19,9 +18,7 @@ export const deleteTaskMutation = mutationWithClientMutationId({
 
       await deleteTask(id);
 
-      return {
-        id: hashId,
-      };
+      return hashId;
     } catch (error) {
       return error;
     }

@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 import { FieldsInputType } from './FieldsInputType';
 
 export const TaskInputType = new GraphQLInputObjectType({
@@ -9,10 +9,10 @@ export const TaskInputType = new GraphQLInputObjectType({
       type: GraphQLID,
     },
     taskType: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     fields: {
-      type: new GraphQLList(FieldsInputType),
+      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldsInputType))),
     },
   }),
 });

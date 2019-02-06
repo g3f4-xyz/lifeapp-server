@@ -1,4 +1,4 @@
-import { GraphQLBoolean } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull } from 'graphql';
 import { cursorForObjectInConnection, fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { getTaskList, saveTask } from '../../db/api';
 import { ITask } from '../../db/interfaces';
@@ -9,15 +9,15 @@ export const saveTaskMutation = mutationWithClientMutationId({
   name: 'saveTaskMutation',
   inputFields: {
     isNew: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     task: {
-      type: TaskInputType,
+      type: new GraphQLNonNull(TaskInputType),
     },
   },
   outputFields: {
     newTaskEdge: {
-      type: TaskTypeEdge,
+      type: new GraphQLNonNull(TaskTypeEdge),
       resolve: async (task: ITask) => {
         const tasks = await getTaskList(task.ownerId);
 

@@ -1,14 +1,14 @@
-import { GraphQLBoolean, GraphQLInputObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLNonNull } from 'graphql';
 
 export const SettingsNotificationsGeneralInputType = new GraphQLInputObjectType({
   name: 'SettingsNotificationsGeneralInputType',
   description: 'notifications general settings input type',
   fields: () => ({
     show: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
     vibrate: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),
 });

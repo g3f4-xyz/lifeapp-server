@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { ITask, ITaskField } from '../../db/interfaces';
 import { nodeInterface } from '../nodeDefinitions';
@@ -10,10 +10,10 @@ export const TaskType = new GraphQLObjectType<ITask>({
   fields: () => ({
     id: globalIdField('TaskType', ({ _id }) => _id),
     taskType: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     title: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       resolve: ({ fields }): string => {
         const field = fields.find(({ fieldId }) => fieldId === 'TITLE');
 
@@ -37,7 +37,7 @@ export const TaskType = new GraphQLObjectType<ITask>({
       },
     },
     priority: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
       resolve: ({ fields }): boolean => {
         const field = fields.find(({ fieldId }) => fieldId === 'PRIORITY');
 
@@ -49,7 +49,7 @@ export const TaskType = new GraphQLObjectType<ITask>({
       },
     },
     status: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       resolve: ({ fields }): string => {
         const field = fields.find(({ fieldId }) => fieldId === 'STATUS');
 
@@ -61,7 +61,7 @@ export const TaskType = new GraphQLObjectType<ITask>({
       },
     },
     fields: {
-      type: new GraphQLList(FieldType),
+      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldType))),
       args: {
         filterByIds: {
           type: new GraphQLList(GraphQLString),

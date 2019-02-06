@@ -25,7 +25,7 @@ export const testSubscription = async (ownerId: string, subscriptionModelId: str
 
     return statusCode;
   } catch (error) {
-    console.log(['error'], error)
+    console.log(['error'], error);
     return error.statusCode;
   }
 };

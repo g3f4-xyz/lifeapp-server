@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { fromGlobalId, globalIdField } from 'graphql-relay';
 import { getEmptyTask, getSettings, getTask } from '../../db/api';
 import { IContext, ISettings, ITask } from '../../db/interfaces';
@@ -35,11 +35,11 @@ export const AppType = new GraphQLObjectType<boolean, IContext>({
       },
     },
     taskList: {
-      type: TaskListType,
+      type: new GraphQLNonNull(TaskListType),
       resolve: (): boolean => true,
     },
     taskTypeList: {
-      type: TaskTypeListType,
+      type: new GraphQLNonNull(TaskTypeListType),
       resolve: (): boolean => true,
     },
   }),

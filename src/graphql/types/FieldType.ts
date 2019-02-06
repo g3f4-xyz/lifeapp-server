@@ -1,4 +1,4 @@
-import { GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { MetasUnion } from './MetasUnion/MetasUnion';
 import { ValuesUnion } from './ValuesUnion/ValuesUnion';
 
@@ -8,36 +8,36 @@ export const FieldType = new GraphQLObjectType({
   fields: () => ({
     fieldId: {
       description: 'fieldId field description',
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     format: {
       description: 'format field description',
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     order: {
       description: 'order field description',
-      type: GraphQLInt,
+      type: new GraphQLNonNull(GraphQLInt),
     },
     type: {
       description: 'type field description',
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     label: {
       description: 'label field description',
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     value: {
       description: 'value field description',
-      type: ValuesUnion,
+      type: new GraphQLNonNull(ValuesUnion),
       resolve: ({ format, value }) => ({ format, ...value }),
     },
     helperText: {
       description: 'helperText field description',
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     meta: {
       description: 'meta field description',
-      type: MetasUnion,
+      type: new GraphQLNonNull(MetasUnion),
       resolve: ({ format, meta }) => ({ format, ...meta }),
     },
   }),

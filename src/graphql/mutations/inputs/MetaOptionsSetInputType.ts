@@ -1,5 +1,5 @@
 import { GraphQLInputObjectType, GraphQLList, GraphQLString } from 'graphql';
-import { ChoiceOptionsMetaInputType } from './ChoiceOptionsMetaInputType';
+import { OptionsInputType } from './OptionsInputType';
 
 export const MetaOptionsSetInputType = new GraphQLInputObjectType({
   name: 'MetaOptionsSetInputType',
@@ -11,7 +11,7 @@ export const MetaOptionsSetInputType = new GraphQLInputObjectType({
       type: GraphQLString,
     },
     options: {
-      type: new GraphQLList(ChoiceOptionsMetaInputType),
+      type: new GraphQLList(OptionsInputType),
     },
   }),
 });

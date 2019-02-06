@@ -1,15 +1,17 @@
-import { GraphQLID, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { deleteSubscription } from '../../db/api';
 
 export const deleteSubscriptionMutation =  mutationWithClientMutationId({
   name: 'deleteSubscriptionMutation',
   inputFields: {
-    subscriptionId: { type: GraphQLID },
+    subscriptionId: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
   },
   outputFields: {
     subscriptionId: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
   },
   mutateAndGetPayload: async ({ subscriptionId }, { user }) => {

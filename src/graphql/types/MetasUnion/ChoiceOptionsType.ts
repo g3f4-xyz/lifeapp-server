@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 
 export const ChoiceOptionsMetaType = new GraphQLObjectType({
   name: 'ChoiceOptionsMetaType',
@@ -6,11 +6,11 @@ export const ChoiceOptionsMetaType = new GraphQLObjectType({
   fields: () => ({
     text: {
       description: 'text',
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     value: {
       description: 'value',
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
   }),
 });

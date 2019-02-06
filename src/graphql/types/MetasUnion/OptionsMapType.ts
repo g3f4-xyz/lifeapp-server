@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { ChoiceOptionsMetaType } from './ChoiceOptionsType';
 
 export const OptionsMapType = new GraphQLObjectType({
@@ -6,11 +6,11 @@ export const OptionsMapType = new GraphQLObjectType({
   description: 'options map type',
   fields: () => ({
     customValueOptionMask: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     parentValue: {
       description: 'parentValue',
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
     options: {
       description: 'options',

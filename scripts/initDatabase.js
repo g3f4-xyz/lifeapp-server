@@ -82,6 +82,8 @@ const FIELDS = {
     helperText: 'Informacje o testowym polu Date',
     meta: {
       required: false,
+      minLen: 3,
+      maxLen: 100,
     },
   },
   DATE_TIME: {
@@ -93,6 +95,8 @@ const FIELDS = {
     helperText: 'Informacje o testowym polu Date',
     meta: {
       required: false,
+      minLen: 3,
+      maxLen: 100,
     },
   },
   DURATION: {
@@ -104,6 +108,8 @@ const FIELDS = {
     helperText: 'Informacje o testowym polu Duration',
     meta: {
       required: false,
+      minLen: 0,
+      maxLen: 100,
     },
   },
   LOCATION: {
@@ -116,7 +122,7 @@ const FIELDS = {
     meta: {
       required: false,
       minLen: 3,
-      maxMax: 100,
+      maxLen: 100,
     },
   },
   PERSON: {
@@ -128,6 +134,8 @@ const FIELDS = {
     helperText: 'Person helperText',
     meta: {
       required: true,
+      minLen: 3,
+      maxLen: 100,
     },
   },
   NOTE: {
@@ -164,8 +172,8 @@ const FIELDS = {
     label: 'Cycle',
     helperText: 'Określ w jakich cyklach ma występować akcja',
     meta: {
-      defaultValue: 'WEEK',
       required: true,
+      defaultValue: 'WEEK',
       options: [{
         text: 'Time',
         value: 'TIME'
@@ -189,6 +197,7 @@ const FIELDS = {
     label: 'When',
     helperText: 'Określ kiedy powtarzać cykl',
     meta: {
+      required: false,
       parentID: 'CYCLE',
       optionsSet: [{
         customValueOptionMask: '9',
@@ -226,6 +235,7 @@ const FIELDS = {
           value: 'CUSTOM'
         }],
       }, {
+        customValueOptionMask: '',
         parentValue: 'WEEK',
         options: [{
           text: 'Workday',
@@ -375,49 +385,29 @@ dbHook.tasks.insert([
 dbHook.tasktypes.insert([{
   typeId: 'TASK',
   name: '',
-  description: 'Baza z tytułem',
+  description: 'Pole bazowe',
   order: 0,
-  isCustom: false,
   parentID: [],
-  fields: [FIELDS.TITLE],
-}, {
-  typeId: 'PRIORITY',
-  name: '',
-  description: 'Baza z priorytetem',
-  order: 0,
-  isCustom: false,
-  parentID: ['TASK'],
-  fields: [FIELDS.PRIORITY],
-}, {
-  typeId: 'STATUS',
-  name: '',
-  description: 'Baza ze statusem',
-  order: 0,
-  isCustom: false,
-  parentID: ['TASK'],
-  fields: [FIELDS.STATUS],
+  fields: [FIELDS.TITLE, FIELDS.PRIORITY, FIELDS.STATUS],
 }, {
   typeId: 'TODO',
   name: 'ToDo',
   description: 'Pozwala na ustawienie tytułu, priorytetu oraz sterowanie statusem. oraz dodanie opisu',
   order: 0,
-  isCustom: false,
-  parentID: ['STATUS', 'PRIORITY'],
+  parentID: ['TASK'],
   fields: [FIELDS.NOTE],
 }, {
   typeId: 'EVENT',
   name: 'Event',
   description: 'Wydarzenie pozwala na ustawienie zadania, które posiada możliwość zdefiniowania miejsca i czasu.',
   order: 1,
-  isCustom: false,
-  parentID: ['PRIORITY'],
+  parentID: ['TASK'],
   fields: [FIELDS.LOCATION, FIELDS.DATE_TIME, FIELDS.DURATION],
 }, {
   typeId: 'MEETING',
   name: 'Meeting',
   description: 'Zadanie typu spotkanie pozwala na zapisanie spotkania. Ustal osobę oraz czas i miejsce spotkania.',
   order: 2,
-  isCustom: false,
   parentID: ['EVENT'],
   fields: [FIELDS.PERSON],
 }, {
@@ -425,8 +415,7 @@ dbHook.tasktypes.insert([{
   name: 'Routine',
   description: 'Zadanie typu rutyna pozwala na ustawienie akcji do wykonania w danych cyklu.',
   order: 3,
-  isCustom: false,
-  parentID: ['PRIORITY'],
+  parentID: ['TASK'],
   fields: [FIELDS.CYCLE, FIELDS.WHEN, FIELDS.ACTION, FIELDS.ACTIVE],
 }]);
 
