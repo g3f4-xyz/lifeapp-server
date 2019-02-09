@@ -160,6 +160,9 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE): Promise<ITask> => {
       [FIELDS_TYPE.SELECT]: {
         id: '',
       },
+      [FIELDS_TYPE.MULTIPLE_SELECT_WITH_PARENT]: {
+        ids: [] as any,
+      },
       [FIELDS_TYPE.SWITCH]: {
         bool: false,
       },

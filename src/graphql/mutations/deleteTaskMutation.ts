@@ -18,7 +18,7 @@ export const deleteTaskMutation = mutationWithClientMutationId({
 
       await deleteTask(id);
 
-      return hashId;
+      return { deletedTaskId: hashId };
     } catch (error) {
       return error;
     }
