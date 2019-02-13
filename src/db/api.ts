@@ -133,7 +133,7 @@ export const getSubscription = async (ownerId: string, subscriptionId: string): 
   }
 };
 
-export const getEmptyTask = async (taskTypeId: TASK_TYPE): Promise<ITask> => {
+export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Promise<ITask> => {
   try {
     const defaultValueByTaskTypeAndFieldId = {
       MEETING: {
@@ -184,8 +184,8 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE): Promise<ITask> => {
     const { parentID, fields } = taskType.toJSON();
     const parentFields = await getParentFieldsRecursive(parentID);
 
-    return {
-      ownerId: null,
+    const taskData = {
+      ownerId,
       taskType: taskTypeId,
       fields: [...fields, ...parentFields.filter((item, idx, arr) => {
         const index = arr.findIndex((it) => {
@@ -195,6 +195,12 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE): Promise<ITask> => {
         return index === idx;
       })].map(mapFieldDefaultValue),
     };
+
+    const task = new TaskModel(taskData);
+
+    await task.save();
+
+    return task.toJSON();
   } catch (error) {
     return error;
   }

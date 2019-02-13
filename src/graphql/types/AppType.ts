@@ -26,12 +26,12 @@ export const AppType = new GraphQLObjectType<boolean, IContext>({
           type: GraphQLString,
         },
       },
-      resolve: async (_, { id, type }): Promise<ITask> => {
+      resolve: async (_, { id, type }, { user: { id: ownerId }}): Promise<ITask> => {
         if (id.length > 0) {
           return await getTask(fromGlobalId(id).id);
         }
 
-        return await getEmptyTask(type);
+        return await getEmptyTask(type, ownerId);
       },
     },
     taskList: {
