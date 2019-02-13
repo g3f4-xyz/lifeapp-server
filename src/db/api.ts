@@ -2,6 +2,7 @@ import * as moment from 'moment';
 import { FIELDS_TYPE, TASK_TYPE } from '../constants';
 import { emitter } from './emitter';
 import {
+  IFieldValue,
   ISettings,
   ISettingsNotificationsGeneral,
   ISettingsNotificationsTypes,
@@ -336,6 +337,31 @@ export const saveTask = async (
     await TaskModel.findByIdAndUpdate(taskId, { fields: task.fields });
 
     return await getTask(taskId);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateTaskField = async (
+  taskId: string,
+  fieldId: string,
+  value: IFieldValue,
+): Promise<any> => {
+  try {
+    const taskModel = await TaskModel.findById(taskId);
+
+    taskModel.fields = taskModel.fields.map((field) => {
+      if (field.fieldId === fieldId) {
+        field.value = value;
+      }
+
+      return field;
+    });
+
+    await taskModel.save();
+
+    return value;
+
   } catch (error) {
     return error;
   }

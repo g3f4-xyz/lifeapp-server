@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLObjectType } from 'graphql';
 import { Connection, connectionArgs, connectionFromArray, globalIdField } from 'graphql-relay';
 import { getTaskList } from '../../db/api';
 import { IContext, ITask } from '../../db/interfaces';
@@ -11,14 +11,18 @@ export const TaskListType = new GraphQLObjectType<boolean, IContext>({
   fields: () => ({
     id: globalIdField('TaskList'),
     list: {
-      type: new GraphQLNonNull(TaskTypeConnection),
+      type: TaskTypeConnection,
       description: 'task list type',
       args: connectionArgs,
       resolve: async (
         _,
         args,
         { user: { id }},
-      ): Promise<Connection<ITask>> => connectionFromArray(await getTaskList(id), args),
+      ): Promise<Connection<ITask>> => {
+        const list = await getTaskList(id);
+
+        return connectionFromArray(list, args);
+      },
     },
   }),
   interfaces: [nodeInterface],

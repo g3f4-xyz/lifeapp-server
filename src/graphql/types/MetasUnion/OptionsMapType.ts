@@ -14,7 +14,7 @@ export const OptionsMapType = new GraphQLObjectType({
     },
     options: {
       description: 'options',
-      type: new GraphQLList(ChoiceOptionsMetaType),
+      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(ChoiceOptionsMetaType))),
     },
   }),
 });

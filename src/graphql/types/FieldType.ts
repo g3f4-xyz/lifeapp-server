@@ -1,4 +1,7 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import { globalIdField } from 'graphql-relay';
+import { nodeInterface } from '../nodeDefinitions';
+import { FieldFormatEnum } from './Enums/FieldFormatEnum';
 import { MetasUnion } from './MetasUnion/MetasUnion';
 import { ValuesUnion } from './ValuesUnion/ValuesUnion';
 
@@ -6,13 +9,14 @@ export const FieldType = new GraphQLObjectType({
   name: 'FieldType',
   description: 'field type',
   fields: () => ({
+    id: globalIdField('FieldType', ({ fieldId }) => fieldId),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(GraphQLString),
     },
     format: {
       description: 'format field description',
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(FieldFormatEnum),
     },
     order: {
       description: 'order field description',
@@ -41,4 +45,5 @@ export const FieldType = new GraphQLObjectType({
       resolve: ({ format, meta }) => ({ format, ...meta }),
     },
   }),
+  interfaces: [nodeInterface],
 });

@@ -2,6 +2,8 @@ import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQL
 import { globalIdField } from 'graphql-relay';
 import { ITask, ITaskField } from '../../db/interfaces';
 import { nodeInterface } from '../nodeDefinitions';
+import { TaskStatusEnum } from './Enums/TaskStatusEnum';
+import { TaskTypeEnum } from './Enums/TaskTypeEnum';
 import { FieldType } from './FieldType';
 
 export const TaskType = new GraphQLObjectType<ITask>({
@@ -10,7 +12,7 @@ export const TaskType = new GraphQLObjectType<ITask>({
   fields: () => ({
     id: globalIdField('TaskType', ({ _id }) => _id),
     taskType: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(TaskTypeEnum),
     },
     title: {
       type: new GraphQLNonNull(GraphQLString),
@@ -49,15 +51,11 @@ export const TaskType = new GraphQLObjectType<ITask>({
       },
     },
     status: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(TaskStatusEnum),
       resolve: ({ fields }): string => {
         const field = fields.find(({ fieldId }) => fieldId === 'STATUS');
 
-        if (field) {
-          return field.value.id;
-        }
-
-        return null;
+        return field.value.id;
       },
     },
     fields: {

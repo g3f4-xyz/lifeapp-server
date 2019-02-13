@@ -17,7 +17,7 @@ export const MultipleChoiceWithParentType = new GraphQLObjectType({
     },
     optionsSet: {
       description: 'optionsSet',
-      type: new GraphQLNonNull(new GraphQLList(OptionsMapType)),
+      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(OptionsMapType))),
     },
   }),
 });

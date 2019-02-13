@@ -26,13 +26,13 @@ export interface IFieldMeta {
 }
 
 export interface IFieldValue {
-  bool: boolean;
-  id: string;
-  text: string;
-  number: number;
-  ids: [string];
-  parentValue: string;
-  customValueOptionValue: string;
+  bool?: boolean;
+  id?: string;
+  text?: string;
+  number?: number;
+  ids?: [string];
+  parentValue?: string;
+  customValueOptionValue?: string;
 }
 
 export interface ITaskField {

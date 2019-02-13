@@ -1,11 +1,11 @@
-import { GraphQLBoolean, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
 export const BoolValueType = new GraphQLObjectType({
   name: 'BoolValueType',
   description: 'choice value type',
   fields: () => ({
     bool: {
-      type: GraphQLBoolean,
+      type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),
 });

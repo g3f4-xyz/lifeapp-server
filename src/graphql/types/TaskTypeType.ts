@@ -1,6 +1,7 @@
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { nodeInterface } from '../nodeDefinitions';
+import { TaskTypeEnum } from './Enums/TaskTypeEnum';
 import { FieldType } from './FieldType';
 
 export const TaskTypeType = new GraphQLObjectType({
@@ -9,7 +10,7 @@ export const TaskTypeType = new GraphQLObjectType({
   fields: () => ({
     id: globalIdField('TaskTypeType', ({ _id }) => _id),
     typeId: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(TaskTypeEnum),
     },
     name: {
       type: new GraphQLNonNull(GraphQLString),
