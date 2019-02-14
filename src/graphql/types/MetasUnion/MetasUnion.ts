@@ -1,21 +1,18 @@
-import { GraphQLUnionType } from 'graphql';
-import { BoolMetaType } from './BoolMetaType';
+import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
+import { FIELD_TYPE_VALUE_MAP } from '../../../constants';
 import { ChoiceMetaType } from './ChoiceMetaType';
-import { MultipleChoiceWithParentType } from './MultipleChoiceWithParentMetaType';
-import { NumberMetaType } from './NumberMetaType';
+import { SwitchMetaType } from './SwitchMetaType';
 import { TextMetaType } from './TextMetaType';
 
-const TYPES = {
-  BOOL: BoolMetaType,
+const TYPES: FIELD_TYPE_VALUE_MAP<GraphQLObjectType> = {
   CHOICE: ChoiceMetaType,
-  MULTIPLE_CHOICE_WITH_PARENT: MultipleChoiceWithParentType,
-  NUMBER: NumberMetaType,
   TEXT: TextMetaType,
+  SWITCH: SwitchMetaType,
 };
 
 export const MetasUnion = new GraphQLUnionType({
   name: 'MetasUnion',
   description: 'metas union',
   types: Object.values(TYPES),
-  resolveType: ({ format }) => TYPES[format] || TYPES.TEXT,
+  resolveType: ({ type }) => TYPES[type] || TYPES.TEXT,
 });

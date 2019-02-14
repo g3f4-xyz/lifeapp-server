@@ -17,16 +17,17 @@ export interface IFieldMetaOptionsSet {
 
 export interface IFieldMeta {
   required: boolean;
-  minLen: number;
-  maxLen: number;
+  minLength: number;
+  maxLength: number;
   options: [IFieldMetaOptions];
   defaultValue: string;
   parentID: string;
+  type: string;
   optionsSet: [IFieldMetaOptionsSet];
 }
 
 export interface IFieldValue {
-  bool?: boolean;
+  enabled?: boolean;
   id?: string;
   text?: string;
   number?: number;
@@ -38,7 +39,6 @@ export interface IFieldValue {
 export interface ITaskField {
   fieldId: string;
   fieldIds: string;
-  format: string;
   type: string;
   order: number;
   label: string;

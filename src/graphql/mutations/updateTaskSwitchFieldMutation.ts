@@ -1,11 +1,11 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { updateTaskField } from '../../db/api';
-import { BoolValueType } from '../types/ValuesUnion/BoolValueType';
-import { BoolValueInputType } from './inputs/ValuesInputsUnion/BoolValueInputType';
+import { SwitchValueType } from '../types/ValuesUnion/SwitchValueType';
+import { SwitchValueInputType } from './inputs/ValuesInputsUnion/SwitchValueInputType';
 
-export const updateTaskBoolFieldMutation = mutationWithClientMutationId({
-  name: 'updateTaskBoolFieldMutation',
+export const updateTaskSwitchFieldMutation = mutationWithClientMutationId({
+  name: 'updateTaskSwitchFieldMutation',
   inputFields: {
     taskId: {
       type: new GraphQLNonNull(GraphQLString),
@@ -14,7 +14,7 @@ export const updateTaskBoolFieldMutation = mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLString),
     },
     fieldValue: {
-      type: new GraphQLNonNull(BoolValueInputType),
+      type: new GraphQLNonNull(SwitchValueInputType),
     },
   },
   outputFields: {
@@ -25,7 +25,7 @@ export const updateTaskBoolFieldMutation = mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLString),
     },
     updatedFieldValue: {
-      type: new GraphQLNonNull(BoolValueType),
+      type: new GraphQLNonNull(SwitchValueType),
     },
   },
   mutateAndGetPayload: async ({ fieldId, fieldValue, taskId }) => {

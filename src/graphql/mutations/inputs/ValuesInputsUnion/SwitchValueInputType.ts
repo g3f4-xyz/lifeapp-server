@@ -1,10 +1,10 @@
 import { GraphQLBoolean, GraphQLNonNull, GraphQLInputObjectType } from 'graphql';
 
-export const BoolValueInputType = new GraphQLInputObjectType({
-  name: 'BoolValueInputType',
-  description: 'choice value input type',
+export const SwitchValueInputType = new GraphQLInputObjectType({
+  name: 'SwitchValueInputType',
+  description: 'switch value input type',
   fields: () => ({
-    bool: {
+    enabled: {
       type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),

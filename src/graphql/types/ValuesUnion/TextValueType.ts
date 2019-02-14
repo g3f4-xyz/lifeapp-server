@@ -1,11 +1,11 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
 
 export const TextValueType = new GraphQLObjectType({
   name: 'TextValueType',
   description: 'text value type',
   fields: () => ({
     text: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
     },
   }),
 });

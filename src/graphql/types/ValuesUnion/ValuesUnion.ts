@@ -1,15 +1,12 @@
-import { GraphQLUnionType } from 'graphql';
-import { BoolValueType } from './BoolValueType';
+import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
+import { FIELD_TYPE_VALUE_MAP } from '../../../constants';
+import { SwitchValueType } from './SwitchValueType';
 import { ChoiceValueType } from './ChoiceValueType';
-import { MultipleChoiceWithParentValueType } from './MultipleChoiceWithParentValueType';
-import { NumberValueType } from './NumberValueType';
 import { TextValueType } from './TextValueType';
 
-const TYPES = {
-  BOOL: BoolValueType,
+const TYPES: FIELD_TYPE_VALUE_MAP<GraphQLObjectType> = {
+  SWITCH: SwitchValueType,
   CHOICE: ChoiceValueType,
-  MULTIPLE_CHOICE_WITH_PARENT: MultipleChoiceWithParentValueType,
-  NUMBER: NumberValueType,
   TEXT: TextValueType,
 };
 
@@ -17,5 +14,5 @@ export const ValuesUnion = new GraphQLUnionType({
   name: 'ValuesUnion',
   description: 'Values Union',
   types: Object.values(TYPES),
-  resolveType: ({ format }) => TYPES[format] || TYPES.TEXT,
+  resolveType: ({ type }) => TYPES[type] || TYPES.TEXT,
 });

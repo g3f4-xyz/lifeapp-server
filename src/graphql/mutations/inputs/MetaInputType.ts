@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLFloat, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLString } from 'graphql';
 import { MetaOptionsSetInputType } from './MetaOptionsSetInputType';
 import { OptionsInputType } from './OptionsInputType';
 
@@ -6,19 +6,22 @@ export const MetaInputType = new GraphQLInputObjectType({
   name: 'MetaInputType',
   description: 'meta input type',
   fields: () => ({
+    type: {
+      type: GraphQLString,
+    },
     required: {
       type: GraphQLBoolean,
     },
     min: {
-      type: GraphQLFloat,
+      type: GraphQLString,
     },
     max: {
-      type: GraphQLFloat,
+      type: GraphQLString,
     },
-    minLen: {
+    minLength: {
       type: GraphQLInt,
     },
-    maxLen: {
+    maxLength: {
       type: GraphQLInt,
     },
     defaultValue: {

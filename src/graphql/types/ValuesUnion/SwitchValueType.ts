@@ -1,11 +1,10 @@
 import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
-export const BoolMetaType = new GraphQLObjectType({
-  name: 'BoolMetaType',
-  description: 'bool meta type',
+export const SwitchValueType = new GraphQLObjectType({
+  name: 'SwitchValueType',
+  description: 'switch value type',
   fields: () => ({
-    required: {
-      description: 'required',
+    enabled: {
       type: new GraphQLNonNull(GraphQLBoolean),
     },
   }),

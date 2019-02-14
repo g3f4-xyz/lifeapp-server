@@ -1,10 +1,6 @@
-export enum FIELDS_TYPE {
-  DATETIME_LOCAL = 'datetime-local',
-  TEXT = 'text',
-  SELECT = 'select',
-  SWITCH = 'switch',
-  MULTIPLE_SELECT_WITH_PARENT = 'multiple-select-with-parent',
-}
+type KEYOF_TYPE_VALUE_MAP<T, V> = {
+  [K in keyof T]: V
+};
 
 export enum TASK_TYPE {
   TODO = 'TODO',
@@ -12,3 +8,13 @@ export enum TASK_TYPE {
   EVENT = 'EVENT',
   ROUTINE = 'ROUTINE',
 }
+
+export type TASK_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof TASK_TYPE, V>;
+
+export enum FIELD_TYPE {
+  SWITCH = 'SWITCH',
+  CHOICE = 'CHOICE',
+  TEXT = 'TEXT',
+}
+
+export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FIELD_TYPE, V>;

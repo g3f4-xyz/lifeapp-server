@@ -9,9 +9,6 @@ export const FieldsInputType = new GraphQLInputObjectType({
     fieldId: {
       type: new GraphQLNonNull(GraphQLString),
     },
-    format: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
     order: {
       type: new GraphQLNonNull(GraphQLInt),
     },

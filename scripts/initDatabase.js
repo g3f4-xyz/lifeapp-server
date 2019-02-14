@@ -19,21 +19,20 @@ if (dbHook.tasks) {
 const FIELDS = {
   TITLE: {
     fieldId: 'TITLE',
-    format: 'TEXT',
-    type: 'text',
+    type: 'TEXT',
     order: 1,
     label: 'Title',
     helperText: 'Informacje o testowym polu Title',
     meta: {
+      type: 'text',
       required: true,
-      minLen: 0,
-      maxLen: 400,
+      minLength: 0,
+      maxLength: 400,
     },
   },
   PRIORITY: {
     fieldId: 'PRIORITY',
-    format: 'BOOL',
-    type: 'switch',
+    type: 'SWITCH',
     order: 0,
     label: 'Important',
     helperText: 'Informacje o testowym polu Priority',
@@ -43,8 +42,7 @@ const FIELDS = {
   },
   ACTIVE: {
     fieldId: 'ACTIVE',
-    format: 'BOOL',
-    type: 'switch',
+    type: 'SWITCH',
     order: 0,
     label: 'Active',
     helperText: 'Informacje o testowym polu Active',
@@ -54,9 +52,8 @@ const FIELDS = {
   },
   STATUS: {
     fieldId: 'STATUS',
-    format: 'CHOICE',
+    type: 'CHOICE',
     order: 0,
-    type: 'select',
     label: 'Status',
     helperText: 'Informacje o testowym polu Status',
     meta: {
@@ -75,99 +72,98 @@ const FIELDS = {
   },
   DATE: {
     fieldId: 'DATE',
-    format: 'TEXT',
-    type: 'date-local',
+    type: 'TEXT',
     order: 4,
     label: 'Date',
     helperText: 'Informacje o testowym polu Date',
     meta: {
+      type: 'date-local',
       required: false,
-      minLen: 3,
-      maxLen: 100,
+      minLength: 3,
+      maxLength: 100,
     },
   },
   DATE_TIME: {
     fieldId: 'DATE_TIME',
-    format: 'TEXT',
-    type: 'datetime-local',
+    type: 'TEXT',
     order: 3,
     label: 'Date',
     helperText: 'Informacje o testowym polu Date',
     meta: {
+      type: 'datetime-local',
       required: false,
-      minLen: 3,
-      maxLen: 100,
+      minLength: 3,
+      maxLength: 100,
     },
   },
   DURATION: {
     fieldId: 'DURATION',
-    format: 'TEXT',
-    type: 'text',
+    type: 'TEXT',
     order: 3,
     label: 'Duration',
     helperText: 'Informacje o testowym polu Duration',
     meta: {
+      type: 'text',
       required: false,
-      minLen: 0,
-      maxLen: 100,
+      minLength: 0,
+      maxLength: 100,
     },
   },
   LOCATION: {
     fieldId: 'LOCATION',
-    format: 'TEXT',
-    type: 'text',
+    type: 'TEXT',
     order: 3,
     label: 'Location',
     helperText: 'Informacje o testowym polu Location',
     meta: {
+      type: 'text',
       required: false,
-      minLen: 3,
-      maxLen: 100,
+      minLength: 3,
+      maxLength: 100,
     },
   },
   PERSON: {
     fieldId: 'PERSON',
-    format: 'TEXT',
+    type: 'TEXT',
     order: 4,
-    type: 'text',
     label: 'Person',
     helperText: 'Person helperText',
     meta: {
+      type: 'text',
       required: true,
-      minLen: 3,
-      maxLen: 100,
+      minLength: 3,
+      maxLength: 100,
     },
   },
   NOTE: {
     fieldId: 'NOTE',
-    format: 'TEXT',
-    type: 'text',
+    type: 'TEXT',
     order: 2,
     label: 'Note',
     helperText: 'Informacje o testowym polu Description',
     meta: {
+      type: 'text',
       required: false,
-      minLen: 3,
-      maxLen: 100,
+      minLength: 3,
+      maxLength: 100,
     },
   },
   ACTION: {
     fieldId: 'ACTION',
-    format: 'TEXT',
-    type: 'text',
+    type: 'TEXT',
     order: 6,
     label: 'Action',
     helperText: 'Określ jaka akcja ma nastąpić podczas każdego cyklu',
     meta: {
+      type: 'text',
       required: true,
-      minLen: 3,
-      maxLen: 100,
+      minLength: 3,
+      maxLength: 100,
     },
   },
   CYCLE: {
     fieldId: 'CYCLE',
-    format: 'CHOICE',
-    type: 'select',
+    type: 'CHOICE',
     order: 5,
     label: 'Cycle',
     helperText: 'Określ w jakich cyklach ma występować akcja',
@@ -191,126 +187,57 @@ const FIELDS = {
   },
   WHEN: {
     fieldId: 'WHEN',
-    format: 'MULTIPLE_CHOICE_WITH_PARENT',
-    type: 'multiple-select-with-parent',
+    type: 'CHOICE',
     order: 5,
     label: 'When',
     helperText: 'Określ kiedy powtarzać cykl',
     meta: {
-      required: false,
-      parentID: 'CYCLE',
-      optionsSet: [{
-        customValueOptionMask: '9',
-        parentValue: 'TIME',
-        options: [{
-          text: 'Half an hour',
-          value: 'HALF_HOUR'
-        }, {
-          text: 'Hour',
-          value: 'HOUR'
-        }, {
-          text: '3 hours',
-          value: 'HOURS_3'
-        }, {
-          text: '12 hours',
-          value: 'HOURS_12'
-        }, {
-          text: 'Interval in minutes',
-          value: 'CUSTOM'
-        }],
+      required: true,
+      options: [{
+        text: 'Half an hour',
+        value: 'HALF_HOUR'
       }, {
-        customValueOptionMask: '99:99',
-        parentValue: 'DAY',
-        options: [{
-          text: 'Morning',
-          value: 'MORNING'
-        }, {
-          text: 'Noon',
-          value: 'NOON'
-        }, {
-          text: 'Evening',
-          value: 'EVENING'
-        }, {
-          text: 'Time',
-          value: 'CUSTOM'
-        }],
+        text: 'Hour',
+        value: 'HOUR'
       }, {
-        customValueOptionMask: '',
-        parentValue: 'WEEK',
-        options: [{
-          text: 'Workday',
-          value: 'WORKDAY'
-        }, {
-          text: 'Weekend',
-          value: 'WEEKEND'
-        }, {
-          text: 'Monday',
-          value: 'MONDAY'
-        }, {
-          text: 'Tuesday',
-          value: 'TUESDAY'
-        }, {
-          text: 'Saturday',
-          value: 'SATURDAY'
-        }, {
-          text: 'Sunday',
-          value: 'SUNDAY'
-        }],
+        text: '3 hours',
+        value: 'HOURS_3'
       }, {
-        customValueOptionMask: '99',
-        parentValue: 'MONTH',
-        options: [{
-          text: 'At the begging',
-          value: 'BEGIN'
-        }, {
-          text: 'In the middle',
-          value: 'MIDDLE'
-        }, {
-          text: 'At the end',
-          value: 'END'
-        }, {
-          text: 'Day',
-          value: 'CUSTOM'
-        }],
+        text: '12 hours',
+        value: 'HOURS_12'
+      }, {
+        text: 'Interval in minutes',
+        value: 'MINUTES',
       }],
     },
   },
 };
 
 const assignFieldValue = (field, value = null) => {
-  const { format } = field;
+  const { type } = field;
 
-  if (format === 'BOOL') {
+  if (type === 'SWITCH') {
     return Object.assign({
       value: {
-        bool: value,
+        enabled: value,
       },
     }, field);
   }
-  else if (format === 'CHOICE') {
+  else if (type === 'CHOICE') {
     return Object.assign({
       value: {
         id: value,
       },
     }, field);
   }
-  else if (format === 'NUMBER') {
-    return Object.assign({
-      value: {
-        number: value,
-      },
-    }, field);
-  }
-  else if (format === 'MULTIPLE_CHOICE_WITH_PARENT') {
+  else if (type === 'MULTIPLE_CHOICE') {
     return Object.assign({
       value: {
         ids: value,
-        parentValue: null,
-        customValueOptionValue: null,
       },
     }, field);
   }
-  else if (format === 'TEXT') {
+  else if (type === 'TEXT') {
     return Object.assign({
       value: {
         text: value,
@@ -318,7 +245,7 @@ const assignFieldValue = (field, value = null) => {
     }, field);
   }
 
-  print(['assignFieldValue:error'], `Nie znany format pola ${format}`);
+  print(['assignFieldValue:error'], `Nie znany typ pola ${type}`);
 };
 
 // DANE TESTOWE

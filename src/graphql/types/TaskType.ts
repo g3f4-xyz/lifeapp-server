@@ -1,6 +1,6 @@
 import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { ITask, ITaskField } from '../../db/interfaces';
+import { ITask } from '../../db/interfaces';
 import { nodeInterface } from '../nodeDefinitions';
 import { TaskStatusEnum } from './Enums/TaskStatusEnum';
 import { TaskTypeEnum } from './Enums/TaskTypeEnum';
@@ -44,7 +44,7 @@ export const TaskType = new GraphQLObjectType<ITask>({
         const field = fields.find(({ fieldId }) => fieldId === 'PRIORITY');
 
         if (field) {
-          return field.value.bool;
+          return field.value.enabled;
         }
 
         return null;
@@ -60,14 +60,6 @@ export const TaskType = new GraphQLObjectType<ITask>({
     },
     fields: {
       type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldType))),
-      args: {
-        filterByIds: {
-          type: new GraphQLList(GraphQLString),
-        },
-      },
-      resolve: ({ fields }, args): ITaskField[] => args && args.filterByIds
-        ? fields.filter(({ fieldId }) => args.filterByIds.includes(fieldId))
-        : fields,
     },
   }),
   interfaces: [nodeInterface],

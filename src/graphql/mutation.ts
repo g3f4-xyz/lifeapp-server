@@ -5,7 +5,7 @@ import { deleteTaskMutation } from './mutations/deleteTaskMutation';
 import { saveNotificationsGeneralSettingMutation } from './mutations/saveNotificationsGeneralSettingMutation';
 import { saveNotificationsTypesSettingMutation } from './mutations/saveNotificationsTypesSettingMutation';
 import { saveTaskMutation } from './mutations/saveTaskMutation';
-import { updateTaskBoolFieldMutation } from './mutations/updateTaskBoolFieldMutation';
+import { updateTaskSwitchFieldMutation } from './mutations/updateTaskSwitchFieldMutation';
 import { updateTaskChoiceFieldMutation } from './mutations/updateTaskChoiceFieldMutation';
 import { updateTaskTextFieldMutation } from './mutations/updateTaskTextFieldMutation';
 
@@ -21,7 +21,7 @@ export const MutationType = new GraphQLObjectType({
     saveNotificationsTypesSetting: saveNotificationsTypesSettingMutation,
     saveTask: saveTaskMutation,
     testSubscription: testSubscriptionMutation,
-    updateTaskBoolField: updateTaskBoolFieldMutation,
+    updateTaskSwitchField: updateTaskSwitchFieldMutation,
     updateTaskChoiceField: updateTaskChoiceFieldMutation,
     updateTaskTextField: updateTaskTextFieldMutation,
   }),

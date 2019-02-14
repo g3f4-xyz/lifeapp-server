@@ -1,5 +1,4 @@
-import * as moment from 'moment';
-import { FIELDS_TYPE, TASK_TYPE } from '../constants';
+import { FIELD_TYPE_VALUE_MAP, FIELD_TYPE, TASK_TYPE } from '../constants';
 import { emitter } from './emitter';
 import {
   IFieldValue,
@@ -135,49 +134,23 @@ export const getSubscription = async (ownerId: string, subscriptionId: string): 
 
 export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Promise<ITask> => {
   try {
-    const defaultValueByTaskTypeAndFieldId = {
-      MEETING: {
-        TITLE: {
-          text: 'Spotkanie z ',
-        },
-      },
-    };
-    const defaultValueByFieldId = {
-      STATUS: {
-        id: 'TODO',
-      },
-    };
-    const defaultValuesByTypeMap = {
-      [FIELDS_TYPE.DATETIME_LOCAL]: {
-        text: moment(new Date(Date.now()), 'YYYY-MM-DD HH:mm')
-          .add(1, 'hours')
-          .add(1, 'minute')
-          .format()
-          .slice(0, 16),
-      },
-      [FIELDS_TYPE.TEXT]: {
-        text: '',
-      },
-      [FIELDS_TYPE.SELECT]: {
+    const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
+      [FIELD_TYPE.CHOICE]: {
         id: '',
       },
-      [FIELDS_TYPE.MULTIPLE_SELECT_WITH_PARENT]: {
-        ids: [] as any,
+      [FIELD_TYPE.SWITCH]: {
+        enabled: false,
       },
-      [FIELDS_TYPE.SWITCH]: {
-        bool: false,
+      [FIELD_TYPE.TEXT]: {
+        text: '',
       },
     };
     const mapFieldDefaultValue = (field: ITaskField) => {
-      const { fieldId, type } = field;
-      const defaultValue =
-        defaultValueByTaskTypeAndFieldId[taskTypeId] && defaultValueByTaskTypeAndFieldId[taskTypeId][fieldId] ||
-        defaultValueByFieldId[fieldId] ||
-        defaultValuesByTypeMap[type];
+      const { type } = field;
 
       return {
         ...field,
-        value: defaultValue,
+        value: defaultValuesByTypeMap[type],
       };
     };
     const taskType = await TaskTypeModel.findOne({ typeId: taskTypeId });

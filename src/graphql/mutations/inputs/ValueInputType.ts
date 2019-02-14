@@ -1,10 +1,10 @@
-import { GraphQLBoolean, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLList, GraphQLString } from 'graphql';
 
 export const ValueInputType = new GraphQLInputObjectType({
   name: 'ValueInputType',
   description: 'value input type',
   fields: () => ({
-    bool: {
+    enabled: {
       type: GraphQLBoolean,
     },
     id: {
@@ -12,15 +12,6 @@ export const ValueInputType = new GraphQLInputObjectType({
     },
     ids: {
       type: new GraphQLList(GraphQLString),
-    },
-    customValueOptionValue: {
-      type: GraphQLString,
-    },
-    number: {
-      type: GraphQLInt,
-    },
-    parentValue: {
-      type: GraphQLString,
     },
     text: {
       type: GraphQLString,

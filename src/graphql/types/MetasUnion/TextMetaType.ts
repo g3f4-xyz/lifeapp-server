@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 
 export const TextMetaType = new GraphQLObjectType({
   name: 'TextMetaType',
@@ -8,13 +8,25 @@ export const TextMetaType = new GraphQLObjectType({
       description: 'required',
       type: new GraphQLNonNull(GraphQLBoolean),
     },
-    minLen: {
-      description: 'minLen',
-      type: new GraphQLNonNull(GraphQLInt),
+    minLength: {
+      description: 'minLength',
+      type: GraphQLInt,
     },
-    maxLen: {
-      description: 'maxLen',
-      type: new GraphQLNonNull(GraphQLInt),
+    maxLength: {
+      description: 'maxLength',
+      type: GraphQLInt,
+    },
+    min: {
+      description: 'min',
+      type: GraphQLInt,
+    },
+    max: {
+      description: 'max',
+      type: GraphQLInt,
+    },
+    type: {
+      description: 'input type field description',
+      type: new GraphQLNonNull(GraphQLString),
     },
   }),
 });
