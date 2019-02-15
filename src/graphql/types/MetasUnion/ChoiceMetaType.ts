@@ -1,4 +1,5 @@
 import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+// import { FieldType } from '../FieldType';
 import { ChoiceOptionsMetaType } from './ChoiceOptionsType';
 
 export const ChoiceMetaType = new GraphQLObjectType({
@@ -16,6 +17,14 @@ export const ChoiceMetaType = new GraphQLObjectType({
     options: {
       description: 'options',
       type: new GraphQLNonNull(new GraphQLList(ChoiceOptionsMetaType)),
+    },
+    label: {
+      description: 'label field description',
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    helperText: {
+      description: 'helperText field description',
+      type: new GraphQLNonNull(GraphQLString),
     },
   }),
 });

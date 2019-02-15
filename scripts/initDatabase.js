@@ -21,9 +21,9 @@ const FIELDS = {
     fieldId: 'TITLE',
     type: 'TEXT',
     order: 1,
-    label: 'Title',
-    helperText: 'Informacje o testowym polu Title',
     meta: {
+      label: 'Title',
+      helperText: 'Informacje o testowym polu Title',
       type: 'text',
       required: true,
       minLength: 0,
@@ -34,9 +34,9 @@ const FIELDS = {
     fieldId: 'PRIORITY',
     type: 'SWITCH',
     order: 0,
-    label: 'Important',
-    helperText: 'Informacje o testowym polu Priority',
     meta: {
+      label: 'Important',
+      helperText: 'Informacje o testowym polu Priority',
       required: true,
     },
   },
@@ -44,9 +44,9 @@ const FIELDS = {
     fieldId: 'ACTIVE',
     type: 'SWITCH',
     order: 0,
-    label: 'Active',
-    helperText: 'Informacje o testowym polu Active',
     meta: {
+      label: 'Active',
+      helperText: 'Informacje o testowym polu Active',
       required: true,
     },
   },
@@ -54,9 +54,9 @@ const FIELDS = {
     fieldId: 'STATUS',
     type: 'CHOICE',
     order: 0,
-    label: 'Status',
-    helperText: 'Informacje o testowym polu Status',
     meta: {
+      label: 'Status',
+      helperText: 'Informacje o testowym polu Status',
       required: true,
       options: [{
         text: 'To do',
@@ -74,9 +74,9 @@ const FIELDS = {
     fieldId: 'DATE',
     type: 'TEXT',
     order: 4,
-    label: 'Date',
-    helperText: 'Informacje o testowym polu Date',
     meta: {
+      label: 'Date',
+      helperText: 'Informacje o testowym polu Date',
       type: 'date-local',
       required: false,
       minLength: 3,
@@ -87,9 +87,9 @@ const FIELDS = {
     fieldId: 'DATE_TIME',
     type: 'TEXT',
     order: 3,
-    label: 'Date',
-    helperText: 'Informacje o testowym polu Date',
     meta: {
+      label: 'Date',
+      helperText: 'Informacje o testowym polu Date',
       type: 'datetime-local',
       required: false,
       minLength: 3,
@@ -100,9 +100,9 @@ const FIELDS = {
     fieldId: 'DURATION',
     type: 'TEXT',
     order: 3,
-    label: 'Duration',
-    helperText: 'Informacje o testowym polu Duration',
     meta: {
+      label: 'Duration',
+      helperText: 'Informacje o testowym polu Duration',
       type: 'text',
       required: false,
       minLength: 0,
@@ -113,9 +113,9 @@ const FIELDS = {
     fieldId: 'LOCATION',
     type: 'TEXT',
     order: 3,
-    label: 'Location',
-    helperText: 'Informacje o testowym polu Location',
     meta: {
+      label: 'Location',
+      helperText: 'Informacje o testowym polu Location',
       type: 'text',
       required: false,
       minLength: 3,
@@ -126,9 +126,9 @@ const FIELDS = {
     fieldId: 'PERSON',
     type: 'TEXT',
     order: 4,
-    label: 'Person',
-    helperText: 'Person helperText',
     meta: {
+      label: 'Person',
+      helperText: 'Person helperText',
       type: 'text',
       required: true,
       minLength: 3,
@@ -139,9 +139,9 @@ const FIELDS = {
     fieldId: 'NOTE',
     type: 'TEXT',
     order: 2,
-    label: 'Note',
-    helperText: 'Informacje o testowym polu Description',
     meta: {
+      label: 'Note',
+      helperText: 'Informacje o testowym polu Description',
       type: 'text',
       required: false,
       minLength: 3,
@@ -152,9 +152,9 @@ const FIELDS = {
     fieldId: 'ACTION',
     type: 'TEXT',
     order: 6,
-    label: 'Action',
-    helperText: 'Określ jaka akcja ma nastąpić podczas każdego cyklu',
     meta: {
+      label: 'Action',
+      helperText: 'Określ jaka akcja ma nastąpić podczas każdego cyklu',
       type: 'text',
       required: true,
       minLength: 3,
@@ -165,50 +165,119 @@ const FIELDS = {
     fieldId: 'CYCLE',
     type: 'CHOICE',
     order: 5,
-    label: 'Cycle',
-    helperText: 'Określ w jakich cyklach ma występować akcja',
     meta: {
+      label: 'Cycle',
+      helperText: 'Określ w jakich cyklach ma występować akcja',
       required: true,
-      defaultValue: 'WEEK',
       options: [{
         text: 'Time',
-        value: 'TIME'
+        value: 'TIME',
       }, {
         text: 'Day',
-        value: 'DAY'
+        value: 'DAY',
       }, {
         text: 'Week',
-        value: 'WEEK'
+        value: 'WEEK',
       }, {
         text: 'Month',
-        value: 'MONTH'
+        value: 'MONTH',
       }],
     },
   },
-  WHEN: {
-    fieldId: 'WHEN',
-    type: 'CHOICE',
+  CYCLE_BACK: {
+    fieldId: 'CYCLE',
+    type: 'NESTED',
     order: 5,
-    label: 'When',
-    helperText: 'Określ kiedy powtarzać cykl',
     meta: {
-      required: true,
-      options: [{
-        text: 'Half an hour',
-        value: 'HALF_HOUR'
+      label: 'Cycle',
+      helperText: 'Określ w jakich cyklach ma występować akcja',
+      nestedMeta: [{
+        parentValue: 'TIME',
+        meta: {
+          required: true,
+          options: [{
+            text: 'Half an hour',
+            value: 'HALF_HOUR'
+          }, {
+            text: 'Hour',
+            value: 'HOUR'
+          }, {
+            text: '3 hours',
+            value: 'HOURS_3'
+          }, {
+            text: '12 hours',
+            value: 'HOURS_12'
+          }, {
+            text: 'Interval in minutes',
+            value: 'MINUTES',
+          }],
+        },
       }, {
-        text: 'Hour',
-        value: 'HOUR'
+        parentValue: 'DAY',
+        meta: {
+          required: true,
+          options: [{
+            text: 'Morning',
+            value: 'MORNING'
+          }, {
+            text: 'Noon',
+            value: 'NOON',
+          }, {
+            text: 'Evening',
+            value: 'EVENING',
+          }],
+        },
       }, {
-        text: '3 hours',
-        value: 'HOURS_3'
+        parentValue: 'WEEK',
+        meta: {
+          required: true,
+          options: [{
+            text: 'Week days',
+            value: 'WEEK_DAYS',
+          }, {
+            text: 'Weekend',
+            value: 'WEEKEND'
+          }, {
+            text: 'First day of week',
+            value: 'FIRST_DAY',
+          }, {
+            text: 'Last day of week',
+            value: 'LAST_DAY',
+          }],
+        },
       }, {
-        text: '12 hours',
-        value: 'HOURS_12'
-      }, {
-        text: 'Interval in minutes',
-        value: 'MINUTES',
+        parentValue: 'MONTH',
+        meta: {
+          required: true,
+          options: [{
+            text: 'Start of the month',
+            value: 'MONTH_START',
+          }, {
+            text: 'End of the month',
+            value: 'END_START',
+          }, {
+            text: 'Middle of the month',
+            value: 'MIDDLE_START',
+          }],
+        },
       }],
+      ownMeta: {
+        required: true,
+        defaultValue: 'WEEK',
+        options: [{
+          text: 'Time',
+          value: 'TIME',
+        }, {
+          text: 'Day',
+          value: 'DAY',
+        }, {
+          text: 'Week',
+          value: 'WEEK',
+        }, {
+          text: 'Month',
+          value: 'MONTH',
+        }],
+      },
     },
   },
 };
@@ -227,13 +296,6 @@ const assignFieldValue = (field, value = null) => {
     return Object.assign({
       value: {
         id: value,
-      },
-    }, field);
-  }
-  else if (type === 'MULTIPLE_CHOICE') {
-    return Object.assign({
-      value: {
-        ids: value,
       },
     }, field);
   }
@@ -274,13 +336,16 @@ dbHook.tasks.insert([
       {
         key: 'TITLE',
         value: 'To jest tytuł zadania typu ToDo'
-      }, {
+      },
+      {
         key: 'PRIORITY',
         value: true,
-      }, {
+      },
+      {
         key: 'STATUS',
         value: 'TODO',
-      }, {
+      },
+      {
         key: 'NOTE',
         value: 'Notakta testowa. Może być długa i zawierać wiele wierszy.'
       },
@@ -293,13 +358,16 @@ dbHook.tasks.insert([
       {
         key: 'TITLE',
         value: 'a To jest INNE zadanie typu ToDo'
-      }, {
+      },
+      {
         key: 'PRIORITY',
         value: false,
-      }, {
+      },
+      {
         key: 'STATUS',
         value: 'TODO',
-      }, {
+      },
+      {
         key: 'NOTE',
         value: 'Super extra notatka wowow efekt placebo i kosmici. Notakta testowa. Może być długa i zawierać wiele wierszy.'
       },
@@ -343,7 +411,7 @@ dbHook.tasktypes.insert([{
   description: 'Zadanie typu rutyna pozwala na ustawienie akcji do wykonania w danych cyklu.',
   order: 3,
   parentID: ['TASK'],
-  fields: [FIELDS.CYCLE, FIELDS.WHEN, FIELDS.ACTION, FIELDS.ACTIVE],
+  fields: [FIELDS.CYCLE, FIELDS.ACTION, FIELDS.ACTIVE],
 }]);
 
 print('Collections:');

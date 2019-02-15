@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 
 export const SwitchMetaType = new GraphQLObjectType({
   name: 'SwitchMetaType',
@@ -7,6 +7,10 @@ export const SwitchMetaType = new GraphQLObjectType({
     required: {
       description: 'required',
       type: new GraphQLNonNull(GraphQLBoolean),
+    },
+    label: {
+      description: 'label field description',
+      type: new GraphQLNonNull(GraphQLString),
     },
   }),
 });

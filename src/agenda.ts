@@ -9,55 +9,6 @@ import { emitter } from './db/emitter';
 import { ITask } from './db/interfaces';
 
 const agenda = new Agenda({ db: { address: DB_HOST } });
-const calculateInterval = (cycle: string, when: string, customValueOptionValue: string): string => {
-  if (cycle === 'TIME') {
-    if (when === 'HALF_HOUR') {
-      return '30 minutes';
-    } else if (when === 'HOUR') {
-      return '1 hour';
-    } else if (when === 'HOURS_3') {
-      return '3 hour';
-    } else if (when === 'HOURS_12') {
-      return '12 hour';
-    } else if (when === 'CUSTOM') {
-      return `${customValueOptionValue} minutes`;
-    }
-  } else if (cycle === 'DAY') {
-    if (when === 'MORNING') {
-      return 'morning';
-    } else if (when === 'NOON') {
-      return 'noon';
-    } else if (when === 'EVENING') {
-      return 'evening';
-    } else if (when === 'CUSTOM') {
-      return `at ${customValueOptionValue}`;
-    }
-  } else if (cycle === 'WEEK') {
-    if (when === 'WORKDAY') {
-      return 'morning';
-    } else if (when === 'WEEKEND') {
-      return 'noon';
-    } else if (when === 'MONDAY') {
-      return 'evening';
-    } else if (when === 'TUESDAY') {
-      return 'evening';
-    } else if (when === 'SATURDAY') {
-      return 'evening';
-    } else if (when === 'CUSTOM') {
-      return `at ${customValueOptionValue}`;
-    }
-  } else if (cycle === 'WEEK') {
-    if (when === 'BEGIN') {
-      return 'morning';
-    } else if (when === 'MIDDLE') {
-      return 'noon';
-    } else if (when === 'END') {
-      return 'evening';
-    } else if (when === 'CUSTOM') {
-      return `at ${customValueOptionValue}`;
-    }
-  }
-};
 
 agenda.define('notification', async (job, done): Promise<void> => {
   const { ownerId, taskType, notification: { body, title } } = job.attrs.data;
@@ -145,29 +96,6 @@ emitter.on('task:added', async (task: ITask) => {
         title: `Upcoming event today: ${title}`,
       },
       taskType: task.taskType,
-    });
-  }
-
-  if (task.taskType === TASK_TYPE.ROUTINE) {
-    const title = task.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
-    const action = task.fields.find(({ fieldId }) => fieldId === 'ACTION').value.text;
-    const cycle = task.fields.find(({ fieldId }) => fieldId === 'CYCLE').value.id;
-    const { value: { ids, customValueOptionValue } } =
-      task.fields.find(({ fieldId }) => fieldId === 'WHEN')
-      || { value: { ids: [] as string[], customValueOptionValue: null } };
-
-    await ids.forEach(async (when: string) => {
-      const interval = calculateInterval(cycle, when, customValueOptionValue);
-      const routine = agenda.create('notification', {
-        ownerId: task.ownerId,
-        notification: {
-          body: `Action: ${action}`,
-          title,
-        },
-        taskType: task.taskType,
-      });
-
-      await routine.repeatEvery(interval).save();
     });
   }
 });

@@ -1,11 +1,12 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
+import { IContext, ITaskField } from '../../db/interfaces';
 import { nodeInterface } from '../nodeDefinitions';
 import { FieldTypeEnum } from './Enums/FieldTypeEnum';
 import { MetasUnion } from './MetasUnion/MetasUnion';
 import { ValuesUnion } from './ValuesUnion/ValuesUnion';
 
-export const FieldType = new GraphQLObjectType({
+export const FieldType: GraphQLObjectType<ITaskField, IContext> = new GraphQLObjectType<ITaskField, IContext>({
   name: 'FieldType',
   description: 'field type',
   fields: () => ({
@@ -22,14 +23,14 @@ export const FieldType = new GraphQLObjectType({
       description: 'field type description',
       type: new GraphQLNonNull(FieldTypeEnum),
     },
-    label: {
-      description: 'label field description',
-      type: new GraphQLNonNull(GraphQLString),
-    },
     value: {
       description: 'value field description',
       type: new GraphQLNonNull(ValuesUnion),
       resolve: ({ type, value }) => ({ type, ...value }),
+    },
+    label: {
+      description: 'label field description',
+      type: new GraphQLNonNull(GraphQLString),
     },
     helperText: {
       description: 'helperText field description',

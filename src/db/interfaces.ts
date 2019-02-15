@@ -30,10 +30,12 @@ export interface IFieldValue {
   enabled?: boolean;
   id?: string;
   text?: string;
-  number?: number;
-  ids?: [string];
-  parentValue?: string;
-  customValueOptionValue?: string;
+  ownValue: {
+    enabled?: boolean;
+    id?: string;
+    text?: string;
+  };
+  nestedValue: IFieldValue;
 }
 
 export interface ITaskField {

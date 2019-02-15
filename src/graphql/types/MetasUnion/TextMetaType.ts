@@ -28,5 +28,13 @@ export const TextMetaType = new GraphQLObjectType({
       description: 'input type field description',
       type: new GraphQLNonNull(GraphQLString),
     },
+    label: {
+      description: 'label field description',
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    helperText: {
+      description: 'helperText field description',
+      type: new GraphQLNonNull(GraphQLString),
+    },
   }),
 });
