@@ -1,7 +1,7 @@
 import { Document, Model, model, Schema} from 'mongoose';
 
 import { ITask } from '../interfaces';
-import { FieldSchema } from '../schemas/FieldSchema';
+import { FieldSchema } from './FieldSchema';
 
 export interface ITaskDocument extends ITask, Document {}
 

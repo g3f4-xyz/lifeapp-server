@@ -1,8 +1,8 @@
 import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
-// import { FieldType } from '../FieldType';
+import { IContext, IFieldMeta } from '../../../db/interfaces';
 import { ChoiceOptionsMetaType } from './ChoiceOptionsType';
 
-export const ChoiceMetaType = new GraphQLObjectType({
+export const ChoiceMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
   name: 'ChoiceMetaType',
   description: 'choice meta type',
   fields: () => ({

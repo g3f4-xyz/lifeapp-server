@@ -1,12 +1,12 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { IContext, ITaskField } from '../../db/interfaces';
+import { IContext, IField } from '../../db/interfaces';
 import { nodeInterface } from '../nodeDefinitions';
 import { FieldTypeEnum } from './Enums/FieldTypeEnum';
 import { MetasUnion } from './MetasUnion/MetasUnion';
 import { ValuesUnion } from './ValuesUnion/ValuesUnion';
 
-export const FieldType: GraphQLObjectType<ITaskField, IContext> = new GraphQLObjectType<ITaskField, IContext>({
+export const FieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
   name: 'FieldType',
   description: 'field type',
   fields: () => ({
@@ -19,30 +19,26 @@ export const FieldType: GraphQLObjectType<ITaskField, IContext> = new GraphQLObj
       description: 'order field description',
       type: new GraphQLNonNull(GraphQLInt),
     },
-    type: {
+    fieldType: {
       description: 'field type description',
       type: new GraphQLNonNull(FieldTypeEnum),
     },
     value: {
       description: 'value field description',
       type: new GraphQLNonNull(ValuesUnion),
-      resolve: ({ type, value }) => ({ type, ...value }),
-    },
-    label: {
-      description: 'label field description',
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    helperText: {
-      description: 'helperText field description',
-      type: new GraphQLNonNull(GraphQLString),
+      resolve(field) {
+        const { fieldType, value } = field;
+
+        return ({ fieldType, ...value });
+      },
     },
     meta: {
       description: 'meta field description',
       type: new GraphQLNonNull(MetasUnion),
-      resolve: (field) => {
-        const { type, meta } = field;
+      resolve(field) {
+        const { fieldType, meta } = field;
 
-        return ({ type, ...meta });
+        return ({ ...meta, fieldType });
       },
     },
   }),

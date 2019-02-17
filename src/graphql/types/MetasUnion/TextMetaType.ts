@@ -24,9 +24,9 @@ export const TextMetaType = new GraphQLObjectType({
       description: 'max',
       type: GraphQLInt,
     },
-    type: {
-      description: 'input type field description',
-      type: new GraphQLNonNull(GraphQLString),
+    inputType: {
+      description: 'inputType field description',
+      type: GraphQLString,
     },
     label: {
       description: 'label field description',

@@ -1,6 +1,7 @@
-import { FIELD_TYPE_VALUE_MAP, FIELD_TYPE, TASK_TYPE } from '../constants';
+import { FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
 import { emitter } from './emitter';
 import {
+  IField,
   IFieldValue,
   ISettings,
   ISettingsNotificationsGeneral,
@@ -8,12 +9,50 @@ import {
   ISubscription,
   ISubscriptionData,
   ITask,
-  ITaskField,
   ITaskType,
 } from './interfaces';
+import { FieldModel, IFieldDocument } from './models/FieldSchema';
 import { SettingsModel } from './models/SettingsModel';
 import { TaskModel } from './models/TaskModel';
 import { TaskTypeModel } from './models/TaskTypeModel';
+
+const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
+  [FIELD_TYPE.CHOICE]: {
+    id: '',
+  },
+  [FIELD_TYPE.SWITCH]: {
+    enabled: false,
+  },
+  [FIELD_TYPE.TEXT]: {
+    text: '',
+  },
+  [FIELD_TYPE.TRIPLE_CHOICE]: {
+    ownValue: '',
+    childrenValue: {
+      ownValue: null,
+      childrenValue: null,
+    },
+  },
+};
+
+export const mapFieldDefaultValue = (field: IField): IField => {
+  const { fieldType } = field;
+
+  return {
+    ...field,
+    value: defaultValuesByTypeMap[fieldType],
+  };
+};
+
+export const getFieldByFieldId = async (fieldId: string): Promise<IFieldDocument> => {
+  try {
+    const fieldDocument = await FieldModel.findOne({ fieldId });
+
+    return fieldDocument.toJSON();
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const addSubscription = async (
   ownerId: string,
@@ -31,7 +70,7 @@ export const addSubscription = async (
       },
     });
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -43,7 +82,7 @@ export const addSettings = async (settings: ISettings): Promise<ISettings> => {
 
     return newSettings.toJSON();
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -57,7 +96,7 @@ export const addTask = async (task: ITask): Promise<ITask> => {
 
     return newTask.toJSON();
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -68,7 +107,7 @@ export const cleanApplication = async (ownerId: string): Promise<string> => {
 
     return ownerId;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -78,7 +117,7 @@ export const deleteSettings = async (ownerId: string): Promise<string> => {
 
     return ownerId;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -90,7 +129,7 @@ export const deleteTask = async (id: string): Promise<string> => {
 
     return id;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -102,7 +141,7 @@ export const deleteTasks = async (ownerId: string): Promise<string> => {
 
     return ownerId;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -118,7 +157,7 @@ export const deleteSubscription = async (ownerId: string, subscriptionId: string
 
     return ownerId;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -128,54 +167,30 @@ export const getSubscription = async (ownerId: string, subscriptionId: string): 
 
     return settings.notifications.subscriptions.id(subscriptionId).toJSON();
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
 export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Promise<ITask> => {
   try {
-    const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
-      [FIELD_TYPE.CHOICE]: {
-        id: '',
-      },
-      [FIELD_TYPE.SWITCH]: {
-        enabled: false,
-      },
-      [FIELD_TYPE.TEXT]: {
-        text: '',
-      },
-    };
-    const mapFieldDefaultValue = (field: ITaskField) => {
-      const { type } = field;
-
-      return {
-        ...field,
-        value: defaultValuesByTypeMap[type],
-      };
-    };
     const taskType = await TaskTypeModel.findOne({ typeId: taskTypeId });
-    const { parentID, fields } = taskType.toJSON();
-    const parentFields = await getParentFieldsRecursive(parentID);
-
+    const { parentTypeIds, fieldsIds } = taskType.toJSON();
+    const parentFieldsIds = await getParentFieldsIds(parentTypeIds);
+    const filteredFieldsIds = [...fieldsIds, ...parentFieldsIds]
+      .filter((value, index, arr) => arr.indexOf(value) === index);
+    const fields = await Promise.all(filteredFieldsIds.map(getFieldByFieldId));
     const taskData = {
       ownerId,
       taskType: taskTypeId,
-      fields: [...fields, ...parentFields.filter((item, idx, arr) => {
-        const index = arr.findIndex((it) => {
-          return it.fieldId === item.fieldId;
-        });
-
-        return index === idx;
-      })].map(mapFieldDefaultValue),
+      fields: fields.map(mapFieldDefaultValue),
     };
-
     const task = new TaskModel(taskData);
 
     await task.save();
 
     return task.toJSON();
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -209,15 +224,18 @@ export const getSettings = async (ownerId: string): Promise<ISettings> => {
 
     return await addSettings(settings);
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
 export const getTask = async (id: string): Promise<ITask> => {
   try {
-    return (await TaskModel.findById(id)).toJSON();
+
+    const task = await TaskModel.findById(id);
+
+    return task.toJSON();
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -225,7 +243,7 @@ export const getTaskList = async (ownerId: string): Promise<ITask[]> => {
   try {
     return await TaskModel.find({ ownerId }).sort({ _id : -1 });
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -233,37 +251,37 @@ export const getTaskType = async (id: string): Promise<ITaskType> => {
   try {
     return (await TaskTypeModel.findById(id)).toJSON();
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
-const getParentFieldsRecursive = async (ids: string | string[]): Promise<ITaskField[]> => {
-  if (!ids || (Array.isArray(ids) && ids.length === 0)) {
+const getParentFieldsIds = async (
+  parentTypeIds: ITaskType['parentTypeIds'],
+): Promise<string[]> => {
+  if (parentTypeIds.length === 0) {
     return [];
   }
 
-  if (Array.isArray(ids)) {
-    const fieldsSet = await Promise.all(ids.map(getParentFieldsRecursive));
+  const fieldsIdsSet = await Promise.all(parentTypeIds.map(async (typeId) => {
+    const parentType = await TaskTypeModel.findOne({ typeId });
+    const parentFieldsIds = await getParentFieldsIds(parentType.parentTypeIds);
 
-    return fieldsSet.reduce((acc, fields) => [...acc, ...fields], []);
-  }
+    return [
+      ...parentType.fieldsIds,
+      ...parentFieldsIds,
+    ];
+  }));
 
-  const taskType = await TaskTypeModel.findOne({ typeId: ids });
-  const { fields, parentID } = taskType.toJSON() || { fields: [] as ITaskField[], parentID: [] };
-
-  return [
-    ...fields,
-    ...(await getParentFieldsRecursive(parentID)),
-  ];
+  return fieldsIdsSet.reduce((acc, arr) => [...acc, ...arr], []);
 };
 
 export const getTaskTypeList = async (): Promise<ITaskType[]> => {
   try {
     const taskTypeList = await TaskTypeModel.find().sort({ _id : -1 });
 
-    return taskTypeList.filter((taskType) => taskType.parentID && taskType.name).map((model) => model.toJSON());
+    return taskTypeList.filter((taskType) => taskType.parentTypeIds && taskType.label).map((model) => model.toJSON());
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -282,7 +300,7 @@ export const saveNotificationsGeneralSetting = async (
 
     return general;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -301,7 +319,7 @@ export const saveNotificationsTypesSetting = async (
 
     return types;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -317,7 +335,7 @@ export const saveTask = async (
 
     return await getTask(taskId);
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -325,7 +343,7 @@ export const updateTaskField = async (
   taskId: string,
   fieldId: string,
   value: IFieldValue,
-): Promise<any> => {
+): Promise<IFieldValue> => {
   try {
     const taskModel = await TaskModel.findById(taskId);
 
@@ -342,6 +360,6 @@ export const updateTaskField = async (
     return value;
 
   } catch (error) {
-    return error;
+    throw error;
   }
 };

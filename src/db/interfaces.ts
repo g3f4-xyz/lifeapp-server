@@ -9,42 +9,33 @@ export interface IFieldMetaOptions {
   value: string;
 }
 
-export interface IFieldMetaOptionsSet {
-  customValueOptionMask: string;
-  parentValue: string;
-  options: [IFieldMetaOptions];
-}
-
 export interface IFieldMeta {
   required: boolean;
   minLength: number;
   maxLength: number;
+  min: number;
+  max: number;
   options: [IFieldMetaOptions];
+  label: string;
+  helperText: string;
   defaultValue: string;
-  parentID: string;
-  type: string;
-  optionsSet: [IFieldMetaOptionsSet];
+  inputType: string;
+  parentValue: string;
+  fieldType: string;
+  ownMeta: IFieldMeta;
+  childrenMeta: [IFieldMeta];
 }
 
 export interface IFieldValue {
   enabled?: boolean;
   id?: string;
   text?: string;
-  ownValue: {
-    enabled?: boolean;
-    id?: string;
-    text?: string;
-  };
-  nestedValue: IFieldValue;
 }
 
-export interface ITaskField {
+export interface IField {
   fieldId: string;
-  fieldIds: string;
-  type: string;
+  fieldType: string;
   order: number;
-  label: string;
-  helperText: string;
   meta: IFieldMeta;
   value: IFieldValue;
 }
@@ -52,16 +43,16 @@ export interface ITaskField {
 export interface ITask {
   ownerId: string;
   taskType: string;
-  fields: ITaskField[];
+  fields: IField[];
 }
 
 export interface ITaskType {
-  name: string;
   typeId: string;
+  label: string;
   description: string;
   order: number;
-  parentID: string[];
-  fields: ITaskField[];
+  parentTypeIds: string[];
+  fieldsIds: string[];
 }
 
 export interface ISubscriptionData extends PushSubscription {
