@@ -30,6 +30,8 @@ export interface IFieldValue {
   enabled?: boolean;
   id?: string;
   text?: string;
+  ownValue?: string;
+  childrenValue?: this;
 }
 
 export interface IField {

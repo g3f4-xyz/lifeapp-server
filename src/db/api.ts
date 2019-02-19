@@ -357,7 +357,9 @@ export const updateTaskField = async (
 
     await taskModel.save();
 
-    return value;
+    const { value: updatedFieldValue } = taskModel.fields.find((field) => field.fieldId === fieldId);
+
+    return updatedFieldValue;
 
   } catch (error) {
     throw error;

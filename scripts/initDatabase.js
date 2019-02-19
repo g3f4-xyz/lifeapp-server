@@ -340,10 +340,8 @@ dbHook.tasktypes.insert([{
   label: 'Routine',
   description: 'Zadanie typu rutyna pozwala na ustawienie akcji do wykonania w danych cyklu.',
   order: 3,
-  // parentTypeIds: ['TASK'],
-  // fieldsIds: ['CYCLE', 'ACTION', 'ACTIVE'],
-  parentTypeIds: [],
-  fieldsIds: ['CYCLE'],
+  parentTypeIds: ['TASK'],
+  fieldsIds: ['CYCLE', 'ACTION', 'ACTIVE'],
 }]);
 
 const assignFieldValue = (field, value = null) => {

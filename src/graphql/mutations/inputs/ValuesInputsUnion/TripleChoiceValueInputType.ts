@@ -15,7 +15,17 @@ export const TripleChoiceValueInputType = new GraphQLInputObjectType({
             type: GraphQLString,
           },
           childrenValue: {
-            type: GraphQLString,
+            type: new GraphQLInputObjectType({
+              name: 'TripleChoiceNestedChildrenValueInputType',
+              fields: () => ({
+                ownValue: {
+                  type: GraphQLString,
+                },
+                childrenValue: {
+                  type: GraphQLString,
+                },
+              }),
+            }),
           },
         }),
       }),
