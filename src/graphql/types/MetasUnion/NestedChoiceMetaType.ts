@@ -3,8 +3,8 @@ import { IContext, IFieldMeta } from '../../../db/interfaces';
 import { FieldTypeEnum } from '../Enums/FieldTypeEnum';
 import { MetasUnion } from './MetasUnion';
 
-export const TripleChoiceMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
-  name: 'TripleChoiceMetaType',
+export const NestedChoiceMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
+  name: 'NestedChoiceMetaType',
   description: 'partial choice meta type',
   fields: () => ({
     fieldType: {

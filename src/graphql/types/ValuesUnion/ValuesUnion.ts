@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
 import { FIELD_TYPE_VALUE_MAP } from '../../../constants';
 import { IField } from '../../../db/interfaces';
-import { TripleChoiceValueType } from './TripleChoiceValueType';
+import { NestedChoiceValueType } from './NestedChoiceValueType';
 import { SwitchValueType } from './SwitchValueType';
 import { ChoiceValueType } from './ChoiceValueType';
 import { TextValueType } from './TextValueType';
@@ -10,7 +10,7 @@ const TYPES: FIELD_TYPE_VALUE_MAP<GraphQLObjectType> = {
   SWITCH: SwitchValueType,
   CHOICE: ChoiceValueType,
   TEXT: TextValueType,
-  TRIPLE_CHOICE: TripleChoiceValueType,
+  NESTED_CHOICE: NestedChoiceValueType,
 };
 
 export const ValuesUnion = new GraphQLUnionType({

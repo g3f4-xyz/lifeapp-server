@@ -1,7 +1,7 @@
 import { GraphQLInputObjectType, GraphQLString } from 'graphql';
 
-export const TripleChoiceValueInputType = new GraphQLInputObjectType({
-  name: 'TripleChoiceValueInputType',
+export const NestedChoiceValueInputType = new GraphQLInputObjectType({
+  name: 'NestedChoiceValueInputType',
   description: 'partial choice value input type',
   fields: () => ({
     ownValue: {
@@ -9,14 +9,14 @@ export const TripleChoiceValueInputType = new GraphQLInputObjectType({
     },
     childrenValue: {
       type: new GraphQLInputObjectType({
-        name: 'TripleChoiceChildrenValueInputType',
+        name: 'NestedChoiceChildrenValueInputType',
         fields: () => ({
           ownValue: {
             type: GraphQLString,
           },
           childrenValue: {
             type: new GraphQLInputObjectType({
-              name: 'TripleChoiceNestedChildrenValueInputType',
+              name: 'NestedChoiceNestedChildrenValueInputType',
               fields: () => ({
                 ownValue: {
                   type: GraphQLString,

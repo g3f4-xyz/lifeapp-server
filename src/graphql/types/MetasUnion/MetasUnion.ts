@@ -4,13 +4,13 @@ import { IField } from '../../../db/interfaces';
 import { ChoiceMetaType } from './ChoiceMetaType';
 import { SwitchMetaType } from './SwitchMetaType';
 import { TextMetaType } from './TextMetaType';
-import { TripleChoiceMetaType } from './TripleChoiceMetaType';
+import { NestedChoiceMetaType } from './NestedChoiceMetaType';
 
 const TYPES: FIELD_TYPE_VALUE_MAP<GraphQLObjectType> = {
   [FIELD_TYPE.CHOICE]: ChoiceMetaType,
   [FIELD_TYPE.TEXT]: TextMetaType,
   [FIELD_TYPE.SWITCH]: SwitchMetaType,
-  [FIELD_TYPE.TRIPLE_CHOICE]: TripleChoiceMetaType,
+  [FIELD_TYPE.NESTED_CHOICE]: NestedChoiceMetaType,
 };
 
 export const MetasUnion = new GraphQLUnionType({

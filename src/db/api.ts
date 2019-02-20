@@ -26,7 +26,7 @@ const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
   [FIELD_TYPE.TEXT]: {
     text: '',
   },
-  [FIELD_TYPE.TRIPLE_CHOICE]: {
+  [FIELD_TYPE.NESTED_CHOICE]: {
     ownValue: '',
     childrenValue: {
       ownValue: null,

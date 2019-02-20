@@ -12,8 +12,8 @@ export const FieldTypeEnum = new GraphQLEnumType({
     CHOICE: {
       value: 'CHOICE',
     },
-    TRIPLE_CHOICE: {
-      value: 'TRIPLE_CHOICE',
+    NESTED_CHOICE: {
+      value: 'NESTED_CHOICE',
     },
   },
 });

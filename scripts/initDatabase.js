@@ -163,7 +163,7 @@ const FIELDS_CONFIG = {
   },
   CYCLE: {
     fieldId: 'CYCLE',
-    fieldType: 'TRIPLE_CHOICE',
+    fieldType: 'NESTED_CHOICE',
     order: 5,
     meta: {
       ownMeta: {
@@ -188,7 +188,7 @@ const FIELDS_CONFIG = {
       childrenMeta: [
         {
           parentValue: 'TIME_CYCLE',
-          fieldType: 'TRIPLE_CHOICE',
+          fieldType: 'NESTED_CHOICE',
           meta: {
             ownMeta: {
               fieldType: 'CHOICE',
@@ -365,7 +365,7 @@ const assignFieldValue = (field, value = null) => {
         text: value,
       },
     }, field);
-  } else if (fieldType === 'TRIPLE_CHOICE') {
+  } else if (fieldType === 'NESTED_CHOICE') {
     return Object.assign({
       value: {
         ownValue: value,
