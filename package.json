@@ -11,8 +11,8 @@
     "lint:fix": "tslint -c tslint.json 'src/**/*.ts' --fix",
     "init:db:local": "mongo --eval \"var DB_NAME='lifeapp'\" scripts/initDatabase.js",
     "init:db:remote": "mongo --eval \"var DB_NAME='mo1563_lifeapp'\" --port 27017 -u mo1563_lifeapp -p Gitara15 --host 85.194.240.29 mo1563_lifeapp scripts/initDatabase.js",
-    "start": "npm run client:build:heroku && DB=remote ts-node src",
-    "start:local": "npm run client:build:local && ts-node src",
+    "start": "yarn run client:build:heroku && DB=remote ts-node src",
+    "start:local": "yarn run client:build:local && ts-node src",
     "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
