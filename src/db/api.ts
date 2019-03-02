@@ -151,7 +151,7 @@ export const deleteSubscription = async (ownerId: string, subscriptionId: string
       ownerId,
     }, {
       $pull: {
-        ['notifications.subscriptions']: { subscriptionId },
+        ['notifications.subscriptions']: { _id: subscriptionId },
       },
     });
 
