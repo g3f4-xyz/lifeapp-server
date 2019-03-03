@@ -187,7 +187,9 @@ const FIELDS_CONFIG = {
       },
       childrenMeta: [
         {
-          parentValue: 'TIME_CYCLE',
+          parentValue: {
+            id: 'TIME_CYCLE',
+          },
           fieldType: 'NESTED',
           meta: {
             ownMeta: {
@@ -213,7 +215,9 @@ const FIELDS_CONFIG = {
               }],
             },
             childrenMeta: [{
-              parentValue: 'MINUTES',
+              parentValue: {
+                id: 'MINUTES',
+              },
               fieldType: 'TEXT',
               meta: {
                 label: 'Minutes time cycle',
@@ -225,7 +229,9 @@ const FIELDS_CONFIG = {
           },
         },
         {
-          parentValue: 'DAY_CYCLE',
+          parentValue: {
+            id: 'DAY_CYCLE',
+          },
           fieldType: 'CHOICE',
           meta: {
             label: 'Day cycle',
@@ -244,7 +250,9 @@ const FIELDS_CONFIG = {
           },
         },
         {
-          parentValue: 'WEEK_CYCLE',
+          parentValue: {
+            id: 'WEEK_CYCLE',
+          },
           fieldType: 'CHOICE',
           meta: {
             label: 'Week cycle',
@@ -266,7 +274,9 @@ const FIELDS_CONFIG = {
           },
         },
         {
-          parentValue: 'MONTH_CYCLE',
+          parentValue: {
+            id: 'MONTH_CYCLE',
+          },
           fieldType: 'CHOICE',
           meta: {
             label: 'Month cycle',
@@ -300,7 +310,9 @@ const FIELDS_CONFIG = {
       },
       childrenMeta: [
         {
-          parentValue: true,
+          parentValue: {
+            enabled: true,
+          },
           fieldType: 'TEXT',
           meta: {
             label: 'Additional note',

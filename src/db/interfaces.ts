@@ -20,7 +20,7 @@ export interface IFieldMeta {
   helperText: string;
   defaultValue: string;
   inputType: string;
-  parentValue: string;
+  parentValue: IFieldValue;
   fieldType: string;
   ownMeta: IFieldMeta;
   childrenMeta: [IFieldMeta];
@@ -29,7 +29,6 @@ export interface IFieldMeta {
 export interface IFieldValue {
   enabled?: boolean;
   id?: string;
-  ids?: string[];
   text?: string;
   ownValue?: this;
   childrenValue?: this;

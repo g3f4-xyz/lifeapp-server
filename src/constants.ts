@@ -20,9 +20,9 @@ export enum FIELD_TYPE {
 
 export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FIELD_TYPE, V>;
 
-export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string[]> = {
-  CHOICE: ['id'],
-  NESTED: ['ownValue', 'childrenValue'],
-  SWITCH: ['enabled'],
-  TEXT: ['text'],
+export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string> = {
+  CHOICE: 'id',
+  NESTED: 'ownValue',
+  SWITCH: 'enabled',
+  TEXT: 'text',
 };

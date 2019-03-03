@@ -1,6 +1,7 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { IContext, IFieldMeta } from '../../../db/interfaces';
 import { FieldTypeEnum } from '../Enums/FieldTypeEnum';
+import { ValuesUnion } from '../ValuesUnion/ValuesUnion';
 import { MetasUnion } from './MetasUnion';
 
 export const NestedMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
@@ -13,7 +14,7 @@ export const NestedMetaType: GraphQLObjectType<IFieldMeta, IContext> = new Graph
     },
     parentValue: {
       description: 'parentValue description',
-      type: GraphQLString,
+      type: ValuesUnion,
     },
     ownMeta: {
       description: 'ownMeta description',
@@ -31,7 +32,7 @@ export const NestedMetaType: GraphQLObjectType<IFieldMeta, IContext> = new Graph
           },
           parentValue: {
             description: '',
-            type: GraphQLString,
+            type: ValuesUnion,
           },
           meta: {
             description: '',

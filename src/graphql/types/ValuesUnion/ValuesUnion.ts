@@ -18,11 +18,10 @@ export const ValuesUnion = new GraphQLUnionType({
   description: 'Values Union',
   types: Object.values(TYPES),
   resolveType(value: IFieldValue) {
-    const valueKeys = Object.keys(value);
+    const valueKey = Object.keys(value);
     const typeKey = Object
       .keys(TYPES)
-      .find(fieldType => FIELD_VALUE_KEYS_MAP[fieldType]
-        .filter((val: string) => -1 !== valueKeys.indexOf(val)).length > 0);
+      .find(fieldType => valueKey.includes(FIELD_VALUE_KEYS_MAP[fieldType]));
     const type = TYPES[typeKey];
 
     if (type) {

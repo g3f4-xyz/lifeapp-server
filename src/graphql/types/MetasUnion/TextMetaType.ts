@@ -1,9 +1,14 @@
 import { GraphQLBoolean, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import { FieldTypeEnum } from '../Enums/FieldTypeEnum';
 
 export const TextMetaType = new GraphQLObjectType({
   name: 'TextMetaType',
   description: 'text meta type',
   fields: () => ({
+    fieldType: {
+      description: 'fieldType',
+      type: new GraphQLNonNull(FieldTypeEnum),
+    },
     required: {
       description: 'required',
       type: new GraphQLNonNull(GraphQLBoolean),

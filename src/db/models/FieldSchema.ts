@@ -1,16 +1,9 @@
 import { Document, model, Model, Schema } from 'mongoose';
 import { IField } from '../interfaces';
 import { FieldMetaSchema } from '../schemas/FieldMetaSchema';
+import { FieldValueSchema } from '../schemas/FieldValueSchema';
 
 export interface IFieldDocument extends IField, Document {}
-
-const FIELD_VALUE_DEFINITION = {
-  enabled: Boolean,
-  id: String,
-  text: String,
-  ownValue: this,
-  childrenValue: this,
-};
 
 const FIELD_DEFINITION = {
   _id: Schema.Types.ObjectId,
@@ -18,7 +11,7 @@ const FIELD_DEFINITION = {
   fieldType: String,
   order: Number,
   meta: FieldMetaSchema,
-  value: FIELD_VALUE_DEFINITION,
+  value: FieldValueSchema,
 };
 
 export const FieldSchema: Schema<IField> = new Schema(FIELD_DEFINITION);

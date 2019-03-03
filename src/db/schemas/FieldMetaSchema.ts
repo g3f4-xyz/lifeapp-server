@@ -17,7 +17,11 @@ const FIELD_META_DEFINITION = {
     value: String,
   }],
   defaultValue: String,
-  parentValue: String,
+  parentValue: {
+    id: String,
+    enabled: Boolean,
+    text: String,
+  },
   ownMeta: this,
   childrenMeta: [this],
 };
