@@ -9,6 +9,7 @@ const FIELD_META_DEFINITION = {
   maxLength: Number,
   min: Number,
   max: Number,
+  inputType: String,
   label: String,
   helperText: String,
   options: [{

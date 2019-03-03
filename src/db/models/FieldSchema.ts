@@ -17,7 +17,6 @@ const FIELD_DEFINITION = {
   fieldId: String,
   fieldType: String,
   order: Number,
-  partial: { type: Schema.Types.ObjectId, ref: 'Field' },
   meta: FieldMetaSchema,
   value: FIELD_VALUE_DEFINITION,
 };

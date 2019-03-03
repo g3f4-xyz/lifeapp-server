@@ -5,7 +5,7 @@ import { MetasUnion } from './MetasUnion';
 
 export const NestedChoiceMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
   name: 'NestedChoiceMetaType',
-  description: 'partial choice meta type',
+  description: 'nested choice meta type',
   fields: () => ({
     fieldType: {
       description: 'fieldType description',

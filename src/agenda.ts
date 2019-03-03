@@ -11,7 +11,7 @@ import { ITask } from './db/interfaces';
 const agenda = new Agenda({ db: { address: DB_HOST } });
 
 agenda.define('notification', async (job, done): Promise<void> => {
-  const { ownerId, taskType, notification: { body, title } } = job.attrs.data;
+  const { ownerId, taskType, title, notification } = job.attrs.data;
 
   const {
     notifications: {
@@ -38,8 +38,8 @@ agenda.define('notification', async (job, done): Promise<void> => {
       const payload = JSON.stringify({
         title,
         notification: {
-          body,
           icon: 'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4',
+          ...notification,
         },
       });
 
@@ -74,9 +74,9 @@ emitter.on('task:added', async (task: ITask) => {
 
     await agenda.schedule(when, 'notification', {
       ownerId: task.ownerId,
+      title: `You have meeting with ${person}`,
       notification: {
         body: `Time: ${date} | Location: ${location}`,
-        title: `You have meeting with ${person}`,
       },
       taskType: task.taskType,
     });
@@ -91,9 +91,9 @@ emitter.on('task:added', async (task: ITask) => {
 
     await agenda.schedule(when, 'notification', {
       ownerId: task.ownerId,
+      title: `Upcoming event today: ${title}`,
       notification: {
         body: `Time: ${date} | Location: ${location} | Duration: ${duration}`,
-        title: `Upcoming event today: ${title}`,
       },
       taskType: task.taskType,
     });
