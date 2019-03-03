@@ -29,8 +29,9 @@ export interface IFieldMeta {
 export interface IFieldValue {
   enabled?: boolean;
   id?: string;
+  ids?: string[];
   text?: string;
-  ownValue?: string;
+  ownValue?: this;
   childrenValue?: this;
 }
 

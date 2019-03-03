@@ -3,9 +3,9 @@ import { IContext, IFieldMeta } from '../../../db/interfaces';
 import { FieldTypeEnum } from '../Enums/FieldTypeEnum';
 import { MetasUnion } from './MetasUnion';
 
-export const NestedChoiceMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
-  name: 'NestedChoiceMetaType',
-  description: 'nested choice meta type',
+export const NestedMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
+  name: 'NestedMetaType',
+  description: 'nested meta type',
   fields: () => ({
     fieldType: {
       description: 'fieldType description',
@@ -22,7 +22,7 @@ export const NestedChoiceMetaType: GraphQLObjectType<IFieldMeta, IContext> = new
     childrenMeta: {
       description: 'childrenMeta description',
       type: new GraphQLList(new GraphQLObjectType({
-        name: 'ChildrenMeta',
+        name: 'NestedChildrenMeta',
         description: '',
         fields: () => ({
           fieldType: {

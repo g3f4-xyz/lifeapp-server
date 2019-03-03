@@ -1,11 +1,11 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { updateTaskField } from '../../db/api';
-import { NestedChoiceValueType } from '../types/ValuesUnion/NestedChoiceValueType';
-import { NestedChoiceValueInputType } from './inputs/ValuesInputsUnion/NestedChoiceValueInputType';
+import { NestedValueType } from '../types/ValuesUnion/NestedValueType';
+import { NestedValueInputType } from './inputs/ValuesInputsUnion/NestedValueInputType';
 
-export const updateTaskNestedChoiceFieldMutation = mutationWithClientMutationId({
-  name: 'updateTaskNestedChoiceFieldMutation',
+export const updateTaskNestedFieldMutation = mutationWithClientMutationId({
+  name: 'updateTaskNestedFieldMutation',
   inputFields: {
     taskId: {
       type: new GraphQLNonNull(GraphQLString),
@@ -14,7 +14,7 @@ export const updateTaskNestedChoiceFieldMutation = mutationWithClientMutationId(
       type: new GraphQLNonNull(GraphQLString),
     },
     fieldValue: {
-      type: new GraphQLNonNull(NestedChoiceValueInputType),
+      type: new GraphQLNonNull(NestedValueInputType),
     },
   },
   outputFields: {
@@ -25,7 +25,7 @@ export const updateTaskNestedChoiceFieldMutation = mutationWithClientMutationId(
       type: new GraphQLNonNull(GraphQLString),
     },
     updatedFieldValue: {
-      type: new GraphQLNonNull(NestedChoiceValueType),
+      type: new GraphQLNonNull(NestedValueType),
     },
   },
   mutateAndGetPayload: async ({ fieldId, fieldValue, taskId }) => {

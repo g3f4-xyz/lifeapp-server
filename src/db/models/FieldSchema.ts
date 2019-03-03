@@ -8,7 +8,7 @@ const FIELD_VALUE_DEFINITION = {
   enabled: Boolean,
   id: String,
   text: String,
-  ownValue: String,
+  ownValue: this,
   childrenValue: this,
 };
 

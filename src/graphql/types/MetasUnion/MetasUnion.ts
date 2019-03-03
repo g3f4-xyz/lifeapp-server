@@ -1,16 +1,16 @@
 import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
-import { FIELD_TYPE, FIELD_TYPE_VALUE_MAP } from '../../../constants';
+import { FIELD_TYPE_VALUE_MAP } from '../../../constants';
 import { IField } from '../../../db/interfaces';
 import { ChoiceMetaType } from './ChoiceMetaType';
+import { NestedMetaType } from './NestedMetaType';
 import { SwitchMetaType } from './SwitchMetaType';
 import { TextMetaType } from './TextMetaType';
-import { NestedChoiceMetaType } from './NestedChoiceMetaType';
 
 const TYPES: FIELD_TYPE_VALUE_MAP<GraphQLObjectType> = {
-  [FIELD_TYPE.CHOICE]: ChoiceMetaType,
-  [FIELD_TYPE.TEXT]: TextMetaType,
-  [FIELD_TYPE.SWITCH]: SwitchMetaType,
-  [FIELD_TYPE.NESTED_CHOICE]: NestedChoiceMetaType,
+  CHOICE: ChoiceMetaType,
+  TEXT: TextMetaType,
+  SWITCH: SwitchMetaType,
+  NESTED: NestedMetaType,
 };
 
 export const MetasUnion = new GraphQLUnionType({

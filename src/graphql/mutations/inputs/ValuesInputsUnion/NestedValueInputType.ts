@@ -1,28 +1,29 @@
-import { GraphQLInputObjectType, GraphQLString } from 'graphql';
+import { GraphQLInputObjectType } from 'graphql';
+import { ValueInputType } from '../ValueInputType';
 
-export const NestedChoiceValueInputType = new GraphQLInputObjectType({
-  name: 'NestedChoiceValueInputType',
+export const NestedValueInputType = new GraphQLInputObjectType({
+  name: 'NestedValueInputType',
   description: 'nested choice value input type',
   fields: () => ({
     ownValue: {
-      type: GraphQLString,
+      type: ValueInputType,
     },
     childrenValue: {
       type: new GraphQLInputObjectType({
-        name: 'NestedChoiceChildrenValueInputType',
+        name: 'NestedChildrenValueInputType',
         fields: () => ({
           ownValue: {
-            type: GraphQLString,
+            type: ValueInputType,
           },
           childrenValue: {
             type: new GraphQLInputObjectType({
-              name: 'NestedChoiceNestedChildrenValueInputType',
+              name: 'NestedNestedChildrenValueInputType',
               fields: () => ({
                 ownValue: {
-                  type: GraphQLString,
+                  type: ValueInputType,
                 },
                 childrenValue: {
-                  type: GraphQLString,
+                  type: ValueInputType,
                 },
               }),
             }),

@@ -26,11 +26,6 @@ export const FieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectT
     value: {
       description: 'value field description',
       type: new GraphQLNonNull(ValuesUnion),
-      resolve(field) {
-        const { fieldType, value } = field;
-
-        return ({ fieldType, ...value });
-      },
     },
     meta: {
       description: 'meta field description',

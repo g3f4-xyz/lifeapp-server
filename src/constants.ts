@@ -15,7 +15,14 @@ export enum FIELD_TYPE {
   SWITCH = 'SWITCH',
   CHOICE = 'CHOICE',
   TEXT = 'TEXT',
-  NESTED_CHOICE = 'NESTED_CHOICE',
+  NESTED = 'NESTED',
 }
 
 export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FIELD_TYPE, V>;
+
+export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string[]> = {
+  CHOICE: ['id'],
+  NESTED: ['ownValue', 'childrenValue'],
+  SWITCH: ['enabled'],
+  TEXT: ['text'],
+};

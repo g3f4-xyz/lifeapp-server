@@ -26,12 +26,9 @@ const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
   [FIELD_TYPE.TEXT]: {
     text: '',
   },
-  [FIELD_TYPE.NESTED_CHOICE]: {
-    ownValue: '',
-    childrenValue: {
-      ownValue: null,
-      childrenValue: null,
-    },
+  [FIELD_TYPE.NESTED]: {
+    ownValue: null,
+    childrenValue: null,
   },
 };
 
@@ -241,7 +238,7 @@ export const getTask = async (id: string): Promise<ITask> => {
 
 export const getTaskList = async (ownerId: string): Promise<ITask[]> => {
   try {
-    return await TaskModel.find({ ownerId }).sort({ _id : -1 });
+    return (await TaskModel.find({ ownerId }).sort({ _id : -1 })).map((doc) => doc.toJSON());
   } catch (error) {
     throw error;
   }

@@ -163,7 +163,7 @@ const FIELDS_CONFIG = {
   },
   CYCLE: {
     fieldId: 'CYCLE',
-    fieldType: 'NESTED_CHOICE',
+    fieldType: 'NESTED',
     order: 5,
     meta: {
       ownMeta: {
@@ -188,7 +188,7 @@ const FIELDS_CONFIG = {
       childrenMeta: [
         {
           parentValue: 'TIME_CYCLE',
-          fieldType: 'NESTED_CHOICE',
+          fieldType: 'NESTED',
           meta: {
             ownMeta: {
               fieldType: 'CHOICE',
@@ -287,6 +287,30 @@ const FIELDS_CONFIG = {
       ],
     },
   },
+  NOTIFICATIONS: {
+    fieldId: 'NOTIFICATIONS',
+    fieldType: 'NESTED',
+    order: 8,
+    meta: {
+      ownMeta: {
+        fieldType: 'SWITCH',
+        label: 'Notifications',
+        helperText: 'Notifications helperText',
+        required: true,
+      },
+      childrenMeta: [
+        {
+          parentValue: true,
+          fieldType: 'TEXT',
+          meta: {
+            label: 'Additional note',
+            helperText: 'Additional note helperText',
+            required: true,
+          },
+        },
+      ],
+    },
+  },
 };
 
 // DANE TESTOWE
@@ -296,15 +320,6 @@ dbHook.fields
 
 const findFieldByFieldId = fieldId => dbHook.fields.findOne({ fieldId });
 
-// const FIELDS = Object.keys(FIELDS_CONFIG).map((fieldId) => {
-//   const r = findFieldByType(fieldId);
-//   const fieldConfig = FIELDS_CONFIG[fieldId];
-//
-//   fieldConfig.meta = r._id;
-//
-//   return fieldConfig;
-// }).reduce((acc, field) => Object.assign({}, acc, { [field.fieldId]: field }), {});
-
 // KONFIGURACJA
 // TYPY ZADAŃ
 dbHook.tasktypes.insert([{
@@ -313,7 +328,7 @@ dbHook.tasktypes.insert([{
   description: 'Pole bazowe',
   order: 0,
   parentTypeIds: [],
-  fieldsIds: ['TITLE', 'PRIORITY', 'STATUS'],
+  fieldsIds: ['TITLE', 'PRIORITY', 'STATUS', 'NOTIFICATIONS'],
 }, {
   typeId: 'TODO',
   label: 'ToDo',
@@ -365,7 +380,7 @@ const assignFieldValue = (field, value = null) => {
         text: value,
       },
     }, field);
-  } else if (fieldType === 'NESTED_CHOICE') {
+  } else if (fieldType === 'NESTED') {
     return Object.assign({
       value: {
         ownValue: value,
@@ -418,6 +433,12 @@ dbHook.tasks.insert([
         fieldId: 'NOTE',
         value: 'Notakta testowa. Może być długa i zawierać wiele wierszy.',
       },
+      {
+        fieldId: 'NOTIFICATIONS',
+        value: {
+          enabled: false,
+        },
+      },
     ].map(({ fieldId, value }) => assignFieldValue(findFieldByFieldId(fieldId), value)),
   },
   {
@@ -439,6 +460,12 @@ dbHook.tasks.insert([
       {
         fieldId: 'NOTE',
         value: 'Super extra notatka wowow efekt placebo i kosmici. Notakta testowa. Może być długa i zawierać wiele wierszy.',
+      },
+      {
+        fieldId: 'NOTIFICATIONS',
+        value: {
+          enabled: false,
+        },
       },
     ].map(({ fieldId, value }) => assignFieldValue(findFieldByFieldId(fieldId), value)),
   },

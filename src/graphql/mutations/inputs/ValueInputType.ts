@@ -1,4 +1,4 @@
-import { GraphQLBoolean, GraphQLInputObjectType, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLString, GraphQLList } from 'graphql';
 
 export const ValueInputType = new GraphQLInputObjectType({
   name: 'ValueInputType',
@@ -9,6 +9,9 @@ export const ValueInputType = new GraphQLInputObjectType({
     },
     id: {
       type: GraphQLString,
+    },
+    ids: {
+      type: new GraphQLList(GraphQLString),
     },
     text: {
       type: GraphQLString,
