@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
 import { FIELD_TYPE_VALUE_MAP } from '../../../constants';
-import { IField } from '../../../db/interfaces';
+import { IFieldMeta } from '../../../db/interfaces';
 import { ChoiceMetaType } from './ChoiceMetaType';
 import { NestedMetaType } from './NestedMetaType';
 import { SwitchMetaType } from './SwitchMetaType';
@@ -17,7 +17,8 @@ export const MetasUnion = new GraphQLUnionType({
   name: 'MetasUnion',
   description: 'metas union',
   types: Object.values(TYPES),
-  resolveType(field: IField) {
-    return TYPES[field.fieldType];
+  resolveType(meta: IFieldMeta) {
+    console.log(['resolveType.meta'], meta)
+    return TYPES[meta.fieldType];
   },
 });

@@ -1,4 +1,4 @@
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { IContext, IFieldMeta } from '../../../db/interfaces';
 import { FieldTypeEnum } from '../Enums/FieldTypeEnum';
 import { ValuesUnion } from '../ValuesUnion/ValuesUnion';
@@ -22,29 +22,7 @@ export const NestedMetaType: GraphQLObjectType<IFieldMeta, IContext> = new Graph
     },
     childrenMeta: {
       description: 'childrenMeta description',
-      type: new GraphQLList(new GraphQLObjectType({
-        name: 'NestedChildrenMeta',
-        description: '',
-        fields: () => ({
-          fieldType: {
-            description: '',
-            type: GraphQLString,
-          },
-          parentValue: {
-            description: '',
-            type: ValuesUnion,
-          },
-          meta: {
-            description: '',
-            type: MetasUnion,
-            resolve: (rootValue) => {
-              const { fieldType, meta } = rootValue;
-
-              return ({ ...meta, fieldType });
-            },
-          },
-        }),
-      })),
+      type: new GraphQLList(NestedMetaType),
     },
   }),
 });

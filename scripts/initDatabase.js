@@ -187,53 +187,53 @@ const FIELDS_CONFIG = {
       },
       childrenMeta: [
         {
+          fieldType: 'NESTED',
           parentValue: {
             id: 'TIME_CYCLE',
           },
-          fieldType: 'NESTED',
-          meta: {
-            ownMeta: {
-              fieldType: 'CHOICE',
-              label: 'Time cycle',
-              helperText: 'Time cycle helperText',
-              required: true,
-              options: [{
-                text: 'Half an hour',
-                value: 'HALF_HOUR',
-              }, {
-                text: 'Hour',
-                value: 'HOUR',
-              }, {
-                text: '3 hours',
-                value: 'HOURS_3',
-              }, {
-                text: '12 hours',
-                value: 'HOURS_12',
-              }, {
-                text: 'Interval in minutes',
-                value: 'MINUTES',
-              }],
-            },
-            childrenMeta: [{
-              parentValue: {
-                id: 'MINUTES',
-              },
-              fieldType: 'TEXT',
-              meta: {
-                label: 'Minutes time cycle',
-                helperText: 'Minutes time cycle helperText',
-                required: true,
-                inputType: 'number',
-              },
+          ownMeta: {
+            fieldType: 'CHOICE',
+            label: 'Time cycle',
+            helperText: 'Time cycle helperText',
+            required: true,
+            options: [{
+              text: 'Half an hour',
+              value: 'HALF_HOUR',
+            }, {
+              text: 'Hour',
+              value: 'HOUR',
+            }, {
+              text: '3 hours',
+              value: 'HOURS_3',
+            }, {
+              text: '12 hours',
+              value: 'HOURS_12',
+            }, {
+              text: 'Interval in minutes',
+              value: 'MINUTES',
             }],
           },
+          childrenMeta: [{
+            fieldType: 'NESTED',
+            parentValue: {
+              id: 'MINUTES',
+            },
+            ownMeta: {
+              fieldType: 'TEXT',
+              label: 'Minutes time cycle',
+              helperText: 'Minutes time cycle helperText',
+              required: true,
+              inputType: 'number',
+            },
+          }],
         },
         {
+          fieldType: 'NESTED',
           parentValue: {
             id: 'DAY_CYCLE',
           },
-          fieldType: 'CHOICE',
-          meta: {
+          ownMeta: {
+            fieldType: 'CHOICE',
             label: 'Day cycle',
             helperText: 'Day cycle helperText',
             required: true,
@@ -250,11 +250,12 @@ const FIELDS_CONFIG = {
           },
         },
         {
+          fieldType: 'NESTED',
           parentValue: {
             id: 'WEEK_CYCLE',
           },
-          fieldType: 'CHOICE',
-          meta: {
+          ownMeta: {
+            fieldType: 'CHOICE',
             label: 'Week cycle',
             helperText: 'Week cycle helperText',
             required: true,
@@ -274,11 +275,12 @@ const FIELDS_CONFIG = {
           },
         },
         {
+          fieldType: 'NESTED',
           parentValue: {
             id: 'MONTH_CYCLE',
           },
-          fieldType: 'CHOICE',
-          meta: {
+          ownMeta: {
+            fieldType: 'CHOICE',
             label: 'Month cycle',
             helperText: 'Month cycle helperText',
             required: true,
@@ -310,11 +312,12 @@ const FIELDS_CONFIG = {
       },
       childrenMeta: [
         {
+          fieldType: 'NESTED',
           parentValue: {
             enabled: true,
           },
-          fieldType: 'TEXT',
-          meta: {
+          ownMeta: {
+            fieldType: 'TEXT',
             label: 'Additional note',
             helperText: 'Additional note helperText',
             required: true,
@@ -340,7 +343,7 @@ dbHook.tasktypes.insert([{
   description: 'Pole bazowe',
   order: 0,
   parentTypeIds: [],
-  fieldsIds: ['TITLE', 'PRIORITY', 'STATUS', 'NOTIFICATIONS'],
+  fieldsIds: ['TITLE', 'PRIORITY', 'STATUS'],
 }, {
   typeId: 'TODO',
   label: 'ToDo',
