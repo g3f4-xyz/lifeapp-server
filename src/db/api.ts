@@ -58,7 +58,7 @@ export const addSubscription = async (
   userDeviceType: string,
 ): Promise<void> => {
   try {
-    // TODO nie sprawdzam istnienia ustawień podczas dodawania subskryci
+    // TODO nie sprawdzam istnienia ustawień podczas dodawania subskrycji
     await SettingsModel.findOneAndUpdate({
       ownerId,
     }, {
@@ -89,9 +89,11 @@ export const addTask = async (task: ITask): Promise<ITask> => {
 
     await newTask.save();
 
-    emitter.emit('task:added', newTask.toJSON());
+    const taskData = newTask.toJSON();
 
-    return newTask.toJSON();
+    emitter.emit('task:added', taskData);
+
+    return taskData;
   } catch (error) {
     throw error;
   }
@@ -168,6 +170,29 @@ export const getSubscription = async (ownerId: string, subscriptionId: string): 
   }
 };
 
+export const getActiveRoutines = async (): Promise<ITask[]> => {
+  try {
+    const routines = await TaskModel.find({
+      fields: {
+        $elemMatch: {
+          $and: [
+            { fieldId: 'NOTIFICATIONS'},
+            { fieldType: 'NESTED' },
+            { value: { $exists: true } },
+            { ['value.ownValue']: { $exists: true } },
+            { ['value.ownValue.enabled']: { $exists: true } },
+            { ['value.ownValue.enabled']: true },
+          ],
+        },
+      },
+    });
+
+    return routines.map(doc => doc.toJSON());
+  } catch (e) {
+    throw new Error(`api:error getting routines | ${e}`);
+  }
+};
+
 export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Promise<ITask> => {
   try {
     const taskType = await TaskTypeModel.findOne({ typeId: taskTypeId });
@@ -184,6 +209,8 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Prom
     const task = new TaskModel(taskData);
 
     await task.save();
+
+    emitter.emit('task:added', task.toJSON());
 
     return task.toJSON();
   } catch (error) {
@@ -355,6 +382,8 @@ export const updateTaskField = async (
     await taskModel.save();
 
     const { value: updatedFieldValue } = taskModel.fields.find((field) => field.fieldId === fieldId);
+
+    emitter.emit('task:updated', taskModel.toJSON());
 
     return updatedFieldValue;
 
