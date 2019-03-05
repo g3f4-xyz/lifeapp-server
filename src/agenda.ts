@@ -29,20 +29,6 @@ const sendUserNotification = async (ownerId: string, taskType: string, title: st
       subscriptions,
     },
   } = await getSettings(ownerId);
-  console.log(['sendUserNotification.settings'], {
-    general: {
-      show,
-      // vibrate,
-    },
-    types: {
-      events,
-      meetings,
-      todos,
-      routines,
-    },
-    subscriptions,
-  });
-  console.log(['sendUserNotification.taskType'], taskType);
 
   if (show) {
     if (
