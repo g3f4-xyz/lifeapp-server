@@ -1,16 +1,22 @@
 import * as Agenda from 'agenda';
 // import moment from 'moment';
 import { sendNotification } from 'web-push';
-
 import { DB_HOST } from './config';
-import { TASK_TYPE } from './constants';
-import { getActiveRoutines, getSettings } from './db/api';
+import { TASK_TYPE, TASK_TYPE_VALUE_MAP } from './constants';
+import { getSettings, getTasksWithActiveNotification } from './db/api';
 import { emitter } from './db/emitter';
 import { ITask } from './db/interfaces';
 
-const ROUTINE_CHECK_INTERVAL_MS = 60000;
+// const ROUTINE_CHECK_INTERVAL_MS = 6000;
 
 const agenda = new Agenda({ db: { address: DB_HOST } });
+
+const JOBS_NAMES: TASK_TYPE_VALUE_MAP<string> = {
+  [TASK_TYPE.ROUTINE]: 'sendRoutineNotifications',
+  [TASK_TYPE.TODO]: 'sendTodosNotifications',
+  [TASK_TYPE.EVENT]: 'sendEventsNotifications',
+  [TASK_TYPE.MEETING]: 'sendMeetingsNotifications',
+};
 
 const sendUserNotification = async (ownerId: string, taskType: string, title: string, notification: any): Promise<void> => {
   console.log(['sendUserNotification'], ownerId, taskType, title, notification);
@@ -52,37 +58,127 @@ const sendUserNotification = async (ownerId: string, taskType: string, title: st
   }
 };
 
-function groupBy(arr: any, property: string) {
-  return arr.reduce((memo: any, x: any) => {
-    if (!memo[x[property]]) { memo[x[property]] = []; }
-    memo[x[property]].push(x);
-    return memo;
+const groupBy: <T = any>(arr: T[], property: string) => { [key: string]: T[] } = (arr, property) => {
+  return arr.reduce((acc, item) => {
+    if (!acc[item[property]]) {
+      acc[item[property]] = [];
+    }
+
+    acc[item[property]].push(item);
+
+    return acc;
   }, {});
-}
+};
 
 agenda.on('ready', async (): Promise<void> => {
   try {
     await agenda.start();
-    console.log(['agenda:start']);
-    await agenda.define('sendRoutineNotifications', async () => {
+    await agenda.cancel({ name: JOBS_NAMES.ROUTINE });
+    await agenda.cancel({ name: JOBS_NAMES.TODO });
+    await agenda.cancel({ name: JOBS_NAMES.EVENT });
+    await agenda.cancel({ name: JOBS_NAMES.MEETING });
+
+    await agenda.define(JOBS_NAMES.ROUTINE, async () => {
       console.log(['agenda:sendRoutineNotifications']);
-      const routines = await getActiveRoutines();
-      const usersRoutines: { [key: string]: ITask[] } = groupBy(routines, 'ownerId');
+      const routines = await getTasksWithActiveNotification(TASK_TYPE.ROUTINE);
+      console.log(['agenda:sendRoutineNotifications.routines'], routines);
+      const usersRoutines = groupBy<ITask>(routines, 'ownerId');
+      console.log(['agenda:sendRoutineNotifications.usersRoutines'], usersRoutines);
+
 
       Object.keys(usersRoutines).map(userId => usersRoutines[userId]).forEach((list => {
         list.forEach((async routine => {
           const title = routine.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
-          const note = routine.fields.find(({ fieldId }) => fieldId === 'NOTE').value.text;
+          const action = routine.fields.find(({ fieldId }) => fieldId === 'ACTION').value.text;
+          const cycleValue = routine.fields.find(({ fieldId }) => fieldId === 'CYCLE').value;
           const notification = {
-            body: note,
+            body: action,
           };
+          console.log(['agenda:sendRoutineNotifications:list.forEach.cycleValue'], cycleValue);
 
           await sendUserNotification(routine.ownerId, routine.taskType, title, notification);
         }));
       }));
     });
 
-    await agenda.every(ROUTINE_CHECK_INTERVAL_MS, 'sendRoutineNotifications');
+    await agenda.define(JOBS_NAMES.TODO, async () => {
+      console.log(['agenda:sendTodosNotifications']);
+      const todos = await getTasksWithActiveNotification(TASK_TYPE.TODO);
+      console.log(['agenda:sendTodosNotifications.todos'], todos);
+      const usersTodos = groupBy<ITask>(todos, 'ownerId');
+      console.log(['agenda:sendTodosNotifications.usersTodos'], usersTodos);
+
+      const usersTodosData = Object.keys(usersTodos).map(userId => usersTodos[userId]).map((list => list.map((todo => {
+        const title = todo.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
+        const note = todo.fields.find(({ fieldId }) => fieldId === 'NOTE').value.text;
+        const status = todo.fields.find(({ fieldId }) => fieldId === 'STATUS').value.id;
+        console.log(['agenda:sendTodosNotifications:list.forEach'], todo);
+
+        return { title, note, ownerId: todo.ownerId, status };
+      }))));
+
+      usersTodosData.forEach(async todosData => {
+        const [{ ownerId }] = todosData;
+        const title = 'Daily todos status';
+        const body = todosData.reduce((acc, data) => `${acc}\n${data.title} | ${data.note} | ${data.status}`, '');
+        const notification = {
+          body,
+        };
+
+        await sendUserNotification(ownerId, TASK_TYPE.TODO, title, notification);
+      });
+    });
+
+    await agenda.define(JOBS_NAMES.EVENT, async () => {
+      console.log(['agenda:sendEventsNotifications']);
+      const events = await getTasksWithActiveNotification(TASK_TYPE.EVENT);
+      console.log(['agenda:sendEventsNotifications.routines'], events);
+      const usersEvents = groupBy<ITask>(events, 'ownerId');
+      console.log(['agenda:sendEventsNotifications.usersEvents'], usersEvents);
+
+      Object.keys(usersEvents).map(userId => usersEvents[userId]).forEach((list => {
+        list.forEach((async event => {
+          const title = event.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
+          const desc = event.fields.find(({ fieldId }) => fieldId === 'DESCRIPTION').value.text;
+          const notification = {
+            body: desc,
+          };
+          console.log(['agenda:sendEventsNotifications:list.forEach'], event);
+
+          await sendUserNotification(event.ownerId, event.taskType, title, notification);
+        }));
+      }));
+    });
+
+
+    await agenda.define(JOBS_NAMES.MEETING, async () => {
+      console.log(['agenda:sendMeetingsNotifications']);
+      const meetings = await getTasksWithActiveNotification(TASK_TYPE.EVENT);
+      console.log(['agenda:sendMeetingsNotifications.routines'], meetings);
+      const usersMeetings = groupBy<ITask>(meetings, 'ownerId');
+      console.log(['agenda:sendMeetingsNotifications.usersMeetings'], usersMeetings);
+
+      Object.keys(usersMeetings).map(userId => usersMeetings[userId]).forEach((list => {
+        list.forEach((async meeting => {
+          const title = meeting.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
+          const desc = meeting.fields.find(({ fieldId }) => fieldId === 'DESCRIPTION').value.text;
+          const notification = {
+            body: desc,
+          };
+          console.log(['agenda:sendMeetingsNotifications:list.forEach'], meeting);
+
+          await sendUserNotification(meeting.ownerId, meeting.taskType, title, notification);
+        }));
+      }));
+    });
+
+    // await agenda.every(ROUTINE_CHECK_INTERVAL_MS, JOBS_NAMES.ROUTINE);
+    await agenda.every('0 10 * * *', JOBS_NAMES.TODO, {}, {
+      timezone: 'Europe/Warsaw',
+    });
+    // await agenda.every(ROUTINE_CHECK_INTERVAL_MS, JOBS_NAMES.EVENT);
+    // await agenda.every(ROUTINE_CHECK_INTERVAL_MS, JOBS_NAMES.MEETING);
+    console.log(['agenda:started']);
   }
   catch (e) {
     console.error('error starting agenda');

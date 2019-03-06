@@ -170,9 +170,10 @@ export const getSubscription = async (ownerId: string, subscriptionId: string): 
   }
 };
 
-export const getActiveRoutines = async (): Promise<ITask[]> => {
+export const getTasksWithActiveNotification = async (taskType: TASK_TYPE): Promise<ITask[]> => {
   try {
     const routines = await TaskModel.find({
+      taskType,
       fields: {
         $elemMatch: {
           $and: [
@@ -189,7 +190,7 @@ export const getActiveRoutines = async (): Promise<ITask[]> => {
 
     return routines.map(doc => doc.toJSON());
   } catch (e) {
-    throw new Error(`api:error getting routines | ${e}`);
+    throw new Error(`api:error getting tasks with active notifications for type ${taskType} | ${e}`);
   }
 };
 
@@ -383,7 +384,7 @@ export const updateTaskField = async (
 
     const { value: updatedFieldValue } = taskModel.fields.find((field) => field.fieldId === fieldId);
 
-    emitter.emit('task:updated', taskModel.toJSON());
+    emitter.emit('task:updated', taskModel.toJSON(), fieldId);
 
     return updatedFieldValue;
 

@@ -343,7 +343,7 @@ dbHook.tasktypes.insert([{
   description: 'Pole bazowe',
   order: 0,
   parentTypeIds: [],
-  fieldsIds: ['TITLE', 'PRIORITY', 'STATUS'],
+  fieldsIds: ['TITLE', 'PRIORITY', 'STATUS', 'NOTIFICATIONS'],
 }, {
   typeId: 'TODO',
   label: 'ToDo',
