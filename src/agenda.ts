@@ -1,12 +1,13 @@
 import * as Agenda from 'agenda';
-// import moment from 'moment';
+import * as moment from 'moment-timezone';
 import { sendNotification } from 'web-push';
 import { DB_HOST } from './config';
-import { TASK_TYPE, TASK_TYPE_VALUE_MAP } from './constants';
-import { getSettings, getTasksWithActiveNotification } from './db/api';
+import { DATE_TIME_FORMAT, FIELD_ID, TASK_TYPE, TASK_TYPE_VALUE_MAP } from './constants';
+import { getSettings, getTasksWithActiveNotification, setTaskNonActive } from './db/api';
 import { emitter } from './db/emitter';
 import { ITask } from './db/interfaces';
 
+moment.tz.setDefault('Europe/Warsaw');
 // const ROUTINE_CHECK_INTERVAL_MS = 6000;
 
 const agenda = new Agenda({ db: { address: DB_HOST } });
@@ -120,7 +121,7 @@ agenda.on('ready', async (): Promise<void> => {
       usersTodosData.forEach(async todosData => {
         const [{ ownerId }] = todosData;
         const title = 'Daily todos status';
-        const body = todosData.reduce((acc, data) => `${acc}\n${data.title} | ${data.note} | ${data.status}`, '');
+        const body = todosData.reduce((acc, data) => `${acc}\n${data.title} | status: ${data.status} | note: ${data.note}`, '');
         const notification = {
           body,
         };
@@ -153,21 +154,41 @@ agenda.on('ready', async (): Promise<void> => {
 
     await agenda.define(JOBS_NAMES.MEETING, async () => {
       console.log(['agenda:sendMeetingsNotifications']);
-      const meetings = await getTasksWithActiveNotification(TASK_TYPE.EVENT);
-      console.log(['agenda:sendMeetingsNotifications.routines'], meetings);
+      const meetings = await getTasksWithActiveNotification(TASK_TYPE.MEETING);
       const usersMeetings = groupBy<ITask>(meetings, 'ownerId');
-      console.log(['agenda:sendMeetingsNotifications.usersMeetings'], usersMeetings);
+      const nowMoment = moment(Date.now());
+      const nextMinuteMoment = moment(Date.now()).add(1, 'minute');
 
       Object.keys(usersMeetings).map(userId => usersMeetings[userId]).forEach((list => {
         list.forEach((async meeting => {
-          const title = meeting.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
-          const desc = meeting.fields.find(({ fieldId }) => fieldId === 'DESCRIPTION').value.text;
+          const title = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.TITLE).value.text;
+          const note = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTE).value.text;
+          const person = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.PERSON).value.text;
+          const location = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.LOCATION).value.text;
+          const dateTime = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.DATE_TIME).value.text;
+          const dateTimeMoment = moment(dateTime);
+          const isBetween = dateTimeMoment.isBetween(nowMoment, nextMinuteMoment);
+          console.log(['agenda:sendMeetingsNotifications.1'], nowMoment.toISOString());
+          console.log(['agenda:sendMeetingsNotifications.2'], dateTimeMoment.toISOString());
+          console.log(['agenda:sendMeetingsNotifications.3'], nextMinuteMoment.toISOString());
+          console.log(['agenda:sendMeetingsNotifications.isBetween'], isBetween);
           const notification = {
-            body: desc,
+            body: `
+              isBetween: ${isBetween}\n
+              nowMoment: ${nowMoment.format(DATE_TIME_FORMAT)}\n
+              dateTimeMoment: ${dateTimeMoment.format(DATE_TIME_FORMAT)}\n
+              person: ${person}\n
+              note: ${note}\n
+              location: ${location}\n
+              dateTime: ${dateTime}\n
+            `,
           };
-          console.log(['agenda:sendMeetingsNotifications:list.forEach'], meeting);
 
-          await sendUserNotification(meeting.ownerId, meeting.taskType, title, notification);
+          if (isBetween) {
+            await sendUserNotification(meeting.ownerId, meeting.taskType, title, notification);
+            await setTaskNonActive(meeting._id);
+          }
+
         }));
       }));
     });
@@ -177,7 +198,9 @@ agenda.on('ready', async (): Promise<void> => {
       timezone: 'Europe/Warsaw',
     });
     // await agenda.every(ROUTINE_CHECK_INTERVAL_MS, JOBS_NAMES.EVENT);
-    // await agenda.every(ROUTINE_CHECK_INTERVAL_MS, JOBS_NAMES.MEETING);
+    await agenda.every('10 second', JOBS_NAMES.MEETING, {}, {
+      timezone: 'Europe/Warsaw',
+    });
     console.log(['agenda:started']);
   }
   catch (e) {

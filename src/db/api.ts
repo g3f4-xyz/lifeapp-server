@@ -194,6 +194,30 @@ export const getTasksWithActiveNotification = async (taskType: TASK_TYPE): Promi
   }
 };
 
+export const setTaskNonActive = async (taskId: any): Promise<void> => {
+  try {
+    await TaskModel.findOneAndUpdate({
+      _id: taskId,
+      fields: {
+        $elemMatch: {
+          $and: [
+            { fieldId: 'NOTIFICATIONS' },
+            { fieldType: 'SWITCH' },
+            { value: { $exists: true } },
+            { ['value.ownValue']: { $exists: true } },
+            { ['value.ownValue.enabled']: { $exists: true } },
+            { ['value.ownValue.enabled']: true },
+          ],
+        },
+      },
+    }, {
+      $set: { ['value.ownValue.enabled']: false },
+    });
+  } catch (e) {
+    throw new Error(`api:error setting task non active notifications for task with id ${taskId} | ${e}`);
+  }
+};
+
 export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Promise<ITask> => {
   try {
     const taskType = await TaskTypeModel.findOne({ typeId: taskTypeId });

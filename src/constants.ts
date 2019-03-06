@@ -2,6 +2,22 @@ type KEYOF_TYPE_VALUE_MAP<T, V> = {
   [K in keyof T]: V
 };
 
+export enum FIELD_ID {
+  TITLE = 'TITLE',
+  PRIORITY = 'PRIORITY',
+  ACTIVE = 'ACTIVE',
+  STATUS = 'STATUS',
+  DATE = 'DATE',
+  DATE_TIME = 'DATE_TIME',
+  DURATION = 'DURATION',
+  LOCATION = 'LOCATION',
+  PERSON = 'PERSON',
+  NOTE = 'NOTE',
+  ACTION = 'ACTION',
+  CYCLE = 'CYCLE',
+  NOTIFICATIONS = 'NOTIFICATIONS',
+}
+
 export enum TASK_TYPE {
   TODO = 'TODO',
   MEETING = 'MEETING',
@@ -26,3 +42,5 @@ export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string> = {
   SWITCH: 'enabled',
   TEXT: 'text',
 };
+
+export const DATE_TIME_FORMAT = 'DD-MM-YYYY hh:mm';

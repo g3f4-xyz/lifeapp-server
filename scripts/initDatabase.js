@@ -356,7 +356,7 @@ dbHook.tasktypes.insert([{
   label: 'Event',
   description: 'Wydarzenie pozwala na ustawienie zadania, które posiada możliwość zdefiniowania miejsca i czasu.',
   order: 1,
-  parentTypeIds: ['TASK'],
+  parentTypeIds: ['TODO'],
   fieldsIds: ['LOCATION', 'DATE_TIME', 'DURATION'],
 }, {
   typeId: 'MEETING',
