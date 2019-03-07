@@ -1,5 +1,4 @@
 import { FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
-import { emitter } from './emitter';
 import {
   IField,
   IFieldValue,
@@ -90,8 +89,6 @@ export const addTask = async (task: ITask): Promise<ITask> => {
     await newTask.save();
 
     const taskData = newTask.toJSON();
-
-    emitter.emit('task:added', taskData);
 
     return taskData;
   } catch (error) {
@@ -234,8 +231,6 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Prom
     const task = new TaskModel(taskData);
 
     await task.save();
-
-    emitter.emit('task:added', task.toJSON());
 
     return task.toJSON();
   } catch (error) {
@@ -407,8 +402,6 @@ export const updateTaskField = async (
     await taskModel.save();
 
     const { value: updatedFieldValue } = taskModel.fields.find((field) => field.fieldId === fieldId);
-
-    emitter.emit('task:updated', taskModel.toJSON(), fieldId);
 
     return updatedFieldValue;
 

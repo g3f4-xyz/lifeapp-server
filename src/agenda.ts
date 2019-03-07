@@ -2,9 +2,8 @@ import * as Agenda from 'agenda';
 import * as moment from 'moment-timezone';
 import { sendNotification } from 'web-push';
 import { DB_HOST } from './config';
-import { DATE_TIME_FORMAT, FIELD_ID, TASK_TYPE, TASK_TYPE_VALUE_MAP } from './constants';
+import { FIELD_ID, TASK_TYPE, TASK_TYPE_VALUE_MAP, TIME_FORMAT } from './constants';
 import { getSettings, getTasksWithActiveNotification, setTaskNonActive } from './db/api';
-import { emitter } from './db/emitter';
 import { ITask } from './db/interfaces';
 
 moment.tz.setDefault('Europe/Warsaw');
@@ -121,7 +120,8 @@ agenda.on('ready', async (): Promise<void> => {
       usersTodosData.forEach(async todosData => {
         const [{ ownerId }] = todosData;
         const title = 'Daily todos status';
-        const body = todosData.reduce((acc, data) => `${acc}\n${data.title} | status: ${data.status} | note: ${data.note}`, '');
+        const body = todosData
+          .reduce((acc, data) => `${acc}\n${data.title} | status: ${data.status} | note: ${data.note}`, '');
         const notification = {
           body,
         };
@@ -133,22 +133,28 @@ agenda.on('ready', async (): Promise<void> => {
     await agenda.define(JOBS_NAMES.EVENT, async () => {
       console.log(['agenda:sendEventsNotifications']);
       const events = await getTasksWithActiveNotification(TASK_TYPE.EVENT);
-      console.log(['agenda:sendEventsNotifications.routines'], events);
       const usersEvents = groupBy<ITask>(events, 'ownerId');
-      console.log(['agenda:sendEventsNotifications.usersEvents'], usersEvents);
 
-      Object.keys(usersEvents).map(userId => usersEvents[userId]).forEach((list => {
-        list.forEach((async event => {
-          const title = event.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
-          const desc = event.fields.find(({ fieldId }) => fieldId === 'DESCRIPTION').value.text;
-          const notification = {
-            body: desc,
-          };
-          console.log(['agenda:sendEventsNotifications:list.forEach'], event);
+      const usersEventsData = Object.keys(usersEvents).map(userId => usersEvents[userId]).map((list => list.map((todo => {
+        const title = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.TITLE).value.text;
+        const note = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTE).value.text;
+        const location = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.LOCATION).value.text;
+        const duration = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.DURATION).value.text;
 
-          await sendUserNotification(event.ownerId, event.taskType, title, notification);
-        }));
-      }));
+        return { title, note, ownerId: todo.ownerId, location, duration };
+      }))));
+
+      usersEventsData.forEach(async todosData => {
+        const [{ ownerId }] = todosData;
+        const title = 'Daily todos status';
+        const body = todosData.reduce((acc, data) =>
+          `${acc}\n${data.title} | location: ${data.location} | note: ${data.note} | duration: ${data.duration}`, '');
+        const notification = {
+          body,
+        };
+
+        await sendUserNotification(ownerId, TASK_TYPE.TODO, title, notification);
+      });
     });
 
 
@@ -156,8 +162,8 @@ agenda.on('ready', async (): Promise<void> => {
       console.log(['agenda:sendMeetingsNotifications']);
       const meetings = await getTasksWithActiveNotification(TASK_TYPE.MEETING);
       const usersMeetings = groupBy<ITask>(meetings, 'ownerId');
-      const nowMoment = moment(Date.now());
-      const nextMinuteMoment = moment(Date.now()).add(1, 'minute');
+      const nowMoment = moment(Date.now()).subtract(1, 'hour');
+      const nextMinuteMoment = moment(Date.now()).subtract(1, 'hour').add(1, 'minute');
 
       Object.keys(usersMeetings).map(userId => usersMeetings[userId]).forEach((list => {
         list.forEach((async meeting => {
@@ -168,19 +174,12 @@ agenda.on('ready', async (): Promise<void> => {
           const dateTime = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.DATE_TIME).value.text;
           const dateTimeMoment = moment(dateTime);
           const isBetween = dateTimeMoment.isBetween(nowMoment, nextMinuteMoment);
-          console.log(['agenda:sendMeetingsNotifications.1'], nowMoment.toISOString());
-          console.log(['agenda:sendMeetingsNotifications.2'], dateTimeMoment.toISOString());
-          console.log(['agenda:sendMeetingsNotifications.3'], nextMinuteMoment.toISOString());
-          console.log(['agenda:sendMeetingsNotifications.isBetween'], isBetween);
           const notification = {
             body: `
-              isBetween: ${isBetween}\n
-              nowMoment: ${nowMoment.format(DATE_TIME_FORMAT)}\n
-              dateTimeMoment: ${dateTimeMoment.format(DATE_TIME_FORMAT)}\n
               person: ${person}\n
               note: ${note}\n
               location: ${location}\n
-              dateTime: ${dateTime}\n
+              time: ${dateTimeMoment.format(TIME_FORMAT)}\n
             `,
           };
 
@@ -194,13 +193,15 @@ agenda.on('ready', async (): Promise<void> => {
     });
 
     // await agenda.every(ROUTINE_CHECK_INTERVAL_MS, JOBS_NAMES.ROUTINE);
-    await agenda.every('0 10 * * *', JOBS_NAMES.TODO, {}, {
+    // await agenda.every('0 10 * * *', JOBS_NAMES.TODO, {}, {
+    //   timezone: 'Europe/Warsaw',
+    // });
+    await agenda.every('10 second', JOBS_NAMES.EVENT, {}, {
       timezone: 'Europe/Warsaw',
     });
-    // await agenda.every(ROUTINE_CHECK_INTERVAL_MS, JOBS_NAMES.EVENT);
-    await agenda.every('10 second', JOBS_NAMES.MEETING, {}, {
-      timezone: 'Europe/Warsaw',
-    });
+    // await agenda.every('10 second', JOBS_NAMES.MEETING, {}, {
+    //   timezone: 'Europe/Warsaw',
+    // });
     console.log(['agenda:started']);
   }
   catch (e) {
@@ -216,44 +217,3 @@ const graceful = async () => {
 
 process.on('SIGTERM', graceful);
 process.on('SIGINT' , graceful);
-
-emitter.on('task:added', async (task: ITask) => {
-  console.log(['emitter.on:task:added'], task);
-
-  // if (task.taskType === TASK_TYPE.MEETING) {
-  //   const date = task.fields.find(({ fieldId }) => fieldId === 'DATE_TIME').value.text;
-  //   const person = task.fields.find(({ fieldId }) => fieldId === 'PERSON').value.text;
-  //   const location = task.fields.find(({ fieldId }) => fieldId === 'LOCATION').value.text;
-  //   const when = new Date(moment(date).subtract(1, 'hour').toString());
-  //
-  //   await agenda.schedule(when, 'notification:task', {
-  //     ownerId: task.ownerId,
-  //     title: `You have meeting with ${person}`,
-  //     notification: {
-  //       body: `Time: ${date} | Location: ${location}`,
-  //     },
-  //     taskType: task.taskType,
-  //   });
-  // }
-  //
-  // if (task.taskType === TASK_TYPE.EVENT) {
-  //   const date = task.fields.find(({ fieldId }) => fieldId === 'DATE_TIME').value.text;
-  //   const title = task.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
-  //   const duration = task.fields.find(({ fieldId }) => fieldId === 'DURATION').value.text;
-  //   const location = task.fields.find(({ fieldId }) => fieldId === 'LOCATION').value.text;
-  //   const when = new Date(moment(date).startOf('day').add(8, 'hour').toString());
-  //
-  //   await agenda.schedule(when, 'notification', {
-  //     ownerId: task.ownerId,
-  //     title: `Upcoming event today: ${title}`,
-  //     notification: {
-  //       body: `Time: ${date} | Location: ${location} | Duration: ${duration}`,
-  //     },
-  //     taskType: task.taskType,
-  //   });
-  // }
-});
-
-emitter.on('task:updated', async (task: ITask) => {
-  console.log(['emitter.on:task:updated'], task);
-});
