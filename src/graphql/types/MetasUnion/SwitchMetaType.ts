@@ -10,6 +10,10 @@ export const SwitchMetaType: GraphQLObjectType<IFieldMeta, IContext> = new Graph
       description: 'fieldType',
       type: new GraphQLNonNull(FieldTypeEnum),
     },
+    disabled: {
+      description: 'disabled',
+      type: GraphQLBoolean,
+    },
     required: {
       description: 'required',
       type: new GraphQLNonNull(GraphQLBoolean),

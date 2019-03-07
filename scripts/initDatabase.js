@@ -308,6 +308,7 @@ const FIELDS_CONFIG = {
         fieldType: 'SWITCH',
         label: 'Notifications',
         helperText: 'Notifications helperText',
+        disabled: false,
         required: true,
       },
       childrenMeta: [

@@ -191,7 +191,7 @@ export const getTasksWithActiveNotification = async (taskType: TASK_TYPE): Promi
   }
 };
 
-export const setTaskNonActive = async (taskId: any): Promise<void> => {
+export const disableTaskNotification = async (taskId: any): Promise<void> => {
   try {
     await TaskModel.findOneAndUpdate({
       _id: taskId,
@@ -199,7 +199,7 @@ export const setTaskNonActive = async (taskId: any): Promise<void> => {
         $elemMatch: {
           $and: [
             { fieldId: 'NOTIFICATIONS' },
-            { fieldType: 'SWITCH' },
+            { fieldType: 'NESTED' },
             { value: { $exists: true } },
             { ['value.ownValue']: { $exists: true } },
             { ['value.ownValue.enabled']: { $exists: true } },
@@ -208,7 +208,10 @@ export const setTaskNonActive = async (taskId: any): Promise<void> => {
         },
       },
     }, {
-      $set: { ['value.ownValue.enabled']: false },
+      $set: {
+        ['fields.$.value.ownValue.enabled']: false,
+        ['fields.$.meta.ownMeta.disabled']: true,
+      },
     });
   } catch (e) {
     throw new Error(`api:error setting task non active notifications for task with id ${taskId} | ${e}`);

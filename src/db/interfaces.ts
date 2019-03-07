@@ -10,6 +10,7 @@ export interface IFieldMetaOptions {
 }
 
 export interface IFieldMeta {
+  disabled: boolean;
   required: boolean;
   minLength: number;
   maxLength: number;
