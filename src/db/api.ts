@@ -1,4 +1,5 @@
-import { FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
+import * as moment from 'moment-timezone';
+import { FIELD_ID, FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
 import {
   IField,
   IFieldValue,
@@ -30,13 +31,22 @@ const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
     childrenValue: null,
   },
 };
+const defaultValuesByFieldIdMap: { [key: string]: any } = {
+  [FIELD_ID.STATUS]: () => ({
+    id: 'TODO',
+  }),
+  [FIELD_ID.DATE_TIME]: () => ({
+    text: moment(Date.now()).format('YYYY-MM-DDThh:mm'),
+  }),
+};
 
 export const mapFieldDefaultValue = (field: IField): IField => {
-  const { fieldType } = field;
+  const { fieldId, fieldType } = field;
 
   return {
     ...field,
-    value: defaultValuesByTypeMap[fieldType],
+    value:
+      (defaultValuesByFieldIdMap[fieldId] && defaultValuesByFieldIdMap[fieldId]()) || defaultValuesByTypeMap[fieldType],
   };
 };
 

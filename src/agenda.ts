@@ -87,7 +87,6 @@ agenda.on('ready', async (): Promise<void> => {
       const routines = await getTasksWithActiveNotification(TASK_TYPE.ROUTINE);
       const usersRoutines = groupBy<ITask>(routines, 'ownerId');
 
-
       Object.keys(usersRoutines).map(userId => usersRoutines[userId]).forEach((list => {
         list.forEach((async routine => {
           const title = routine.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
@@ -166,10 +165,9 @@ agenda.on('ready', async (): Promise<void> => {
       const meetings = await getTasksWithActiveNotification(TASK_TYPE.MEETING);
       const usersMeetings = groupBy<ITask>(meetings, 'ownerId');
       const nowMoment = moment(Date.now()).subtract(1, 'hour');
+      const userIds = Object.keys(usersMeetings);
 
-      console.log(['agenda:sendMeetingsNotifications.usersMeetings'], usersMeetings);
-
-      Object.keys(usersMeetings).map(userId => usersMeetings[userId]).forEach((list => {
+      userIds.map(userId => usersMeetings[userId]).forEach((list => {
         list.forEach((async meeting => {
           const title = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.TITLE).value.text;
           const note = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTE).value.text;
