@@ -324,9 +324,11 @@ const getParentFieldsIds = async (
 
 export const getTaskTypeList = async (): Promise<ITaskType[]> => {
   try {
-    const taskTypeList = await TaskTypeModel.find().sort({ _id : -1 });
+    const taskTypeList = await TaskTypeModel.find({
+      parentTypeIds: { $exists: true },
+    }).sort({ _id : -1 });
 
-    return taskTypeList.filter((taskType) => taskType.parentTypeIds && taskType.label).map((model) => model.toJSON());
+    return taskTypeList.map((model) => model.toJSON());
   } catch (error) {
     throw error;
   }
