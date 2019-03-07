@@ -3,7 +3,7 @@ import * as moment from 'moment-timezone';
 import { sendNotification } from 'web-push';
 import { DB_HOST } from './config';
 import { FIELD_ID, TASK_TYPE, TASK_TYPE_VALUE_MAP, TIME_FORMAT } from './constants';
-import { getSettings, getTasksWithActiveNotification, disableTaskNotification } from './db/api';
+import { getSettings, getTasksWithActiveNotification, disableTaskNotification, deleteUntouchedTasks } from './db/api';
 import { ITask } from './db/interfaces';
 
 moment.tz.setDefault('Europe/Warsaw');
@@ -81,6 +81,11 @@ agenda.on('ready', async (): Promise<void> => {
     await agenda.cancel({ name: JOBS_NAMES.TODO });
     await agenda.cancel({ name: JOBS_NAMES.EVENT });
     await agenda.cancel({ name: JOBS_NAMES.MEETING });
+
+    await agenda.define('deleteUntouchedTasks', async () => {
+      console.log(['deleteUntouchedTasks'])
+      await deleteUntouchedTasks();
+    });
 
     await agenda.define(JOBS_NAMES.ROUTINE, async () => {
       console.log(['agenda:sendRoutineNotifications']);
@@ -203,6 +208,7 @@ agenda.on('ready', async (): Promise<void> => {
     await agenda.every('10 second', JOBS_NAMES.MEETING, {}, {
       timezone: 'Europe/Warsaw',
     });
+    await agenda.every('100 second', 'deleteUntouchedTasks');
     console.log(['agenda:started']);
   }
   catch (e) {

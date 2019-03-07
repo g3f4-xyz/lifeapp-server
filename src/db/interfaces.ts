@@ -46,6 +46,7 @@ export interface IField {
 export interface ITask {
   _id: any;
   ownerId: string;
+  updatedAt: string;
   taskType: string;
   fields: IField[];
 }

@@ -151,6 +151,17 @@ export const deleteTasks = async (ownerId: string): Promise<string> => {
   }
 };
 
+export const deleteUntouchedTasks = async (): Promise<void> => {
+  console.log(['deleteUntouchedTasks'])
+  try {
+    const tasks = await TaskModel.find({ updatedAt: { $exists: false } });
+
+    tasks.forEach((model) => model.remove());
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deleteSubscription = async (ownerId: string, subscriptionId: string): Promise<string> => {
   try {
     await SettingsModel.findOneAndUpdate({
@@ -298,7 +309,10 @@ export const getTask = async (id: string): Promise<ITask> => {
 
 export const getTaskList = async (ownerId: string): Promise<ITask[]> => {
   try {
-    return (await TaskModel.find({ ownerId }).sort({ _id : -1 })).map((doc) => doc.toJSON());
+    return (await TaskModel
+      .find({ ownerId, updatedAt: { $exists: true } })
+      .sort({ _id : -1 }))
+      .map((doc) => doc.toJSON());
   } catch (error) {
     throw error;
   }
