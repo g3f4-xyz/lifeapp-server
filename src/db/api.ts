@@ -392,21 +392,16 @@ export const updateTaskField = async (
   value: IFieldValue,
 ): Promise<IFieldValue> => {
   try {
-    const taskModel = await TaskModel.findById(taskId);
-
-    taskModel.fields = taskModel.fields.map((field) => {
-      if (field.fieldId === fieldId) {
-        field.value = value;
-      }
-
-      return field;
+    await TaskModel.findOneAndUpdate({
+      _id: taskId,
+      ['fields.fieldId']: fieldId,
+    }, {
+      $set: {
+        ['fields.$.value']: value,
+      },
     });
 
-    await taskModel.save();
-
-    const { value: updatedFieldValue } = taskModel.fields.find((field) => field.fieldId === fieldId);
-
-    return updatedFieldValue;
+    return value;
 
   } catch (error) {
     throw error;
