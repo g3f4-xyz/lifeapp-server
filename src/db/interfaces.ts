@@ -1,4 +1,5 @@
 import { PushSubscription } from 'web-push';
+import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
 
 export interface IConfigMap<T = string | boolean> {
   [key: string]: T;
@@ -10,6 +11,7 @@ export interface IFieldMetaOptions {
 }
 
 export interface IFieldMeta {
+  disabled: boolean;
   required: boolean;
   minLength: number;
   maxLength: number;
@@ -35,16 +37,21 @@ export interface IFieldValue {
 }
 
 export interface IField {
-  fieldId: string;
-  fieldType: string;
+  fieldId: FIELD_ID;
+  fieldType: FIELD_TYPE;
   order: number;
   meta: IFieldMeta;
   value: IFieldValue;
 }
 
 export interface ITask {
+  _id: any;
   ownerId: string;
-  taskType: string;
+  updatedAt: Date;
+  notificationAt: Date;
+  lastNotificationAt: Date;
+  lastChangedFieldId: FIELD_ID;
+  taskType: TASK_TYPE;
   fields: IField[];
 }
 

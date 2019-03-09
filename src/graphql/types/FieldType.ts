@@ -1,7 +1,8 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { IContext, IField } from '../../db/interfaces';
 import { nodeInterface } from '../nodeDefinitions';
+import { FieldIdEnum } from './Enums/FieldIdEnum';
 import { FieldTypeEnum } from './Enums/FieldTypeEnum';
 import { MetasUnion } from './MetasUnion/MetasUnion';
 import { ValuesUnion } from './ValuesUnion/ValuesUnion';
@@ -13,7 +14,7 @@ export const FieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectT
     id: globalIdField('FieldType', ({ fieldId }) => fieldId),
     fieldId: {
       description: 'fieldId field description',
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(FieldIdEnum),
     },
     order: {
       description: 'order field description',

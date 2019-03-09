@@ -29,10 +29,8 @@ export const updateTaskNestedFieldMutation = mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async ({ fieldId, fieldValue, taskId }) => {
-    const { id: fieldIdId } = await fromGlobalId(fieldId);
-    const { id: taskIdRaw } = await fromGlobalId(taskId);
-
-    const updatedFieldValue = await updateTaskField(taskIdRaw, fieldIdId, fieldValue);
+    const { id: taskIdRaw } = fromGlobalId(taskId);
+    const updatedFieldValue = await updateTaskField(taskIdRaw, fieldId, fieldValue);
 
     return { fieldId, updatedFieldValue, taskId };
   },

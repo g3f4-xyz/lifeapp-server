@@ -4,6 +4,7 @@ import { IFieldMeta } from '../interfaces';
 const FIELD_META_DEFINITION = {
   // TODO ogarnąć dlaczego to psuje scheme
   fieldType: String,
+  disabled: Boolean,
   required: Boolean,
   minLength: Number,
   maxLength: Number,

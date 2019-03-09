@@ -18,7 +18,6 @@ export const MetasUnion = new GraphQLUnionType({
   description: 'metas union',
   types: Object.values(TYPES),
   resolveType(meta: IFieldMeta) {
-    console.log(['resolveType.meta'], meta)
     return TYPES[meta.fieldType];
   },
 });

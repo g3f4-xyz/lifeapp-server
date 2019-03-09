@@ -2,6 +2,7 @@
   "extends": "tslint:recommended",
   "rules": {
     "arrow-parens": false,
+    "no-console": false,
     "quotemark": {
       "options": ["single", "avoid-escape"]
     },

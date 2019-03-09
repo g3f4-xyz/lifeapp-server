@@ -1,5 +1,6 @@
-import { FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
-import { emitter } from './emitter';
+import { Moment } from 'moment-timezone';
+import * as moment from 'moment-timezone';
+import { FIELD_ID, FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
 import {
   IField,
   IFieldValue,
@@ -31,17 +32,26 @@ const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
     childrenValue: null,
   },
 };
+const defaultValuesByFieldIdMap: { [key: string]: any } = {
+  [FIELD_ID.STATUS]: () => ({
+    id: 'TODO',
+  }),
+  [FIELD_ID.DATE_TIME]: () => ({
+    text: moment(Date.now()).format('YYYY-MM-DDThh:mm'),
+  }),
+};
 
 export const mapFieldDefaultValue = (field: IField): IField => {
-  const { fieldType } = field;
+  const { fieldId, fieldType } = field;
 
   return {
     ...field,
-    value: defaultValuesByTypeMap[fieldType],
+    value:
+      (defaultValuesByFieldIdMap[fieldId] && defaultValuesByFieldIdMap[fieldId]()) || defaultValuesByTypeMap[fieldType],
   };
 };
 
-export const getFieldByFieldId = async (fieldId: string): Promise<IFieldDocument> => {
+export const getFieldByFieldId = async (fieldId: FIELD_ID): Promise<IFieldDocument> => {
   try {
     const fieldDocument = await FieldModel.findOne({ fieldId });
 
@@ -58,7 +68,7 @@ export const addSubscription = async (
   userDeviceType: string,
 ): Promise<void> => {
   try {
-    // TODO nie sprawdzam istnienia ustawień podczas dodawania subskryci
+    // TODO nie sprawdzam istnienia ustawień podczas dodawania subskrycji
     await SettingsModel.findOneAndUpdate({
       ownerId,
     }, {
@@ -89,9 +99,9 @@ export const addTask = async (task: ITask): Promise<ITask> => {
 
     await newTask.save();
 
-    emitter.emit('task:added', newTask.toJSON());
+    const taskData = newTask.toJSON();
 
-    return newTask.toJSON();
+    return taskData;
   } catch (error) {
     throw error;
   }
@@ -142,6 +152,16 @@ export const deleteTasks = async (ownerId: string): Promise<string> => {
   }
 };
 
+export const deleteUntouchedTasks = async (): Promise<void> => {
+  try {
+    const tasks = await TaskModel.find({ updatedAt: { $exists: false } });
+
+    tasks.forEach((model) => model.remove());
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deleteSubscription = async (ownerId: string, subscriptionId: string): Promise<string> => {
   try {
     await SettingsModel.findOneAndUpdate({
@@ -165,6 +185,103 @@ export const getSubscription = async (ownerId: string, subscriptionId: string): 
     return settings.notifications.subscriptions.id(subscriptionId).toJSON();
   } catch (error) {
     throw error;
+  }
+};
+
+export const getTasksWithActiveNotificationInPeriod = async (
+  taskType: TASK_TYPE,
+  startDate: Moment,
+  endDate: Moment,
+): Promise<ITask[]> => {
+  try {
+    const routines = await TaskModel.find({
+      taskType,
+      notificationAt: {
+        $gte: startDate.toDate(),
+        $lte: endDate.toDate(),
+      },
+      fields: {
+        $elemMatch: {
+          $and: [
+            { fieldId: 'NOTIFICATIONS'},
+            { fieldType: 'NESTED' },
+            { value: { $exists: true } },
+            { ['value.ownValue']: { $exists: true } },
+            { ['value.ownValue.enabled']: { $exists: true } },
+            { ['value.ownValue.enabled']: true },
+          ],
+        },
+      },
+    });
+
+    return routines.map(doc => doc.toJSON());
+  } catch (e) {
+    throw new Error(`api:error getting tasks with active notifications for type ${taskType} | ${e}`);
+  }
+};
+
+export const getTasksWithActiveNotification = async (taskType: TASK_TYPE): Promise<ITask[]> => {
+  try {
+    const routines = await TaskModel.find({
+      taskType,
+      fields: {
+        $elemMatch: {
+          $and: [
+            { fieldId: 'NOTIFICATIONS'},
+            { fieldType: 'NESTED' },
+            { value: { $exists: true } },
+            { ['value.ownValue']: { $exists: true } },
+            { ['value.ownValue.enabled']: { $exists: true } },
+            { ['value.ownValue.enabled']: true },
+          ],
+        },
+      },
+    });
+
+    return routines.map(doc => doc.toJSON());
+  } catch (e) {
+    throw new Error(`api:error getting tasks with active notifications for type ${taskType} | ${e}`);
+  }
+};
+
+export const disableTaskNotification = async (taskId: any): Promise<void> => {
+  try {
+    await TaskModel.findOneAndUpdate({
+      _id: taskId,
+      fields: {
+        $elemMatch: {
+          $and: [
+            { fieldId: 'NOTIFICATIONS' },
+            { fieldType: 'NESTED' },
+            { value: { $exists: true } },
+            { ['value.ownValue']: { $exists: true } },
+            { ['value.ownValue.enabled']: { $exists: true } },
+            { ['value.ownValue.enabled']: true },
+          ],
+        },
+      },
+    }, {
+      $set: {
+        ['fields.$.value.ownValue.enabled']: false,
+        ['fields.$.meta.ownMeta.disabled']: true,
+      },
+    });
+  } catch (e) {
+    throw new Error(`api:error setting task non active notifications for task with id ${taskId} | ${e}`);
+  }
+};
+
+export const updateNotificationAt = async (taskId: string, notificationAt: Date, lastNotificationAt: Date): Promise<void> => {
+  console.log(['updateNotificationAt'], { taskId, notificationAt, lastNotificationAt })
+  try {
+    await TaskModel.findByIdAndUpdate(taskId, {
+      $set: {
+        notificationAt,
+        lastNotificationAt,
+      },
+    });
+  } catch (e) {
+    throw new Error(`api:error updating task notificationAt for task with id ${taskId} | ${e}`);
   }
 };
 
@@ -238,7 +355,10 @@ export const getTask = async (id: string): Promise<ITask> => {
 
 export const getTaskList = async (ownerId: string): Promise<ITask[]> => {
   try {
-    return (await TaskModel.find({ ownerId }).sort({ _id : -1 })).map((doc) => doc.toJSON());
+    return (await TaskModel
+      .find({ ownerId, updatedAt: { $exists: true } })
+      .sort({ _id : -1 }))
+      .map((doc) => doc.toJSON());
   } catch (error) {
     throw error;
   }
@@ -274,9 +394,11 @@ const getParentFieldsIds = async (
 
 export const getTaskTypeList = async (): Promise<ITaskType[]> => {
   try {
-    const taskTypeList = await TaskTypeModel.find().sort({ _id : -1 });
+    const taskTypeList = await TaskTypeModel.find({
+      parentTypeIds: { $exists: true },
+    }).sort({ _id : -1 });
 
-    return taskTypeList.filter((taskType) => taskType.parentTypeIds && taskType.label).map((model) => model.toJSON());
+    return taskTypeList.map((model) => model.toJSON());
   } catch (error) {
     throw error;
   }
@@ -338,25 +460,22 @@ export const saveTask = async (
 
 export const updateTaskField = async (
   taskId: string,
-  fieldId: string,
+  fieldId: FIELD_ID,
   value: IFieldValue,
 ): Promise<IFieldValue> => {
   try {
-    const taskModel = await TaskModel.findById(taskId);
-
-    taskModel.fields = taskModel.fields.map((field) => {
-      if (field.fieldId === fieldId) {
-        field.value = value;
-      }
-
-      return field;
+    // tutaj wiem jakie pole się zmienia. brakuje jeszcze tylko taskType
+    await TaskModel.findOneAndUpdate({
+      _id: taskId,
+      ['fields.fieldId']: fieldId,
+    }, {
+      $set: {
+        lastChangedFieldId: fieldId,
+        ['fields.$.value']: value,
+      },
     });
 
-    await taskModel.save();
-
-    const { value: updatedFieldValue } = taskModel.fields.find((field) => field.fieldId === fieldId);
-
-    return updatedFieldValue;
+    return value;
 
   } catch (error) {
     throw error;

@@ -289,10 +289,10 @@ const FIELDS_CONFIG = {
               value: 'MONTH_START',
             }, {
               text: 'End of the month',
-              value: 'END_START',
+              value: 'MONTH_END',
             }, {
               text: 'Middle of the month',
-              value: 'MIDDLE_START',
+              value: 'MONTH_MIDDLE',
             }],
           },
         },
@@ -308,6 +308,7 @@ const FIELDS_CONFIG = {
         fieldType: 'SWITCH',
         label: 'Notifications',
         helperText: 'Notifications helperText',
+        disabled: false,
         required: true,
       },
       childrenMeta: [
@@ -342,8 +343,7 @@ dbHook.tasktypes.insert([{
   label: '',
   description: 'Pole bazowe',
   order: 0,
-  parentTypeIds: [],
-  fieldsIds: ['TITLE', 'PRIORITY', 'STATUS'],
+  fieldsIds: ['TITLE', 'PRIORITY', 'STATUS', 'NOTIFICATIONS'],
 }, {
   typeId: 'TODO',
   label: 'ToDo',
@@ -356,7 +356,7 @@ dbHook.tasktypes.insert([{
   label: 'Event',
   description: 'Wydarzenie pozwala na ustawienie zadania, które posiada możliwość zdefiniowania miejsca i czasu.',
   order: 1,
-  parentTypeIds: ['TASK'],
+  parentTypeIds: ['TODO'],
   fieldsIds: ['LOCATION', 'DATE_TIME', 'DURATION'],
 }, {
   typeId: 'MEETING',
@@ -419,7 +419,7 @@ dbHook.settings.insert([{
     },
     types: {
       events: true,
-      meetings: false,
+      meetings: true,
       todos: true,
       routines: false,
     },
