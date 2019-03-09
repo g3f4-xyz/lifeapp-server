@@ -9,6 +9,7 @@ import * as morgan from 'morgan';
 import * as passport from 'passport';
 
 import { PORT, SESSION } from './config';
+import { CONSOLE_COLORS } from './constants';
 import { router } from './router';
 
 const app: Application = express();
@@ -36,4 +37,6 @@ app.use(router);
 app.set('port', (process.env.PORT || PORT));
 
 // start server
-app.listen(app.get('port'));
+app.listen(app.get('port'), () => {
+  console.info(CONSOLE_COLORS.BLUE, `express app running on port: ${app.get('port')}`);
+});

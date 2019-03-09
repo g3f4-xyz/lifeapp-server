@@ -289,10 +289,10 @@ const FIELDS_CONFIG = {
               value: 'MONTH_START',
             }, {
               text: 'End of the month',
-              value: 'END_START',
+              value: 'MONTH_END',
             }, {
               text: 'Middle of the month',
-              value: 'MIDDLE_START',
+              value: 'MONTH_MIDDLE',
             }],
           },
         },
@@ -419,7 +419,7 @@ dbHook.settings.insert([{
     },
     types: {
       events: true,
-      meetings: false,
+      meetings: true,
       todos: true,
       routines: false,
     },

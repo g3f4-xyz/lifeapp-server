@@ -25,6 +25,12 @@ export enum TASK_TYPE {
   ROUTINE = 'ROUTINE',
 }
 
+export enum TASK_STATUS {
+  TODO = 'TODO',
+  DONE = 'DONE',
+  IN_PROGRESS = 'IN_PROGRESS',
+}
+
 export type TASK_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof TASK_TYPE, V>;
 
 export enum FIELD_TYPE {
@@ -45,3 +51,42 @@ export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string> = {
 
 export const DATE_TIME_FORMAT = 'DD-MM-YYYY hh:mm';
 export const TIME_FORMAT = 'hh:mm';
+
+export enum CONSOLE_COLORS {
+  YELLOW = '\x1b[33m%s\x1b[0m',
+  BLUE = '\x1b[34m%s\x1b[0m',
+  CYAN = '\x1b[36m%s\x1b[0m',
+}
+
+export enum CYCLE {
+  TIME = 'TIME_CYCLE',
+  DAY = 'DAY_CYCLE',
+  WEEK = 'WEEK_CYCLE',
+  MONTH = 'MONTH_CYCLE',
+}
+
+export enum TIME_CYCLE {
+  HOUR = 'HOUR',
+  HOURS_3 = 'HOURS_3',
+  HOURS_12 = 'HOURS_12',
+  MINUTES = 'MINUTES',
+}
+
+export enum DAY_CYCLE {
+  MORNING = 'MORNING',
+  NOON = 'NOON',
+  EVENING = 'EVENING',
+}
+
+export enum WEEK_CYCLE {
+  WEEK_DAYS = 'WEEK_DAYS',
+  WEEKEND = 'WEEKEND',
+  FIRST_DAY = 'FIRST_DAY',
+  LAST_DAY = 'LAST_DAY',
+}
+
+export enum MONTH_CYCLE {
+  END = 'MONTH_END',
+  MIDDLE = 'MONTH_MIDDLE',
+  START = 'MONTH_START',
+}

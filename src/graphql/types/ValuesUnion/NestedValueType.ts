@@ -8,11 +8,6 @@ export const NestedValueType: GraphQLObjectType<IFieldValue, IContext> = new Gra
   fields: () => ({
     ownValue: {
       type: ValuesUnion,
-      resolve(rootValue) {
-        console.log(['NestedValueType.ownValue'], rootValue)
-
-        return rootValue.ownValue;
-      }
     },
     childrenValue: {
       type: NestedValueType,

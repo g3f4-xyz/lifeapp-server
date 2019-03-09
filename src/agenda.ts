@@ -2,12 +2,19 @@ import * as Agenda from 'agenda';
 import * as moment from 'moment-timezone';
 import { sendNotification } from 'web-push';
 import { DB_HOST } from './config';
-import { FIELD_ID, TASK_TYPE, TASK_TYPE_VALUE_MAP, TIME_FORMAT } from './constants';
-import { getSettings, getTasksWithActiveNotification, disableTaskNotification, deleteUntouchedTasks } from './db/api';
+import { CONSOLE_COLORS, FIELD_ID, TASK_TYPE, TASK_TYPE_VALUE_MAP, TIME_FORMAT } from './constants';
+import {
+  deleteUntouchedTasks,
+  disableTaskNotification,
+  getSettings,
+  getTasksWithActiveNotification,
+  getTasksWithActiveNotificationInPeriod,
+  updateNotificationAt,
+} from './db/api';
 import { ITask } from './db/interfaces';
+import { calculateNotificationAt } from './db/models/TaskModel';
 
 moment.tz.setDefault('Europe/Warsaw');
-// const ROUTINE_CHECK_INTERVAL_MS = 6000;
 
 const agenda = new Agenda({ db: { address: DB_HOST } });
 
@@ -81,32 +88,38 @@ agenda.on('ready', async (): Promise<void> => {
     await agenda.cancel({ name: JOBS_NAMES.TODO });
     await agenda.cancel({ name: JOBS_NAMES.EVENT });
     await agenda.cancel({ name: JOBS_NAMES.MEETING });
+    await agenda.cancel({ name: 'deleteUntouchedTasks' });
 
     await agenda.define('deleteUntouchedTasks', async () => {
-      console.log(['deleteUntouchedTasks'])
       await deleteUntouchedTasks();
     });
 
     await agenda.define(JOBS_NAMES.ROUTINE, async () => {
-      console.log(['agenda:sendRoutineNotifications']);
-      const routines = await getTasksWithActiveNotification(TASK_TYPE.ROUTINE);
+      console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.ROUTINE}`);
+      const routines = await getTasksWithActiveNotificationInPeriod(
+        TASK_TYPE.ROUTINE, moment(Date.now()), moment(Date.now()).add(30, 'second'),
+      );
       const usersRoutines = groupBy<ITask>(routines, 'ownerId');
 
       Object.keys(usersRoutines).map(userId => usersRoutines[userId]).forEach((list => {
         list.forEach((async routine => {
           const title = routine.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
           const action = routine.fields.find(({ fieldId }) => fieldId === 'ACTION').value.text;
+          const cycleValue = routine.fields.find(({ fieldId }) => fieldId === 'ACTION').value;
           const notification = {
             body: action,
           };
 
+          const notificationAt = calculateNotificationAt(TASK_TYPE.ROUTINE, routine.lastNotificationAt, cycleValue);
+
+          await updateNotificationAt(routine._id, notificationAt, routine.notificationAt);
           await sendUserNotification(routine.ownerId, routine.taskType, title, notification);
         }));
       }));
     });
 
     await agenda.define(JOBS_NAMES.TODO, async () => {
-      console.log(['agenda:sendTodosNotifications']);
+      console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.TODO}`);
       const todos = await getTasksWithActiveNotification(TASK_TYPE.TODO);
       const usersTodos = groupBy<ITask>(todos, 'ownerId');
 
@@ -132,7 +145,7 @@ agenda.on('ready', async (): Promise<void> => {
     });
 
     await agenda.define(JOBS_NAMES.EVENT, async () => {
-      console.log(['agenda:sendEventsNotifications']);
+      console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.EVENT}`);
       const events = await getTasksWithActiveNotification(TASK_TYPE.EVENT);
       const usersEvents = groupBy<ITask>(events, 'ownerId');
       const sendTimeMoment = moment(Date.now());
@@ -166,10 +179,11 @@ agenda.on('ready', async (): Promise<void> => {
     });
 
     await agenda.define(JOBS_NAMES.MEETING, async () => {
-      console.log(['agenda:sendMeetingsNotifications']);
-      const meetings = await getTasksWithActiveNotification(TASK_TYPE.MEETING);
+      console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.MEETING}`);
+      const meetings = await getTasksWithActiveNotificationInPeriod(
+        TASK_TYPE.MEETING, moment(Date.now()), moment(Date.now()).add(1, 'minute'),
+      );
       const usersMeetings = groupBy<ITask>(meetings, 'ownerId');
-      const nowMoment = moment(Date.now()).subtract(1, 'hour');
       const userIds = Object.keys(usersMeetings);
 
       userIds.map(userId => usersMeetings[userId]).forEach((list => {
@@ -178,9 +192,8 @@ agenda.on('ready', async (): Promise<void> => {
           const note = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTE).value.text;
           const person = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.PERSON).value.text;
           const location = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.LOCATION).value.text;
-          const dateTime = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.DATE_TIME).value.text;
-          const dateTimeMoment = moment(dateTime);
-          const isAfter = dateTimeMoment.isAfter(nowMoment);
+          const dateTimeValue = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.DATE_TIME).value;
+          const dateTimeMoment = moment(dateTimeValue.text);
           const notification = {
             body: `
               person: ${person}\n
@@ -190,15 +203,15 @@ agenda.on('ready', async (): Promise<void> => {
             `,
           };
 
-          if (isAfter) {
-            await sendUserNotification(meeting.ownerId, meeting.taskType, title, notification);
-            await disableTaskNotification(meeting._id);
-          }
+          await updateNotificationAt(meeting._id, null, meeting.notificationAt);
+          await sendUserNotification(meeting.ownerId, meeting.taskType, title, notification);
         }));
       }));
     });
 
-    // await agenda.every(ROUTINE_CHECK_INTERVAL_MS, JOBS_NAMES.ROUTINE);
+    await agenda.every('10 second', JOBS_NAMES.ROUTINE, {}, {
+      timezone: 'Europe/Warsaw',
+    });
     await agenda.every('0 10 * * *', JOBS_NAMES.TODO, {}, {
       timezone: 'Europe/Warsaw',
     });
@@ -208,11 +221,11 @@ agenda.on('ready', async (): Promise<void> => {
     await agenda.every('10 second', JOBS_NAMES.MEETING, {}, {
       timezone: 'Europe/Warsaw',
     });
+    console.info(CONSOLE_COLORS.YELLOW, 'agenda started');
     await agenda.every('100 second', 'deleteUntouchedTasks');
-    console.log(['agenda:started']);
   }
   catch (e) {
-    console.error('error starting agenda');
+    console.error(`error starting agenda | ${e}`);
   }
 });
 
