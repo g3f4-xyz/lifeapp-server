@@ -26,6 +26,11 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
       userDeviceType: String,
     }],
   },
+  taskList: {
+    filters: {
+      title: String,
+    },
+  },
 });
 
 export const SettingsModel: Model<ISettingsDocument> = model('Settings', SettingsSchema);

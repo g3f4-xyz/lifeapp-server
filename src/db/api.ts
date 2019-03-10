@@ -334,6 +334,11 @@ export const getSettings = async (ownerId: string): Promise<ISettings> => {
         },
         subscriptions: [],
       },
+      taskList: {
+        filters: {
+          title: '',
+        },
+      },
     };
 
     return await addSettings(settings);
@@ -354,9 +359,26 @@ export const getTask = async (id: string): Promise<ITask> => {
 };
 
 export const getTaskList = async (ownerId: string): Promise<ITask[]> => {
+  const { taskList } = await getSettings(ownerId);
+  const { filters } = taskList;
+
   try {
     return (await TaskModel
-      .find({ ownerId, updatedAt: { $exists: true } })
+      .find({
+        ownerId,
+        updatedAt: { $exists: true },
+        fields: {
+          $elemMatch: {
+            $and: [
+              { fieldId: FIELD_ID.TITLE },
+              { fieldType: 'TEXT' },
+              { value: { $exists: true } },
+              { ['value.text']: { $exists: true } },
+              { ['value.text']: { $regex: new RegExp(filters.title), $options: 'i' } },
+            ],
+          },
+        },
+      })
       .sort({ _id : -1 }))
       .map((doc) => doc.toJSON());
   } catch (error) {
@@ -418,6 +440,25 @@ export const saveNotificationsGeneralSetting = async (
     });
 
     return general;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateTaskListTitleFilterSetting = async (
+  ownerId: string,
+  title: string,
+): Promise<string> => {
+  try {
+    await SettingsModel.findOneAndUpdate({
+      ownerId,
+    }, {
+      $set: {
+        ['taskList.filters.title']: title,
+      },
+    });
+
+    return title;
   } catch (error) {
     throw error;
   }

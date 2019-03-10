@@ -2,7 +2,7 @@ import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'gra
 import { fromGlobalId, globalIdField } from 'graphql-relay';
 import { getEmptyTask, getSettings, getTask } from '../../db/api';
 import { IContext, ISettings, ITask } from '../../db/interfaces';
-import { SettingsType } from './SettingsType';
+import { SettingsType } from './settings/SettingsType';
 import { TaskListType } from './TaskListType';
 import { TaskType } from './TaskType';
 import { TaskTypeListType } from './TaskTypeListType';
@@ -13,7 +13,7 @@ export const AppType = new GraphQLObjectType<boolean, IContext>({
   fields: () => ({
     id: globalIdField('App'),
     settings: {
-      type: SettingsType,
+      type: new GraphQLNonNull(SettingsType),
       resolve: async (_, __, { user: { id: ownerId } }): Promise<ISettings> => await getSettings(ownerId),
     },
     task: {
@@ -31,9 +31,7 @@ export const AppType = new GraphQLObjectType<boolean, IContext>({
           return await getTask(fromGlobalId(id).id);
         }
 
-        const ret = await getEmptyTask(type, ownerId);
-
-        return ret;
+        return await getEmptyTask(type, ownerId);
       },
     },
     taskList: {

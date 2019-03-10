@@ -425,6 +425,11 @@ dbHook.settings.insert([{
     },
     subscriptions: [],
   },
+  taskList: {
+    filters: {
+      title: 'test',
+    },
+  },
   ownerId: '1234567890',
 }]);
 dbHook.tasks.insert([

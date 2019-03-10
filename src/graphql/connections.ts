@@ -1,5 +1,5 @@
 import { connectionDefinitions } from 'graphql-relay';
-import { SubscriptionType } from './types/SubscriptionType';
+import { SubscriptionType } from './types/settings/notifications/SubscriptionType';
 import { TaskType } from './types/TaskType';
 import { TaskTypeType } from './types/TaskTypeType';
 

@@ -218,7 +218,7 @@ agenda.on('ready', async (): Promise<void> => {
     await agenda.every('0 10 * * *', JOBS_NAMES.EVENT, {}, {
       timezone: 'Europe/Warsaw',
     });
-    await agenda.every('10 second', JOBS_NAMES.MEETING, {}, {
+    await agenda.every('30 second', JOBS_NAMES.MEETING, {}, {
       timezone: 'Europe/Warsaw',
     });
     console.info(CONSOLE_COLORS.YELLOW, 'agenda started');
