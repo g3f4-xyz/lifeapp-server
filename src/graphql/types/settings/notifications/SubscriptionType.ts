@@ -1,6 +1,6 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { nodeInterface } from '../nodeDefinitions';
+import { nodeInterface } from '../../../nodeDefinitions';
 
 export const SubscriptionType = new GraphQLObjectType({
   name: 'SubscriptionType',

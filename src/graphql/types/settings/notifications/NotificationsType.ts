@@ -1,7 +1,7 @@
 import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { connectionArgs, connectionFromArray, globalIdField } from 'graphql-relay';
-import { SubscriptionTypeConnection } from '../connections';
-import { nodeInterface } from '../nodeDefinitions';
+import { SubscriptionTypeConnection } from '../../../connections';
+import { nodeInterface } from '../../../nodeDefinitions';
 import { NotificationsGeneralSettingType } from './NotificationsGeneralSettingType';
 import { NotificationsTypesSettingType } from './NotificationsTypesSettingType';
 

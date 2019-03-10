@@ -1,7 +1,7 @@
 import { GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { saveNotificationsGeneralSetting } from '../../db/api';
-import { NotificationsGeneralSettingType } from '../types/NotificationsGeneralSettingType';
+import { NotificationsGeneralSettingType } from '../types/settings/notifications/NotificationsGeneralSettingType';
 import { SettingsNotificationsGeneralInputType } from './inputs/SettingsNotificationsGeneralInputType';
 
 export const saveNotificationsGeneralSettingMutation = mutationWithClientMutationId({

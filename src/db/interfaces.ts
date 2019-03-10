@@ -92,9 +92,16 @@ export interface INotifications<S> {
   subscriptions: S;
 }
 
+export interface ITaskListSettings {
+  filters: {
+    title: string;
+  };
+}
+
 export interface ISettings<S = ISubscription[]> {
   ownerId: string;
   notifications: INotifications<S>;
+  taskList: ITaskListSettings;
 }
 
 export interface IUser {

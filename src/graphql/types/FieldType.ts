@@ -11,7 +11,7 @@ export const FieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectT
   name: 'FieldType',
   description: 'field type',
   fields: () => ({
-    id: globalIdField('FieldType', ({ fieldId }) => fieldId),
+    id: globalIdField('FieldType', ({ _id, fieldId }) => `${_id}|${fieldId}`),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),
