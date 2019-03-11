@@ -6,6 +6,7 @@ import { saveNotificationsGeneralSettingMutation } from './mutations/saveNotific
 import { saveNotificationsTypesSettingMutation } from './mutations/saveNotificationsTypesSettingMutation';
 import { saveTaskMutation } from './mutations/saveTaskMutation';
 import { updateTaskListTitleFilterSettingMutation } from './mutations/udpateTaskListTitleFilterSetting';
+import { updateTaskListTaskTypeFilterSettingMutation } from './mutations/udpateTaskListTaskTypeFilterSetting';
 import { updateTaskChoiceFieldMutation } from './mutations/updateTaskChoiceFieldMutation';
 import { updateTaskNestedFieldMutation } from './mutations/updateTaskNestedFieldMutation';
 import { updateTaskSwitchFieldMutation } from './mutations/updateTaskSwitchFieldMutation';
@@ -28,5 +29,6 @@ export const MutationType = new GraphQLObjectType({
     updateTaskTextField: updateTaskTextFieldMutation,
     updateTaskNestedField: updateTaskNestedFieldMutation,
     updateTaskListTitleFilterSetting: updateTaskListTitleFilterSettingMutation,
+    updateTaskListTaskTypeFilterSetting: updateTaskListTaskTypeFilterSettingMutation,
   }),
 });

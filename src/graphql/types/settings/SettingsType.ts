@@ -18,6 +18,10 @@ export const SettingsType = new GraphQLObjectType<ISettings, IContext>({
     },
     taskList: {
       type: new GraphQLNonNull(TaskListSettingsType),
+      resolve(settings) {
+        console.log(['settings.taskList'], settings.taskList)
+        return settings.taskList;
+      }
     },
   }),
   interfaces: [nodeInterface],
