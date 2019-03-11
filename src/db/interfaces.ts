@@ -95,6 +95,7 @@ export interface INotifications<S> {
 export interface ITaskListSettings {
   filters: {
     title: string;
+    taskType: string[];
   };
 }
 

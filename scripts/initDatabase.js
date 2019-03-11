@@ -428,6 +428,7 @@ dbHook.settings.insert([{
   taskList: {
     filters: {
       title: 'test',
+      taskType: ['TODO', 'EVENT', 'MEETING', 'ROUTINE'],
     },
   },
   ownerId: '1234567890',

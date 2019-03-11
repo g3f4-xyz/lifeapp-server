@@ -29,6 +29,7 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
   taskList: {
     filters: {
       title: String,
+      taskType: [String],
     },
   },
 });

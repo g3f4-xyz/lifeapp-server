@@ -337,6 +337,7 @@ export const getSettings = async (ownerId: string): Promise<ISettings> => {
       taskList: {
         filters: {
           title: '',
+          taskType: Object.keys(FIELD_ID),
         },
       },
     };
@@ -367,17 +368,35 @@ export const getTaskList = async (ownerId: string): Promise<ITask[]> => {
       .find({
         ownerId,
         updatedAt: { $exists: true },
-        fields: {
-          $elemMatch: {
-            $and: [
-              { fieldId: FIELD_ID.TITLE },
-              { fieldType: 'TEXT' },
-              { value: { $exists: true } },
-              { ['value.text']: { $exists: true } },
-              { ['value.text']: { $regex: new RegExp(filters.title), $options: 'i' } },
-            ],
+        taskType: { $in : filters.taskType },
+        $and: [
+          {
+            fields: {
+              $elemMatch: {
+                $and: [
+                  { fieldId: FIELD_ID.TITLE },
+                  { fieldType: FIELD_TYPE.TEXT },
+                  { value: { $exists: true } },
+                  { ['value.text']: { $exists: true } },
+                  { ['value.text']: { $regex: new RegExp(filters.title), $options: 'i' } },
+                ],
+              },
+            },
           },
-        },
+          // {
+          //   fields: {
+          //     $elemMatch: {
+          //       $and: [
+          //         { fieldId: FIELD_ID.STATUS },
+          //         { fieldType: FIELD_TYPE.CHOICE },
+          //         { value: { $exists: true } },
+          //         { ['value.id']: { $exists: true } },
+          //         { ['value.id']: { $in : filters.status } },
+          //       ],
+          //     },
+          //   },
+          // },
+        ],
       })
       .sort({ _id : -1 }))
       .map((doc) => doc.toJSON());
@@ -459,6 +478,25 @@ export const updateTaskListTitleFilterSetting = async (
     });
 
     return title;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateTaskListTaskTypeFilterSetting = async (
+  ownerId: string,
+  taskTypeFilter: TASK_TYPE[],
+): Promise<TASK_TYPE[]> => {
+  try {
+    await SettingsModel.findOneAndUpdate({
+      ownerId,
+    }, {
+      $set: {
+        ['taskList.filters.taskType']: taskTypeFilter,
+      },
+    });
+
+    return taskTypeFilter;
   } catch (error) {
     throw error;
   }
