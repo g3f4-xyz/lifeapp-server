@@ -15,7 +15,7 @@
     "start": "yarn run client:build:heroku && DB=remote ts-node src",
     "start:local": "yarn run client:build:local && ts-node src",
     "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "jest"
   },
   "keywords": [
     "express",
@@ -38,7 +38,10 @@
     "node": "10.*.*"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "jest": "^24.5.0",
     "nodemon": "1.17.4",
+    "ts-jest": "^24.0.0",
     "tslint": "5.12.1"
   },
   "dependencies": {
