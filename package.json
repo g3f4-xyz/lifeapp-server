@@ -15,7 +15,7 @@
     "start": "yarn run client:build:heroku && DB=remote ts-node src",
     "start:local": "yarn run client:build:local && ts-node src",
     "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "keywords": [
     "express",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/g3f4-xyz/lifeapp-server#readme",
   "engines": {
-    "node": "10.*.*"
+    "node": "11.*.*"
   },
   "devDependencies": {
     "@types/jest": "^24.0.11",
