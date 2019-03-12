@@ -429,6 +429,7 @@ dbHook.settings.insert([{
     filters: {
       title: 'test',
       taskType: ['TODO', 'EVENT', 'MEETING', 'ROUTINE'],
+      status: null,
     },
   },
   ownerId: '1234567890',

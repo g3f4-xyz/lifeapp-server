@@ -96,6 +96,7 @@ export interface ITaskListSettings {
   filters: {
     title: string;
     taskType: string[];
+    status: string;
   };
 }
 

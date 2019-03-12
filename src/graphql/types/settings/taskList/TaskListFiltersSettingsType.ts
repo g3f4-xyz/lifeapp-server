@@ -11,5 +11,8 @@ export const TaskListFiltersSettingsType = new GraphQLObjectType({
     taskType: {
       type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(TaskTypeEnum))),
     },
+    status: {
+      type: GraphQLString,
+    },
   }),
 });
