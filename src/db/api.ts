@@ -337,7 +337,8 @@ export const getSettings = async (ownerId: string): Promise<ISettings> => {
       taskList: {
         filters: {
           title: '',
-          taskType: Object.keys(FIELD_ID),
+          taskType: Object.keys(TASK_TYPE),
+          status: null,
         },
       },
     };
@@ -370,32 +371,36 @@ export const getTaskList = async (ownerId: string): Promise<ITask[]> => {
         updatedAt: { $exists: true },
         taskType: { $in : filters.taskType },
         $and: [
-          {
-            fields: {
-              $elemMatch: {
-                $and: [
-                  { fieldId: FIELD_ID.TITLE },
-                  { fieldType: FIELD_TYPE.TEXT },
-                  { value: { $exists: true } },
-                  { ['value.text']: { $exists: true } },
-                  { ['value.text']: { $regex: new RegExp(filters.title), $options: 'i' } },
-                ],
+          ...[
+            {
+              fields: {
+                $elemMatch: {
+                  $and: [
+                    { fieldId: FIELD_ID.TITLE },
+                    { fieldType: FIELD_TYPE.TEXT },
+                    { value: { $exists: true } },
+                    { ['value.text']: { $exists: true } },
+                    { ['value.text']: { $regex: new RegExp(filters.title), $options: 'i' } },
+                  ],
+                },
               },
             },
-          },
-          // {
-          //   fields: {
-          //     $elemMatch: {
-          //       $and: [
-          //         { fieldId: FIELD_ID.STATUS },
-          //         { fieldType: FIELD_TYPE.CHOICE },
-          //         { value: { $exists: true } },
-          //         { ['value.id']: { $exists: true } },
-          //         { ['value.id']: { $in : filters.status } },
-          //       ],
-          //     },
-          //   },
-          // },
+          ],
+          ...(filters.status ? [
+            {
+              fields: {
+                $elemMatch: {
+                  $and: [
+                    { fieldId: FIELD_ID.STATUS },
+                    { fieldType: FIELD_TYPE.CHOICE },
+                    { value: { $exists: true } },
+                    { ['value.id']: { $exists: true } },
+                    { ['value.id']: filters.status },
+                  ],
+                },
+              },
+            },
+          ] : []),
         ],
       })
       .sort({ _id : -1 }))
@@ -464,6 +469,24 @@ export const saveNotificationsGeneralSetting = async (
   }
 };
 
+export const updateTaskListStatusFilterSetting = async (
+  ownerId: string,
+  status: string,
+): Promise<string> => {
+  try {
+    await SettingsModel.findOneAndUpdate({
+      ownerId,
+    }, {
+      $set: {
+        ['taskList.filters.status']: status,
+      },
+    });
+
+    return status;
+  } catch (error) {
+    throw error;
+  }
+};
 export const updateTaskListTitleFilterSetting = async (
   ownerId: string,
   title: string,
