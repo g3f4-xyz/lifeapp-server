@@ -2,7 +2,3 @@ language: node_js
 node_js:
   - "node"
   - "11"
-deploy:
-  provider: heroku
-  api_key: 38ca2b32-db3f-48d8-a360-1cf88909b6a0
-  app: lifeapp-server
