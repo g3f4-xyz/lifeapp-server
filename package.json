@@ -1,11 +1,12 @@
 {
   "name": "lifeapp",
   "version": "2.2.0",
+  "clientVersion": "2.2.0",
   "description": "Level up with LifeApp server repository",
   "main": "lifeapp",
   "scripts": {
-    "client:build:heroku": "tar -zxvf client-packages/client-package-heroku-2.2.0.tar.gz",
-    "client:build:local": "tar -zxvf client-packages/client-package-local-2.2.0.tar.gz",
+    "client:build:heroku": "tar -zxvf client-packages/client-package-heroku-$npm_package_clientVersion.tar.gz",
+    "client:build:local": "tar -zxvf client-packages/client-package-local-$npm_package_clientVersion.tar.gz",
     "dev": "NODE_ENV=development nodemon",
     "dev:debug:agenda": "DEBUG=\"agenda:*\" NODE_ENV=development nodemon",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
