@@ -5,10 +5,18 @@ import { DEMO_USER } from '../config';
 import { addSubscription } from '../db/api';
 
 export const notificationMiddleware = async (req: Request, res: Response) => {
-  const subscriptionData = req.body;
+  const {
+    subscriptionData,
+    options = {
+      silent: false,
+    },
+  } = req.body;
   const { family: userAgent, os: { family: userDeviceType } } = parse(req.headers['user-agent']);
   const { id: ownerId } = req.user || DEMO_USER;
   await addSubscription(ownerId, subscriptionData, userAgent, userDeviceType);
+
+
+  console.log(['notificationMiddleware'], options)
 
   // Send 201 - resource created
   res.status(201).json({});
@@ -22,6 +30,8 @@ export const notificationMiddleware = async (req: Request, res: Response) => {
     },
   });
 
-  // Pass subscription into sendNotification
-  await sendNotification(subscriptionData, payload);
+  if (!options.silent) {
+    // Pass subscription into sendNotification
+    await sendNotification(subscriptionData, payload);
+  }
 };

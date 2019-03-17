@@ -4,7 +4,7 @@ import { Document, Model, model, Schema } from 'mongoose';
 import { CYCLE, DAY_CYCLE, FIELD_ID, MONTH_CYCLE, TASK_TYPE, TIME_CYCLE, WEEK_CYCLE } from '../../constants';
 
 import { IFieldValue, ITask } from '../interfaces';
-import { FieldSchema } from './FieldSchema';
+import { FieldSchema } from '../schemas/FieldSchema';
 
 export interface ITaskDocument extends ITask, Document {}
 

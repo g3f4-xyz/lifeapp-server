@@ -1,5 +1,5 @@
-import { Moment } from 'moment-timezone';
 import * as moment from 'moment-timezone';
+import { Moment } from 'moment-timezone';
 import { FIELD_ID, FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
 import {
   IField,
@@ -12,7 +12,7 @@ import {
   ITask,
   ITaskType,
 } from './interfaces';
-import { FieldModel, IFieldDocument } from './models/FieldSchema';
+import { FieldModel, IFieldDocument } from './models/FieldModel';
 import { SettingsModel } from './models/SettingsModel';
 import { TaskModel } from './models/TaskModel';
 import { TaskTypeModel } from './models/TaskTypeModel';
@@ -68,14 +68,25 @@ export const addSubscription = async (
   userDeviceType: string,
 ): Promise<void> => {
   try {
-    // TODO nie sprawdzam istnienia ustawień podczas dodawania subskrycji
-    await SettingsModel.findOneAndUpdate({
+    const userSettings = await SettingsModel.findOne({
       ownerId,
-    }, {
-      $push: {
-        ['notifications.subscriptions']: { subscriptionData, userAgent, userDeviceType },
-      },
     });
+
+    if (!userSettings) {
+      console.error('no user settings while trying to add subscription.');
+      return;
+    }
+
+    const subscriptions = userSettings.notifications.subscriptions;
+    const oldSubscription = subscriptions.find(
+      (subscription: ISubscription) => subscription.subscriptionData.endpoint === subscriptionData.endpoint,
+    );
+
+    if (!oldSubscription) {
+      userSettings.notifications.subscriptions.push({ subscriptionData, userAgent, userDeviceType });
+
+      await userSettings.save();
+    }
   } catch (error) {
     throw error;
   }
@@ -99,9 +110,7 @@ export const addTask = async (task: ITask): Promise<ITask> => {
 
     await newTask.save();
 
-    const taskData = newTask.toJSON();
-
-    return taskData;
+    return newTask.toJSON();
   } catch (error) {
     throw error;
   }
@@ -182,6 +191,7 @@ export const getSubscription = async (ownerId: string, subscriptionId: string): 
   try {
     const settings = await SettingsModel.findOne({ ownerId });
 
+    // @ts-ignore
     return settings.notifications.subscriptions.id(subscriptionId).toJSON();
   } catch (error) {
     throw error;
@@ -224,18 +234,39 @@ export const getTasksWithActiveNotification = async (taskType: TASK_TYPE): Promi
   try {
     const routines = await TaskModel.find({
       taskType,
-      fields: {
-        $elemMatch: {
-          $and: [
-            { fieldId: 'NOTIFICATIONS'},
-            { fieldType: 'NESTED' },
-            { value: { $exists: true } },
-            { ['value.ownValue']: { $exists: true } },
-            { ['value.ownValue.enabled']: { $exists: true } },
-            { ['value.ownValue.enabled']: true },
-          ],
-        },
-      },
+      $and: [
+        ...[
+          {
+            fields: {
+              $elemMatch: {
+                $and: [
+                  { fieldId: 'NOTIFICATIONS'},
+                  { fieldType: 'NESTED' },
+                  { value: { $exists: true } },
+                  { ['value.ownValue']: { $exists: true } },
+                  { ['value.ownValue.enabled']: { $exists: true } },
+                  { ['value.ownValue.enabled']: true },
+                ],
+              },
+            },
+          },
+        ],
+        ...(taskType === TASK_TYPE.ROUTINE ? [
+          {
+            fields: {
+              $elemMatch: {
+                $and: [
+                  { fieldId: FIELD_ID.ACTIVE },
+                  { fieldType: FIELD_TYPE.SWITCH },
+                  { value: { $exists: true } },
+                  { ['value.enabled']: { $exists: true } },
+                  { ['value.enabled']: true },
+                ],
+              },
+            },
+          },
+        ] : []),
+      ],
     });
 
     return routines.map(doc => doc.toJSON());

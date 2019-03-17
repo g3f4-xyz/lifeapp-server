@@ -106,8 +106,12 @@ agenda.on('ready', async (): Promise<void> => {
           const title = routine.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
           const action = routine.fields.find(({ fieldId }) => fieldId === 'ACTION').value.text;
           const cycleValue = routine.fields.find(({ fieldId }) => fieldId === 'ACTION').value;
+          const notificationsValue = routine.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTIFICATIONS).value;
           const notification = {
-            body: action,
+            body: `
+              action: ${action} |\n
+              additional note: ${notificationsValue.childrenValue && notificationsValue.childrenValue.ownValue.text}
+            `,
           };
 
           const notificationAt = calculateNotificationAt(TASK_TYPE.ROUTINE, routine.lastNotificationAt, cycleValue);
@@ -124,18 +128,30 @@ agenda.on('ready', async (): Promise<void> => {
       const usersTodos = groupBy<ITask>(todos, 'ownerId');
 
       const usersTodosData = Object.keys(usersTodos).map(userId => usersTodos[userId]).map((list => list.map((todo => {
-        const title = todo.fields.find(({ fieldId }) => fieldId === 'TITLE').value.text;
-        const note = todo.fields.find(({ fieldId }) => fieldId === 'NOTE').value.text;
-        const status = todo.fields.find(({ fieldId }) => fieldId === 'STATUS').value.id;
+        const title = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.TITLE).value.text;
+        const note = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTE).value.text;
+        const status = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.STATUS).value.id;
+        const notificationsValue = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTIFICATIONS).value;
 
-        return { title, note, ownerId: todo.ownerId, status };
+        return {
+          note,
+          title,
+          status,
+          ownerId: todo.ownerId,
+          additionalNote: notificationsValue.childrenValue && notificationsValue.childrenValue.ownValue.text,
+        };
       }))));
 
       usersTodosData.forEach(async todosData => {
         const [{ ownerId }] = todosData;
         const title = 'Daily todos status';
         const body = todosData
-          .reduce((acc, data) => `${acc}\n${data.title} | status: ${data.status} | note: ${data.note}`, '');
+          .reduce((acc, data) => `
+            ${acc}\n${data.title}
+            | status: ${data.status}
+            | note: ${data.note}
+            | additional note: ${data.additionalNote}
+          `, '');
         const notification = {
           body,
         };
@@ -156,10 +172,20 @@ agenda.on('ready', async (): Promise<void> => {
         const location = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.LOCATION).value.text;
         const duration = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.DURATION).value.text;
         const dateTime = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.DATE_TIME).value.text;
+        const notificationsValue = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTIFICATIONS).value;
         const dateTimeMoment = moment(dateTime);
         const isToday = sendTimeMoment.isSame(dateTimeMoment, 'day');
 
-        return { id: todo._id, title, note, ownerId: todo.ownerId, location, duration, isToday };
+        return {
+          location,
+          duration,
+          isToday,
+          title,
+          note,
+          id: todo._id,
+          ownerId: todo.ownerId,
+          additionalNote: notificationsValue.childrenValue && notificationsValue.childrenValue.ownValue.text,
+        };
       })).filter(data => data.isToday)));
 
       todayUsersEventsData.forEach(async todosData => {
@@ -167,7 +193,14 @@ agenda.on('ready', async (): Promise<void> => {
           const [{ ownerId }] = todosData;
           const title = 'Today\'s events ';
           const body = todosData.reduce((acc, data) =>
-            `${acc}\n${data.title} | location: ${data.location} | note: ${data.note} | duration: ${data.duration}`, '');
+            `
+              ${acc}\n${data.title}
+              | location: ${data.location}
+              | note: ${data.note}
+              | duration: ${data.duration}
+              | additional note: ${data.additionalNote}
+            `
+          , '');
           const notification = {
             body,
           };
@@ -193,6 +226,7 @@ agenda.on('ready', async (): Promise<void> => {
           const person = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.PERSON).value.text;
           const location = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.LOCATION).value.text;
           const dateTimeValue = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.DATE_TIME).value;
+          const notificationsValue = meeting.fields.find(({ fieldId }) => fieldId === FIELD_ID.NOTIFICATIONS).value;
           const dateTimeMoment = moment(dateTimeValue.text);
           const notification = {
             body: `
@@ -200,6 +234,7 @@ agenda.on('ready', async (): Promise<void> => {
               note: ${note}\n
               location: ${location}\n
               time: ${dateTimeMoment.format(TIME_FORMAT)}\n
+              additional note: ${notificationsValue.childrenValue && notificationsValue.childrenValue.ownValue.text}\n
             `,
           };
 

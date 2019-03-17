@@ -1,12 +1,12 @@
 import { Document, model, Model, Schema } from 'mongoose';
 
 import { ISettings } from '../interfaces';
-import { ISubscriptionDocument } from '../schemas/SubscriptionSchema';
+import { SubscriptionSchema } from '../schemas/SubscriptionSchema';
 
-export interface ISettingsDocument extends ISettings<ISubscriptionDocument>, Document {}
+export interface ISettingsDocument extends ISettings, Document {}
 
 export const SettingsSchema: Schema<ISettings> = new Schema({
-  ownerId: String,
+  ownerId: { type: String, index: { unique: true, dropDups: true }, required: true },
   notifications: {
     general: {
       show: Boolean,
@@ -18,13 +18,7 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
       todos: Boolean,
       routines: Boolean,
     },
-    // TODO dlaczego nie działa ta schema?
-    // subscriptions: [SubscriptionSchema],
-    subscriptions: [{
-      subscriptionData: Object,
-      userAgent: String,
-      userDeviceType: String,
-    }],
+    subscriptions: [SubscriptionSchema],
   },
   taskList: {
     filters: {
@@ -36,3 +30,11 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
 });
 
 export const SettingsModel: Model<ISettingsDocument> = model('Settings', SettingsSchema);
+
+(async () => {
+  try {
+    await SettingsModel.ensureIndexes();
+  } catch (e) {
+    throw new Error(`error creating SettingsModel indexes | ${e}`);
+  }
+})();

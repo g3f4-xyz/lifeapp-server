@@ -2,6 +2,14 @@ type KEYOF_TYPE_VALUE_MAP<T, V> = {
   [K in keyof T]: V
 };
 
+export type STATUS = '201' | '408' | '410';
+
+export const STATUSES: { [key: string]: STATUS } = {
+  OK: '201',
+  REQUEST_TIMEOUT: '408',
+  NOT_REGISTERED: '410',
+};
+
 export enum FIELD_ID {
   TITLE = 'TITLE',
   PRIORITY = 'PRIORITY',

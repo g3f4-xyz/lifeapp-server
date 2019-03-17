@@ -6,12 +6,10 @@ print(`Initializing db with name: ${DB_NAME}`);
 
 if (dbHook.tasks) {
   dbHook.fields.drop();
-  dbHook.settings.drop();
   dbHook.tasks.drop();
   dbHook.tasktypes.drop();
 } else {
   dbHook.createCollection('fields');
-  dbHook.createCollection('settings');
   dbHook.createCollection('tasks');
   dbHook.createCollection('tasktypes');
 }
@@ -410,30 +408,6 @@ const assignFieldValue = (field, value = null) => {
   print(['assignFieldValue:error'], `Nie znany typ pola ${fieldType}`);
 };
 
-
-dbHook.settings.insert([{
-  notifications: {
-    general: {
-      show: true,
-      vibrate: true,
-    },
-    types: {
-      events: true,
-      meetings: true,
-      todos: true,
-      routines: false,
-    },
-    subscriptions: [],
-  },
-  taskList: {
-    filters: {
-      title: 'test',
-      taskType: ['TODO', 'EVENT', 'MEETING', 'ROUTINE'],
-      status: null,
-    },
-  },
-  ownerId: '1234567890',
-}]);
 dbHook.tasks.insert([
   {
     taskType: 'TODO',

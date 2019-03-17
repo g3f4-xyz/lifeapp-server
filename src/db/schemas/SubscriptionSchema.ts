@@ -1,19 +1,12 @@
-import { Document } from 'mongoose';
+import { Document, Schema } from 'mongoose';
 
 import { ISubscription } from '../interfaces';
+import { SubscriptionDataSchema } from './SubscriptionDataSchema';
 
 export interface ISubscriptionDocument extends ISubscription, Document {}
 
-// TODO dlaczego nie działa ta schema
-// export const SubscriptionSchema: Schema<SubscriptionDocument> = new Schema({
-//   subscriptionData: {
-//     endpoint : String,
-//     expirationTime : String,
-//     keys : {
-//       p256dh : String,
-//       auth : Boolean,
-//     },
-//   },
-//   userAgent: String,
-//   userDeviceType: String,
-// });
+export const SubscriptionSchema: Schema<ISubscriptionDocument> = new Schema({
+  subscriptionData: SubscriptionDataSchema,
+  userAgent: String,
+  userDeviceType: String,
+});

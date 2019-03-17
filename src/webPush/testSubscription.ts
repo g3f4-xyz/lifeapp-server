@@ -1,4 +1,5 @@
 import { sendNotification } from 'web-push';
+import { STATUSES } from '../constants';
 
 import { getSubscription } from '../db/api';
 
@@ -19,10 +20,16 @@ export const testSubscription = async (ownerId: string, subscriptionModelId: str
           primaryKey: 1,
         },
         actions: [
-          {action: 'test', title: 'Test',
-            icon: 'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4'},
-          {action: 'close', title: 'Close notification',
-            icon: 'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4'},
+          {
+            action: 'test',
+            title: 'Test',
+            icon: 'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4',
+          },
+          {
+            action: 'close',
+            title: 'Close notification',
+            icon: 'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4',
+          },
         ],
       },
     });
@@ -31,7 +38,7 @@ export const testSubscription = async (ownerId: string, subscriptionModelId: str
 
     return statusCode;
   } catch (error) {
-    console.log(['testSubscription.error'], error);
-    return error.statusCode;
+    console.error(['testSubscription.error'], error);
+    return error.statusCode ? error.statusCode : STATUSES.REQUEST_TIMEOUT;
   }
 };

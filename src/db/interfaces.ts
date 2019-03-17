@@ -29,11 +29,11 @@ export interface IFieldMeta {
 }
 
 export interface IFieldValue {
-  enabled?: boolean;
-  id?: string;
-  text?: string;
-  ownValue?: this;
-  childrenValue?: this;
+  enabled?: boolean | null;
+  id?: string | null;
+  text?: string | null;
+  ownValue?: this | null;
+  childrenValue?: this | null;
 }
 
 export interface IField {
@@ -86,10 +86,10 @@ export interface ISettingsNotificationsTypes {
   todos: boolean;
 }
 
-export interface INotifications<S> {
+export interface INotifications {
   general: ISettingsNotificationsGeneral;
   types: ISettingsNotificationsTypes;
-  subscriptions: S;
+  subscriptions: ISubscription[];
 }
 
 export interface ITaskListSettings {
@@ -100,9 +100,9 @@ export interface ITaskListSettings {
   };
 }
 
-export interface ISettings<S = ISubscription[]> {
+export interface ISettings {
   ownerId: string;
-  notifications: INotifications<S>;
+  notifications: INotifications;
   taskList: ITaskListSettings;
 }
 
