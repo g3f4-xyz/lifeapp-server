@@ -1,13 +1,12 @@
 import { sendNotification } from 'web-push';
 import { STATUSES } from '../constants';
 
-import { getSubscription } from '../db/api';
+import { getSubscriptionData } from '../db/api';
 
 export const testSubscription = async (ownerId: string, subscriptionModelId: string) => {
   try {
-    const subscription = await getSubscription(ownerId, subscriptionModelId);
+    const subscriptionData = await getSubscriptionData(ownerId, subscriptionModelId);
 
-    const { subscriptionData } = subscription;
     const payload = JSON.stringify({
       title: 'Welcome to LifeApp!',
       notification: {

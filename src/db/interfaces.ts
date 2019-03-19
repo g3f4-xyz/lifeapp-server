@@ -69,7 +69,7 @@ export interface ISubscriptionData extends PushSubscription {
 }
 
 export interface ISubscription {
-  subscriptionData: ISubscriptionData;
+  subscriptionData: PushSubscription;
   userAgent: string;
   userDeviceType: string;
 }

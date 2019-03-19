@@ -187,12 +187,12 @@ export const deleteSubscription = async (ownerId: string, subscriptionId: string
   }
 };
 
-export const getSubscription = async (ownerId: string, subscriptionId: string): Promise<ISubscription> => {
+export const getSubscriptionData = async (ownerId: string, subscriptionId: string): Promise<ISubscriptionData> => {
   try {
     const settings = await SettingsModel.findOne({ ownerId });
 
     // @ts-ignore
-    return settings.notifications.subscriptions.id(subscriptionId).toJSON();
+    return settings.notifications.subscriptions.id(subscriptionId).toJSON().subscriptionData;
   } catch (error) {
     throw error;
   }
