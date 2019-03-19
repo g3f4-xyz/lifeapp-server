@@ -1,6 +1,6 @@
 {
   "name": "lifeapp",
-  "version": "2.2.1",
+  "version": "2.2.3",
   "clientVersion": "2.2.10",
   "description": "Level up with LifeApp server repository",
   "main": "lifeapp",
