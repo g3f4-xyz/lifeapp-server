@@ -5,8 +5,8 @@ import { TaskTypeModel } from '../db/models/TaskTypeModel';
 
 export const typeResolver = (obj: Model<any>): GraphQLObjectType => {
   if (obj instanceof TaskModel) {
-    return require('./types/TaskType');
+    return require('./schema/query/app/task/TaskType');
   } else if (obj instanceof TaskTypeModel) {
-    return require('./types/TaskTypeType');
+    return require('./schema/query/app/task-type-list/TaskTypeType');
   }
 };
