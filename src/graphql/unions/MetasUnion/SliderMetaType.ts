@@ -24,15 +24,15 @@ export const SliderMetaType: GraphQLObjectType<IFieldMeta, IContext> = new Graph
     },
     min: {
       description: 'min field meta description',
-      type: new GraphQLNonNull(GraphQLInt),
+      type: GraphQLInt,
     },
     max: {
       description: 'max field meta description',
-      type: new GraphQLNonNull(GraphQLInt),
+      type: GraphQLInt,
     },
     step: {
       description: 'step field meta description',
-      type: new GraphQLNonNull(GraphQLInt),
+      type: GraphQLInt,
     },
   }),
 });

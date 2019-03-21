@@ -13,6 +13,7 @@ export const STATUSES: { [key: string]: STATUS } = {
 export enum FIELD_ID {
   TITLE = 'TITLE',
   PRIORITY = 'PRIORITY',
+  PROGRESS = 'PROGRESS',
   ACTIVE = 'ACTIVE',
   STATUS = 'STATUS',
   DATE = 'DATE',
