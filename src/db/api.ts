@@ -362,6 +362,7 @@ export const getSettings = async (ownerId: string): Promise<ISettings> => {
         },
         types: {
           events: true,
+          goal: true,
           meetings: true,
           routines: true,
           todos: true,
