@@ -21,6 +21,9 @@ const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
   [FIELD_TYPE.CHOICE]: {
     id: '',
   },
+  [FIELD_TYPE.SLIDER]: {
+    progress: 0,
+  },
   [FIELD_TYPE.SWITCH]: {
     enabled: false,
   },

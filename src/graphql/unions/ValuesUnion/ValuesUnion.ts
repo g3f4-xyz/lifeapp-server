@@ -5,11 +5,13 @@ import { IFieldValue } from '../../../db/interfaces';
 // TODO jak rozwiązać problem cyklicznego odwołania modułu NestedValueType
 const getTypes = (): FIELD_TYPE_VALUE_MAP<GraphQLObjectType> => {
   const { ChoiceValueType } = require('./ChoiceValueType');
+  const { SliderValueType } = require('./SliderValueType');
   const { SwitchValueType } = require('./SwitchValueType');
   const { TextValueType } = require('./TextValueType');
   const { NestedValueType } = require('./NestedValueType');
 
   return {
+    SLIDER: SliderValueType,
     SWITCH: SwitchValueType,
     CHOICE: ChoiceValueType,
     TEXT: TextValueType,

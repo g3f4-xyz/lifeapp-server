@@ -64,7 +64,7 @@ const FIELDS_CONFIG = {
         value: 'DONE',
       }, {
         text: 'In progress',
-        value: 'IN_PROGRESS',
+        value: 'IN_SLIDER',
       }],
     },
   },
@@ -144,6 +144,19 @@ const FIELDS_CONFIG = {
       required: false,
       minLength: 3,
       maxLength: 100,
+    },
+  },
+  PROGRESS: {
+    fieldId: 'PROGRESS',
+    fieldType: 'SLIDER',
+    order: 5,
+    meta: {
+      label: 'Progress',
+      helperText: 'Informacje o testowym polu progress',
+      required: false,
+      step: 1,
+      min: 0,
+      max: 100,
     },
   },
   ACTION: {
@@ -349,6 +362,13 @@ dbHook.tasktypes.insert([{
   order: 0,
   parentTypeIds: ['TASK'],
   fieldsIds: ['NOTE'],
+}, {
+  typeId: 'GOAL',
+  label: 'Goal',
+  description: 'Pozwala na ustawienie tytułu, priorytetu oraz sterowanie statusem. oraz dodanie postępu',
+  order: 0,
+  parentTypeIds: ['TASK'],
+  fieldsIds: ['PROGRESS'],
 }, {
   typeId: 'EVENT',
   label: 'Event',

@@ -3,12 +3,14 @@ import { FIELD_TYPE_VALUE_MAP } from '../../../constants';
 import { IFieldMeta } from '../../../db/interfaces';
 import { ChoiceMetaType } from './ChoiceMetaType';
 import { NestedMetaType } from './NestedMetaType';
+import { SliderMetaType } from './SliderMetaType';
 import { SwitchMetaType } from './SwitchMetaType';
 import { TextMetaType } from './TextMetaType';
 
 const TYPES: FIELD_TYPE_VALUE_MAP<GraphQLObjectType> = {
   CHOICE: ChoiceMetaType,
   TEXT: TextMetaType,
+  SLIDER: SliderMetaType,
   SWITCH: SwitchMetaType,
   NESTED: NestedMetaType,
 };
