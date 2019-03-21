@@ -1,7 +1,7 @@
 import { connectionDefinitions } from 'graphql-relay';
-import { SubscriptionType } from './types/settings/notifications/SubscriptionType';
-import { TaskType } from './types/TaskType';
-import { TaskTypeType } from './types/TaskTypeType';
+import { SubscriptionType } from './schema/query/app/settings/notifications/SubscriptionType';
+import { TaskType } from './schema/query/app/task/TaskType';
+import { TaskTypeType } from './schema/query/app/task-type-list/TaskTypeType';
 
 export const {
   connectionType: TaskTypeConnection,

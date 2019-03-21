@@ -2,10 +2,10 @@ import { Request } from 'express';
 import { Middleware, OptionsResult } from 'express-graphql';
 import * as graphqlHTTP from 'express-graphql';
 import { DEMO_USER } from '../config';
-import { rootSchema } from '../graphql/schema';
+import { Schema } from '../graphql/schema/Schema';
 
 export const graphqlMiddleware: Middleware = graphqlHTTP((req: Request): OptionsResult => ({
-  schema: rootSchema,
+  schema: Schema,
   pretty: true,
   graphiql: true,
   context: {
