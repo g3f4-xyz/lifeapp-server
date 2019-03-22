@@ -1,4 +1,5 @@
 import { Document, model, Model, Schema } from 'mongoose';
+import { TASK_STATUS, TASK_TYPE } from '../../constants';
 
 import { ISettings } from '../interfaces';
 import { SubscriptionSchema } from '../schemas/SubscriptionSchema';
@@ -9,22 +10,52 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
   ownerId: { type: String, index: { unique: true, dropDups: true }, required: true },
   notifications: {
     general: {
-      show: Boolean,
-      vibrate: Boolean,
+      show: {
+        type: Boolean,
+        default: true,
+      },
+      vibrate: {
+        type: Boolean,
+        default: true,
+      },
     },
     types: {
-      events: Boolean,
-      meetings: Boolean,
-      todos: Boolean,
-      routines: Boolean,
+      events: {
+        type: Boolean,
+        default: true,
+      },
+      meetings: {
+        type: Boolean,
+        default: true,
+      },
+      todos: {
+        type: Boolean,
+        default: true,
+      },
+      routines: {
+        type: Boolean,
+        default: true,
+      },
     },
-    subscriptions: [SubscriptionSchema],
+    subscriptions: [{
+      type: SubscriptionSchema,
+      default: [],
+    }],
   },
   taskList: {
     filters: {
-      title: String,
-      taskType: [String],
-      status: String,
+      title: {
+        type: String,
+        default: '',
+      },
+      taskType: [{
+        type: String,
+        enum: Object.values(TASK_TYPE),
+      }],
+      status: {
+        type: String,
+        enum: Object.values(TASK_STATUS),
+      },
     },
   },
 });

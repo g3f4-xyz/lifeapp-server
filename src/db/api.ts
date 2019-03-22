@@ -99,6 +99,8 @@ export const addSettings = async (settings: ISettings): Promise<ISettings> => {
   try {
     const newSettings = new SettingsModel(settings);
 
+    console.log(['addSettings'], newSettings)
+
     await newSettings.save();
 
     return newSettings.toJSON();
@@ -342,9 +344,6 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Prom
   }
 };
 
-// metoda api agregująca kolekcje.
-// kolekcja subskrypcji jest oddzielona dla agendy.
-// zamienić na powiązanie przez ownerId
 export const getSettings = async (ownerId: string): Promise<ISettings> => {
   try {
     const settingsModel = await SettingsModel.findOne({ ownerId });
@@ -353,32 +352,12 @@ export const getSettings = async (ownerId: string): Promise<ISettings> => {
       return settingsModel.toJSON();
     }
 
-    const settings: ISettings = {
-      ownerId,
-      notifications: {
-        general: {
-          show: true,
-          vibrate: false,
-        },
-        types: {
-          events: true,
-          goal: true,
-          meetings: true,
-          routines: true,
-          todos: true,
-        },
-        subscriptions: [],
-      },
-      taskList: {
-        filters: {
-          title: '',
-          taskType: Object.keys(TASK_TYPE),
-          status: null,
-        },
-      },
-    };
+    const newSettings = new SettingsModel();
 
-    return await addSettings(settings);
+    newSettings.ownerId = ownerId;
+    newSettings.taskList.filters.taskType = Object.values(TASK_TYPE);
+
+    return await newSettings.save();
   } catch (error) {
     throw error;
   }
