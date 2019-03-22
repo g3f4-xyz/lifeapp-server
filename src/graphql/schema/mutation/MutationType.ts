@@ -4,14 +4,10 @@ import { deleteSubscriptionMutation } from './mutations/deleteSubscriptionMutati
 import { deleteTaskMutation } from './mutations/deleteTaskMutation';
 import { saveNotificationsGeneralSettingMutation } from './mutations/saveNotificationsGeneralSettingMutation';
 import { saveNotificationsTypesSettingMutation } from './mutations/saveNotificationsTypesSettingMutation';
+import { updateTaskFieldMutation } from './mutations/updateTaskFieldMutation';
 import { updateTaskListStatusFilterSettingMutation } from './mutations/updateTaskListStatusFilterSettingMutation';
-import { updateTaskListTitleFilterSettingMutation } from './mutations/updateTaskListTitleFilterSettingMutation';
 import { updateTaskListTaskTypeFilterSettingMutation } from './mutations/updateTaskListTaskTypeFilterSettingMutation';
-import { updateTaskChoiceFieldMutation } from './mutations/updateTaskChoiceFieldMutation';
-import { updateTaskNestedFieldMutation } from './mutations/updateTaskNestedFieldMutation';
-import { updateTaskSliderFieldMutation } from './mutations/updateTaskSliderFieldMutation';
-import { updateTaskSwitchFieldMutation } from './mutations/updateTaskSwitchFieldMutation';
-import { updateTaskTextFieldMutation } from './mutations/updateTaskTextFieldMutation';
+import { updateTaskListTitleFilterSettingMutation } from './mutations/updateTaskListTitleFilterSettingMutation';
 
 import { testSubscriptionMutation } from './mutations/testSubscriptionMutation';
 
@@ -24,11 +20,7 @@ export const MutationType = new GraphQLObjectType({
     saveNotificationsGeneralSetting: saveNotificationsGeneralSettingMutation,
     saveNotificationsTypesSetting: saveNotificationsTypesSettingMutation,
     testSubscription: testSubscriptionMutation,
-    updateTaskSliderField: updateTaskSliderFieldMutation,
-    updateTaskSwitchField: updateTaskSwitchFieldMutation,
-    updateTaskChoiceField: updateTaskChoiceFieldMutation,
-    updateTaskTextField: updateTaskTextFieldMutation,
-    updateTaskNestedField: updateTaskNestedFieldMutation,
+    updateTaskField: updateTaskFieldMutation,
     updateTaskListStatusFilterSetting: updateTaskListStatusFilterSettingMutation,
     updateTaskListTitleFilterSetting: updateTaskListTitleFilterSettingMutation,
     updateTaskListTaskTypeFilterSetting: updateTaskListTaskTypeFilterSettingMutation,
