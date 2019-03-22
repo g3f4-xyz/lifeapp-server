@@ -340,14 +340,10 @@ const FIELDS_CONFIG = {
   },
 };
 
-// DANE TESTOWE
 dbHook.fields
   .insert(Object.keys(FIELDS_CONFIG)
     .map(fieldId => Object.assign({ fieldId }, FIELDS_CONFIG[fieldId])));
 
-const findFieldByFieldId = fieldId => dbHook.fields.findOne({ fieldId });
-
-// KONFIGURACJA
 // TYPY ZADAŃ
 dbHook.tasktypes.insert([{
   typeId: 'TASK',
