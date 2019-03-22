@@ -3,6 +3,7 @@ import { IFieldValue } from '../interfaces';
 
 const FIELD_VALUE_DEFINITION = {
   enabled: Boolean,
+  progress: Number,
   id: String,
   text: String,
   ownValue: this,

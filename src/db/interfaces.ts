@@ -81,6 +81,7 @@ export interface ISettingsNotificationsGeneral {
 
 export interface ISettingsNotificationsTypes {
   events: boolean;
+  goal: boolean;
   meetings: boolean;
   routines: boolean;
   todos: boolean;

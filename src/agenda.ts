@@ -19,6 +19,7 @@ moment.tz.setDefault('Europe/Warsaw');
 const agenda = new Agenda({ db: { address: DB_HOST } });
 
 const JOBS_NAMES: TASK_TYPE_VALUE_MAP<string> = {
+  [TASK_TYPE.GOAL]: '',
   [TASK_TYPE.ROUTINE]: 'sendRoutineNotifications',
   [TASK_TYPE.TODO]: 'sendTodosNotifications',
   [TASK_TYPE.EVENT]: 'sendEventsNotifications',

@@ -23,7 +23,7 @@ export const TaskTypeType = new GraphQLObjectType({
     parentTypeIds: {
       type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLString))),
     },
-    fields: {
+    fieldsIds: {
       type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLString))),
     },
   }),
