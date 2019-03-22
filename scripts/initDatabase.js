@@ -64,7 +64,7 @@ const FIELDS_CONFIG = {
         value: 'DONE',
       }, {
         text: 'In progress',
-        value: 'IN_SLIDER',
+        value: 'IN_PROGRESS',
       }],
     },
   },
@@ -391,101 +391,6 @@ dbHook.tasktypes.insert([{
   parentTypeIds: ['TASK'],
   fieldsIds: ['CYCLE', 'ACTION', 'ACTIVE'],
 }]);
-
-const assignFieldValue = (field, value = null) => {
-  const { fieldType } = field;
-
-  if (fieldType === 'SWITCH') {
-    return Object.assign({
-      value: {
-        enabled: value,
-      },
-    }, field);
-  } else if (fieldType === 'CHOICE') {
-    return Object.assign({
-      value: {
-        id: value,
-      },
-    }, field);
-  } else if (fieldType === 'TEXT') {
-    return Object.assign({
-      value: {
-        text: value,
-      },
-    }, field);
-  } else if (fieldType === 'NESTED') {
-    return Object.assign({
-      value: {
-        ownValue: value,
-        childrenValue: {
-          ownValue: null,
-          childrenValue: null,
-        },
-      },
-    }, field);
-  }
-
-  print(['assignFieldValue:error'], `Nie znany typ pola ${fieldType}`);
-};
-
-dbHook.tasks.insert([
-  {
-    taskType: 'TODO',
-    ownerId: '1234567890',
-    fields: [
-      {
-        fieldId: 'TITLE',
-        value: 'To jest tytuł zadania typu ToDo',
-      },
-      {
-        fieldId: 'PRIORITY',
-        value: true,
-      },
-      {
-        fieldId: 'STATUS',
-        value: 'TODO',
-      },
-      {
-        fieldId: 'NOTE',
-        value: 'Notakta testowa. Może być długa i zawierać wiele wierszy.',
-      },
-      {
-        fieldId: 'NOTIFICATIONS',
-        value: {
-          enabled: false,
-        },
-      },
-    ].map(({ fieldId, value }) => assignFieldValue(findFieldByFieldId(fieldId), value)),
-  },
-  {
-    taskType: 'TODO',
-    ownerId: '1234567890',
-    fields: [
-      {
-        fieldId: 'TITLE',
-        value: 'a To jest INNE zadanie typu ToDo',
-      },
-      {
-        fieldId: 'PRIORITY',
-        value: false,
-      },
-      {
-        fieldId: 'STATUS',
-        value: 'TODO',
-      },
-      {
-        fieldId: 'NOTE',
-        value: 'Super extra notatka wowow efekt placebo i kosmici. Notakta testowa. Może być długa i zawierać wiele wierszy.',
-      },
-      {
-        fieldId: 'NOTIFICATIONS',
-        value: {
-          enabled: false,
-        },
-      },
-    ].map(({ fieldId, value }) => assignFieldValue(findFieldByFieldId(fieldId), value)),
-  },
-]);
 
 print('Collections:');
 dbHook.getCollectionNames().forEach((name, index) => {
