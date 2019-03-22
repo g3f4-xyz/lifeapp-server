@@ -1,12 +1,12 @@
 import { GraphQLInputObjectType } from 'graphql';
-import { LeafFieldValueInputType } from './LeafFieldValueInputType';
+import { ValueInputType } from './ValueInputType';
 
 export const NestedValueInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
   name: 'NestedValueInputType',
   description: 'nested choice value input type',
   fields: () => ({
     ownValue: {
-      type: LeafFieldValueInputType,
+      type: ValueInputType,
     },
     childrenValue: {
       type: NestedValueInputType,

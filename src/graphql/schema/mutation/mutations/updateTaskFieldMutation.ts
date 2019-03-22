@@ -2,11 +2,11 @@ import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { updateTaskField } from '../../../../db/api';
 import { FieldIdEnum } from '../../../enums/FieldIdEnum';
-import { ChoiceValueType } from '../../../unions/ValuesUnion/ChoiceValueType';
-import { ChoiceValueInputType } from './inputs/value/ChoiceValueInputType';
+import { ValuesUnion } from '../../../unions/ValuesUnion/ValuesUnion';
+import { ValueInputType } from './inputs/value/ValueInputType';
 
-export const updateTaskChoiceFieldMutation = mutationWithClientMutationId({
-  name: 'updateTaskChoiceFieldMutation',
+export const updateTaskFieldMutation = mutationWithClientMutationId({
+  name: 'updateTaskFieldMutation',
   inputFields: {
     taskId: {
       type: new GraphQLNonNull(GraphQLString),
@@ -14,8 +14,8 @@ export const updateTaskChoiceFieldMutation = mutationWithClientMutationId({
     fieldId: {
       type: new GraphQLNonNull(FieldIdEnum),
     },
-    fieldValue: {
-      type: new GraphQLNonNull(ChoiceValueInputType),
+    value: {
+      type: new GraphQLNonNull(ValueInputType),
     },
   },
   outputFields: {
@@ -25,14 +25,14 @@ export const updateTaskChoiceFieldMutation = mutationWithClientMutationId({
     fieldId: {
       type: new GraphQLNonNull(FieldIdEnum),
     },
-    updatedFieldValue: {
-      type: new GraphQLNonNull(ChoiceValueType),
+    updatedValue: {
+      type: new GraphQLNonNull(ValuesUnion),
     },
   },
-  mutateAndGetPayload: async ({ fieldId, fieldValue, taskId }) => {
+  mutateAndGetPayload: async ({ fieldId, value, taskId }) => {
     const { id: taskIdRaw } = fromGlobalId(taskId);
-    const updatedFieldValue = await updateTaskField(taskIdRaw, fieldId, fieldValue);
+    const updatedValue = await updateTaskField(taskIdRaw, fieldId, value);
 
-    return { fieldId, updatedFieldValue, taskId };
+    return { fieldId, updatedValue, taskId };
   },
 });
