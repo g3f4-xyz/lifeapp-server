@@ -1,10 +1,10 @@
 import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { ITask } from '../../../../../db/interfaces';
-import { nodeInterface } from '../../../../nodeDefinitions';
 import { TaskStatusEnum } from '../../../../enums/TaskStatusEnum';
 import { TaskTypeEnum } from '../../../../enums/TaskTypeEnum';
-import { FieldType } from './FieldType';
+import { nodeInterface } from '../../../../nodeDefinitions';
+import { FieldsUnion } from './fields/FieldsUnion';
 
 export const TaskType = new GraphQLObjectType<ITask>({
   name: 'TaskType',
@@ -59,7 +59,7 @@ export const TaskType = new GraphQLObjectType<ITask>({
       },
     },
     fields: {
-      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldType))),
+      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldsUnion))),
     },
   }),
   interfaces: [nodeInterface],

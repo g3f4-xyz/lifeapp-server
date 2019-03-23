@@ -1,25 +1,29 @@
 import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
 import { FIELD_TYPE_VALUE_MAP } from '../../../constants';
 import { IFieldMeta } from '../../../db/interfaces';
-import { ChoiceMetaType } from './ChoiceMetaType';
-import { NestedMetaType } from './NestedMetaType';
-import { SliderMetaType } from './SliderMetaType';
-import { SwitchMetaType } from './SwitchMetaType';
-import { TextMetaType } from './TextMetaType';
 
-const TYPES: FIELD_TYPE_VALUE_MAP<GraphQLObjectType> = {
-  CHOICE: ChoiceMetaType,
-  TEXT: TextMetaType,
-  SLIDER: SliderMetaType,
-  SWITCH: SwitchMetaType,
-  NESTED: NestedMetaType,
+// TODO jak rozwiązać problem cyklicznego odwołania modułu NestedValueType
+const getTypes = (): FIELD_TYPE_VALUE_MAP<GraphQLObjectType> => {
+  const { ChoiceMetaType } = require('./ChoiceMetaType');
+  const { SliderMetaType } = require('./SliderMetaType');
+  const { SwitchMetaType } = require('./SwitchMetaType');
+  const { TextMetaType } = require('./TextMetaType');
+  const { NestedMetaType } = require('./NestedMetaType');
+
+  return {
+    SLIDER: SliderMetaType,
+    SWITCH: SwitchMetaType,
+    CHOICE: ChoiceMetaType,
+    TEXT: TextMetaType,
+    NESTED: NestedMetaType,
+  };
 };
 
 export const MetasUnion = new GraphQLUnionType({
   name: 'MetasUnion',
   description: 'metas union',
-  types: Object.values(TYPES),
+  types: () => Object.values(getTypes()),
   resolveType(meta: IFieldMeta) {
-    return TYPES[meta.fieldType];
+    return getTypes()[meta.fieldType];
   },
 });
