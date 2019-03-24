@@ -4,14 +4,14 @@ import { IContext, IField } from '../../../../../../db/interfaces';
 import { nodeInterface } from '../../../../../nodeDefinitions';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
-import { TextMetaType } from '../../../../../unions/MetasUnion/TextMetaType';
-import { TextValueType } from '../../../../../unions/ValuesUnion/TextValueType';
+import { TextMetaType } from './meta/TextMetaType';
+import { TextValueType } from './value/TextValueType';
 
 export const TextFieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
   name: 'TextFieldType',
   description: 'text field type',
   fields: () => ({
-    id: globalIdField('TextFieldType', ({ _id, fieldId }) => `${_id}|${fieldId}`),
+    id: globalIdField('TextFieldType', ({ _id }) => _id),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

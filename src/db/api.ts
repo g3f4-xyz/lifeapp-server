@@ -1,5 +1,6 @@
 import * as moment from 'moment-timezone';
 import { Moment } from 'moment-timezone';
+import { mongo } from 'mongoose';
 import { FIELD_ID, FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
 import {
   IField,
@@ -54,11 +55,13 @@ export const mapFieldDefaultValue = (field: IField): IField => {
   };
 };
 
-export const getFieldByFieldId = async (fieldId: FIELD_ID): Promise<IFieldDocument> => {
+export const getEmptyFieldByFieldId = async (fieldId: FIELD_ID): Promise<IFieldDocument> => {
   try {
     const fieldDocument = await FieldModel.findOne({ fieldId });
 
-    return fieldDocument.toJSON();
+    const { _id, ...data } = fieldDocument.toJSON();
+
+    return data;
   } catch (error) {
     throw error;
   }
@@ -328,11 +331,17 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Prom
     const parentFieldsIds = await getParentFieldsIds(parentTypeIds);
     const filteredFieldsIds = [...fieldsIds, ...parentFieldsIds]
       .filter((value, index, arr) => arr.indexOf(value) === index);
-    const fields = await Promise.all(filteredFieldsIds.map(getFieldByFieldId));
+    const fields = await Promise.all(filteredFieldsIds.map(getEmptyFieldByFieldId));
     const taskData = {
       ownerId,
       taskType: taskTypeId,
-      fields: fields.map(mapFieldDefaultValue),
+      fields: fields.map(mapFieldDefaultValue).map(fieldData => {
+        const fieldDocument = new FieldModel(fieldData);
+
+        fieldDocument._id = new mongo.ObjectId();
+
+        return fieldDocument.toJSON();
+      }),
     };
     const task = new TaskModel(taskData);
 

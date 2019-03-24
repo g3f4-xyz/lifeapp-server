@@ -4,14 +4,14 @@ import { IContext, IField } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { nodeInterface } from '../../../../../nodeDefinitions';
-import { NestedMetaType } from '../../../../../unions/MetasUnion/NestedMetaType';
-import { NestedValueType } from '../../../../../unions/ValuesUnion/NestedValueType';
+import { NestedMetaType } from './meta/NestedMetaType';
+import { NestedValueType } from './value/NestedValueType';
 
 export const NestedFieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
   name: 'NestedFieldType',
   description: 'nested field type',
   fields: () => ({
-    id: globalIdField('NestedFieldType', ({ _id, fieldId }) => `${_id}|${fieldId}`),
+    id: globalIdField('NestedFieldType', ({ _id }) => _id),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

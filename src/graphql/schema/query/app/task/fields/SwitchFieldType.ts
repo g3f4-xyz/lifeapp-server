@@ -4,14 +4,14 @@ import { IContext, IField } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { nodeInterface } from '../../../../../nodeDefinitions';
-import { SwitchMetaType } from '../../../../../unions/MetasUnion/SwitchMetaType';
-import { SwitchValueType } from '../../../../../unions/ValuesUnion/SwitchValueType';
+import { SwitchMetaType } from './meta/SwitchMetaType';
+import { SwitchValueType } from './value/SwitchValueType';
 
 export const SwitchFieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
   name: 'SwitchFieldType',
   description: 'switch field type',
   fields: () => ({
-    id: globalIdField('SwitchFieldType', ({ _id, fieldId }) => `${_id}|${fieldId}`),
+    id: globalIdField('SwitchFieldType', ({ _id }) => _id),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

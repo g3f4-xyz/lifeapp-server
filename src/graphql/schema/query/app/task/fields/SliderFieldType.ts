@@ -4,14 +4,14 @@ import { IContext, IField } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { nodeInterface } from '../../../../../nodeDefinitions';
-import { SliderMetaType } from '../../../../../unions/MetasUnion/SliderMetaType';
-import { SliderValueType } from '../../../../../unions/ValuesUnion/SliderValueType';
+import { SliderMetaType } from './meta/SliderMetaType';
+import { SliderValueType } from './value/SliderValueType';
 
 export const SliderFieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
   name: 'SliderFieldType',
   description: 'slider field type',
   fields: () => ({
-    id: globalIdField('SliderFieldType', ({ _id, fieldId }) => `${_id}|${fieldId}`),
+    id: globalIdField('SliderFieldType', ({ _id }) => _id),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

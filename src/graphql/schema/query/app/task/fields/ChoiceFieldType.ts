@@ -4,14 +4,14 @@ import { IContext, IField } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { nodeInterface } from '../../../../../nodeDefinitions';
-import { ChoiceMetaType } from '../../../../../unions/MetasUnion/ChoiceMetaType';
-import { ChoiceValueType } from '../../../../../unions/ValuesUnion/ChoiceValueType';
+import { ChoiceMetaType } from './meta/ChoiceMetaType';
+import { ChoiceValueType } from './value/ChoiceValueType';
 
 export const ChoiceFieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
   name: 'ChoiceFieldType',
   description: 'choice field type',
   fields: () => ({
-    id: globalIdField('ChoiceFieldType', ({ _id, fieldId }) => `${_id}|${fieldId}`),
+    id: globalIdField('ChoiceFieldType', ({ _id }) => _id),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),
