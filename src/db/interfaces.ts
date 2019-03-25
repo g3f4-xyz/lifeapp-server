@@ -30,6 +30,7 @@ export interface IFieldMeta {
 
 export interface IFieldValue {
   enabled?: boolean | null;
+  progress?: boolean | null;
   id?: string | null;
   text?: string | null;
   ownValue?: this | null;
@@ -37,20 +38,21 @@ export interface IFieldValue {
 }
 
 export interface IField {
+  _id: any;
   fieldId: FIELD_ID;
   fieldType: FIELD_TYPE;
   order: number;
-  meta: IFieldMeta;
-  value: IFieldValue;
+  meta: Partial<IFieldMeta>;
+  value: Partial<IFieldValue>;
 }
 
 export interface ITask {
   _id: any;
   ownerId: string;
-  updatedAt: Date;
-  notificationAt: Date;
-  lastNotificationAt: Date;
-  lastChangedFieldId: FIELD_ID;
+  updatedAt?: Date;
+  notificationAt?: Date;
+  lastNotificationAt?: Date;
+  lastChangedFieldId?: FIELD_ID;
   taskType: TASK_TYPE;
   fields: IField[];
 }

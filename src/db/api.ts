@@ -1,9 +1,8 @@
-import * as moment from 'moment-timezone';
+// import * as moment from 'moment-timezone';
 import { Moment } from 'moment-timezone';
-import { mongo } from 'mongoose';
-import { FIELD_ID, FIELD_TYPE, FIELD_TYPE_VALUE_MAP, TASK_TYPE } from '../constants';
+import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
 import {
-  IField,
+  // IField,
   IFieldValue,
   ISettings,
   ISettingsNotificationsGeneral,
@@ -13,55 +12,37 @@ import {
   ITask,
   ITaskType,
 } from './interfaces';
-import { FieldModel, IFieldDocument } from './models/FieldModel';
+import { FieldConfigModel, IFieldDocument } from './models/FieldConfigModel';
 import { SettingsModel } from './models/SettingsModel';
 import { TaskModel } from './models/TaskModel';
 import { TaskTypeModel } from './models/TaskTypeModel';
 
-const defaultValuesByTypeMap: FIELD_TYPE_VALUE_MAP<{ [key: string]: any }> = {
-  [FIELD_TYPE.CHOICE]: {
-    id: '',
-  },
-  [FIELD_TYPE.SLIDER]: {
-    progress: 0,
-  },
-  [FIELD_TYPE.SWITCH]: {
-    enabled: false,
-  },
-  [FIELD_TYPE.TEXT]: {
-    text: '',
-  },
-  [FIELD_TYPE.NESTED]: {
-    ownValue: null,
-    childrenValue: null,
-  },
-};
-const defaultValuesByFieldIdMap: { [key: string]: any } = {
-  [FIELD_ID.STATUS]: () => ({
-    id: 'TODO',
-  }),
-  [FIELD_ID.DATE_TIME]: () => ({
-    text: moment(Date.now()).format('YYYY-MM-DDThh:mm'),
-  }),
-};
+// const defaultValuesByFieldIdMap: { [key: string]: any } = {
+//   [FIELD_ID.STATUS]: () => ({
+//     id: 'TODO',
+//   }),
+//   [FIELD_ID.DATE_TIME]: () => ({
+//     text: moment(Date.now()).format('YYYY-MM-DDThh:mm'),
+//   }),
+// };
+//
+// export const mapFieldDefaultValue = (field: IField): IField => {
+//   const { fieldId } = field;
+//   const defaultValueByFieldId = defaultValuesByFieldIdMap[fieldId];
+//
+//   return defaultValueByFieldId ? {
+//     ...field,
+//     value: defaultValueByFieldId(),
+//   } : field;
+// };
 
-export const mapFieldDefaultValue = (field: IField): IField => {
-  const { fieldId, fieldType } = field;
-
-  return {
-    ...field,
-    value:
-      (defaultValuesByFieldIdMap[fieldId] && defaultValuesByFieldIdMap[fieldId]()) || defaultValuesByTypeMap[fieldType],
-  };
-};
-
-export const getEmptyFieldByFieldId = async (fieldId: FIELD_ID): Promise<IFieldDocument> => {
+export const getFieldConfig = async (fieldId: FIELD_ID): Promise<Partial<IFieldDocument>> => {
   try {
-    const fieldDocument = await FieldModel.findOne({ fieldId });
+    const fieldConfig = await FieldConfigModel.findOne({ fieldId });
 
-    const { _id, ...data } = fieldDocument.toJSON();
+    const { fieldType } = fieldConfig.toJSON();
 
-    return data;
+    return { fieldType };
   } catch (error) {
     throw error;
   }
@@ -331,19 +312,15 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Prom
     const parentFieldsIds = await getParentFieldsIds(parentTypeIds);
     const filteredFieldsIds = [...fieldsIds, ...parentFieldsIds]
       .filter((value, index, arr) => arr.indexOf(value) === index);
-    const fields = await Promise.all(filteredFieldsIds.map(getEmptyFieldByFieldId));
+    const fields = await Promise.all(filteredFieldsIds.map(getFieldConfig));
     const taskData = {
       ownerId,
       taskType: taskTypeId,
-      fields: fields.map(mapFieldDefaultValue).map(fieldData => {
-        const fieldDocument = new FieldModel(fieldData);
-
-        fieldDocument._id = new mongo.ObjectId();
-
-        return fieldDocument.toJSON();
-      }),
+      fields,
     };
+    console.log(['taskData'], taskData)
     const task = new TaskModel(taskData);
+    console.log(['task'], task)
 
     await task.save();
 

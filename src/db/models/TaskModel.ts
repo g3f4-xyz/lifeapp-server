@@ -18,6 +18,8 @@ export const TaskSchema: Schema<ITaskDocument> = new Schema({
   fields: [FieldSchema],
 });
 
+export const TaskFieldsSchemaPath = TaskSchema.path('fields');
+
 const isNotificationAtUpdateNeeded = (taskType: TASK_TYPE, lastChangedFieldId: FIELD_ID) => {
   switch (taskType) {
     case TASK_TYPE.ROUTINE:
@@ -126,7 +128,11 @@ export const calculateNextCycle = (fieldValue: IFieldValue): Moment | null => {
   return null;
 };
 
-export const calculateNotificationAt = (taskType: TASK_TYPE, lastNotificationAt: Date, fieldValue: IFieldValue): Date | null => {
+export const calculateNotificationAt = (
+  taskType: TASK_TYPE,
+  lastNotificationAt: Date,
+  fieldValue: IFieldValue,
+): Date | null => {
   console.log(['calculateNotificationAt'], taskType, lastNotificationAt, fieldValue);
   switch (taskType) {
     case TASK_TYPE.TODO:

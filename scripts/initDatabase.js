@@ -5,11 +5,11 @@ const dbHook = db.getSiblingDB(DB_NAME);
 print(`Initializing db with name: ${DB_NAME}`);
 
 if (dbHook.tasks) {
-  dbHook.fields.drop();
+  dbHook.fieldconfigs.drop();
   dbHook.tasks.drop();
   dbHook.tasktypes.drop();
 } else {
-  dbHook.createCollection('fields');
+  dbHook.createCollection('fieldconfigs');
   dbHook.createCollection('tasks');
   dbHook.createCollection('tasktypes');
 }
@@ -340,7 +340,7 @@ const FIELDS_CONFIG = {
   },
 };
 
-dbHook.fields
+dbHook.fieldconfigs
   .insert(Object.keys(FIELDS_CONFIG)
     .map(fieldId => Object.assign({ fieldId }, FIELDS_CONFIG[fieldId])));
 
