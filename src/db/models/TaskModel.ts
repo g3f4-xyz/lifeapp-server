@@ -18,7 +18,9 @@ export const TaskSchema: Schema<ITaskDocument> = new Schema({
   fields: [FieldSchema],
 });
 
-const isNotificationAtUpdateNeeded = (taskType: TASK_TYPE, lastChangedFieldId: FIELD_ID) => {
+export const TaskFieldsSchemaPath = TaskSchema.path('fields');
+
+export const isNotificationAtUpdateNeeded = (taskType: TASK_TYPE, lastChangedFieldId: FIELD_ID) => {
   switch (taskType) {
     case TASK_TYPE.ROUTINE:
       return lastChangedFieldId === FIELD_ID.CYCLE;
@@ -126,7 +128,11 @@ export const calculateNextCycle = (fieldValue: IFieldValue): Moment | null => {
   return null;
 };
 
-export const calculateNotificationAt = (taskType: TASK_TYPE, lastNotificationAt: Date, fieldValue: IFieldValue): Date | null => {
+export const calculateNotificationAt = (
+  taskType: TASK_TYPE,
+  lastNotificationAt: Date,
+  fieldValue: IFieldValue,
+): Date | null => {
   console.log(['calculateNotificationAt'], taskType, lastNotificationAt, fieldValue);
   switch (taskType) {
     case TASK_TYPE.TODO:
@@ -140,34 +146,5 @@ export const calculateNotificationAt = (taskType: TASK_TYPE, lastNotificationAt:
       return nextCycleAt ? nextCycleAt.toDate() : null;
   }
 };
-
-TaskSchema.pre('findOneAndUpdate', async function() {
-  console.log('findOneAndUpdate.pre');
-  // @ts-ignore
-  await this.update({}, { $set: { updatedAt: moment(new Date()).toISOString() } });
-});
-
-TaskSchema.post('findOneAndUpdate', async (taskDocument: ITaskDocument) => {
-  try {
-    const { taskType, lastChangedFieldId, lastNotificationAt, fields } = taskDocument;
-
-    if (isNotificationAtUpdateNeeded(taskType, lastChangedFieldId)) {
-      console.log(['TaskSchema.post.findOneAndUpdate.notificationAtUpdateNeeded']);
-      const { value } = fields.find(({ fieldId }) => fieldId === lastChangedFieldId);
-      const notificationAt = calculateNotificationAt(taskType, lastNotificationAt, value);
-      console.log(['TaskSchema.post.findOneAndUpdate.notificationAt'], notificationAt);
-      taskDocument.notificationAt = notificationAt;
-      // TODO dlaczego to nie działa?
-      // this.update({
-      //   notificationAt: {
-      //     $set: moment(new Date()).toISOString(),
-      //   },
-      // });
-      await taskDocument.save();
-    }
-  } catch (e) {
-    throw new Error(`error while TaskSchema post hook findOneAndUpdate | ${e}`);
-  }
-});
 
 export const TaskModel: Model<ITaskDocument> = model('Task', TaskSchema);
