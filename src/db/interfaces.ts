@@ -11,21 +11,22 @@ export interface IFieldMetaOptions {
 }
 
 export interface IFieldMeta {
-  disabled: boolean;
-  required: boolean;
-  minLength: number;
-  maxLength: number;
-  min: number;
-  max: number;
-  options: [IFieldMetaOptions];
-  label: string;
-  helperText: string;
-  defaultValue: string;
-  inputType: string;
-  parentValue: IFieldValue;
-  fieldType: string;
-  ownMeta: IFieldMeta;
-  childrenMeta: [IFieldMeta];
+  disabled?: boolean;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  options?: IFieldMetaOptions[];
+  label?: string;
+  helperText?: string;
+  defaultValue?: string;
+  inputType?: string;
+  parentValue?: IFieldValue;
+  fieldType?: string;
+  ownMeta?: IFieldMeta;
+  childrenMeta?: IFieldMeta[];
 }
 
 export interface IFieldValue {
