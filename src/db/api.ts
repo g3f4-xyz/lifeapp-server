@@ -1,5 +1,6 @@
-// import * as moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 import { Moment } from 'moment-timezone';
+import { mongo } from 'mongoose';
 import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
 import {
   // IField,
@@ -14,35 +15,26 @@ import {
 } from './interfaces';
 import { FieldConfigModel, IFieldDocument } from './models/FieldConfigModel';
 import { SettingsModel } from './models/SettingsModel';
-import { TaskModel } from './models/TaskModel';
+import { calculateNotificationAt, isNotificationAtUpdateNeeded, TaskModel } from './models/TaskModel';
 import { TaskTypeModel } from './models/TaskTypeModel';
 
-// const defaultValuesByFieldIdMap: { [key: string]: any } = {
-//   [FIELD_ID.STATUS]: () => ({
-//     id: 'TODO',
-//   }),
-//   [FIELD_ID.DATE_TIME]: () => ({
-//     text: moment(Date.now()).format('YYYY-MM-DDThh:mm'),
-//   }),
-// };
-//
-// export const mapFieldDefaultValue = (field: IField): IField => {
-//   const { fieldId } = field;
-//   const defaultValueByFieldId = defaultValuesByFieldIdMap[fieldId];
-//
-//   return defaultValueByFieldId ? {
-//     ...field,
-//     value: defaultValueByFieldId(),
-//   } : field;
-// };
+const defaultValuesByFieldIdMap: { [key: string]: any } = {
+  [FIELD_ID.STATUS]: () => ({
+    id: 'TODO',
+  }),
+  [FIELD_ID.DATE_TIME]: () => ({
+    text: moment(Date.now()).format('YYYY-MM-DDThh:mm'),
+  }),
+};
 
 export const getFieldConfig = async (fieldId: FIELD_ID): Promise<Partial<IFieldDocument>> => {
   try {
     const fieldConfig = await FieldConfigModel.findOne({ fieldId });
 
-    const { fieldType } = fieldConfig.toJSON();
+    const { fieldType, order, meta, value } = fieldConfig;
+    const effectiveValue = defaultValuesByFieldIdMap[fieldId] ? defaultValuesByFieldIdMap[fieldId]() : value;
 
-    return { fieldType };
+    return { _id: new mongo.ObjectId(), fieldId, fieldType, order, meta, value: effectiveValue };
   } catch (error) {
     throw error;
   }
@@ -74,32 +66,6 @@ export const addSubscription = async (
 
       await userSettings.save();
     }
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const addSettings = async (settings: ISettings): Promise<ISettings> => {
-  try {
-    const newSettings = new SettingsModel(settings);
-
-    console.log(['addSettings'], newSettings)
-
-    await newSettings.save();
-
-    return newSettings.toJSON();
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const addTask = async (task: ITask): Promise<ITask> => {
-  try {
-    const newTask = new TaskModel(task);
-
-    await newTask.save();
-
-    return newTask.toJSON();
   } catch (error) {
     throw error;
   }
@@ -318,9 +284,7 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Prom
       taskType: taskTypeId,
       fields,
     };
-    console.log(['taskData'], taskData)
     const task = new TaskModel(taskData);
-    console.log(['task'], task)
 
     await task.save();
 
@@ -544,22 +508,6 @@ export const saveNotificationsTypesSetting = async (
   }
 };
 
-export const saveTask = async (
-  { taskId, task, isNew = true }: { taskId: string, task: ITask, isNew: boolean },
-): Promise<ITask> => {
-  try {
-    if (isNew) {
-      return await addTask(task);
-    }
-
-    await TaskModel.findByIdAndUpdate(taskId, { fields: task.fields });
-
-    return await getTask(taskId);
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const updateTaskField = async (
   taskId: string,
   fieldId: FIELD_ID,
@@ -567,18 +515,34 @@ export const updateTaskField = async (
 ): Promise<IFieldValue> => {
   try {
     // tutaj wiem jakie pole się zmienia. brakuje jeszcze tylko taskType
-    await TaskModel.findOneAndUpdate({
-      _id: taskId,
-      ['fields.fieldId']: fieldId,
-    }, {
-      $set: {
-        lastChangedFieldId: fieldId,
-        ['fields.$.value']: value,
-      },
-    });
+    const task = await TaskModel.findById(taskId);
+    const fieldIndex = task.fields.findIndex(field => field.fieldId === fieldId);
 
-    return value;
+    task.fields[fieldIndex].value = value;
 
+    if (isNotificationAtUpdateNeeded(task.taskType, task.lastChangedFieldId)) {
+      const lastChangedField = task.fields.find(field => field.fieldId === task.lastChangedFieldId);
+      const notificationAt = calculateNotificationAt(task.taskType, task.lastNotificationAt, lastChangedField.value);
+
+      task.notificationAt = notificationAt;
+    }
+
+    task.updatedAt = moment(new Date()).toISOString();
+    task.lastChangedFieldId = fieldId;
+
+    await task.save();
+
+    // await TaskModel.findOneAndUpdate({
+    //   _id: taskId,
+    //   ['fields.fieldId']: fieldId,
+    // }, {
+    //   $set: {
+    //     lastChangedFieldId: fieldId,
+    //     ['fields.$.value']: value,
+    //   },
+    // });
+
+    return task.fields[fieldIndex].value;
   } catch (error) {
     throw error;
   }

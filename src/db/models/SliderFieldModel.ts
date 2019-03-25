@@ -30,6 +30,10 @@ export const SliderFieldModel = TaskFieldsSchemaPath.discriminator(
         type: Number,
         default: 100,
       },
+      step: {
+        type: Number,
+        default: 1,
+      },
       label: String,
       helperText: String,
     },

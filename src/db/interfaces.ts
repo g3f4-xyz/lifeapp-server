@@ -49,7 +49,7 @@ export interface IField {
 export interface ITask {
   _id: any;
   ownerId: string;
-  updatedAt?: Date;
+  updatedAt?: Date | string;
   notificationAt?: Date;
   lastNotificationAt?: Date;
   lastChangedFieldId?: FIELD_ID;
