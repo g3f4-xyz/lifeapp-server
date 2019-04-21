@@ -1,6 +1,6 @@
 import { Application } from 'express';
 
-// create server
+// addOne server
 import { json } from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';

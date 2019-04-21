@@ -38,16 +38,6 @@ const FIELDS_CONFIG = {
       required: true,
     },
   },
-  ACTIVE: {
-    fieldId: 'ACTIVE',
-    fieldType: 'SWITCH',
-    order: 0,
-    meta: {
-      label: 'Active',
-      helperText: 'Informacje o testowym polu Active',
-      required: true,
-    },
-  },
   STATUS: {
     fieldId: 'STATUS',
     fieldType: 'CHOICE',
@@ -66,6 +56,16 @@ const FIELDS_CONFIG = {
         text: 'In progress',
         value: 'IN_PROGRESS',
       }],
+    },
+  },
+  ACTIVE: {
+    fieldId: 'ACTIVE',
+    fieldType: 'SWITCH',
+    order: 0,
+    meta: {
+      label: 'Active',
+      helperText: 'Informacje o testowym polu Active',
+      required: true,
     },
   },
   DATE: {

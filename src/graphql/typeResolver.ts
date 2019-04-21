@@ -1,6 +1,6 @@
 import { GraphQLObjectType } from 'graphql';
 import { Model } from 'mongoose';
-import { TaskModel } from '../db/models/TaskModel';
+import { TaskModel } from '../db/models/tasks/TaskModel';
 import { TaskTypeModel } from '../db/models/TaskTypeModel';
 
 export const typeResolver = (obj: Model<any>): GraphQLObjectType => {

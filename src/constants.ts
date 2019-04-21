@@ -27,6 +27,8 @@ export enum FIELD_ID {
   NOTIFICATIONS = 'NOTIFICATIONS',
 }
 
+export type FIELD_ID_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FIELD_ID, V>;
+
 export enum TASK_TYPE {
   GOAL = 'GOAL',
   TODO = 'TODO',

@@ -12,7 +12,7 @@ import {
   updateNotificationAt,
 } from './db/api';
 import { ITask } from './db/interfaces';
-import { calculateNotificationAt } from './db/models/TaskModel';
+import { calculateNotificationAt } from './db/models/tasks/TaskModel';
 
 moment.tz.setDefault('Europe/Warsaw');
 

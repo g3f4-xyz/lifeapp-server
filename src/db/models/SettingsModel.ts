@@ -36,6 +36,10 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
         type: Boolean,
         default: true,
       },
+      goals: {
+        type: Boolean,
+        default: true,
+      },
     },
     subscriptions: [{
       type: SubscriptionSchema,
@@ -54,7 +58,8 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
       }],
       status: {
         type: String,
-        enum: Object.values(TASK_STATUS),
+        enum: Object.values(TASK_STATUS).concat([null]),
+        default: null,
       },
     },
   },

@@ -13,9 +13,9 @@ import {
   ITask,
   ITaskType,
 } from './interfaces';
-import { FieldConfigModel, IFieldDocument } from './models/FieldConfigModel';
+import { FieldConfigModel, IFieldDocument } from './models/fields/FieldConfigModel';
 import { SettingsModel } from './models/SettingsModel';
-import { calculateNotificationAt, isNotificationAtUpdateNeeded, TaskModel } from './models/TaskModel';
+import { calculateNotificationAt, isNotificationAtUpdateNeeded, TaskModel } from './models/tasks/TaskModel';
 import { TaskTypeModel } from './models/TaskTypeModel';
 
 const defaultValuesByFieldIdMap: { [key: string]: any } = {

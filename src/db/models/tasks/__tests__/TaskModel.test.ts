@@ -1,17 +1,17 @@
-import { FIELD_TYPE } from '../../../constants';
-import { ChoiceFieldModel } from '../ChoiceFieldModel';
-import { NestedFieldModel } from '../NestedFieldModel';
-import { SliderFieldModel } from '../SliderFieldModel';
-import { SwitchFieldModel } from '../SwitchFieldModel';
+import { FIELD_TYPE } from '../../../../constants';
+import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
+import { NestedFieldModel } from '../../fields/NestedFieldModel';
+import { SliderFieldModel } from '../../fields/SliderFieldModel';
+import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
 import { TaskModel } from '../TaskModel';
-import { TextFieldModel } from '../TextFieldModel';
+import { TextFieldModel } from '../../fields/TextFieldModel';
 
 describe('TaskModel', () => {
   it('should be defined', () => {
     expect(TaskModel).toBeDefined();
   });
 
-  it('should be able to create document with fields of all types with default values', async (done) => {
+  it('should be able to addOne document with fields of all types with default values', async (done) => {
     const taskData = {
       fields: [
         { fieldType: FIELD_TYPE.TEXT },
