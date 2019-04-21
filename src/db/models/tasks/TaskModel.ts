@@ -18,15 +18,31 @@ import { FieldSchema } from '../../schemas/FieldSchema';
 
 export interface ITaskDocument extends ITask, Document {}
 
-export const TaskSchema: Schema<ITaskDocument> = new Schema({
-  ownerId: String,
-  taskType: String,
+export interface ITaskModel extends Model<ITaskDocument> {
+  addOne(ownerId: string): ITaskDocument;
+}
+
+export const TaskSchema = new Schema({
+  ownerId: {
+    type: String,
+    required: true,
+  },
+  taskType: {
+    type: String,
+    required: true,
+  },
   updatedAt: Date,
   lastChangedFieldId: String,
   notificationAt: Date,
   lastNotificationAt: Date,
   fields: [FieldSchema],
 }, { discriminatorKey: 'taskType' });
+
+TaskSchema.statics.addOne = (ownerId: string) => {
+  return new TaskModel({ ownerId });
+};
+
+export const TaskModel = model<ITaskDocument, ITaskModel>('Task', TaskSchema);
 
 export const TaskFieldsSchemaPath = TaskSchema.path('fields');
 
@@ -157,7 +173,6 @@ export const calculateNotificationAt = (
   }
 };
 
-export const TaskModel: Model<ITaskDocument> = model('Task', TaskSchema);
 
 export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
   TITLE: {

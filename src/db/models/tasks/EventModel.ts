@@ -1,10 +1,11 @@
-import { Model, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../constants';
-import { FIELDS_CONFIG, ITaskDocument, TaskModel } from './TaskModel';
+import { FIELDS_CONFIG, ITaskModel, TaskModel } from './TaskModel';
 
-const EventSchema: Schema<ITaskDocument> = new Schema({});
-EventSchema.statics.addOne = () => {
+const EventSchema = new Schema({});
+EventSchema.statics.addOne = (ownerId: string) => {
   return new EventModel({
+    ownerId,
     fields: [
       FIELDS_CONFIG.TITLE,
       FIELDS_CONFIG.PRIORITY,
@@ -19,7 +20,7 @@ EventSchema.statics.addOne = () => {
 };
 
 // @ts-ignore
-export const EventModel: Model<ITaskDocument> = TaskModel.discriminator(
+export const EventModel: ITaskModel = TaskModel.discriminator(
   TASK_TYPE.EVENT,
   EventSchema,
 );

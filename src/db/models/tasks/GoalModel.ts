@@ -1,10 +1,11 @@
-import { Model, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../constants';
-import { FIELDS_CONFIG, ITaskDocument, TaskModel } from './TaskModel';
+import { FIELDS_CONFIG, ITaskDocument, ITaskModel, TaskModel } from './TaskModel';
 
 const GoalSchema: Schema<ITaskDocument> = new Schema({});
-GoalSchema.statics.addOne = () => {
+GoalSchema.statics.addOne = (ownerId: string) => {
   return new GoalModel({
+    ownerId,
     fields: [
       FIELDS_CONFIG.TITLE,
       FIELDS_CONFIG.PRIORITY,
@@ -16,7 +17,7 @@ GoalSchema.statics.addOne = () => {
 };
 
 // @ts-ignore
-export const GoalModel: Model<ITaskDocument> = TaskModel.discriminator(
+export const GoalModel: ITaskModel = TaskModel.discriminator(
   TASK_TYPE.GOAL,
   GoalSchema,
 );

@@ -1,7 +1,7 @@
 import * as moment from 'moment-timezone';
 import { Moment } from 'moment-timezone';
 import { mongo } from 'mongoose';
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
+import { FIELD_ID, FIELD_TYPE, TASK_TYPE, TASK_TYPE_VALUE_MAP } from '../constants';
 import {
   // IField,
   IFieldValue,
@@ -15,7 +15,12 @@ import {
 } from './interfaces';
 import { FieldConfigModel, IFieldDocument } from './models/fields/FieldConfigModel';
 import { SettingsModel } from './models/SettingsModel';
-import { calculateNotificationAt, isNotificationAtUpdateNeeded, TaskModel } from './models/tasks/TaskModel';
+import { EventModel } from './models/tasks/EventModel';
+import { GoalModel } from './models/tasks/GoalModel';
+import { MeetingModel } from './models/tasks/MeetingModel';
+import { RoutineModel } from './models/tasks/RoutineModel';
+import { calculateNotificationAt, isNotificationAtUpdateNeeded, ITaskModel, TaskModel } from './models/tasks/TaskModel';
+import { TodoModel } from './models/tasks/TodoModel';
 import { TaskTypeModel } from './models/TaskTypeModel';
 
 const defaultValuesByFieldIdMap: { [key: string]: any } = {
@@ -272,23 +277,42 @@ export const updateNotificationAt = async (taskId: string, notificationAt: Date,
 };
 
 export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Promise<ITask> => {
+  const TASKS_MODELS: TASK_TYPE_VALUE_MAP<ITaskModel> = {
+    EVENT: EventModel,
+    MEETING: MeetingModel,
+    GOAL: GoalModel,
+    ROUTINE: RoutineModel,
+    TODO: TodoModel,
+  };
   try {
-    const taskType = await TaskTypeModel.findOne({ typeId: taskTypeId });
-    const { parentTypeIds, fieldsIds } = taskType.toJSON();
-    const parentFieldsIds = await getParentFieldsIds(parentTypeIds);
-    const filteredFieldsIds = [...fieldsIds, ...parentFieldsIds]
-      .filter((value, index, arr) => arr.indexOf(value) === index);
-    const fields = await Promise.all(filteredFieldsIds.map(getFieldConfig));
-    const taskData = {
-      ownerId,
-      taskType: taskTypeId,
-      fields,
-    };
-    const task = new TaskModel(taskData);
+    const taskModel = TASKS_MODELS[taskTypeId];
+    console.log(['getEmptyTask.taskTypeId'], taskTypeId)
+    console.log(['getEmptyTask.taskModel'], taskModel)
 
-    await task.save();
+    const taskDocument = taskModel.addOne(ownerId);
+    console.log(['getEmptyTask.taskDocument'], taskDocument.toJSON())
 
-    return task.toJSON();
+    await taskDocument.save();
+    console.log(['getEmptyTask.taskDocument.saved'], taskDocument.toJSON())
+
+    return taskDocument.toJSON();
+
+    // const taskType = await TaskTypeModel.findOne({ typeId: taskTypeId });
+    // const { parentTypeIds, fieldsIds } = taskType.toJSON();
+    // const parentFieldsIds = await getParentFieldsIds(parentTypeIds);
+    // const filteredFieldsIds = [...fieldsIds, ...parentFieldsIds]
+    //   .filter((value, index, arr) => arr.indexOf(value) === index);
+    // const fields = await Promise.all(filteredFieldsIds.map(getFieldConfig));
+    // const taskData = {
+    //   ownerId,
+    //   taskType: taskTypeId,
+    //   fields,
+    // };
+    // const task = new TaskModel(taskData);
+    //
+    // await task.save();
+    //
+    // return task.toJSON();
   } catch (error) {
     throw error;
   }

@@ -3,18 +3,19 @@ import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/NestedFieldModel';
 import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
 import { TextFieldModel } from '../../fields/TextFieldModel';
-import { GoalModel } from '../TodoModel';
+import { TodoModel } from '../TodoModel';
 
-describe('GoalModel', () => {
+describe('TodoModel', () => {
   it('should be defined', () => {
-    expect(GoalModel).toBeDefined();
+    expect(TodoModel).toBeDefined();
   });
 
   it('should be able to addOne document with fields of all types with default values', async (done) => {
-    // @ts-ignore
-    const doc = GoalModel.addOne();
+    const ownerId = '1234567890';
+    const doc = TodoModel.addOne(ownerId);
 
     expect(doc).toBeDefined();
+    expect(doc.ownerId).toEqual(ownerId);
 
     expect(doc.fields[0]).toBeInstanceOf(TextFieldModel);
     expect(doc.fields[0].fieldId).toEqual(FIELD_ID.TITLE);

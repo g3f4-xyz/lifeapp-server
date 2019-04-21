@@ -1,10 +1,11 @@
-import { Model, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../constants';
-import { FIELDS_CONFIG, ITaskDocument, TaskModel } from './TaskModel';
+import { FIELDS_CONFIG, ITaskDocument, ITaskModel, TaskModel } from './TaskModel';
 
 const RoutineSchema: Schema<ITaskDocument> = new Schema({});
-RoutineSchema.statics.addOne = () => {
+RoutineSchema.statics.addOne = (ownerId: string) => {
   return new RoutineModel({
+    ownerId,
     fields: [
       FIELDS_CONFIG.TITLE,
       FIELDS_CONFIG.PRIORITY,
@@ -17,7 +18,7 @@ RoutineSchema.statics.addOne = () => {
 };
 
 // @ts-ignore
-export const RoutineModel: Model<ITaskDocument> = TaskModel.discriminator(
+export const RoutineModel: ITaskModel = TaskModel.discriminator(
   TASK_TYPE.ROUTINE,
   RoutineSchema,
 );

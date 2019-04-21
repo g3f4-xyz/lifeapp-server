@@ -21,7 +21,6 @@ describe('TaskModel', () => {
         { fieldType: FIELD_TYPE.NESTED },
       ],
     };
-
     const doc = new TaskModel(taskData);
 
     expect(doc.fields.length).toEqual(5);
@@ -43,5 +42,13 @@ describe('TaskModel', () => {
     expect(doc.fields[4].value.childrenValue).toEqual(null);
 
     done();
+  });
+
+  it('should addOne document for ownerId', () => {
+    const ownerId = '1234567890';
+    const doc = TaskModel.addOne(ownerId);
+
+    expect(doc.ownerId).toBeDefined();
+    expect(doc.ownerId).toEqual(ownerId);
   });
 });

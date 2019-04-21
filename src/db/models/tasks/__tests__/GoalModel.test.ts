@@ -12,10 +12,11 @@ describe('GoalModel', () => {
   });
 
   it('should be able to addOne document with fields of all types with default values', async (done) => {
-    // @ts-ignore
-    const doc = GoalModel.addOne();
+    const ownerId = '1234567890';
+    const doc = GoalModel.addOne(ownerId);
 
     expect(doc).toBeDefined();
+    expect(doc.ownerId).toEqual(ownerId);
 
     expect(doc.fields[0]).toBeInstanceOf(TextFieldModel);
     expect(doc.fields[0].fieldId).toEqual(FIELD_ID.TITLE);

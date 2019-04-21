@@ -1,10 +1,12 @@
-import { Model, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../constants';
-import { FIELDS_CONFIG, ITaskDocument, TaskModel } from './TaskModel';
+import { FIELDS_CONFIG, ITaskDocument, ITaskModel, TaskModel } from './TaskModel';
 
 const TodoSchema: Schema<ITaskDocument> = new Schema({});
-TodoSchema.statics.addOne = () => {
-  return new GoalModel({
+// TODO jak wymusić tsc żeby tylko na poziomie TaskModel typować addOne
+TodoSchema.statics.addOne = (ownerId: string) => {
+  return new TodoModel({
+    ownerId,
     fields: [
       FIELDS_CONFIG.TITLE,
       FIELDS_CONFIG.PRIORITY,
@@ -16,7 +18,7 @@ TodoSchema.statics.addOne = () => {
 };
 
 // @ts-ignore
-export const GoalModel: Model<ITaskDocument> = TaskModel.discriminator(
+export const TodoModel: ITaskModel = TaskModel.discriminator(
   TASK_TYPE.TODO,
   TodoSchema,
 );
