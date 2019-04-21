@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../constants';
-import { TaskFieldsSchemaPath } from './TaskModel';
+import { FIELD_TYPE } from '../../../constants';
+import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
 
 // @ts-ignore
 export const TextFieldModel = TaskFieldsSchemaPath.discriminator(

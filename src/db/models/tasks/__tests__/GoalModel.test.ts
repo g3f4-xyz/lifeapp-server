@@ -1,18 +1,19 @@
-import { FIELD_ID } from '../../../constants';
-import { ChoiceFieldModel } from '../ChoiceFieldModel';
-import { NestedFieldModel } from '../NestedFieldModel';
-import { SwitchFieldModel } from '../SwitchFieldModel';
-import { TextFieldModel } from '../TextFieldModel';
-import { TodoModel } from '../TodoModel';
+import { FIELD_ID } from '../../../../constants';
+import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
+import { NestedFieldModel } from '../../fields/NestedFieldModel';
+import { SliderFieldModel } from "../../fields/SliderFieldModel";
+import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
+import { TextFieldModel } from '../../fields/TextFieldModel';
+import { GoalModel } from '../GoalModel';
 
-describe('TodoModel', () => {
+describe('GoalModel', () => {
   it('should be defined', () => {
-    expect(TodoModel).toBeDefined();
+    expect(GoalModel).toBeDefined();
   });
 
-  it('should be able to create document with fields of all types with default values', async (done) => {
+  it('should be able to addOne document with fields of all types with default values', async (done) => {
     // @ts-ignore
-    const doc = TodoModel.addTodo();
+    const doc = GoalModel.addOne();
 
     expect(doc).toBeDefined();
 
@@ -28,9 +29,9 @@ describe('TodoModel', () => {
     expect(doc.fields[2].fieldId).toEqual(FIELD_ID.STATUS);
     expect(doc.fields[2].value.id).toEqual('');
 
-    expect(doc.fields[3]).toBeInstanceOf(TextFieldModel);
-    expect(doc.fields[3].fieldId).toEqual(FIELD_ID.NOTE);
-    expect(doc.fields[3].value.text).toEqual('');
+    expect(doc.fields[3]).toBeInstanceOf(SliderFieldModel);
+    expect(doc.fields[3].fieldId).toEqual(FIELD_ID.PROGRESS);
+    expect(doc.fields[3].value.progress).toEqual(0);
 
     expect(doc.fields[4]).toBeInstanceOf(NestedFieldModel);
     expect(doc.fields[4].fieldId).toEqual(FIELD_ID.NOTIFICATIONS);

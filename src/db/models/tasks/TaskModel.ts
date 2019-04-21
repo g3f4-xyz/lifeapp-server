@@ -11,10 +11,10 @@ import {
   TASK_TYPE,
   TIME_CYCLE,
   WEEK_CYCLE,
-} from '../../constants';
+} from '../../../constants';
 
-import { IField, IFieldValue, ITask } from '../interfaces';
-import { FieldSchema } from '../schemas/FieldSchema';
+import { IField, IFieldValue, ITask } from '../../interfaces';
+import { FieldSchema } from '../../schemas/FieldSchema';
 
 export interface ITaskDocument extends ITask, Document {}
 

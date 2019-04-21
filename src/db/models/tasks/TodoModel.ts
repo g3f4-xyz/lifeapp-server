@@ -1,10 +1,10 @@
 import { Model, Schema } from 'mongoose';
-import { TASK_TYPE } from '../../constants';
+import { TASK_TYPE } from '../../../constants';
 import { FIELDS_CONFIG, ITaskDocument, TaskModel } from './TaskModel';
 
 const TodoSchema: Schema<ITaskDocument> = new Schema({});
-TodoSchema.statics.addTodo = () => {
-  return new TodoModel({
+TodoSchema.statics.addOne = () => {
+  return new GoalModel({
     fields: [
       FIELDS_CONFIG.TITLE,
       FIELDS_CONFIG.PRIORITY,
@@ -16,7 +16,7 @@ TodoSchema.statics.addTodo = () => {
 };
 
 // @ts-ignore
-export const TodoModel: Model<ITaskDocument> = TaskModel.discriminator(
+export const GoalModel: Model<ITaskDocument> = TaskModel.discriminator(
   TASK_TYPE.TODO,
   TodoSchema,
 );

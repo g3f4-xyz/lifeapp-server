@@ -1,11 +1,11 @@
 import { FIELD_TYPE_VALUE_MAP } from '../../constants';
 
 const TASK_FIELD_DISCRIMINATORS: FIELD_TYPE_VALUE_MAP<() => void> = {
-  CHOICE: () => { require('./ChoiceFieldModel'); },
-  NESTED: () => { require('./NestedFieldModel'); },
-  SLIDER: () => { require('./SliderFieldModel'); },
-  SWITCH: () => { require('./SwitchFieldModel'); },
-  TEXT: () => { require('./TextFieldModel'); },
+  CHOICE: () => { require('./fields/ChoiceFieldModel'); },
+  NESTED: () => { require('./fields/NestedFieldModel'); },
+  SLIDER: () => { require('./fields/SliderFieldModel'); },
+  SWITCH: () => { require('./fields/SwitchFieldModel'); },
+  TEXT: () => { require('./fields/TextFieldModel'); },
 };
 
 export const registerDiscriminators = () => {
