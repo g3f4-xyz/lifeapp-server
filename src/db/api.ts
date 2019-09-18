@@ -262,8 +262,11 @@ export const disableTaskNotification = async (taskId: any): Promise<void> => {
   }
 };
 
-export const updateNotificationAt = async (taskId: string, notificationAt: Date, lastNotificationAt: Date): Promise<void> => {
-  console.log(['updateNotificationAt'], { taskId, notificationAt, lastNotificationAt })
+export const updateNotificationAt = async (
+  taskId: string,
+  notificationAt: Date,
+  lastNotificationAt: Date,
+): Promise<void> => {
   try {
     await TaskModel.findByIdAndUpdate(taskId, {
       $set: {
@@ -286,33 +289,11 @@ export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Prom
   };
   try {
     const taskModel = TASKS_MODELS[taskTypeId];
-    console.log(['getEmptyTask.taskTypeId'], taskTypeId)
-    console.log(['getEmptyTask.taskModel'], taskModel)
-
     const taskDocument = taskModel.addOne(ownerId);
-    console.log(['getEmptyTask.taskDocument'], taskDocument.toJSON())
 
     await taskDocument.save();
-    console.log(['getEmptyTask.taskDocument.saved'], taskDocument.toJSON())
 
     return taskDocument.toJSON();
-
-    // const taskType = await TaskTypeModel.findOne({ typeId: taskTypeId });
-    // const { parentTypeIds, fieldsIds } = taskType.toJSON();
-    // const parentFieldsIds = await getParentFieldsIds(parentTypeIds);
-    // const filteredFieldsIds = [...fieldsIds, ...parentFieldsIds]
-    //   .filter((value, index, arr) => arr.indexOf(value) === index);
-    // const fields = await Promise.all(filteredFieldsIds.map(getFieldConfig));
-    // const taskData = {
-    //   ownerId,
-    //   taskType: taskTypeId,
-    //   fields,
-    // };
-    // const task = new TaskModel(taskData);
-    //
-    // await task.save();
-    //
-    // return task.toJSON();
   } catch (error) {
     throw error;
   }
