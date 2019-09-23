@@ -16,7 +16,7 @@
     "start": "yarn run client:build:heroku && DB=remote ts-node src",
     "start:local": "yarn run client:build:local && ts-node src",
     "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
-    "test": "DEBUG=jest-mongodb:* jest --coverage"
+    "test": "DEBUG=jest-mongodb:* jest --coverage --detectOpenHandles"
   },
   "keywords": [
     "express",
