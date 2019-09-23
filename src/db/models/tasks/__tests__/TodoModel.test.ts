@@ -1,4 +1,4 @@
-import { setupDB } from '../../../../../testsSetup';
+import { connect, Mongoose } from 'mongoose';
 import { FIELD_ID, TASK_TYPE } from '../../../../constants';
 import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/NestedFieldModel';
@@ -7,9 +7,14 @@ import { TextFieldModel } from '../../fields/TextFieldModel';
 import { TASK_FIELDS, TaskModel } from '../TaskModel';
 import { TodoModel } from '../TodoModel';
 
-setupDB('test');
-
 describe('TodoModel', () => {
+  let db: Mongoose;
+
+  beforeAll(async () => {
+    // @ts-ignore
+    db = await connect(global.__MONGO_URI__, { useNewUrlParser: true });
+  });
+
   it('should be defined', () => {
     expect(TodoModel).toBeDefined();
   });
@@ -52,5 +57,9 @@ describe('TodoModel', () => {
     expect(model.fields[4].value.childrenValue).toEqual(null);
 
     done();
+  });
+
+  afterAll(async () => {
+    await db.disconnect();
   });
 });

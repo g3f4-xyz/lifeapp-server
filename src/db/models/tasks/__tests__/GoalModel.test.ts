@@ -1,21 +1,26 @@
-import { setupDB } from '../../../../../testsSetup';
+import { connect, Mongoose } from 'mongoose';
 import { FIELD_ID, TASK_TYPE } from '../../../../constants';
 import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/NestedFieldModel';
-import { SliderFieldModel } from "../../fields/SliderFieldModel";
+import { SliderFieldModel } from '../../fields/SliderFieldModel';
 import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
 import { TextFieldModel } from '../../fields/TextFieldModel';
 import { GoalModel } from '../GoalModel';
 import { TASK_FIELDS, TaskModel } from '../TaskModel';
 
-setupDB('test');
-
 describe('GoalModel', () => {
+  let db: Mongoose;
+
+  beforeAll(async () => {
+    // @ts-ignore
+    db = await connect(global.__MONGO_URI__, { useNewUrlParser: true });
+  });
+
   it('should be defined', () => {
     expect(GoalModel).toBeDefined();
   });
 
-  it('should be discriminate model based on task type and nested fields based on field type', async (done) => {
+  it('should be discriminate model based on task type and nested fields based on field type', async () => {
     const ownerId = '1234567890';
     const doc = await TaskModel.create({
       ownerId,
@@ -50,7 +55,9 @@ describe('GoalModel', () => {
     expect(model.fields[4].fieldId).toEqual(FIELD_ID.NOTIFICATIONS);
     expect(model.fields[4].value.ownValue).toEqual(null);
     expect(model.fields[4].value.childrenValue).toEqual(null);
+  });
 
-    done();
+  afterAll(async () => {
+    await db.disconnect();
   });
 });

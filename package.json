@@ -1,6 +1,6 @@
 {
   "name": "lifeapp",
-  "version": "2.2.3",
+  "version": "2.3.0",
   "clientVersion": "2.2.10",
   "description": "Level up with LifeApp server repository",
   "main": "lifeapp",
@@ -16,7 +16,7 @@
     "start": "yarn run client:build:heroku && DB=remote ts-node src",
     "start:local": "yarn run client:build:local && ts-node src",
     "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
-    "test": "jest --coverage"
+    "test": "DEBUG=jest-mongodb:* jest --coverage"
   },
   "keywords": [
     "express",
@@ -38,15 +38,12 @@
   "engines": {
     "node": "12.*.*"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "globalSetup": "testsSetup.ts"
-  },
   "devDependencies": {
-    "@types/jest": "^24.0.11",
-    "jest": "^24.5.0",
+    "@shelf/jest-mongodb": "1.1.1",
+    "@types/jest": "24.0.11",
+    "jest": "24.5.0",
     "nodemon": "1.17.4",
-    "ts-jest": "^24.0.0",
+    "ts-jest": "24.0.0",
     "tslint": "5.12.1"
   },
   "dependencies": {
@@ -60,7 +57,7 @@
     "@types/graphql": "14.0.7",
     "@types/graphql-relay": "0.4.9",
     "@types/moment": "2.13.0",
-    "@types/moment-timezone": "^0.5.10",
+    "@types/moment-timezone": "0.5.10",
     "@types/mongodb": "3.1.19",
     "@types/mongoose": "5.3.11",
     "@types/morgan": "1.7.35",
@@ -72,7 +69,7 @@
     "body-parser": "1.18.3",
     "cookie-parser": "1.4.3",
     "cors": "2.8.4",
-    "dotenv": "^8.1.0",
+    "dotenv": "8.1.0",
     "express": "4.16.3",
     "express-graphql": "0.7.1",
     "express-session": "1.15.6",

@@ -1,4 +1,4 @@
-import { setupDB } from '../../../../../testsSetup';
+import { connect, Mongoose } from 'mongoose';
 import { FIELD_TYPE, TASK_TYPE } from '../../../../constants';
 import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/NestedFieldModel';
@@ -7,14 +7,19 @@ import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
 import { TextFieldModel } from '../../fields/TextFieldModel';
 import { TaskModel } from '../TaskModel';
 
-setupDB('test');
-
 describe('TaskModel', () => {
+  let db: Mongoose;
+
+  beforeAll(async () => {
+    // @ts-ignore
+    db = await connect(global.__MONGO_URI__, { useNewUrlParser: true });
+  });
+
   it('should be defined', () => {
     expect(TaskModel).toBeDefined();
   });
 
-  it('should be able to addOne document with fields of all types with default values', async (done) => {
+  it('should be able to addOne document with fields of all types with default values', async () => {
     const ownerId = '1234567890';
     const taskData = {
       ownerId,
@@ -47,7 +52,9 @@ describe('TaskModel', () => {
     expect(doc.fields[4]).toBeInstanceOf(NestedFieldModel);
     expect(doc.fields[4].value.ownValue).toEqual(null);
     expect(doc.fields[4].value.childrenValue).toEqual(null);
+  });
 
-    done();
+  afterAll(async () => {
+    await db.disconnect();
   });
 });
