@@ -1,10 +1,13 @@
-import { FIELD_TYPE } from '../../../../constants';
+import { setupDB } from '../../../../../testsSetup';
+import { FIELD_TYPE, TASK_TYPE } from '../../../../constants';
 import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/NestedFieldModel';
 import { SliderFieldModel } from '../../fields/SliderFieldModel';
 import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
-import { TaskModel } from '../TaskModel';
 import { TextFieldModel } from '../../fields/TextFieldModel';
+import { TaskModel } from '../TaskModel';
+
+setupDB('test');
 
 describe('TaskModel', () => {
   it('should be defined', () => {
@@ -12,7 +15,10 @@ describe('TaskModel', () => {
   });
 
   it('should be able to addOne document with fields of all types with default values', async (done) => {
+    const ownerId = '1234567890';
     const taskData = {
+      ownerId,
+      taskType: TASK_TYPE.EVENT,
       fields: [
         { fieldType: FIELD_TYPE.TEXT },
         { fieldType: FIELD_TYPE.CHOICE },
@@ -21,8 +27,9 @@ describe('TaskModel', () => {
         { fieldType: FIELD_TYPE.NESTED },
       ],
     };
-    const doc = new TaskModel(taskData);
+    const doc = await TaskModel.create(taskData);
 
+    expect(doc.ownerId).toEqual(ownerId);
     expect(doc.fields.length).toEqual(5);
 
     expect(doc.fields[0]).toBeInstanceOf(TextFieldModel);
@@ -42,13 +49,5 @@ describe('TaskModel', () => {
     expect(doc.fields[4].value.childrenValue).toEqual(null);
 
     done();
-  });
-
-  it('should addOne document for ownerId', () => {
-    const ownerId = '1234567890';
-    const doc = TaskModel.addOne(ownerId);
-
-    expect(doc.ownerId).toBeDefined();
-    expect(doc.ownerId).toEqual(ownerId);
   });
 });

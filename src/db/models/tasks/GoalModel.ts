@@ -1,23 +1,18 @@
 import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../constants';
-import { FIELDS_CONFIG, ITaskDocument, ITaskModel, TaskModel } from './TaskModel';
+import { ITaskDocument, TaskModel } from './TaskModel';
 
 const GoalSchema: Schema<ITaskDocument> = new Schema({});
-GoalSchema.statics.addOne = (ownerId: string) => {
-  return new GoalModel({
-    ownerId,
-    fields: [
-      FIELDS_CONFIG.TITLE,
-      FIELDS_CONFIG.PRIORITY,
-      FIELDS_CONFIG.STATUS,
-      FIELDS_CONFIG.PROGRESS,
-      FIELDS_CONFIG.NOTIFICATIONS,
-    ],
-  });
+
+GoalSchema.methods.validateFields = function() {
+  console.log(['GoalSchema.methods.validateFields'], this.fields.map(field => {
+    console.log(['map.field'], field);
+    field.validateField();
+  }));
+  return true;
 };
 
-// @ts-ignore
-export const GoalModel: ITaskModel = TaskModel.discriminator(
+export const GoalModel = TaskModel.discriminator<ITaskDocument>(
   TASK_TYPE.GOAL,
   GoalSchema,
 );

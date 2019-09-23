@@ -38,6 +38,10 @@
   "engines": {
     "node": "12.*.*"
   },
+  "jest": {
+    "testEnvironment": "node",
+    "globalSetup": "testsSetup.ts"
+  },
   "devDependencies": {
     "@types/jest": "^24.0.11",
     "jest": "^24.5.0",

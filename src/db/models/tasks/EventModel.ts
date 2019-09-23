@@ -1,26 +1,18 @@
 import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../constants';
-import { FIELDS_CONFIG, ITaskModel, TaskModel } from './TaskModel';
+import { ITaskDocument, TaskModel } from './TaskModel';
 
-const EventSchema = new Schema({});
-EventSchema.statics.addOne = (ownerId: string) => {
-  return new EventModel({
-    ownerId,
-    fields: [
-      FIELDS_CONFIG.TITLE,
-      FIELDS_CONFIG.PRIORITY,
-      FIELDS_CONFIG.STATUS,
-      FIELDS_CONFIG.NOTE,
-      FIELDS_CONFIG.LOCATION,
-      FIELDS_CONFIG.DATE,
-      FIELDS_CONFIG.DURATION,
-      FIELDS_CONFIG.NOTIFICATIONS,
-    ],
-  });
+const EventSchema: Schema<ITaskDocument> = new Schema({});
+
+EventSchema.methods.validateFields = function() {
+  console.log(['EventSchema.methods.validateFields'], this.fields.map(field => {
+    console.log(['map.field'], field);
+    field.validateField();
+  }));
+  return true;
 };
 
-// @ts-ignore
-export const EventModel: ITaskModel = TaskModel.discriminator(
+export const EventModel = TaskModel.discriminator<ITaskDocument>(
   TASK_TYPE.EVENT,
   EventSchema,
 );

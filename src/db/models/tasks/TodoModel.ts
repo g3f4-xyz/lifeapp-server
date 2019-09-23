@@ -1,24 +1,18 @@
 import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../constants';
-import { FIELDS_CONFIG, ITaskDocument, ITaskModel, TaskModel } from './TaskModel';
+import { ITaskDocument, TaskModel } from './TaskModel';
 
 const TodoSchema: Schema<ITaskDocument> = new Schema({});
-// TODO jak wymusić tsc żeby tylko na poziomie TaskModel typować addOne
-TodoSchema.statics.addOne = (ownerId: string) => {
-  return new TodoModel({
-    ownerId,
-    fields: [
-      FIELDS_CONFIG.TITLE,
-      FIELDS_CONFIG.PRIORITY,
-      FIELDS_CONFIG.STATUS,
-      FIELDS_CONFIG.NOTE,
-      FIELDS_CONFIG.NOTIFICATIONS,
-    ],
-  });
+
+TodoSchema.methods.validateFields = function() {
+  console.log(['TodoSchema.methods.validateFields'], this.fields.map(field => {
+    console.log(['map.field'], field);
+    field.validateField();
+  }));
+  return true;
 };
 
-// @ts-ignore
-export const TodoModel: ITaskModel = TaskModel.discriminator(
+export const TodoModel = TaskModel.discriminator<ITaskDocument>(
   TASK_TYPE.TODO,
   TodoSchema,
 );

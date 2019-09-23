@@ -1,24 +1,18 @@
 import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../constants';
-import { FIELDS_CONFIG, ITaskDocument, ITaskModel, TaskModel } from './TaskModel';
+import { ITaskDocument, TaskModel } from './TaskModel';
 
 const RoutineSchema: Schema<ITaskDocument> = new Schema({});
-RoutineSchema.statics.addOne = (ownerId: string) => {
-  return new RoutineModel({
-    ownerId,
-    fields: [
-      FIELDS_CONFIG.TITLE,
-      FIELDS_CONFIG.PRIORITY,
-      FIELDS_CONFIG.STATUS,
-      FIELDS_CONFIG.CYCLE,
-      FIELDS_CONFIG.ACTION,
-      FIELDS_CONFIG.NOTIFICATIONS,
-    ],
-  });
+
+RoutineSchema.methods.validateFields = function() {
+  console.log(['RoutineSchema.methods.validateFields'], this.fields.map(field => {
+    console.log(['map.field'], field);
+    field.validateField();
+  }));
+  return true;
 };
 
-// @ts-ignore
-export const RoutineModel: ITaskModel = TaskModel.discriminator(
+export const RoutineModel = TaskModel.discriminator<ITaskDocument>(
   TASK_TYPE.ROUTINE,
   RoutineSchema,
 );

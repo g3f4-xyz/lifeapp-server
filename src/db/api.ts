@@ -1,7 +1,7 @@
 import * as moment from 'moment-timezone';
 import { Moment } from 'moment-timezone';
 import { mongo } from 'mongoose';
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE, TASK_TYPE_VALUE_MAP } from '../constants';
+import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
 import {
   // IField,
   IFieldValue,
@@ -15,12 +15,12 @@ import {
 } from './interfaces';
 import { FieldConfigModel, IFieldDocument } from './models/fields/FieldConfigModel';
 import { SettingsModel } from './models/SettingsModel';
-import { EventModel } from './models/tasks/EventModel';
-import { GoalModel } from './models/tasks/GoalModel';
-import { MeetingModel } from './models/tasks/MeetingModel';
-import { RoutineModel } from './models/tasks/RoutineModel';
-import { calculateNotificationAt, isNotificationAtUpdateNeeded, ITaskModel, TaskModel } from './models/tasks/TaskModel';
-import { TodoModel } from './models/tasks/TodoModel';
+import {
+  calculateNotificationAt,
+  isNotificationAtUpdateNeeded,
+  TASK_FIELDS,
+  TaskModel,
+} from './models/tasks/TaskModel';
 import { TaskTypeModel } from './models/TaskTypeModel';
 
 const defaultValuesByFieldIdMap: { [key: string]: any } = {
@@ -279,17 +279,15 @@ export const updateNotificationAt = async (
   }
 };
 
-export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Promise<ITask> => {
-  const TASKS_MODELS: TASK_TYPE_VALUE_MAP<ITaskModel> = {
-    EVENT: EventModel,
-    MEETING: MeetingModel,
-    GOAL: GoalModel,
-    ROUTINE: RoutineModel,
-    TODO: TodoModel,
-  };
+export const getEmptyTask = async (taskType: TASK_TYPE, ownerId: string): Promise<ITask> => {
   try {
-    const taskModel = TASKS_MODELS[taskTypeId];
-    const taskDocument = taskModel.addOne(ownerId);
+//    const taskModel = TASKS_MODELS[taskType];
+//    const taskDocument = taskModel.addOne(ownerId);
+    const taskDocument = await TaskModel.create({
+      ownerId,
+      taskType,
+      fields: TASK_FIELDS[taskType],
+    });
 
     await taskDocument.save();
 

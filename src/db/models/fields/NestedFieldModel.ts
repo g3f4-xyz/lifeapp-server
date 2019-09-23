@@ -2,20 +2,17 @@ import { Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../constants';
 import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
 
-// @ts-ignore
-export const NestedFieldModel = TaskFieldsSchemaPath.discriminator(
-  FIELD_TYPE.NESTED,
-  new Schema({
-      value: {
-        ownValue: {
-          type: Object,
-          default: null,
-        },
-        childrenValue: {
-          type: Object,
-          default: null,
-        },
+const NestedFieldSchema = new Schema({
+    value: {
+      ownValue: {
+        type: Object,
+        default: null,
       },
+      childrenValue: {
+        type: Object,
+        default: null,
+      },
+    },
     meta: {
       fieldType: String,
       parentValue: {
@@ -26,6 +23,16 @@ export const NestedFieldModel = TaskFieldsSchemaPath.discriminator(
       ownMeta: this,
       childrenMeta: [this],
     },
-    },
-  ),
+  },
+);
+
+NestedFieldSchema.methods.validateField = function() {
+  console.log(['NestedFieldSchema.methods.validateField'], this);
+  return true;
+};
+
+// @ts-ignore
+export const NestedFieldModel = TaskFieldsSchemaPath.discriminator(
+  FIELD_TYPE.NESTED,
+  NestedFieldSchema,
 );

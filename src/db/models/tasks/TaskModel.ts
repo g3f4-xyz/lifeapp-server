@@ -8,19 +8,19 @@ import {
   FIELD_ID_VALUE_MAP,
   FIELD_TYPE,
   MONTH_CYCLE,
-  TASK_TYPE,
+  TASK_TYPE, TASK_TYPE_VALUE_MAP,
   TIME_CYCLE,
-  WEEK_CYCLE,
+  WEEK_CYCLE
 } from '../../../constants';
 
 import { IField, IFieldValue, ITask } from '../../interfaces';
 import { FieldSchema } from '../../schemas/FieldSchema';
 
-export interface ITaskDocument extends ITask, Document {}
-
-export interface ITaskModel extends Model<ITaskDocument> {
-  addOne(ownerId: string): ITaskDocument;
+export interface ITaskDocument extends ITask, Document {
+  validateFields(this: ITaskDocument): boolean;
 }
+
+export interface ITaskModel extends Model<ITaskDocument> {}
 
 export const TaskSchema = new Schema({
   ownerId: {
@@ -172,7 +172,6 @@ export const calculateNotificationAt = (
       return nextCycleAt ? nextCycleAt.toDate() : null;
   }
 };
-
 
 export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
   TITLE: {
@@ -498,4 +497,50 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
       ],
     },
   },
+};
+
+export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<IField>>> =  {
+  EVENT: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.NOTE,
+    FIELDS_CONFIG.LOCATION,
+    FIELDS_CONFIG.DATE,
+    FIELDS_CONFIG.DURATION,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
+  GOAL: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.PROGRESS,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
+  MEETING: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.NOTE,
+    FIELDS_CONFIG.LOCATION,
+    FIELDS_CONFIG.DATE_TIME,
+    FIELDS_CONFIG.DURATION,
+    FIELDS_CONFIG.PERSON,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
+  ROUTINE: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.CYCLE,
+    FIELDS_CONFIG.ACTION,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
+  TODO: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.NOTE,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
 };
