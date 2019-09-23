@@ -5,11 +5,8 @@ import { ITaskDocument, TaskModel } from './TaskModel';
 const TodoSchema: Schema<ITaskDocument> = new Schema({});
 
 TodoSchema.methods.validateFields = function() {
-  console.log(['TodoSchema.methods.validateFields'], this.fields.map(field => {
-    console.log(['map.field'], field);
-    field.validateField();
-  }));
-  return true;
+  console.log(['TodoSchema.methods.validateFields']);
+  return this.fields.every(field => field.validateField());
 };
 
 export const TodoModel = TaskModel.discriminator<ITaskDocument>(

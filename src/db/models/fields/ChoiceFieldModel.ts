@@ -24,8 +24,8 @@ const ChoiceFieldSchema = new Schema({
 });
 
 ChoiceFieldSchema.methods.validateField = function() {
-  console.log(['ChoiceFieldSchema.methods.validateField'], this);
-  return true;
+  console.log(['ChoiceFieldSchema.methods.validateField']);
+  return Boolean(this);
 };
 
 // @ts-ignore

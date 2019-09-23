@@ -1,5 +1,5 @@
-import { connect, Mongoose } from 'mongoose';
 import { FIELD_TYPE, TASK_TYPE } from '../../../../constants';
+import connectDB from '../../../connect';
 import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/NestedFieldModel';
 import { SliderFieldModel } from '../../fields/SliderFieldModel';
@@ -8,11 +8,9 @@ import { TextFieldModel } from '../../fields/TextFieldModel';
 import { TaskModel } from '../TaskModel';
 
 describe('TaskModel', () => {
-  let db: Mongoose;
-
   beforeAll(async () => {
     // @ts-ignore
-    db = await connect(global.__MONGO_URI__, { useNewUrlParser: true });
+    await connectDB(global.__MONGO_URI__);
   });
 
   it('should be defined', () => {
@@ -52,9 +50,5 @@ describe('TaskModel', () => {
     expect(doc.fields[4]).toBeInstanceOf(NestedFieldModel);
     expect(doc.fields[4].value.ownValue).toEqual(null);
     expect(doc.fields[4].value.childrenValue).toEqual(null);
-  });
-
-  afterAll(async () => {
-    await db.disconnect();
   });
 });

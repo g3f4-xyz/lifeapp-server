@@ -5,11 +5,8 @@ import { ITaskDocument, TaskModel } from './TaskModel';
 const EventSchema: Schema<ITaskDocument> = new Schema({});
 
 EventSchema.methods.validateFields = function() {
-  console.log(['EventSchema.methods.validateFields'], this.fields.map(field => {
-    console.log(['map.field'], field);
-    field.validateField();
-  }));
-  return true;
+  console.log(['EventSchema.methods.validateFields']);
+  return this.fields.every(field => field.validateField());
 };
 
 export const EventModel = TaskModel.discriminator<ITaskDocument>(

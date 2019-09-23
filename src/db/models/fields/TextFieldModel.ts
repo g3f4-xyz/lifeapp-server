@@ -29,8 +29,8 @@ const TextFieldSchema = new Schema<IField>({
 });
 
 TextFieldSchema.methods.validateField = function() {
-  console.log(['TextFieldSchema.methods.validateField'], this);
-  return true;
+  console.log(['TextFieldSchema.methods.validateField']);
+  return Boolean(this);
 };
 
 // @ts-ignore

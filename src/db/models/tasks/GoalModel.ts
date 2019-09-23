@@ -5,11 +5,8 @@ import { ITaskDocument, TaskModel } from './TaskModel';
 const GoalSchema: Schema<ITaskDocument> = new Schema({});
 
 GoalSchema.methods.validateFields = function() {
-  console.log(['GoalSchema.methods.validateFields'], this.fields.map(field => {
-    console.log(['map.field'], field);
-    field.validateField();
-  }));
-  return true;
+  console.log(['GoalSchema.methods.validateFields']);
+  return this.fields.every(field => field.validateField());
 };
 
 export const GoalModel = TaskModel.discriminator<ITaskDocument>(

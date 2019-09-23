@@ -37,8 +37,8 @@ const SliderFieldSchema = new Schema({
 });
 
 SliderFieldSchema.methods.validateField = function() {
-  console.log(['SliderFieldSchema.methods.validateField'], this);
-  return true;
+  console.log(['SliderFieldSchema.methods.validateField']);
+  return Boolean(this);
 };
 
 // @ts-ignore

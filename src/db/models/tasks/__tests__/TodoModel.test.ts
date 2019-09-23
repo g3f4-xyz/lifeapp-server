@@ -1,5 +1,5 @@
-import { connect, Mongoose } from 'mongoose';
 import { FIELD_ID, TASK_TYPE } from '../../../../constants';
+import connectDB from '../../../connect';
 import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/NestedFieldModel';
 import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
@@ -8,18 +8,16 @@ import { TASK_FIELDS, TaskModel } from '../TaskModel';
 import { TodoModel } from '../TodoModel';
 
 describe('TodoModel', () => {
-  let db: Mongoose;
-
   beforeAll(async () => {
     // @ts-ignore
-    db = await connect(global.__MONGO_URI__, { useNewUrlParser: true });
+    await connectDB(global.__MONGO_URI__);
   });
 
   it('should be defined', () => {
     expect(TodoModel).toBeDefined();
   });
 
-  it('should be discriminate model based on task type and nested fields based on field type', async (done) => {
+  it('should be discriminate model based on task type and nested fields based on field type', async () => {
     const ownerId = '1234567890';
     const doc = await TaskModel.create({
       ownerId,
@@ -55,11 +53,5 @@ describe('TodoModel', () => {
     expect(model.fields[4].fieldId).toEqual(FIELD_ID.NOTIFICATIONS);
     expect(model.fields[4].value.ownValue).toEqual(null);
     expect(model.fields[4].value.childrenValue).toEqual(null);
-
-    done();
-  });
-
-  afterAll(async () => {
-    await db.disconnect();
   });
 });

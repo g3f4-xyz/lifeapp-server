@@ -1,5 +1,5 @@
-import { connect, Mongoose } from 'mongoose';
 import { FIELD_ID, TASK_TYPE } from '../../../../constants';
+import connectDB from '../../../connect';
 import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/NestedFieldModel';
 import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
@@ -8,11 +8,9 @@ import { RoutineModel } from '../RoutineModel';
 import { TASK_FIELDS, TaskModel } from '../TaskModel';
 
 describe('RoutineModel', () => {
-  let db: Mongoose;
-
   beforeAll(async () => {
     // @ts-ignore
-    db = await connect(global.__MONGO_URI__, { useNewUrlParser: true });
+    await connectDB(global.__MONGO_URI__);
   });
 
   it('should be defined', () => {
@@ -59,9 +57,5 @@ describe('RoutineModel', () => {
     expect(model.fields[5].fieldId).toEqual(FIELD_ID.NOTIFICATIONS);
     expect(model.fields[5].value.ownValue).toEqual(null);
     expect(model.fields[5].value.childrenValue).toEqual(null);
-  });
-
-  afterAll(async () => {
-    await db.disconnect();
   });
 });

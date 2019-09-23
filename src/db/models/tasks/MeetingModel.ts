@@ -5,11 +5,8 @@ import { ITaskDocument, TaskModel } from './TaskModel';
 const MeetingSchema: Schema<ITaskDocument> = new Schema({});
 
 MeetingSchema.methods.validateFields = function() {
-  console.log(['MeetingSchema.methods.validateFields'], this.fields.map(field => {
-    console.log(['map.field'], field);
-    field.validateField();
-  }));
-  return true;
+  console.log(['MeetingSchema.methods.validateFields']);
+  return this.fields.every(field => field.validateField());
 };
 
 export const MeetingModel = TaskModel.discriminator<ITaskDocument>(

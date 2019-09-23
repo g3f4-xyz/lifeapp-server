@@ -25,8 +25,8 @@ const SwitchFieldSchema = new Schema({
 });
 
 SwitchFieldSchema.methods.validateField = function() {
-  console.log(['SwitchFieldSchema.methods.validateField'], this);
-  return true;
+  console.log(['SwitchFieldSchema.methods.validateField']);
+  return Boolean(this);
 };
 
 // @ts-ignore

@@ -27,8 +27,8 @@ const NestedFieldSchema = new Schema({
 );
 
 NestedFieldSchema.methods.validateField = function() {
-  console.log(['NestedFieldSchema.methods.validateField'], this);
-  return true;
+  console.log(['NestedFieldSchema.methods.validateField']);
+  return Boolean(this);
 };
 
 // @ts-ignore
