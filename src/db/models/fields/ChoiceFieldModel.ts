@@ -3,6 +3,10 @@ import { FIELD_TYPE } from '../../../constants';
 import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
 
 const ChoiceFieldSchema = new Schema({
+  order: {
+    type: Number,
+    required: true,
+  },
   value: {
     id: {
       type: String,
@@ -10,22 +14,33 @@ const ChoiceFieldSchema = new Schema({
     },
   },
   meta: {
-    fieldType: String,
-    disabled: Boolean,
-    required: Boolean,
-    label: String,
+    label: {
+      type: String,
+      required: true,
+    },
+    options: {
+      type: [{
+        text: String,
+        value: String,
+      }],
+      required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    required: {
+      type: Boolean,
+      default: false,
+    },
     helperText: String,
-    options: [{
-      text: String,
-      value: String,
-    }],
     defaultValue: String,
   },
 });
 
-ChoiceFieldSchema.methods.validateField = function() {
+ChoiceFieldSchema.methods.validateField = function(): string | null {
   console.log(['ChoiceFieldSchema.methods.validateField']);
-  return Boolean(this);
+  return null;
 };
 
 // @ts-ignore

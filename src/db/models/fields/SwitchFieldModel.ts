@@ -3,6 +3,10 @@ import { FIELD_TYPE } from '../../../constants';
 import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
 
 const SwitchFieldSchema = new Schema({
+  order: {
+    type: Number,
+    required: true,
+  },
   value: {
     enabled: {
       type: Boolean,
@@ -10,23 +14,21 @@ const SwitchFieldSchema = new Schema({
     },
   },
   meta: {
-    fieldType: String,
+    label: {
+      type: String,
+      required: true,
+    },
     disabled: {
       type: Boolean,
       default: false,
     },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-    label: String,
     helperText: String,
   },
 });
 
-SwitchFieldSchema.methods.validateField = function() {
-  console.log(['SwitchFieldSchema.methods.validateField']);
-  return Boolean(this);
+SwitchFieldSchema.methods.validateField = function(): string | null {
+  console.log(['SwitchFieldSchema.methods.validateField'], this);
+  return null;
 };
 
 // @ts-ignore

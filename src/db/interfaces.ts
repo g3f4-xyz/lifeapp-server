@@ -46,7 +46,7 @@ export interface IField {
   meta: Partial<IFieldMeta>;
   value: Partial<IFieldValue>;
 
-  validateField(): boolean;
+  validateField(): string | null;
 }
 
 export interface ITask {

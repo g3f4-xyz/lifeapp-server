@@ -23,11 +23,11 @@ describe('TaskModel', () => {
       ownerId,
       taskType: TASK_TYPE.EVENT,
       fields: [
-        { fieldType: FIELD_TYPE.TEXT },
-        { fieldType: FIELD_TYPE.CHOICE },
-        { fieldType: FIELD_TYPE.SLIDER },
-        { fieldType: FIELD_TYPE.SWITCH },
-        { fieldType: FIELD_TYPE.NESTED },
+        { fieldType: FIELD_TYPE.TEXT, meta: { label: `${FIELD_TYPE.TEXT}-label` } },
+        { fieldType: FIELD_TYPE.CHOICE, meta: { label: `${FIELD_TYPE.CHOICE}-label` } },
+        { fieldType: FIELD_TYPE.SLIDER, meta: { label: `${FIELD_TYPE.SLIDER}-label` } },
+        { fieldType: FIELD_TYPE.SWITCH, meta: { label: `${FIELD_TYPE.SWITCH}-label` } },
+        { fieldType: FIELD_TYPE.NESTED, meta: { label: `${FIELD_TYPE.NESTED}-label` } },
       ],
     };
     const doc = await TaskModel.create(taskData);

@@ -496,7 +496,7 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
         },
       ],
     },
-  },
+  }
 };
 
 export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<IField>>> =  {
@@ -542,5 +542,5 @@ export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<IField>>> =  {
     FIELDS_CONFIG.STATUS,
     FIELDS_CONFIG.NOTE,
     FIELDS_CONFIG.NOTIFICATIONS,
-  ],
+  ]
 };

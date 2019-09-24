@@ -3,6 +3,10 @@ import { FIELD_TYPE } from '../../../constants';
 import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
 
 const SliderFieldSchema = new Schema({
+  order: {
+    type: Number,
+    required: true,
+  },
   value: {
     progress: {
       type: Number,
@@ -10,7 +14,6 @@ const SliderFieldSchema = new Schema({
     },
   },
   meta: {
-    fieldType: String,
     disabled: {
       type: Boolean,
       default: false,
@@ -31,14 +34,31 @@ const SliderFieldSchema = new Schema({
       type: Number,
       default: 1,
     },
-    label: String,
+    label: {
+      type: String,
+      required: true,
+    },
     helperText: String,
   },
 });
 
-SliderFieldSchema.methods.validateField = function() {
+const progressValidator = (
+  min: number,
+  max: number,
+  errorMessage: string = `wartość w przedziale od ${min} do ${max}.`,
+) => (value: number) => {
+  if (value < min || value > max) {
+    return errorMessage;
+  }
+
+  return null;
+};
+
+SliderFieldSchema.methods.validateField = function(): string | null {
   console.log(['SliderFieldSchema.methods.validateField']);
-  return Boolean(this);
+  const validator = progressValidator(this.meta.min, this.meta.max);
+
+  return validator(this.value.progress);
 };
 
 // @ts-ignore
