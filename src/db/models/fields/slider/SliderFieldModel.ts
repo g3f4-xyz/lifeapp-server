@@ -1,9 +1,9 @@
 import { Model, Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../../constants';
-import { progressValidator } from '../../utils/fieldValidators';
-import iterateValidations from '../../utils/iterateValidations';
-import { ITaskDocument, TaskFieldsSchema } from '../tasks/TaskModel';
-import { IFieldDocument } from './FieldConfigModel';
+import { FIELD_TYPE } from '../../../../constants';
+import { progressValidator } from '../../../utils/fieldValidators';
+import iterateValidations from '../../../utils/iterateValidations';
+import { ITaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
+import { IFieldDocument } from '../FieldConfigModel';
 
 const SliderFieldSchema = new Schema({
   order: {

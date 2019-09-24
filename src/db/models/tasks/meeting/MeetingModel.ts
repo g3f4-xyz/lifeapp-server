@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
-import { TASK_TYPE } from '../../../constants';
-import { ITaskDocument, TaskModel } from './TaskModel';
+import { TASK_TYPE } from '../../../../constants';
+import { ITaskDocument, TaskModel } from '../TaskModel';
 
 const MeetingSchema: Schema<ITaskDocument> = new Schema({});
 

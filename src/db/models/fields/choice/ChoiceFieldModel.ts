@@ -1,8 +1,8 @@
 import { Model, Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../../constants';
-import { requiredValidator } from '../../utils/fieldValidators';
-import { ITaskDocument, TaskFieldsSchema } from '../tasks/TaskModel';
-import { IFieldDocument } from './FieldConfigModel';
+import { FIELD_TYPE } from '../../../../constants';
+import { requiredValidator } from '../../../utils/fieldValidators';
+import { ITaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
+import { IFieldDocument } from '../FieldConfigModel';
 
 const ChoiceFieldSchema = new Schema({
   order: {

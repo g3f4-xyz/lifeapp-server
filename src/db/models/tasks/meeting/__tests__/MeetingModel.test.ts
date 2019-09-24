@@ -1,11 +1,11 @@
-import { FIELD_ID, TASK_TYPE } from '../../../../constants';
-import connectDB from '../../../connect';
-import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
-import { NestedFieldModel } from '../../fields/NestedFieldModel';
-import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
-import { TextFieldModel } from '../../fields/TextFieldModel';
+import { FIELD_ID, TASK_TYPE } from '../../../../../constants';
+import connectDB from '../../../../connect';
+import { ChoiceFieldModel } from '../../../fields/choice/ChoiceFieldModel';
+import { NestedFieldModel } from '../../../fields/nested/NestedFieldModel';
+import { SwitchFieldModel } from '../../../fields/switch/SwitchFieldModel';
+import { TextFieldModel } from '../../../fields/text/TextFieldModel';
+import { TASK_FIELDS, TaskModel } from '../../TaskModel';
 import { MeetingModel } from '../MeetingModel';
-import { TASK_FIELDS, TaskModel } from '../TaskModel';
 
 describe('MeetingModel', () => {
   beforeAll(async () => {

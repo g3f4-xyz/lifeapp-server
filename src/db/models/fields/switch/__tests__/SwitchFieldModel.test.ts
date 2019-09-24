@@ -1,6 +1,5 @@
-import { FIELD_ID, FIELD_TYPE } from '../../../../constants';
-import connectDB from '../../../connect';
-import { FIELDS_CONFIG } from '../../tasks/TaskModel';
+import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
+import connectDB from '../../../../connect';
 import { SwitchFieldModel } from '../SwitchFieldModel';
 
 describe('SwitchFieldModel', () => {

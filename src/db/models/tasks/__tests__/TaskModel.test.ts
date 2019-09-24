@@ -1,10 +1,10 @@
 import { FIELD_TYPE, TASK_TYPE } from '../../../../constants';
 import connectDB from '../../../connect';
-import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
-import { NestedFieldModel } from '../../fields/NestedFieldModel';
-import { SliderFieldModel } from '../../fields/SliderFieldModel';
-import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
-import { TextFieldModel } from '../../fields/TextFieldModel';
+import { ChoiceFieldModel } from '../../fields/choice/ChoiceFieldModel';
+import { NestedFieldModel } from '../../fields/nested/NestedFieldModel';
+import { SliderFieldModel } from '../../fields/slider/SliderFieldModel';
+import { SwitchFieldModel } from '../../fields/switch/SwitchFieldModel';
+import { TextFieldModel } from '../../fields/text/TextFieldModel';
 import { TaskModel } from '../TaskModel';
 
 describe('TaskModel', () => {

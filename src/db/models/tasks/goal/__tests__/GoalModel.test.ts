@@ -1,28 +1,29 @@
-import { FIELD_ID, TASK_TYPE } from '../../../../constants';
-import connectDB from '../../../connect';
-import { ChoiceFieldModel } from '../../fields/ChoiceFieldModel';
-import { NestedFieldModel } from '../../fields/NestedFieldModel';
-import { SwitchFieldModel } from '../../fields/SwitchFieldModel';
-import { TextFieldModel } from '../../fields/TextFieldModel';
-import { TASK_FIELDS, TaskModel } from '../TaskModel';
-import { TodoModel } from '../TodoModel';
+import { FIELD_ID, TASK_TYPE } from '../../../../../constants';
+import connectDB from '../../../../connect';
+import { ChoiceFieldModel } from '../../../fields/choice/ChoiceFieldModel';
+import { NestedFieldModel } from '../../../fields/nested/NestedFieldModel';
+import { SliderFieldModel } from '../../../fields/slider/SliderFieldModel';
+import { SwitchFieldModel } from '../../../fields/switch/SwitchFieldModel';
+import { TextFieldModel } from '../../../fields/text/TextFieldModel';
+import { TASK_FIELDS, TaskModel } from '../../TaskModel';
+import { GoalModel } from '../GoalModel';
 
-describe('TodoModel', () => {
+describe('GoalModel', () => {
   beforeAll(async () => {
     // @ts-ignore
     await connectDB(global.__MONGO_URI__);
   });
 
   it('should be defined', () => {
-    expect(TodoModel).toBeDefined();
+    expect(GoalModel).toBeDefined();
   });
 
   it('should be discriminate model based on task type and nested fields based on field type', async () => {
     const ownerId = '1234567890';
     const doc = await TaskModel.create({
       ownerId,
-      taskType: TASK_TYPE.TODO,
-      fields: TASK_FIELDS.TODO,
+      taskType: TASK_TYPE.GOAL,
+      fields: TASK_FIELDS.GOAL,
     });
 
     const model = await doc.save();
@@ -30,7 +31,6 @@ describe('TodoModel', () => {
     model.validateFields();
 
     expect(model).toBeDefined();
-    expect(model).toBeInstanceOf(TodoModel);
     expect(model.ownerId).toEqual(ownerId);
 
     expect(model.fields[0]).toBeInstanceOf(TextFieldModel);
@@ -45,9 +45,9 @@ describe('TodoModel', () => {
     expect(model.fields[2].fieldId).toEqual(FIELD_ID.STATUS);
     expect(model.fields[2].value.id).toEqual('');
 
-    expect(model.fields[3]).toBeInstanceOf(TextFieldModel);
-    expect(model.fields[3].fieldId).toEqual(FIELD_ID.NOTE);
-    expect(model.fields[3].value.text).toEqual('');
+    expect(model.fields[3]).toBeInstanceOf(SliderFieldModel);
+    expect(model.fields[3].fieldId).toEqual(FIELD_ID.PROGRESS);
+    expect(model.fields[3].value.progress).toEqual(0);
 
     expect(model.fields[4]).toBeInstanceOf(NestedFieldModel);
     expect(model.fields[4].fieldId).toEqual(FIELD_ID.NOTIFICATIONS);

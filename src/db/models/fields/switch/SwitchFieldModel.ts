@@ -1,7 +1,7 @@
 import { Model, Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../../constants';
-import { ITaskDocument, TaskFieldsSchema } from '../tasks/TaskModel';
-import { IFieldDocument } from './FieldConfigModel';
+import { FIELD_TYPE } from '../../../../constants';
+import { ITaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
+import { IFieldDocument } from '../FieldConfigModel';
 
 const SwitchFieldSchema = new Schema({
   order: {
