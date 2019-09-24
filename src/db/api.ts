@@ -15,7 +15,12 @@ import {
 } from './interfaces';
 import { FieldConfigModel, IFieldDocument } from './models/fields/FieldConfigModel';
 import { SettingsModel } from './models/SettingsModel';
-import { calculateNotificationAt, isNotificationAtUpdateNeeded, TaskModel } from './models/tasks/TaskModel';
+import {
+  calculateNotificationAt,
+  isNotificationAtUpdateNeeded,
+  TASK_FIELDS,
+  TaskModel,
+} from './models/tasks/TaskModel';
 import { TaskTypeModel } from './models/TaskTypeModel';
 
 const defaultValuesByFieldIdMap: { [key: string]: any } = {
@@ -257,8 +262,11 @@ export const disableTaskNotification = async (taskId: any): Promise<void> => {
   }
 };
 
-export const updateNotificationAt = async (taskId: string, notificationAt: Date, lastNotificationAt: Date): Promise<void> => {
-  console.log(['updateNotificationAt'], { taskId, notificationAt, lastNotificationAt })
+export const updateNotificationAt = async (
+  taskId: string,
+  notificationAt: Date,
+  lastNotificationAt: Date,
+): Promise<void> => {
   try {
     await TaskModel.findByIdAndUpdate(taskId, {
       $set: {
@@ -271,24 +279,17 @@ export const updateNotificationAt = async (taskId: string, notificationAt: Date,
   }
 };
 
-export const getEmptyTask = async (taskTypeId: TASK_TYPE, ownerId: string): Promise<ITask> => {
+export const getEmptyTask = async (taskType: TASK_TYPE, ownerId: string): Promise<ITask> => {
   try {
-    const taskType = await TaskTypeModel.findOne({ typeId: taskTypeId });
-    const { parentTypeIds, fieldsIds } = taskType.toJSON();
-    const parentFieldsIds = await getParentFieldsIds(parentTypeIds);
-    const filteredFieldsIds = [...fieldsIds, ...parentFieldsIds]
-      .filter((value, index, arr) => arr.indexOf(value) === index);
-    const fields = await Promise.all(filteredFieldsIds.map(getFieldConfig));
-    const taskData = {
+    const taskDocument = await TaskModel.create({
       ownerId,
-      taskType: taskTypeId,
-      fields,
-    };
-    const task = new TaskModel(taskData);
+      taskType,
+      fields: TASK_FIELDS[taskType],
+    });
 
-    await task.save();
+    await taskDocument.save();
 
-    return task.toJSON();
+    return taskDocument.toJSON();
   } catch (error) {
     throw error;
   }

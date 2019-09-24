@@ -3,7 +3,6 @@ import { FIELD_ID, FIELD_TYPE } from '../../constants';
 import { IField } from '../interfaces';
 
 export const FIELD_DEFINITION = {
-  _id: Schema.Types.ObjectId,
   fieldId: {
     type: String,
     enum: Object.values(FIELD_ID),

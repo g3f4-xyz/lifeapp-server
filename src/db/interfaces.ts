@@ -45,6 +45,8 @@ export interface IField {
   order: number;
   meta: Partial<IFieldMeta>;
   value: Partial<IFieldValue>;
+
+  validateField(): string | null;
 }
 
 export interface ITask {

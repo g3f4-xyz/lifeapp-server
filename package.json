@@ -1,6 +1,6 @@
 {
   "name": "lifeapp",
-  "version": "2.2.3",
+  "version": "2.3.0",
   "clientVersion": "2.2.10",
   "description": "Level up with LifeApp server repository",
   "main": "lifeapp",
@@ -16,7 +16,7 @@
     "start": "yarn run client:build:heroku && DB=remote ts-node src",
     "start:local": "yarn run client:build:local && ts-node src",
     "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
-    "test": "jest --coverage"
+    "test": "DEBUG=jest-mongodb:* jest --coverage --detectOpenHandles"
   },
   "keywords": [
     "express",
@@ -36,13 +36,14 @@
   },
   "homepage": "https://github.com/g3f4-xyz/lifeapp-server#readme",
   "engines": {
-    "node": "11.*.*"
+    "node": "12.*.*"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.11",
-    "jest": "^24.5.0",
+    "@shelf/jest-mongodb": "1.1.1",
+    "@types/jest": "24.0.11",
+    "jest": "24.5.0",
     "nodemon": "1.17.4",
-    "ts-jest": "^24.0.0",
+    "ts-jest": "24.0.0",
     "tslint": "5.12.1"
   },
   "dependencies": {
@@ -56,9 +57,9 @@
     "@types/graphql": "14.0.7",
     "@types/graphql-relay": "0.4.9",
     "@types/moment": "2.13.0",
-    "@types/moment-timezone": "^0.5.10",
-    "@types/mongodb": "3.1.19",
-    "@types/mongoose": "5.3.11",
+    "@types/moment-timezone": "0.5.10",
+    "@types/mongodb": "3.3.3",
+    "@types/mongoose": "5.5.17",
     "@types/morgan": "1.7.35",
     "@types/node": "10.12.18",
     "@types/passport": "1.0.0",
@@ -68,6 +69,7 @@
     "body-parser": "1.18.3",
     "cookie-parser": "1.4.3",
     "cors": "2.8.4",
+    "dotenv": "8.1.0",
     "express": "4.16.3",
     "express-graphql": "0.7.1",
     "express-session": "1.15.6",
@@ -75,13 +77,12 @@
     "graphql-relay": "0.6.0",
     "moment": "2.22.2",
     "moment-timezone": "0.5.23",
-    "mongoose": "5.4.18",
+    "mongoose": "5.7.1",
     "morgan": "1.9.1",
     "passport": "0.4.0",
     "passport-google-oauth20": "1.0.0",
-    "ts-node": "8.0.2",
-    "tsconfig-paths": "3.8.0",
-    "typescript": "3.2.4",
+    "ts-node": "8.4.1",
+    "typescript": "3.6.3",
     "useragent": "2.3.0",
     "web-push": "3.3.3"
   }

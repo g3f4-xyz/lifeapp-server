@@ -8,19 +8,29 @@ import {
   FIELD_ID_VALUE_MAP,
   FIELD_TYPE,
   MONTH_CYCLE,
-  TASK_TYPE,
+  TASK_TYPE, TASK_TYPE_VALUE_MAP,
   TIME_CYCLE,
-  WEEK_CYCLE,
+  WEEK_CYCLE
 } from '../../../constants';
 
 import { IField, IFieldValue, ITask } from '../../interfaces';
 import { FieldSchema } from '../../schemas/FieldSchema';
 
-export interface ITaskDocument extends ITask, Document {}
+export interface ITaskDocument extends ITask, Document {
+  validateFields(this: ITaskDocument): boolean;
+}
 
-export const TaskSchema: Schema<ITaskDocument> = new Schema({
-  ownerId: String,
-  taskType: String,
+export interface ITaskModel extends Model<ITaskDocument> {}
+
+export const TaskSchema = new Schema({
+  ownerId: {
+    type: String,
+    required: true,
+  },
+  taskType: {
+    type: String,
+    required: true,
+  },
   updatedAt: Date,
   lastChangedFieldId: String,
   notificationAt: Date,
@@ -28,7 +38,9 @@ export const TaskSchema: Schema<ITaskDocument> = new Schema({
   fields: [FieldSchema],
 }, { discriminatorKey: 'taskType' });
 
-export const TaskFieldsSchemaPath = TaskSchema.path('fields');
+export const TaskModel = model<ITaskDocument, ITaskModel>('Task', TaskSchema);
+
+export const TaskFieldsSchema = TaskSchema.path('fields');
 
 export const isNotificationAtUpdateNeeded = (taskType: TASK_TYPE, lastChangedFieldId: FIELD_ID) => {
   switch (taskType) {
@@ -157,8 +169,6 @@ export const calculateNotificationAt = (
   }
 };
 
-export const TaskModel: Model<ITaskDocument> = model('Task', TaskSchema);
-
 export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
   TITLE: {
     fieldId: FIELD_ID.TITLE,
@@ -210,7 +220,6 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
     meta: {
       label: 'Active',
       helperText: 'Informacje o testowym polu Active',
-      required: true,
     },
   },
   DATE: {
@@ -483,4 +492,50 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
       ],
     },
   },
+};
+
+export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<IField>>> =  {
+  EVENT: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.NOTE,
+    FIELDS_CONFIG.LOCATION,
+    FIELDS_CONFIG.DATE,
+    FIELDS_CONFIG.DURATION,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
+  GOAL: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.PROGRESS,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
+  MEETING: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.NOTE,
+    FIELDS_CONFIG.LOCATION,
+    FIELDS_CONFIG.DATE_TIME,
+    FIELDS_CONFIG.DURATION,
+    FIELDS_CONFIG.PERSON,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
+  ROUTINE: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.CYCLE,
+    FIELDS_CONFIG.ACTION,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ],
+  TODO: [
+    FIELDS_CONFIG.TITLE,
+    FIELDS_CONFIG.PRIORITY,
+    FIELDS_CONFIG.STATUS,
+    FIELDS_CONFIG.NOTE,
+    FIELDS_CONFIG.NOTIFICATIONS,
+  ]
 };

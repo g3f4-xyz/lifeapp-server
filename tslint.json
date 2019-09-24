@@ -1,12 +1,18 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "ordered-imports": true,
     "arrow-parens": false,
     "no-console": false,
     "quotemark": {
       "options": ["single", "avoid-escape"]
     },
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "max-line-length": {
+      "options": {
+        "limit": 160
+      }
+    }
   },
   "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
 }
