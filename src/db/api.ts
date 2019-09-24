@@ -281,8 +281,6 @@ export const updateNotificationAt = async (
 
 export const getEmptyTask = async (taskType: TASK_TYPE, ownerId: string): Promise<ITask> => {
   try {
-//    const taskModel = TASKS_MODELS[taskType];
-//    const taskDocument = taskModel.addOne(ownerId);
     const taskDocument = await TaskModel.create({
       ownerId,
       taskType,

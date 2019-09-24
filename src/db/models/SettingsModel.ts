@@ -1,13 +1,12 @@
 import { Document, model, Model, Schema } from 'mongoose';
 import { TASK_STATUS, TASK_TYPE } from '../../constants';
-
 import { ISettings } from '../interfaces';
 import { SubscriptionSchema } from '../schemas/SubscriptionSchema';
 
 export interface ISettingsDocument extends ISettings, Document {}
 
 export const SettingsSchema: Schema<ISettings> = new Schema({
-  ownerId: { type: String, index: { unique: true, dropDups: true }, required: true },
+  ownerId: { type: String, index: { unique: true }, required: true },
   notifications: {
     general: {
       show: {

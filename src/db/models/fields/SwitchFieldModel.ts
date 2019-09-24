@@ -1,6 +1,7 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../constants';
-import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
+import { ITaskDocument, TaskFieldsSchema } from '../tasks/TaskModel';
+import { IFieldDocument } from './FieldConfigModel';
 
 const SwitchFieldSchema = new Schema({
   order: {
@@ -26,13 +27,12 @@ const SwitchFieldSchema = new Schema({
   },
 });
 
+// tslint:disable-next-line:only-arrow-functions
 SwitchFieldSchema.methods.validateField = function(): string | null {
-  console.log(['SwitchFieldSchema.methods.validateField'], this);
   return null;
 };
 
-// @ts-ignore
-export const SwitchFieldModel = TaskFieldsSchemaPath.discriminator(
+export const SwitchFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(
   FIELD_TYPE.SWITCH,
   SwitchFieldSchema,
 );

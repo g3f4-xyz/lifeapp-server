@@ -1,7 +1,10 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../constants';
 import { IField } from '../../interfaces';
-import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
+import { lengthValidator, requiredValidator } from '../../utils/fieldValidators';
+import iterateValidations from '../../utils/iterateValidations';
+import { ITaskDocument, TaskFieldsSchema } from '../tasks/TaskModel';
+import { IFieldDocument } from './FieldConfigModel';
 
 const TextFieldSchema = new Schema<IField>({
   order: {
@@ -34,26 +37,16 @@ const TextFieldSchema = new Schema<IField>({
   },
 });
 
-const lengthValidator = (
-  min: number,
-  max: number,
-  errorMessage: string = `od ${min} do ${max} znaków.`,
-) => (value: string) => {
-  if (value.length < min || value.length > max) {
-    return errorMessage;
-  }
-
-  return null;
-};
-
 TextFieldSchema.methods.validateField = function(): string | null {
-  const validator = lengthValidator(this.meta.minLength, this.meta.maxLength);
+  const validators = [
+    requiredValidator(),
+    lengthValidator(this.meta.minLength, this.meta.maxLength),
+  ];
 
-  return validator(this.value.text);
+  return iterateValidations(this.value.text, validators);
 };
 
-// @ts-ignore
-export const TextFieldModel = TaskFieldsSchemaPath.discriminator(
+export const TextFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(
   FIELD_TYPE.TEXT,
   TextFieldSchema,
 );

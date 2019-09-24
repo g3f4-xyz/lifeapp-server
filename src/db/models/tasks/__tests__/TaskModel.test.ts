@@ -17,7 +17,7 @@ describe('TaskModel', () => {
     expect(TaskModel).toBeDefined();
   });
 
-  it('should be able to addOne document with fields of all types with default values', async () => {
+  it('should be able to create document with fields of all types with default values', async () => {
     const ownerId = '1234567890';
     const taskData = {
       ownerId,

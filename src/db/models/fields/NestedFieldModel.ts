@@ -1,6 +1,7 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../constants';
-import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
+import { ITaskDocument, TaskFieldsSchema } from '../tasks/TaskModel';
+import { IFieldDocument } from './FieldConfigModel';
 
 const NestedFieldSchema = new Schema({
   order: {
@@ -32,13 +33,12 @@ const NestedFieldSchema = new Schema({
   },
 });
 
-NestedFieldSchema.methods.validateField = function (): string | null {
-  console.log(['NestedFieldSchema.methods.validateField'], this);
+// tslint:disable-next-line:only-arrow-functions
+NestedFieldSchema.methods.validateField = function(): string | null {
   return null;
 };
 
-// @ts-ignore
-export const NestedFieldModel = TaskFieldsSchemaPath.discriminator(
+export const NestedFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(
   FIELD_TYPE.NESTED,
   NestedFieldSchema,
 );

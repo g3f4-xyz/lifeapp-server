@@ -38,13 +38,9 @@ export const TaskSchema = new Schema({
   fields: [FieldSchema],
 }, { discriminatorKey: 'taskType' });
 
-TaskSchema.statics.addOne = (ownerId: string) => {
-  return new TaskModel({ ownerId });
-};
-
 export const TaskModel = model<ITaskDocument, ITaskModel>('Task', TaskSchema);
 
-export const TaskFieldsSchemaPath = TaskSchema.path('fields');
+export const TaskFieldsSchema = TaskSchema.path('fields');
 
 export const isNotificationAtUpdateNeeded = (taskType: TASK_TYPE, lastChangedFieldId: FIELD_ID) => {
   switch (taskType) {
@@ -224,7 +220,6 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
     meta: {
       label: 'Active',
       helperText: 'Informacje o testowym polu Active',
-      required: true,
     },
   },
   DATE: {
@@ -496,7 +491,7 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
         },
       ],
     },
-  }
+  },
 };
 
 export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<IField>>> =  {

@@ -1,6 +1,9 @@
-import { Schema } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../constants';
-import { TaskFieldsSchemaPath } from '../tasks/TaskModel';
+import { progressValidator } from '../../utils/fieldValidators';
+import iterateValidations from '../../utils/iterateValidations';
+import { ITaskDocument, TaskFieldsSchema } from '../tasks/TaskModel';
+import { IFieldDocument } from './FieldConfigModel';
 
 const SliderFieldSchema = new Schema({
   order: {
@@ -42,27 +45,15 @@ const SliderFieldSchema = new Schema({
   },
 });
 
-const progressValidator = (
-  min: number,
-  max: number,
-  errorMessage: string = `wartość w przedziale od ${min} do ${max}.`,
-) => (value: number) => {
-  if (value < min || value > max) {
-    return errorMessage;
-  }
-
-  return null;
-};
-
 SliderFieldSchema.methods.validateField = function(): string | null {
-  console.log(['SliderFieldSchema.methods.validateField']);
-  const validator = progressValidator(this.meta.min, this.meta.max);
+  const validators = [
+    progressValidator(this.meta.min, this.meta.max),
+  ];
 
-  return validator(this.value.progress);
+  return iterateValidations(this.value.progress, validators);
 };
 
-// @ts-ignore
-export const SliderFieldModel = TaskFieldsSchemaPath.discriminator(
+export const SliderFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(
   FIELD_TYPE.SLIDER,
   SliderFieldSchema,
 );
