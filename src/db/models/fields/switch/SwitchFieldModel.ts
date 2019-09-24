@@ -23,6 +23,10 @@ const SwitchFieldSchema = new Schema({
       type: Boolean,
       default: false,
     },
+    required: {
+      type: Boolean,
+      default: true,
+    },
     helperText: String,
   },
 });
