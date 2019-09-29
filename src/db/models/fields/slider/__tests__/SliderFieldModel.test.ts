@@ -1,5 +1,6 @@
 import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
 import connectDB from '../../../../connect';
+import { FIELDS_CONFIG } from '../../../tasks/TaskModel';
 import { SliderFieldModel } from '../SliderFieldModel';
 
 describe('SliderFieldModel', () => {
@@ -33,7 +34,7 @@ describe('SliderFieldModel', () => {
     const doc = new SliderFieldModel(FIELDS_CONFIG.PROGRESS);
 
     expect(doc.value.progress).toBe(0);
-    expect(doc.validateField()).toBe(null);
+    expect(doc.validateField().toString()).toBe([].toString());
   });
 
   it('should validate minus progress', async () => {
@@ -45,7 +46,7 @@ describe('SliderFieldModel', () => {
     });
 
     expect(doc.value.progress).toBe(-10);
-    expect(doc.validateField()).toBe('wartość w przedziale od 0 do 100.');
+    expect(doc.validateField().toString()).toBe(['wartość w przedziale od 0 do 100.'].toString());
   });
 
   it('should validate progress over max value', async () => {
@@ -57,6 +58,6 @@ describe('SliderFieldModel', () => {
     });
 
     expect(doc.value.progress).toBe(110);
-    expect(doc.validateField()).toBe('wartość w przedziale od 0 do 100.');
+    expect(doc.validateField().toString()).toBe(['wartość w przedziale od 0 do 100.'].toString());
   });
 });

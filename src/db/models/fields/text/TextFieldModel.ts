@@ -37,7 +37,7 @@ const TextFieldSchema = new Schema<IField>({
   },
 });
 
-TextFieldSchema.methods.validateField = function(): string | null {
+TextFieldSchema.methods.validateField = function(): string[] {
   const validators = [
     requiredValidator(),
     lengthValidator(this.meta.minLength, this.meta.maxLength),

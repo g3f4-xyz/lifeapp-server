@@ -12,7 +12,8 @@
       "options": {
         "limit": 160
       }
-    }
+    },
+    "trailing-comma": true
   },
   "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
 }

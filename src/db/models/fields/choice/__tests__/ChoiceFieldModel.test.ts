@@ -1,5 +1,6 @@
 import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
 import connectDB from '../../../../connect';
+import { FIELDS_CONFIG } from '../../../tasks/TaskModel';
 import { ChoiceFieldModel } from '../ChoiceFieldModel';
 
 describe('ChoiceFieldModel', () => {
@@ -21,6 +22,7 @@ describe('ChoiceFieldModel', () => {
     expect(doc.order).toBe(0);
     expect(doc.fieldId).toBe(FIELD_ID.STATUS);
     expect(doc.fieldType).toBe(FIELD_TYPE.CHOICE);
+    expect(doc.validationErrors.toString()).toBe([].toString());
     expect(doc.meta.required).toBe(true);
     expect(doc.meta.disabled).toBe(false);
     expect(doc.meta.helperText).toBe('Informacje o testowym polu Status');
@@ -31,7 +33,7 @@ describe('ChoiceFieldModel', () => {
     const doc = new ChoiceFieldModel(FIELDS_CONFIG.STATUS);
 
     expect(doc.value.id).toBe('');
-    expect(doc.validateField()).toBe('wartość wymagana.');
+    expect(doc.validateField().toString()).toBe(['wartość wymagana.'].toString());
   });
 
   it('should validate selected value', async () => {
@@ -43,6 +45,6 @@ describe('ChoiceFieldModel', () => {
     });
 
     expect(doc.value.id).toBe('test');
-    expect(doc.validateField()).toBe(null);
+    expect(doc.validateField().toString()).toBe([].toString());
   });
 });

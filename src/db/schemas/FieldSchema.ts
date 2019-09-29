@@ -17,6 +17,10 @@ export const FIELD_DEFINITION = {
   },
   meta: Object,
   value: Object,
+  validationErrors: {
+    type: [String],
+    default: [] as string[],
+  },
 };
 
 export const FieldSchema: Schema<IField> = new Schema(FIELD_DEFINITION, { discriminatorKey: 'fieldType' });

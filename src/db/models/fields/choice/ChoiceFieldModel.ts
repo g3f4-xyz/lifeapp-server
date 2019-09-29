@@ -40,11 +40,11 @@ const ChoiceFieldSchema = new Schema({
   },
 });
 
-ChoiceFieldSchema.methods.validateField = function(): string | null {
+ChoiceFieldSchema.methods.validateField = function(): string[] {
   const { required, disabled } = this.meta;
   const validator = requiredValidator();
 
-  return required && !disabled ? validator(this.value.id) : null;
+  return required && !disabled ? [validator(this.value.id)] : [];
 };
 
 export const ChoiceFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(

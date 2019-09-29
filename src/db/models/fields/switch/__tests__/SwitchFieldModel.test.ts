@@ -1,5 +1,6 @@
 import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
 import connectDB from '../../../../connect';
+import { FIELDS_CONFIG } from '../../../tasks/TaskModel';
 import { SwitchFieldModel } from '../SwitchFieldModel';
 
 describe('SwitchFieldModel', () => {
@@ -30,6 +31,6 @@ describe('SwitchFieldModel', () => {
     const doc = new SwitchFieldModel(FIELDS_CONFIG.ACTIVE);
 
     expect(doc.value.enabled).toBe(false);
-    expect(doc.validateField()).toBe(null);
+    expect(doc.validateField().toString()).toBe([].toString());
   });
 });

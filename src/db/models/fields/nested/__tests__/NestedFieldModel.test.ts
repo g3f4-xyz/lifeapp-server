@@ -1,5 +1,6 @@
 import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
 import connectDB from '../../../../connect';
+import { FIELDS_CONFIG } from '../../../tasks/TaskModel';
 import { NestedFieldModel } from '../NestedFieldModel';
 
 describe('NestedFieldModel', () => {
@@ -29,6 +30,6 @@ describe('NestedFieldModel', () => {
 
     expect(doc.value.childrenValue).toBe(null);
     expect(doc.value.ownValue).toBe(null);
-    expect(doc.validateField()).toBe(null);
+    expect(doc.validateField().toString()).toBe([].toString());
   });
 });

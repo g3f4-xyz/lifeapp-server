@@ -32,8 +32,8 @@ const SwitchFieldSchema = new Schema({
 });
 
 // tslint:disable-next-line:only-arrow-functions
-SwitchFieldSchema.methods.validateField = function(): string | null {
-  return null;
+SwitchFieldSchema.methods.validateField = function(): string[] {
+  return [];
 };
 
 export const SwitchFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(

@@ -45,7 +45,7 @@ const SliderFieldSchema = new Schema({
   },
 });
 
-SliderFieldSchema.methods.validateField = function(): string | null {
+SliderFieldSchema.methods.validateField = function(): string[] {
   const validators = [
     progressValidator(this.meta.min, this.meta.max),
   ];

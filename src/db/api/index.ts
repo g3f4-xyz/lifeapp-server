@@ -1,10 +1,8 @@
 import * as moment from 'moment-timezone';
 import { Moment } from 'moment-timezone';
 import { mongo } from 'mongoose';
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
+import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../../constants';
 import {
-  // IField,
-  IFieldValue,
   ISettings,
   ISettingsNotificationsGeneral,
   ISettingsNotificationsTypes,
@@ -12,16 +10,11 @@ import {
   ISubscriptionData,
   ITask,
   ITaskType,
-} from './interfaces';
-import { FieldConfigModel, IFieldDocument } from './models/fields/FieldConfigModel';
-import { SettingsModel } from './models/SettingsModel';
-import {
-  calculateNotificationAt,
-  isNotificationAtUpdateNeeded,
-  TASK_FIELDS,
-  TaskModel,
-} from './models/tasks/TaskModel';
-import { TaskTypeModel } from './models/TaskTypeModel';
+} from '../interfaces';
+import { FieldConfigModel, IFieldDocument } from '../models/fields/FieldConfigModel';
+import { SettingsModel } from '../models/SettingsModel';
+import { TASK_FIELDS, TaskModel } from '../models/tasks/TaskModel';
+import { TaskTypeModel } from '../models/TaskTypeModel';
 
 const defaultValuesByFieldIdMap: { [key: string]: any } = {
   [FIELD_ID.STATUS]: () => ({
@@ -509,42 +502,3 @@ export const saveNotificationsTypesSetting = async (
   }
 };
 
-export const updateTaskField = async (
-  taskId: string,
-  fieldId: FIELD_ID,
-  value: IFieldValue,
-): Promise<IFieldValue> => {
-  try {
-    // tutaj wiem jakie pole się zmienia. brakuje jeszcze tylko taskType
-    const task = await TaskModel.findById(taskId);
-    const fieldIndex = task.fields.findIndex(field => field.fieldId === fieldId);
-
-    task.fields[fieldIndex].value = value;
-
-    if (isNotificationAtUpdateNeeded(task.taskType, task.lastChangedFieldId)) {
-      const lastChangedField = task.fields.find(field => field.fieldId === task.lastChangedFieldId);
-      const notificationAt = calculateNotificationAt(task.taskType, task.lastNotificationAt, lastChangedField.value);
-
-      task.notificationAt = notificationAt;
-    }
-
-    task.updatedAt = moment(new Date()).toISOString();
-    task.lastChangedFieldId = fieldId;
-
-    await task.save();
-
-    // await TaskModel.findOneAndUpdate({
-    //   _id: taskId,
-    //   ['fields.fieldId']: fieldId,
-    // }, {
-    //   $set: {
-    //     lastChangedFieldId: fieldId,
-    //     ['fields.$.value']: value,
-    //   },
-    // });
-
-    return task.fields[fieldIndex].value;
-  } catch (error) {
-    throw error;
-  }
-};

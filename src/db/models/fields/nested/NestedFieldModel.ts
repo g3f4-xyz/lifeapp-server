@@ -34,8 +34,8 @@ const NestedFieldSchema = new Schema({
 });
 
 // tslint:disable-next-line:only-arrow-functions
-NestedFieldSchema.methods.validateField = function(): string | null {
-  return null;
+NestedFieldSchema.methods.validateField = function(): string[] {
+  return [];
 };
 
 export const NestedFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(

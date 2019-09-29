@@ -1,4 +1,4 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLList, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { IContext, IField } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
@@ -36,6 +36,10 @@ export const ChoiceFieldType: GraphQLObjectType<IField, IContext> = new GraphQLO
 
         return ({ ...meta, fieldType });
       },
+    },
+    validationErrors: {
+      description: 'choice field field validationErrors list',
+      type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
     },
   }),
   interfaces: [nodeInterface],
