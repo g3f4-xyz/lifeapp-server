@@ -385,14 +385,6 @@
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
-"@types/express-graphql@0.6.2":
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/@types/express-graphql/-/express-graphql-0.6.2.tgz#2b0608e74f2aa63fae0948f3b58abf03b613867f"
-  integrity sha512-6ZixmJn0wvdGkBg2XTyVJH5qqE1GViD1lMbCRVFzLLL0mHKmsyc0ji1A9Rv/3lGrTnP8v468+k5vTy91mlxNpQ==
-  dependencies:
-    "@types/express" "*"
-    "@types/graphql" "*"
-
 "@types/express-serve-static-core@*":
   version "4.16.9"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.16.9.tgz#69e00643b0819b024bdede95ced3ff239bb54558"
@@ -428,24 +420,12 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
-"@types/graphql-relay@0.4.9":
-  version "0.4.9"
-  resolved "https://registry.yarnpkg.com/@types/graphql-relay/-/graphql-relay-0.4.9.tgz#0f34ee87a1bf1fc4c986eeefe0707318c7433212"
-  integrity sha512-SL0UXsnNozTBIXwSs0pGB1iTWKaQzxmfqBwx9m0NvDGg463sYaFw4f7rizTzL4OSaVobLkvGJWUPesbg66MfHw==
-  dependencies:
-    "@types/graphql" "*"
-
-"@types/graphql@*":
+"@types/graphql@^14.5.0":
   version "14.5.0"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.5.0.tgz#a545fb3bc8013a3547cf2f07f5e13a33642b75d6"
   integrity sha512-MOkzsEp1Jk5bXuAsHsUi6BVv0zCO+7/2PTiZMXWDSsMXvNU6w/PLMQT2vHn8hy2i0JqojPz1Sz6rsFjHtsU0lA==
   dependencies:
     graphql "*"
-
-"@types/graphql@14.0.7":
-  version "14.0.7"
-  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.0.7.tgz#daa09397220a68ce1cbb3f76a315ff3cd92312f6"
-  integrity sha512-BoLDjdvLQsXPZLJux3lEZANwGr3Xag56Ngy0U3y8uoRSDdeLcn43H3oBcgZlnd++iOQElBpaRVDHPzEDekyvXQ==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
@@ -491,13 +471,6 @@
   dependencies:
     moment ">=2.14.0"
 
-"@types/moment@2.13.0":
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/@types/moment/-/moment-2.13.0.tgz#604ebd189bc3bc34a1548689404e61a2a4aac896"
-  integrity sha1-YE69GJvDvDShVIaJQE5hoqSqyJY=
-  dependencies:
-    moment "*"
-
 "@types/mongodb@*", "@types/mongodb@3.3.3":
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.3.3.tgz#749ce52f1d958601dcc4cea3e2839a734c2723e2"
@@ -521,15 +494,10 @@
   dependencies:
     "@types/express" "*"
 
-"@types/node@*":
+"@types/node@*", "@types/node@^12.7.8":
   version "12.7.8"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.8.tgz#cb1bf6800238898bc2ff6ffa5702c3cadd350708"
   integrity sha512-FMdVn84tJJdV+xe+53sYiZS4R5yn1mAIxfj+DVoNiQjTYz1+OYmjwEZr1ev9nU0axXwda0QDbYl06QHanRVH3A==
-
-"@types/node@10.12.18":
-  version "10.12.18"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.18.tgz#1d3ca764718915584fcd9f6344621b7672665c67"
-  integrity sha512-fh+pAqt4xRzPfqA6eh3Z2y6fyZavRIumvjhaCL753+TVkGKGhpPeyrJG2JftD0T9q4GF00KjefsQ+PQNDdWQaQ==
 
 "@types/passport@1.0.0":
   version "1.0.0"
@@ -3648,15 +3616,15 @@ moment-timezone@^0.5.x, moment-timezone@~0.5.0:
   dependencies:
     moment ">= 2.9.0"
 
-moment@*, "moment@>= 2.9.0", moment@>=2.14.0:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
-
 moment@2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
   integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
+
+"moment@>= 2.9.0", moment@>=2.14.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 mongodb-core@2.1.20:
   version "2.1.20"
