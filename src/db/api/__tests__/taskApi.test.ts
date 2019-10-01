@@ -1,50 +1,19 @@
-import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
-import connectDB from '../../../../connect';
-import { FIELDS_CONFIG } from '../../../tasks/TaskModel';
-import { ChoiceFieldModel } from '../ChoiceFieldModel';
+import { TASK_TYPE } from '../../../constants';
+import { getEmptyTask } from '../index';
 
-describe('ChoiceFieldModel', () => {
+describe('taskApi', () => {
   beforeAll(async () => {
     // @ts-ignore
     await connectDB(global.__MONGO_URI__);
   });
 
-  it('should be defined', () => {
-    expect(ChoiceFieldModel).toBeDefined();
-  });
+  describe('getEmptyTask', () => {
+    it('should get empty todo task', async () => {
+      const ownerId = '1234567890';
+      const task = await getEmptyTask(TASK_TYPE.TODO, ownerId);
 
-  it('should create model', async () => {
-    const doc = new ChoiceFieldModel(FIELDS_CONFIG.STATUS);
-
-    expect(doc).toBeDefined();
-    expect(doc).toBeInstanceOf(ChoiceFieldModel);
-    expect(doc.value.id).toBe('');
-    expect(doc.order).toBe(0);
-    expect(doc.fieldId).toBe(FIELD_ID.STATUS);
-    expect(doc.fieldType).toBe(FIELD_TYPE.CHOICE);
-    expect(doc.validationErrors.toString()).toBe([].toString());
-    expect(doc.meta.required).toBe(true);
-    expect(doc.meta.disabled).toBe(false);
-    expect(doc.meta.helperText).toBe('Informacje o testowym polu Status');
-    expect(doc.meta.label).toBe('Status');
-  });
-
-  it('should validate empty value', async () => {
-    const doc = new ChoiceFieldModel(FIELDS_CONFIG.STATUS);
-
-    expect(doc.value.id).toBe('');
-    expect(doc.validateField().toString()).toBe(['wartość wymagana.'].toString());
-  });
-
-  it('should validate selected value', async () => {
-    const doc = new ChoiceFieldModel({
-      ...FIELDS_CONFIG.STATUS,
-      value: {
-        id: 'test',
-      },
+      expect(task).toBeDefined();
+      expect(task.ownerId).toBe(ownerId);
     });
-
-    expect(doc.value.id).toBe('test');
-    expect(doc.validateField().toString()).toBe([].toString());
   });
 });
