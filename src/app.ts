@@ -1,18 +1,14 @@
-import { Application } from 'express';
-
-// addOne server
 import { json } from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import * as session from 'express-session';
 import * as morgan from 'morgan';
 import * as passport from 'passport';
-
 import { PORT, SESSION } from './config';
 import { CONSOLE_COLORS } from './constants';
 import { router } from './router';
 
-const app: Application = express();
+const app = express();
 
 export default () => {
   // dev tools
