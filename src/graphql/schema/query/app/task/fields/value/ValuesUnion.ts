@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
 import { FIELD_TYPE_VALUE_MAP, FIELD_VALUE_KEYS_MAP } from '../../../../../../../constants';
-import { IFieldValue } from '../../../../../../../db/interfaces';
+import { FieldValue } from '../../../../../../../db/interfaces';
 
 // TODO jak rozwiązać problem cyklicznego odwołania modułu NestedValueType
 const getTypes = (): FIELD_TYPE_VALUE_MAP<GraphQLObjectType> => {
@@ -23,7 +23,7 @@ export const ValuesUnion = new GraphQLUnionType({
   name: 'ValuesUnion',
   description: 'Values Union',
   types: () => Object.values(getTypes()),
-  resolveType(value: IFieldValue) {
+  resolveType(value: FieldValue) {
     const types = getTypes();
     const valueKey = Object.keys(value);
     const typeKey = Object

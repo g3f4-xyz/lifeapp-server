@@ -3,6 +3,7 @@ import { parse } from 'useragent';
 import { sendNotification } from 'web-push';
 import { DEMO_USER } from '../config';
 import { addSubscription } from '../db/api';
+import { User } from '../db/interfaces';
 
 export const notificationMiddleware = async (req: Request, res: Response) => {
   const {
@@ -12,13 +13,9 @@ export const notificationMiddleware = async (req: Request, res: Response) => {
     },
   } = req.body;
   const { family: userAgent, os: { family: userDeviceType } } = parse(req.headers['user-agent']);
-  const { id: ownerId } = req.user || DEMO_USER;
+  const { id: ownerId } = req.user as User || DEMO_USER;
   await addSubscription(ownerId, subscriptionData, userAgent, userDeviceType);
 
-
-  console.log(['notificationMiddleware'], options)
-
-  // Send 201 - resource created
   res.status(201).json({});
 
   const payload = JSON.stringify({

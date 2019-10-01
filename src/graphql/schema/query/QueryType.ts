@@ -1,9 +1,9 @@
 import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import { IContext } from '../../../db/interfaces';
+import { Context } from '../../../db/interfaces';
 import { nodeField } from '../../nodeDefinitions';
 import { AppType } from './app/AppType';
 
-export const QueryType = new GraphQLObjectType<undefined, IContext>({
+export const QueryType = new GraphQLObjectType<undefined, Context>({
   name: 'QueryType',
   fields: () => ({
     app: {

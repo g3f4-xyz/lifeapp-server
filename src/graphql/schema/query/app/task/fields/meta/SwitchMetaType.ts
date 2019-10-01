@@ -1,8 +1,8 @@
 import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
-import { IContext, IFieldMeta } from '../../../../../../../db/interfaces';
+import { Context, FieldMeta } from '../../../../../../../db/interfaces';
 import { FieldTypeEnum } from '../../../../../../enums/FieldTypeEnum';
 
-export const SwitchMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
+export const SwitchMetaType: GraphQLObjectType<FieldMeta, Context> = new GraphQLObjectType({
   name: 'SwitchMetaType',
   description: 'switch meta type',
   fields: () => ({

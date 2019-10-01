@@ -1,15 +1,15 @@
 import { Schema } from 'mongoose';
 import { TASK_TYPE } from '../../../../constants';
-import { ITaskDocument, TaskModel } from '../TaskModel';
+import { TaskDocument, TaskModel } from '../TaskModel';
 
-const RoutineSchema: Schema<ITaskDocument> = new Schema({});
+const RoutineSchema: Schema<TaskDocument> = new Schema({});
 
 RoutineSchema.methods.validateFields = function() {
   console.log(['RoutineSchema.methods.validateFields']);
   return this.fields.every(field => field.validateField());
 };
 
-export const RoutineModel = TaskModel.discriminator<ITaskDocument>(
+export const RoutineModel = TaskModel.discriminator<TaskDocument>(
   TASK_TYPE.ROUTINE,
   RoutineSchema,
 );

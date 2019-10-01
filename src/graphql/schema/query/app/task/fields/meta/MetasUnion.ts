@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
 import { FIELD_TYPE_VALUE_MAP } from '../../../../../../../constants';
-import { IFieldMeta } from '../../../../../../../db/interfaces';
+import { FieldMeta } from '../../../../../../../db/interfaces';
 
 // TODO jak rozwiązać problem cyklicznego odwołania modułu NestedValueType
 const getTypes = (): FIELD_TYPE_VALUE_MAP<GraphQLObjectType> => {
@@ -23,7 +23,7 @@ export const MetasUnion = new GraphQLUnionType({
   name: 'MetasUnion',
   description: 'metas union',
   types: () => Object.values(getTypes()),
-  resolveType(meta: IFieldMeta) {
+  resolveType(meta: FieldMeta) {
     return getTypes()[meta.fieldType];
   },
 });

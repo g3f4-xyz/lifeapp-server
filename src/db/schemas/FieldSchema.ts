@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import { FIELD_ID, FIELD_TYPE } from '../../constants';
-import { IField } from '../interfaces';
+import { Field } from '../interfaces';
 
 export const FIELD_DEFINITION = {
   fieldId: {
@@ -23,4 +23,4 @@ export const FIELD_DEFINITION = {
   },
 };
 
-export const FieldSchema: Schema<IField> = new Schema(FIELD_DEFINITION, { discriminatorKey: 'fieldType' });
+export const FieldSchema: Schema<Field> = new Schema(FIELD_DEFINITION, { discriminatorKey: 'fieldType' });

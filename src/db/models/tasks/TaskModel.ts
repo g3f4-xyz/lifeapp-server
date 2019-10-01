@@ -13,14 +13,12 @@ import {
   WEEK_CYCLE
 } from '../../../constants';
 
-import { IField, IFieldValue, ITask } from '../../interfaces';
+import { Field, FieldValue, Task } from '../../interfaces';
 import { FieldSchema } from '../../schemas/FieldSchema';
 
-export interface ITaskDocument extends ITask, Document {
-  validateFields(this: ITaskDocument): boolean;
+export interface TaskDocument extends Task, Document {
+  validateFields(this: TaskDocument): boolean;
 }
-
-export interface ITaskModel extends Model<ITaskDocument> {}
 
 export const TaskSchema = new Schema({
   ownerId: {
@@ -38,7 +36,7 @@ export const TaskSchema = new Schema({
   fields: [FieldSchema],
 }, { discriminatorKey: 'taskType' });
 
-export const TaskModel = model<ITaskDocument, ITaskModel>('Task', TaskSchema);
+export const TaskModel = model<TaskDocument, Model<TaskDocument>>('Task', TaskSchema);
 
 export const TaskFieldsSchema = TaskSchema.path('fields');
 
@@ -53,31 +51,34 @@ export const isNotificationAtUpdateNeeded = (taskType: TASK_TYPE, lastChangedFie
   }
 };
 
-export const calculateNextCycle = (fieldValue: IFieldValue): Moment | null => {
+export const calculateNextCycle = (fieldValue: FieldValue): Moment | null => {
   if (fieldValue && fieldValue.ownValue) {
     if (fieldValue.ownValue.id === CYCLE.DAY && fieldValue.childrenValue && fieldValue.childrenValue.ownValue) {
       switch (fieldValue.childrenValue.ownValue.id as unknown as DAY_CYCLE) {
-        case DAY_CYCLE.EVENING:
+        case DAY_CYCLE.EVENING: {
           const eveningMoment = moment(Date.now())
             .startOf('day')
             .add(20, 'hour');
           const pastEvening = moment(Date.now()).isAfter(eveningMoment);
 
           return pastEvening ? eveningMoment.add(1, 'day') : eveningMoment;
-        case DAY_CYCLE.MORNING:
+        }
+        case DAY_CYCLE.MORNING: {
           const morningMoment = moment(Date.now())
             .startOf('day')
             .add(8, 'hour');
           const pastMorning = moment(Date.now()).isAfter(morningMoment);
 
           return pastMorning ? morningMoment.add(1, 'day') : morningMoment;
-        case DAY_CYCLE.NOON:
+        }
+        case DAY_CYCLE.NOON: {
           const noonMoment = moment(Date.now())
             .startOf('day')
             .add(12, 'hour');
           const pastNoon = moment(Date.now()).isAfter(noonMoment);
 
           return pastNoon ? noonMoment.add(1, 'day') : noonMoment;
+        }
         default:
           return null;
       }
@@ -153,7 +154,7 @@ export const calculateNextCycle = (fieldValue: IFieldValue): Moment | null => {
 export const calculateNotificationAt = (
   taskType: TASK_TYPE,
   lastNotificationAt: Date,
-  fieldValue: IFieldValue,
+  fieldValue: FieldValue,
 ): Date | null => {
   console.log(['calculateNotificationAt'], taskType, lastNotificationAt, fieldValue);
   switch (taskType) {
@@ -163,13 +164,15 @@ export const calculateNotificationAt = (
       return moment(fieldValue.text).startOf('day').toDate();
     case TASK_TYPE.MEETING:
       return lastNotificationAt ? null : moment(fieldValue.text).subtract(1, 'hour').toDate();
-    case TASK_TYPE.ROUTINE:
+    case TASK_TYPE.ROUTINE: {
       const nextCycleAt = calculateNextCycle(fieldValue);
+
       return nextCycleAt ? nextCycleAt.toDate() : null;
+    }
   }
 };
 
-export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
+export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
   TITLE: {
     fieldId: FIELD_ID.TITLE,
     fieldType: FIELD_TYPE.TEXT,
@@ -494,7 +497,7 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<IField>> = {
   },
 };
 
-export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<IField>>> =  {
+export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<Field>>> =  {
   EVENT: [
     FIELDS_CONFIG.TITLE,
     FIELDS_CONFIG.PRIORITY,

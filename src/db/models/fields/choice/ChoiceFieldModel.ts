@@ -1,8 +1,8 @@
 import { Model, Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../../constants';
 import { requiredValidator } from '../../../utils/fieldValidators';
-import { ITaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
-import { IFieldDocument } from '../FieldConfigModel';
+import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
+import { FieldDocument } from '../FieldConfigModel';
 
 const ChoiceFieldSchema = new Schema({
   order: {
@@ -47,7 +47,7 @@ ChoiceFieldSchema.methods.validateField = function(): string[] {
   return required && !disabled ? [validator(this.value.id)] : [];
 };
 
-export const ChoiceFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(
+export const ChoiceFieldModel: Model<FieldDocument> = (TaskFieldsSchema as unknown as Model<TaskDocument>).discriminator(
   FIELD_TYPE.CHOICE,
   ChoiceFieldSchema,
 );

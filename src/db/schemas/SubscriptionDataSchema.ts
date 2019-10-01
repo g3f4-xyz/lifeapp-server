@@ -1,10 +1,10 @@
 import { Document, Schema } from 'mongoose';
 
-import { ISubscriptionData } from '../interfaces';
+import { SubscriptionData } from '../interfaces';
 
-export interface ISubscriptionDataDocument extends ISubscriptionData, Document {}
+export interface SubscriptionDataDocument extends SubscriptionData, Document {}
 
-export const SubscriptionDataSchema: Schema<ISubscriptionDataDocument> = new Schema({
+export const SubscriptionDataSchema: Schema<SubscriptionDataDocument> = new Schema({
   endpoint : String,
   expirationTime : String,
   keys : {

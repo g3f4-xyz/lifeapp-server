@@ -1,16 +1,16 @@
 import { PushSubscription } from 'web-push';
 import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
 
-export interface IConfigMap<T = string | boolean> {
+export interface ConfigMap<T = string | boolean> {
   [key: string]: T;
 }
 
-export interface IFieldMetaOptions {
+export interface FieldMetaOptions {
   text: string;
   value: string;
 }
 
-export interface IFieldMeta {
+export interface FieldMeta {
   disabled?: boolean;
   required?: boolean;
   minLength?: number;
@@ -18,18 +18,18 @@ export interface IFieldMeta {
   min?: number;
   max?: number;
   step?: number;
-  options?: IFieldMetaOptions[];
+  options?: FieldMetaOptions[];
   label?: string;
   helperText?: string;
   defaultValue?: string;
   inputType?: string;
-  parentValue?: IFieldValue;
+  parentValue?: FieldValue;
   fieldType?: string;
-  ownMeta?: IFieldMeta;
-  childrenMeta?: IFieldMeta[];
+  ownMeta?: FieldMeta;
+  childrenMeta?: FieldMeta[];
 }
 
-export interface IFieldValue {
+export interface FieldValue {
   enabled?: boolean | null;
   progress?: boolean | null;
   id?: string | null;
@@ -38,19 +38,19 @@ export interface IFieldValue {
   childrenValue?: this | null;
 }
 
-export interface IField {
+export interface Field {
   _id: any;
   fieldId: FIELD_ID;
   fieldType: FIELD_TYPE;
   order: number;
-  meta: Partial<IFieldMeta>;
-  value: Partial<IFieldValue>;
+  meta: Partial<FieldMeta>;
+  value: Partial<FieldValue>;
   validationErrors: string[];
 
   validateField(): string[];
 }
 
-export interface ITask {
+export interface Task {
   _id: any;
   ownerId: string;
   updatedAt?: Date | string;
@@ -58,10 +58,10 @@ export interface ITask {
   lastNotificationAt?: Date;
   lastChangedFieldId?: FIELD_ID;
   taskType: TASK_TYPE;
-  fields: IField[];
+  fields: Field[];
 }
 
-export interface ITaskType {
+export interface TaskType {
   typeId: string;
   label: string;
   description: string;
@@ -70,22 +70,22 @@ export interface ITaskType {
   fieldsIds: string[];
 }
 
-export interface ISubscriptionData extends PushSubscription {
+export interface SubscriptionData extends PushSubscription {
   expirationTime: string;
 }
 
-export interface ISubscription {
+export interface Subscription {
   subscriptionData: PushSubscription;
   userAgent: string;
   userDeviceType: string;
 }
 
-export interface ISettingsNotificationsGeneral {
+export interface SettingsNotificationsGeneral {
   show: boolean;
   vibrate: boolean;
 }
 
-export interface ISettingsNotificationsTypes {
+export interface SettingsNotificationsTypes {
   events: boolean;
   goal: boolean;
   meetings: boolean;
@@ -93,13 +93,13 @@ export interface ISettingsNotificationsTypes {
   todos: boolean;
 }
 
-export interface INotifications {
-  general: ISettingsNotificationsGeneral;
-  types: ISettingsNotificationsTypes;
-  subscriptions: ISubscription[];
+export interface Notifications {
+  general: SettingsNotificationsGeneral;
+  types: SettingsNotificationsTypes;
+  subscriptions: Subscription[];
 }
 
-export interface ITaskListSettings {
+export interface TaskListSettings {
   filters: {
     title: string;
     taskType: string[];
@@ -107,16 +107,16 @@ export interface ITaskListSettings {
   };
 }
 
-export interface ISettings {
+export interface Settings {
   ownerId: string;
-  notifications: INotifications;
-  taskList: ITaskListSettings;
+  notifications: Notifications;
+  taskList: TaskListSettings;
 }
 
-export interface IUser {
+export interface User {
   id: string;
 }
 
-export interface IContext {
-  user: IUser;
+export interface Context {
+  user: User;
 }

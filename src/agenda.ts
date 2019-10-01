@@ -4,14 +4,18 @@ import { sendNotification } from 'web-push';
 import { DB_HOST } from './config';
 import { CONSOLE_COLORS, FIELD_ID, TASK_TYPE, TASK_TYPE_VALUE_MAP, TIME_FORMAT } from './constants';
 import {
+  getSettings,
+
+
+} from './db/api';
+import {
   deleteUntouchedTasks,
   disableTaskNotification,
-  getSettings,
   getTasksWithActiveNotification,
   getTasksWithActiveNotificationInPeriod,
   updateNotificationAt,
-} from './db/api';
-import { ITask } from './db/interfaces';
+} from './db/api/taskApi';
+import { Task } from './db/interfaces';
 import { calculateNotificationAt } from './db/models/tasks/TaskModel';
 
 moment.tz.setDefault('Europe/Warsaw');
@@ -101,7 +105,7 @@ export default () => {
         const routines = await getTasksWithActiveNotificationInPeriod(
           TASK_TYPE.ROUTINE, moment(Date.now()), moment(Date.now()).add(30, 'second'),
         );
-        const usersRoutines = groupBy<ITask>(routines, 'ownerId');
+        const usersRoutines = groupBy<Task>(routines, 'ownerId');
 
         Object.keys(usersRoutines).map(userId => usersRoutines[userId]).forEach((list => {
           list.forEach((async routine => {
@@ -127,7 +131,7 @@ export default () => {
       await agenda.define(JOBS_NAMES.TODO, async () => {
         console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.TODO}`);
         const todos = await getTasksWithActiveNotification(TASK_TYPE.TODO);
-        const usersTodos = groupBy<ITask>(todos, 'ownerId');
+        const usersTodos = groupBy<Task>(todos, 'ownerId');
 
         const usersTodosData = Object.keys(usersTodos).map(userId => usersTodos[userId]).map((list => list.map((todo => {
           const title = todo.fields.find(({ fieldId }) => fieldId === FIELD_ID.TITLE).value.text;
@@ -165,7 +169,7 @@ export default () => {
       await agenda.define(JOBS_NAMES.EVENT, async () => {
         console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.EVENT}`);
         const events = await getTasksWithActiveNotification(TASK_TYPE.EVENT);
-        const usersEvents = groupBy<ITask>(events, 'ownerId');
+        const usersEvents = groupBy<Task>(events, 'ownerId');
         const sendTimeMoment = moment(Date.now());
 
         const todayUsersEventsData = Object.keys(usersEvents).map(userId => usersEvents[userId]).map((list => list.map((todo => {
@@ -218,7 +222,7 @@ export default () => {
         const meetings = await getTasksWithActiveNotificationInPeriod(
           TASK_TYPE.MEETING, moment(Date.now()), moment(Date.now()).add(1, 'minute'),
         );
-        const usersMeetings = groupBy<ITask>(meetings, 'ownerId');
+        const usersMeetings = groupBy<Task>(meetings, 'ownerId');
         const userIds = Object.keys(usersMeetings);
 
         userIds.map(userId => usersMeetings[userId]).forEach((list => {

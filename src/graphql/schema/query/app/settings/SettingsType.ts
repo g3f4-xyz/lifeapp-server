@@ -1,11 +1,11 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { IContext, ISettings } from '../../../../../db/interfaces';
+import { Context, Settings } from '../../../../../db/interfaces';
 import { nodeInterface } from '../../../../nodeDefinitions';
 import { NotificationsType } from './notifications/NotificationsType';
 import { TaskListSettingsType } from './taskList/TaskListSettingsType';
 
-export const SettingsType = new GraphQLObjectType<ISettings, IContext>({
+export const SettingsType = new GraphQLObjectType<Settings, Context>({
   name: 'SettingsType',
   description: 'task type type',
   fields: () => ({

@@ -1,5 +1,5 @@
 import { SessionOptions } from 'express-session';
-import { IConfigMap } from './db/interfaces';
+import { ConfigMap } from './db/interfaces';
 
 export const DB_HOST: string = process.env.DB === 'remote'
   ? 'mongodb://mo1563_lifeapp:Gitara15@85.194.240.29:27017/mo1563_lifeapp'
@@ -9,8 +9,8 @@ export const DEMO_USER = {
 };
 export const HOST: string = process.env.HOST || 'http://localhost:30000';
 export const PORT: string = process.env.PORT || '30000';
-export const PUBLIC_PATH: string = `${process.cwd()}/build`;
-export const ROUTES: IConfigMap<string> = {
+export const PUBLIC_PATH = `${process.cwd()}/build`;
+export const ROUTES: ConfigMap<string> = {
   AUTH: '/auth',
   DEMO: '/demo',
   LOGOUT: '/logout',
@@ -18,10 +18,10 @@ export const ROUTES: IConfigMap<string> = {
   NOTIFICATIONS: '/notifications',
   ROOT: '/',
 };
-export const HTML_PATHS: IConfigMap<string> = {
+export const HTML_PATHS: ConfigMap<string> = {
   APP: `${PUBLIC_PATH}/index.html`,
 };
-export const SUB_ROUTES: IConfigMap<string> = {
+export const SUB_ROUTES: ConfigMap<string> = {
   GOOGLE_AUTH: '/google',
   GOOGLE_LOGGED: '/google/logged',
 };

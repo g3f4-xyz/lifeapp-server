@@ -1,13 +1,13 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { IContext, IField } from '../../../../../../db/interfaces';
+import { Context, Field } from '../../../../../../db/interfaces';
 import { nodeInterface } from '../../../../../nodeDefinitions';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { TextMetaType } from './meta/TextMetaType';
 import { TextValueType } from './value/TextValueType';
 
-export const TextFieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
+export const TextFieldType: GraphQLObjectType<Field, Context> = new GraphQLObjectType<Field, Context>({
   name: 'TextFieldType',
   description: 'text field type',
   fields: () => ({

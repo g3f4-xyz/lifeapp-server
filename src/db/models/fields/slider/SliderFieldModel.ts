@@ -2,8 +2,8 @@ import { Model, Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../../constants';
 import { progressValidator } from '../../../utils/fieldValidators';
 import iterateValidations from '../../../utils/iterateValidations';
-import { ITaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
-import { IFieldDocument } from '../FieldConfigModel';
+import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
+import { FieldDocument } from '../FieldConfigModel';
 
 const SliderFieldSchema = new Schema({
   order: {
@@ -53,7 +53,7 @@ SliderFieldSchema.methods.validateField = function(): string[] {
   return iterateValidations(this.value.progress, validators);
 };
 
-export const SliderFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(
+export const SliderFieldModel: Model<FieldDocument> = (TaskFieldsSchema as unknown as Model<TaskDocument>).discriminator(
   FIELD_TYPE.SLIDER,
   SliderFieldSchema,
 );

@@ -1,13 +1,13 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLList, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { IContext, IField } from '../../../../../../db/interfaces';
+import { Context, Field } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { nodeInterface } from '../../../../../nodeDefinitions';
 import { ChoiceMetaType } from './meta/ChoiceMetaType';
 import { ChoiceValueType } from './value/ChoiceValueType';
 
-export const ChoiceFieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
+export const ChoiceFieldType: GraphQLObjectType<Field, Context> = new GraphQLObjectType<Field, Context>({
   name: 'ChoiceFieldType',
   description: 'choice field type',
   fields: () => ({

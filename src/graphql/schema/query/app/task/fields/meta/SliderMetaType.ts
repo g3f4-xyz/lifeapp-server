@@ -1,8 +1,8 @@
 import { GraphQLBoolean, GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
-import { IContext, IFieldMeta } from '../../../../../../../db/interfaces';
+import { Context, FieldMeta } from '../../../../../../../db/interfaces';
 import { FieldTypeEnum } from '../../../../../../enums/FieldTypeEnum';
 
-export const SliderMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
+export const SliderMetaType: GraphQLObjectType<FieldMeta, Context> = new GraphQLObjectType({
   name: 'SliderMetaType',
   description: 'slider meta type',
   fields: () => ({

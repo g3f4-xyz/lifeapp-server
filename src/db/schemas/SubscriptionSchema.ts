@@ -1,11 +1,11 @@
 import { Document, Schema } from 'mongoose';
 
-import { ISubscription } from '../interfaces';
+import { Subscription } from '../interfaces';
 import { SubscriptionDataSchema } from './SubscriptionDataSchema';
 
-export interface ISubscriptionDocument extends ISubscription, Document {}
+export interface SubscriptionDocument extends Subscription, Document {}
 
-export const SubscriptionSchema: Schema<ISubscriptionDocument> = new Schema({
+export const SubscriptionSchema: Schema<SubscriptionDocument> = new Schema({
   subscriptionData: SubscriptionDataSchema,
   userAgent: String,
   userDeviceType: String,
