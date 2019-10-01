@@ -1,20 +1,26 @@
-import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import {
+  GraphQLID,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 import { fromGlobalId, globalIdField } from 'graphql-relay';
-import { getEmptyTask, getSettings, getTask, getTaskList, getTaskTypeList } from '../../../../db/api';
-import { IContext, ISettings, ITask } from '../../../../db/interfaces';
+import { getSettings, getTaskTypeList } from '../../../../db/api';
+import { getEmptyTask, getTask, getTaskList } from '../../../../db/api/taskApi';
+import { Context, Settings, Task } from '../../../../db/interfaces';
 import { SettingsType } from './settings/SettingsType';
 import { TaskListType } from './task-list/TaskListType';
 import { TaskType } from './task/TaskType';
 import { TaskTypeListType } from './task-type-list/TaskTypeListType';
 
-export const AppType = new GraphQLObjectType<boolean, IContext>({
+export const AppType = new GraphQLObjectType<boolean, Context>({
   name: 'AppType',
   description: 'Application entry point',
   fields: () => ({
     id: globalIdField('App'),
     settings: {
       type: new GraphQLNonNull(SettingsType),
-      async resolve(_, __, { user: { id: ownerId } }): Promise<ISettings> {
+      async resolve(_, __, { user: { id: ownerId } }): Promise<Settings> {
         return await getSettings(ownerId);
       },
     },
@@ -28,7 +34,11 @@ export const AppType = new GraphQLObjectType<boolean, IContext>({
           type: GraphQLString,
         },
       },
-      resolve: async (_, { id, type }, { user: { id: ownerId }}): Promise<ITask> => {
+      resolve: async (
+        _,
+        { id, type },
+        { user: { id: ownerId } },
+      ): Promise<Task> => {
         if (id && id.length > 0) {
           return await getTask(fromGlobalId(id).id);
         }

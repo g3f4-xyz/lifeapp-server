@@ -1,11 +1,11 @@
 import { Document, model, Model, Schema } from 'mongoose';
 import { TASK_STATUS, TASK_TYPE } from '../../constants';
-import { ISettings } from '../interfaces';
+import { Settings } from '../interfaces';
 import { SubscriptionSchema } from '../schemas/SubscriptionSchema';
 
-export interface ISettingsDocument extends ISettings, Document {}
+export interface SettingsDocument extends Settings, Document {}
 
-export const SettingsSchema: Schema<ISettings> = new Schema({
+export const SettingsSchema: Schema<Settings> = new Schema({
   ownerId: { type: String, index: { unique: true }, required: true },
   notifications: {
     general: {
@@ -40,10 +40,12 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
         default: true,
       },
     },
-    subscriptions: [{
-      type: SubscriptionSchema,
-      default: [],
-    }],
+    subscriptions: [
+      {
+        type: SubscriptionSchema,
+        default: [],
+      },
+    ],
   },
   taskList: {
     filters: {
@@ -51,10 +53,12 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
         type: String,
         default: '',
       },
-      taskType: [{
-        type: String,
-        enum: Object.values(TASK_TYPE),
-      }],
+      taskType: [
+        {
+          type: String,
+          enum: Object.values(TASK_TYPE),
+        },
+      ],
       status: {
         type: String,
         enum: Object.values(TASK_STATUS).concat([null]),
@@ -64,7 +68,10 @@ export const SettingsSchema: Schema<ISettings> = new Schema({
   },
 });
 
-export const SettingsModel: Model<ISettingsDocument> = model('Settings', SettingsSchema);
+export const SettingsModel: Model<SettingsDocument> = model(
+  'Settings',
+  SettingsSchema,
+);
 
 (async () => {
   try {

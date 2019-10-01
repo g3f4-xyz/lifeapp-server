@@ -46,7 +46,9 @@ describe('SliderFieldModel', () => {
     });
 
     expect(doc.value.progress).toBe(-10);
-    expect(doc.validateField().toString()).toBe(['wartość w przedziale od 0 do 100.'].toString());
+    expect(doc.validateField().toString()).toBe(
+      ['wartość w przedziale od 0 do 100.'].toString(),
+    );
   });
 
   it('should validate progress over max value', async () => {
@@ -58,6 +60,8 @@ describe('SliderFieldModel', () => {
     });
 
     expect(doc.value.progress).toBe(110);
-    expect(doc.validateField().toString()).toBe(['wartość w przedziale od 0 do 100.'].toString());
+    expect(doc.validateField().toString()).toBe(
+      ['wartość w przedziale od 0 do 100.'].toString(),
+    );
   });
 });

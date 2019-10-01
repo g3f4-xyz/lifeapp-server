@@ -36,7 +36,9 @@ describe('TextFieldModel', () => {
     const doc = new TextFieldModel(FIELDS_CONFIG.NOTE);
 
     expect(doc.value.text).toBe('');
-    expect(doc.validateField().toString()).toBe(['wartość wymagana.', 'od 3 do 100 znaków.'].toString());
+    expect(doc.validateField().toString()).toBe(
+      ['wartość wymagana.', 'od 3 do 100 znaków.'].toString(),
+    );
   });
 
   it('should validate too short value', async () => {
@@ -48,7 +50,9 @@ describe('TextFieldModel', () => {
     });
 
     expect(doc.value.text).toBe('1');
-    expect(doc.validateField().toString()).toBe(['od 3 do 100 znaków.'].toString());
+    expect(doc.validateField().toString()).toBe(
+      ['od 3 do 100 znaków.'].toString(),
+    );
   });
 
   it('should validate too long value', async () => {
@@ -63,6 +67,8 @@ describe('TextFieldModel', () => {
     });
 
     expect(doc.value.text).toBe(text);
-    expect(doc.validateField().toString()).toBe(['od 3 do 100 znaków.'].toString());
+    expect(doc.validateField().toString()).toBe(
+      ['od 3 do 100 znaków.'].toString(),
+    );
   });
 });

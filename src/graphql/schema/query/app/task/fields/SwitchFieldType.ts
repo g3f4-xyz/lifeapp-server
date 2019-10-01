@@ -1,13 +1,16 @@
 import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { IContext, IField } from '../../../../../../db/interfaces';
+import { Context, Field } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { nodeInterface } from '../../../../../nodeDefinitions';
 import { SwitchMetaType } from './meta/SwitchMetaType';
 import { SwitchValueType } from './value/SwitchValueType';
 
-export const SwitchFieldType: GraphQLObjectType<IField, IContext> = new GraphQLObjectType<IField, IContext>({
+export const SwitchFieldType: GraphQLObjectType<
+  Field,
+  Context
+> = new GraphQLObjectType<Field, Context>({
   name: 'SwitchFieldType',
   description: 'switch field type',
   fields: () => ({
@@ -34,7 +37,7 @@ export const SwitchFieldType: GraphQLObjectType<IField, IContext> = new GraphQLO
       resolve(field) {
         const { fieldType, meta } = field;
 
-        return ({ ...meta, fieldType });
+        return { ...meta, fieldType };
       },
     },
   }),

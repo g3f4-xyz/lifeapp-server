@@ -16,4 +16,7 @@ export const {
 export const {
   connectionType: SubscriptionTypeConnection,
   edgeType: SubscriptionTypeEdge,
-} = connectionDefinitions({ name: 'SubscriptionType', nodeType: SubscriptionType });
+} = connectionDefinitions({
+  name: 'SubscriptionType',
+  nodeType: SubscriptionType,
+});

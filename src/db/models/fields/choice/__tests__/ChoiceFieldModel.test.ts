@@ -33,7 +33,9 @@ describe('ChoiceFieldModel', () => {
     const doc = new ChoiceFieldModel(FIELDS_CONFIG.STATUS);
 
     expect(doc.value.id).toBe('');
-    expect(doc.validateField().toString()).toBe(['wartość wymagana.'].toString());
+    expect(doc.validateField().toString()).toBe(
+      ['wartość wymagana.'].toString(),
+    );
   });
 
   it('should validate selected value', async () => {

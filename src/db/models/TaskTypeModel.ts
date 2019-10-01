@@ -1,10 +1,10 @@
 import { Document, model, Model, Schema } from 'mongoose';
 
-import { ITaskType } from '../interfaces';
+import { TaskType } from '../interfaces';
 
-export interface ITaskTypeDocument extends ITaskType, Document {}
+export interface TaskTypeDocument extends TaskType, Document {}
 
-export const TaskTypeSchema: Schema<ITaskType> = new Schema({
+export const TaskTypeSchema: Schema<TaskType> = new Schema({
   typeId: String,
   label: String,
   description: String,
@@ -13,4 +13,7 @@ export const TaskTypeSchema: Schema<ITaskType> = new Schema({
   fieldsIds: [String],
 });
 
-export const TaskTypeModel: Model<ITaskTypeDocument> = model('TaskType', TaskTypeSchema);
+export const TaskTypeModel: Model<TaskTypeDocument> = model(
+  'TaskType',
+  TaskTypeSchema,
+);

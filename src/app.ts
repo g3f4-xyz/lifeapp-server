@@ -16,25 +16,28 @@ export default () => {
     app.use(morgan('dev'));
   }
 
-// set body parser
+  // set body parser
   app.use(json());
   app.use(cookieParser());
 
-// express Session
+  // express Session
   app.use(session(SESSION));
 
-// passport init
+  // passport init
   app.use(passport.initialize());
   app.use(passport.session());
 
-// register router
+  // register router
   app.use(router);
 
-// set Port
-  app.set('port', (process.env.PORT || PORT));
+  // set Port
+  app.set('port', process.env.PORT || PORT);
 
-// start server
+  // start server
   app.listen(app.get('port'), () => {
-    console.info(CONSOLE_COLORS.BLUE, `express app running on port: ${app.get('port')}`);
+    console.info(
+      CONSOLE_COLORS.BLUE,
+      `express app running on port: ${app.get('port')}`,
+    );
   });
 };

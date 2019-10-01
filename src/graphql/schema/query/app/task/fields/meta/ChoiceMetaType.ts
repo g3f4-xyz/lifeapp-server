@@ -1,9 +1,18 @@
-import { GraphQLBoolean, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
-import { IContext, IFieldMeta } from '../../../../../../../db/interfaces';
+import {
+  GraphQLBoolean,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
+import { Context, FieldMeta } from '../../../../../../../db/interfaces';
 import { FieldTypeEnum } from '../../../../../../enums/FieldTypeEnum';
 import { ChoiceOptionsMetaType } from './ChoiceOptionsType';
 
-export const ChoiceMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
+export const ChoiceMetaType: GraphQLObjectType<
+  FieldMeta,
+  Context
+> = new GraphQLObjectType({
   name: 'ChoiceMetaType',
   description: 'choice meta type',
   fields: () => ({

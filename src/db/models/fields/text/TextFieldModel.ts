@@ -1,12 +1,15 @@
 import { Model, Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../../constants';
-import { IField } from '../../../interfaces';
-import { lengthValidator, requiredValidator } from '../../../utils/fieldValidators';
+import { Field } from '../../../interfaces';
+import {
+  lengthValidator,
+  requiredValidator,
+} from '../../../utils/fieldValidators';
 import iterateValidations from '../../../utils/iterateValidations';
-import { ITaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
-import { IFieldDocument } from '../FieldConfigModel';
+import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
+import { FieldDocument } from '../FieldConfigModel';
 
-const TextFieldSchema = new Schema<IField>({
+const TextFieldSchema = new Schema<Field>({
   order: {
     type: Number,
     required: true,
@@ -46,7 +49,9 @@ TextFieldSchema.methods.validateField = function(): string[] {
   return iterateValidations(this.value.text, validators);
 };
 
-export const TextFieldModel: Model<IFieldDocument> = (TaskFieldsSchema as unknown as Model<ITaskDocument>).discriminator(
+export const TextFieldModel: Model<
+  FieldDocument
+> = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
   FIELD_TYPE.TEXT,
   TextFieldSchema,
 );

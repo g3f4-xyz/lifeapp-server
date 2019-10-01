@@ -1,10 +1,13 @@
 import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import { IContext, IFieldMeta } from '../../../../../../../db/interfaces';
+import { Context, FieldMeta } from '../../../../../../../db/interfaces';
 import { FieldTypeEnum } from '../../../../../../enums/FieldTypeEnum';
 import { ValuesUnion } from '../value/ValuesUnion';
 import { MetasUnion } from './MetasUnion';
 
-export const NestedMetaType: GraphQLObjectType<IFieldMeta, IContext> = new GraphQLObjectType({
+export const NestedMetaType: GraphQLObjectType<
+  FieldMeta,
+  Context
+> = new GraphQLObjectType({
   name: 'NestedMetaType',
   description: 'nested meta type',
   fields: () => ({

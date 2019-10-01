@@ -2,6 +2,7 @@
   "name": "lifeapp",
   "version": "2.3.0",
   "clientVersion": "2.2.10",
+  "source": "./src/**/*.{ts,tsx}",
   "description": "Level up with LifeApp server repository",
   "main": "lifeapp",
   "scripts": {
@@ -9,8 +10,8 @@
     "client:build:local": "tar -zxvf client-packages/client-package-local-$npm_package_clientVersion.tar.gz",
     "dev": "NODE_ENV=development nodemon",
     "dev:debug:agenda": "DEBUG=\"agenda:*\" NODE_ENV=development nodemon",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "lint:fix": "tslint -c tslint.json 'src/**/*.ts' --fix",
+    "lint": "eslint $npm_package_source",
+    "lint:fix": "eslint $npm_package_source --fix",
     "init:db:local": "mongo --eval \"var DB_NAME='lifeapp'\" scripts/initDatabase.js",
     "init:db:remote": "mongo --eval \"var DB_NAME='mo1563_lifeapp'\" --port 27017 -u mo1563_lifeapp -p Gitara15 --host 85.194.240.29 mo1563_lifeapp scripts/initDatabase.js",
     "start": "yarn run client:build:heroku && DB=remote ts-node src",
@@ -44,10 +45,15 @@
     "@types/graphql-relay": "0.4.11",
     "@types/jest": "24.0.11",
     "@types/passport-google-oauth20": "2.0.2",
+    "@typescript-eslint/eslint-plugin": "2.3.2",
+    "@typescript-eslint/parser": "2.3.2",
+    "eslint": "6.5.1",
+    "eslint-config-prettier": "6.3.0",
+    "eslint-plugin-prettier": "3.1.1",
     "jest": "24.5.0",
     "nodemon": "1.17.4",
-    "ts-jest": "24.0.0",
-    "tslint": "5.12.1"
+    "prettier": "1.18.2",
+    "ts-jest": "24.0.0"
   },
   "dependencies": {
     "@types/agenda": "2.0.5",
