@@ -34,7 +34,11 @@ export const updateTaskFieldMutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ fieldId, value, taskId }) => {
     const { id: taskIdRaw } = fromGlobalId(taskId);
-    const { value: updatedValue, validationErrors } = await updateTaskField(taskIdRaw, fieldId, value);
+    const { value: updatedValue, validationErrors } = await updateTaskField(
+      taskIdRaw,
+      fieldId,
+      value,
+    );
 
     return { fieldId, updatedValue, validationErrors, taskId };
   },

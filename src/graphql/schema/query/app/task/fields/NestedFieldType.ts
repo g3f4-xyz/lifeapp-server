@@ -7,7 +7,10 @@ import { nodeInterface } from '../../../../../nodeDefinitions';
 import { NestedMetaType } from './meta/NestedMetaType';
 import { NestedValueType } from './value/NestedValueType';
 
-export const NestedFieldType: GraphQLObjectType<Field, Context> = new GraphQLObjectType<Field, Context>({
+export const NestedFieldType: GraphQLObjectType<
+  Field,
+  Context
+> = new GraphQLObjectType<Field, Context>({
   name: 'NestedFieldType',
   description: 'nested field type',
   fields: () => ({
@@ -34,7 +37,7 @@ export const NestedFieldType: GraphQLObjectType<Field, Context> = new GraphQLObj
       resolve(field) {
         const { fieldType, meta } = field;
 
-        return ({ ...meta, fieldType });
+        return { ...meta, fieldType };
       },
     },
   }),

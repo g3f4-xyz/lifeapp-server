@@ -1,7 +1,10 @@
 import { Model, Schema } from 'mongoose';
 import { FIELD_TYPE } from '../../../../constants';
 import { Field } from '../../../interfaces';
-import { lengthValidator, requiredValidator } from '../../../utils/fieldValidators';
+import {
+  lengthValidator,
+  requiredValidator,
+} from '../../../utils/fieldValidators';
 import iterateValidations from '../../../utils/iterateValidations';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
@@ -46,7 +49,9 @@ TextFieldSchema.methods.validateField = function(): string[] {
   return iterateValidations(this.value.text, validators);
 };
 
-export const TextFieldModel: Model<FieldDocument> = (TaskFieldsSchema as unknown as Model<TaskDocument>).discriminator(
+export const TextFieldModel: Model<
+  FieldDocument
+> = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
   FIELD_TYPE.TEXT,
   TextFieldSchema,
 );

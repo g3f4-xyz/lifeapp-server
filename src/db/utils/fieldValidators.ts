@@ -1,6 +1,6 @@
-export const requiredValidator = (
-  errorMessage = `wartość wymagana.`,
-) => (value: string | number | boolean | null) => {
+export const requiredValidator = (errorMessage = `wartość wymagana.`) => (
+  value: string | number | boolean | null,
+) => {
   if (typeof value === 'string') {
     return value.length === 0 ? errorMessage : null;
   }

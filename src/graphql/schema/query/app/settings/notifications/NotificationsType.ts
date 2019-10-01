@@ -1,5 +1,9 @@
 import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import { connectionArgs, connectionFromArray, globalIdField } from 'graphql-relay';
+import {
+  connectionArgs,
+  connectionFromArray,
+  globalIdField,
+} from 'graphql-relay';
 import { SubscriptionTypeConnection } from '../../../../../connections';
 import { nodeInterface } from '../../../../../nodeDefinitions';
 import { NotificationsGeneralSettingType } from './NotificationsGeneralSettingType';
@@ -20,7 +24,8 @@ export const NotificationsType = new GraphQLObjectType({
       type: new GraphQLNonNull(SubscriptionTypeConnection),
       description: 'subscriptions connection type',
       args: connectionArgs,
-      resolve: ({ subscriptions }, args) => connectionFromArray(subscriptions, args),
+      resolve: ({ subscriptions }, args) =>
+        connectionFromArray(subscriptions, args),
     },
   }),
   interfaces: [nodeInterface],

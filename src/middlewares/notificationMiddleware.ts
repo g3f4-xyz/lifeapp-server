@@ -12,8 +12,11 @@ export const notificationMiddleware = async (req: Request, res: Response) => {
       silent: false,
     },
   } = req.body;
-  const { family: userAgent, os: { family: userDeviceType } } = parse(req.headers['user-agent']);
-  const { id: ownerId } = req.user as User || DEMO_USER;
+  const {
+    family: userAgent,
+    os: { family: userDeviceType },
+  } = parse(req.headers['user-agent']);
+  const { id: ownerId } = (req.user as User) || DEMO_USER;
   await addSubscription(ownerId, subscriptionData, userAgent, userDeviceType);
 
   res.status(201).json({});
@@ -21,7 +24,8 @@ export const notificationMiddleware = async (req: Request, res: Response) => {
   const payload = JSON.stringify({
     title: 'Welcome to LifeApp!',
     notification: {
-      body: 'This notification is test.' +
+      body:
+        'This notification is test.' +
         ' It will be send always after entering page if notifications were allowed on this page.',
       icon: 'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4',
     },

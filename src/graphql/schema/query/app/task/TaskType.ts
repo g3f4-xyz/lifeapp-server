@@ -14,7 +14,9 @@ export const TaskType = new GraphQLObjectType<Task>({
       type: new GraphQLNonNull(TaskTypeEnum),
     },
     fields: {
-      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldsUnion))),
+      type: new GraphQLNonNull(
+        new GraphQLList(new GraphQLNonNull(FieldsUnion)),
+      ),
     },
   }),
   interfaces: [nodeInterface],

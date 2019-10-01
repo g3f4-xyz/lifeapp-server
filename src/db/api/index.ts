@@ -27,11 +27,16 @@ export const addSubscription = async (
 
   const subscriptions = userSettings.notifications.subscriptions;
   const oldSubscription = subscriptions.find(
-    subscription => subscription.subscriptionData.endpoint === subscriptionData.endpoint,
+    subscription =>
+      subscription.subscriptionData.endpoint === subscriptionData.endpoint,
   );
 
   if (!oldSubscription) {
-    userSettings.notifications.subscriptions.push({ subscriptionData, userAgent, userDeviceType });
+    userSettings.notifications.subscriptions.push({
+      subscriptionData,
+      userAgent,
+      userDeviceType,
+    });
 
     await userSettings.save();
   }
@@ -47,22 +52,32 @@ export const cleanApplication = async (ownerId: string): Promise<string> => {
 
   return ownerId;
 };
-export const deleteSubscription = async (ownerId: string, subscriptionId: string): Promise<string> => {
-  await SettingsModel.findOneAndUpdate({
-    ownerId,
-  }, {
-    $pull: {
-      ['notifications.subscriptions']: { _id: subscriptionId },
+export const deleteSubscription = async (
+  ownerId: string,
+  subscriptionId: string,
+): Promise<string> => {
+  await SettingsModel.findOneAndUpdate(
+    {
+      ownerId,
     },
-  });
+    {
+      $pull: {
+        ['notifications.subscriptions']: { _id: subscriptionId },
+      },
+    },
+  );
 
   return ownerId;
 };
-export const getSubscriptionData = async (ownerId: string, subscriptionId: string): Promise<SubscriptionData> => {
+export const getSubscriptionData = async (
+  ownerId: string,
+  subscriptionId: string,
+): Promise<SubscriptionData> => {
   const settings = await SettingsModel.findOne({ ownerId });
 
   // @ts-ignore
-  return settings.notifications.subscriptions.id(subscriptionId).toJSON().subscriptionData;
+  return settings.notifications.subscriptions.id(subscriptionId).toJSON()
+    .subscriptionData;
 };
 export const getSettings = async (ownerId: string): Promise<Settings> => {
   const settingsModel = await SettingsModel.findOne({ ownerId });
@@ -84,21 +99,24 @@ export const getTaskType = async (id: string): Promise<TaskType> => {
 export const getTaskTypeList = async (): Promise<TaskType[]> => {
   const taskTypeList = await TaskTypeModel.find({
     parentTypeIds: { $exists: true },
-  }).sort({ _id : -1 });
+  }).sort({ _id: -1 });
 
-  return taskTypeList.map((model) => model.toJSON());
+  return taskTypeList.map(model => model.toJSON());
 };
 export const saveNotificationsGeneralSetting = async (
   ownerId: string,
   general: SettingsNotificationsGeneral,
 ): Promise<SettingsNotificationsGeneral> => {
-  await SettingsModel.findOneAndUpdate({
-    ownerId,
-  }, {
-    $set: {
-      ['notifications.general']: general,
+  await SettingsModel.findOneAndUpdate(
+    {
+      ownerId,
     },
-  });
+    {
+      $set: {
+        ['notifications.general']: general,
+      },
+    },
+  );
 
   return general;
 };
@@ -106,13 +124,16 @@ export const updateTaskListStatusFilterSetting = async (
   ownerId: string,
   status: string,
 ): Promise<string> => {
-  await SettingsModel.findOneAndUpdate({
-    ownerId,
-  }, {
-    $set: {
-      ['taskList.filters.status']: status,
+  await SettingsModel.findOneAndUpdate(
+    {
+      ownerId,
     },
-  });
+    {
+      $set: {
+        ['taskList.filters.status']: status,
+      },
+    },
+  );
 
   return status;
 };
@@ -120,13 +141,16 @@ export const updateTaskListTitleFilterSetting = async (
   ownerId: string,
   title: string,
 ): Promise<string> => {
-  await SettingsModel.findOneAndUpdate({
-    ownerId,
-  }, {
-    $set: {
-      ['taskList.filters.title']: title,
+  await SettingsModel.findOneAndUpdate(
+    {
+      ownerId,
     },
-  });
+    {
+      $set: {
+        ['taskList.filters.title']: title,
+      },
+    },
+  );
 
   return title;
 };
@@ -134,27 +158,33 @@ export const updateTaskListTaskTypeFilterSetting = async (
   ownerId: string,
   taskTypeFilter: TASK_TYPE[],
 ): Promise<TASK_TYPE[]> => {
-  await SettingsModel.findOneAndUpdate({
-    ownerId,
-  }, {
-    $set: {
-      ['taskList.filters.taskType']: taskTypeFilter,
+  await SettingsModel.findOneAndUpdate(
+    {
+      ownerId,
     },
-  });
+    {
+      $set: {
+        ['taskList.filters.taskType']: taskTypeFilter,
+      },
+    },
+  );
 
   return taskTypeFilter;
 };
 export const saveNotificationsTypesSetting = async (
   ownerId: string,
   types: SettingsNotificationsTypes,
-  ): Promise<SettingsNotificationsTypes> => {
-  await SettingsModel.findOneAndUpdate({
-    ownerId,
-  }, {
-    $set: {
-      ['notifications.types']: types,
+): Promise<SettingsNotificationsTypes> => {
+  await SettingsModel.findOneAndUpdate(
+    {
+      ownerId,
     },
-  });
+    {
+      $set: {
+        ['notifications.types']: types,
+      },
+    },
+  );
 
   return types;
 };

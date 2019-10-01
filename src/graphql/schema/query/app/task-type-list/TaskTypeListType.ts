@@ -1,5 +1,9 @@
 import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import { connectionArgs, connectionFromArray, globalIdField } from 'graphql-relay';
+import {
+  connectionArgs,
+  connectionFromArray,
+  globalIdField,
+} from 'graphql-relay';
 import { Context, TaskType } from '../../../../../db/interfaces';
 import { TaskTypeTypeConnection } from '../../../../connections';
 import { nodeInterface } from '../../../../nodeDefinitions';

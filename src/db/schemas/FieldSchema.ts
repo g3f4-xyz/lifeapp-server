@@ -23,4 +23,6 @@ export const FIELD_DEFINITION = {
   },
 };
 
-export const FieldSchema: Schema<Field> = new Schema(FIELD_DEFINITION, { discriminatorKey: 'fieldType' });
+export const FieldSchema: Schema<Field> = new Schema(FIELD_DEFINITION, {
+  discriminatorKey: 'fieldType',
+});

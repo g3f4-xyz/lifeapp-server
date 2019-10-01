@@ -7,7 +7,10 @@ import { nodeInterface } from '../../../../../nodeDefinitions';
 import { SliderMetaType } from './meta/SliderMetaType';
 import { SliderValueType } from './value/SliderValueType';
 
-export const SliderFieldType: GraphQLObjectType<Field, Context> = new GraphQLObjectType<Field, Context>({
+export const SliderFieldType: GraphQLObjectType<
+  Field,
+  Context
+> = new GraphQLObjectType<Field, Context>({
   name: 'SliderFieldType',
   description: 'slider field type',
   fields: () => ({
@@ -34,7 +37,7 @@ export const SliderFieldType: GraphQLObjectType<Field, Context> = new GraphQLObj
       resolve(field) {
         const { fieldType, meta } = field;
 
-        return ({ ...meta, fieldType });
+        return { ...meta, fieldType };
       },
     },
   }),

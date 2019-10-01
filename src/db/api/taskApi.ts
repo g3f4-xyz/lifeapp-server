@@ -26,9 +26,15 @@ export const updateTaskField = async (
   task.fields[fieldIndex].value = value;
 
   if (isNotificationAtUpdateNeeded(task.taskType, task.lastChangedFieldId)) {
-    const lastChangedField = task.fields.find(field => field.fieldId === task.lastChangedFieldId);
+    const lastChangedField = task.fields.find(
+      field => field.fieldId === task.lastChangedFieldId,
+    );
 
-    task.notificationAt = calculateNotificationAt(task.taskType, task.lastNotificationAt, lastChangedField.value);
+    task.notificationAt = calculateNotificationAt(
+      task.taskType,
+      task.lastNotificationAt,
+      lastChangedField.value,
+    );
   }
 
   task.updatedAt = moment(new Date()).toISOString();
@@ -61,14 +67,14 @@ export const deleteTask = async (id: string): Promise<string> => {
 export const deleteTasks = async (ownerId: string): Promise<string> => {
   const tasks = await TaskModel.find({ ownerId });
 
-  tasks.forEach((model) => model.remove());
+  tasks.forEach(model => model.remove());
 
   return ownerId;
 };
 export const deleteUntouchedTasks = async (): Promise<void> => {
   const tasks = await TaskModel.find({ updatedAt: { $exists: false } });
 
-  tasks.forEach((model) => model.remove());
+  tasks.forEach(model => model.remove());
 };
 export const getTasksWithActiveNotificationInPeriod = async (
   taskType: TASK_TYPE,
@@ -97,7 +103,9 @@ export const getTasksWithActiveNotificationInPeriod = async (
 
   return routines.map(doc => doc.toJSON());
 };
-export const getTasksWithActiveNotification = async (taskType: TASK_TYPE): Promise<Task[]> => {
+export const getTasksWithActiveNotification = async (
+  taskType: TASK_TYPE,
+): Promise<Task[]> => {
   const routines = await TaskModel.find({
     taskType,
     $and: [
@@ -117,47 +125,52 @@ export const getTasksWithActiveNotification = async (taskType: TASK_TYPE): Promi
           },
         },
       ],
-      ...(taskType === TASK_TYPE.ROUTINE ? [
-        {
-          fields: {
-            $elemMatch: {
-              $and: [
-                { fieldId: FIELD_ID.ACTIVE },
-                { fieldType: FIELD_TYPE.SWITCH },
-                { value: { $exists: true } },
-                { ['value.enabled']: { $exists: true } },
-                { ['value.enabled']: true },
-              ],
+      ...(taskType === TASK_TYPE.ROUTINE
+        ? [
+            {
+              fields: {
+                $elemMatch: {
+                  $and: [
+                    { fieldId: FIELD_ID.ACTIVE },
+                    { fieldType: FIELD_TYPE.SWITCH },
+                    { value: { $exists: true } },
+                    { ['value.enabled']: { $exists: true } },
+                    { ['value.enabled']: true },
+                  ],
+                },
+              },
             },
-          },
-        },
-      ] : []),
+          ]
+        : []),
     ],
   });
 
   return routines.map(doc => doc.toJSON());
 };
 export const disableTaskNotification = async (taskId: any): Promise<void> => {
-  await TaskModel.findOneAndUpdate({
-    _id: taskId,
-    fields: {
-      $elemMatch: {
-        $and: [
-          { fieldId: 'NOTIFICATIONS' },
-          { fieldType: 'NESTED' },
-          { value: { $exists: true } },
-          { ['value.ownValue']: { $exists: true } },
-          { ['value.ownValue.enabled']: { $exists: true } },
-          { ['value.ownValue.enabled']: true },
-        ],
+  await TaskModel.findOneAndUpdate(
+    {
+      _id: taskId,
+      fields: {
+        $elemMatch: {
+          $and: [
+            { fieldId: 'NOTIFICATIONS' },
+            { fieldType: 'NESTED' },
+            { value: { $exists: true } },
+            { ['value.ownValue']: { $exists: true } },
+            { ['value.ownValue.enabled']: { $exists: true } },
+            { ['value.ownValue.enabled']: true },
+          ],
+        },
       },
     },
-  }, {
-    $set: {
-      ['fields.$.value.ownValue.enabled']: false,
-      ['fields.$.meta.ownMeta.disabled']: true,
+    {
+      $set: {
+        ['fields.$.value.ownValue.enabled']: false,
+        ['fields.$.meta.ownMeta.disabled']: true,
+      },
     },
-  });
+  );
 };
 export const updateNotificationAt = async (
   taskId: string,
@@ -171,7 +184,10 @@ export const updateNotificationAt = async (
     },
   });
 };
-export const getEmptyTask = async (taskType: TASK_TYPE, ownerId: string): Promise<Task> => {
+export const getEmptyTask = async (
+  taskType: TASK_TYPE,
+  ownerId: string,
+): Promise<Task> => {
   const taskDocument = await TaskModel.create({
     ownerId,
     taskType,
@@ -191,44 +207,48 @@ export const getTaskList = async (ownerId: string): Promise<Task[]> => {
   const { taskList } = await getSettings(ownerId);
   const { filters } = taskList;
 
-  return (await TaskModel
-    .find({
-      ownerId,
-      updatedAt: { $exists: true },
-      taskType: { $in: filters.taskType },
-      $and: [
-        ...[
-          {
-            fields: {
-              $elemMatch: {
-                $and: [
-                  { fieldId: FIELD_ID.TITLE },
-                  { fieldType: FIELD_TYPE.TEXT },
-                  { value: { $exists: true } },
-                  { ['value.text']: { $exists: true } },
-                  { ['value.text']: { $regex: new RegExp(filters.title), $options: 'i' } },
-                ],
-              },
+  return (await TaskModel.find({
+    ownerId,
+    updatedAt: { $exists: true },
+    taskType: { $in: filters.taskType },
+    $and: [
+      ...[
+        {
+          fields: {
+            $elemMatch: {
+              $and: [
+                { fieldId: FIELD_ID.TITLE },
+                { fieldType: FIELD_TYPE.TEXT },
+                { value: { $exists: true } },
+                { ['value.text']: { $exists: true } },
+                {
+                  ['value.text']: {
+                    $regex: new RegExp(filters.title),
+                    $options: 'i',
+                  },
+                },
+              ],
             },
           },
-        ],
-        ...(filters.status ? [
-          {
-            fields: {
-              $elemMatch: {
-                $and: [
-                  { fieldId: FIELD_ID.STATUS },
-                  { fieldType: FIELD_TYPE.CHOICE },
-                  { value: { $exists: true } },
-                  { ['value.id']: { $exists: true } },
-                  { ['value.id']: filters.status },
-                ],
-              },
-            },
-          },
-        ] : []),
+        },
       ],
-    })
-    .sort({ _id: -1 }))
-    .map((doc) => doc.toJSON());
+      ...(filters.status
+        ? [
+            {
+              fields: {
+                $elemMatch: {
+                  $and: [
+                    { fieldId: FIELD_ID.STATUS },
+                    { fieldType: FIELD_TYPE.CHOICE },
+                    { value: { $exists: true } },
+                    { ['value.id']: { $exists: true } },
+                    { ['value.id']: filters.status },
+                  ],
+                },
+              },
+            },
+          ]
+        : []),
+    ],
+  }).sort({ _id: -1 })).map(doc => doc.toJSON());
 };

@@ -1,4 +1,9 @@
-import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import {
+  GraphQLID,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 import { fromGlobalId, globalIdField } from 'graphql-relay';
 import { getSettings, getTaskTypeList } from '../../../../db/api';
 import { getEmptyTask, getTask, getTaskList } from '../../../../db/api/taskApi';
@@ -29,7 +34,11 @@ export const AppType = new GraphQLObjectType<boolean, Context>({
           type: GraphQLString,
         },
       },
-      resolve: async (_, { id, type }, { user: { id: ownerId }}): Promise<Task> => {
+      resolve: async (
+        _,
+        { id, type },
+        { user: { id: ownerId } },
+      ): Promise<Task> => {
         if (id && id.length > 0) {
           return await getTask(fromGlobalId(id).id);
         }

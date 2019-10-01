@@ -4,7 +4,10 @@ import { FieldTypeEnum } from '../../../../../../enums/FieldTypeEnum';
 import { ValuesUnion } from '../value/ValuesUnion';
 import { MetasUnion } from './MetasUnion';
 
-export const NestedMetaType: GraphQLObjectType<FieldMeta, Context> = new GraphQLObjectType({
+export const NestedMetaType: GraphQLObjectType<
+  FieldMeta,
+  Context
+> = new GraphQLObjectType({
   name: 'NestedMetaType',
   description: 'nested meta type',
   fields: () => ({

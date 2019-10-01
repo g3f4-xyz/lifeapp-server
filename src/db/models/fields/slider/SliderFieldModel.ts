@@ -46,14 +46,14 @@ const SliderFieldSchema = new Schema({
 });
 
 SliderFieldSchema.methods.validateField = function(): string[] {
-  const validators = [
-    progressValidator(this.meta.min, this.meta.max),
-  ];
+  const validators = [progressValidator(this.meta.min, this.meta.max)];
 
   return iterateValidations(this.value.progress, validators);
 };
 
-export const SliderFieldModel: Model<FieldDocument> = (TaskFieldsSchema as unknown as Model<TaskDocument>).discriminator(
+export const SliderFieldModel: Model<
+  FieldDocument
+> = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
   FIELD_TYPE.SLIDER,
   SliderFieldSchema,
 );

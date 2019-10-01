@@ -7,7 +7,10 @@ import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { TextMetaType } from './meta/TextMetaType';
 import { TextValueType } from './value/TextValueType';
 
-export const TextFieldType: GraphQLObjectType<Field, Context> = new GraphQLObjectType<Field, Context>({
+export const TextFieldType: GraphQLObjectType<
+  Field,
+  Context
+> = new GraphQLObjectType<Field, Context>({
   name: 'TextFieldType',
   description: 'text field type',
   fields: () => ({
@@ -34,7 +37,7 @@ export const TextFieldType: GraphQLObjectType<Field, Context> = new GraphQLObjec
       resolve(field) {
         const { fieldType, meta } = field;
 
-        return ({ ...meta, fieldType });
+        return { ...meta, fieldType };
       },
     },
   }),

@@ -7,7 +7,10 @@ import { nodeInterface } from '../../../../../nodeDefinitions';
 import { SwitchMetaType } from './meta/SwitchMetaType';
 import { SwitchValueType } from './value/SwitchValueType';
 
-export const SwitchFieldType: GraphQLObjectType<Field, Context> = new GraphQLObjectType<Field, Context>({
+export const SwitchFieldType: GraphQLObjectType<
+  Field,
+  Context
+> = new GraphQLObjectType<Field, Context>({
   name: 'SwitchFieldType',
   description: 'switch field type',
   fields: () => ({
@@ -34,7 +37,7 @@ export const SwitchFieldType: GraphQLObjectType<Field, Context> = new GraphQLObj
       resolve(field) {
         const { fieldType, meta } = field;
 
-        return ({ ...meta, fieldType });
+        return { ...meta, fieldType };
       },
     },
   }),

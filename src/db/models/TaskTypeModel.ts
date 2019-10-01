@@ -13,4 +13,7 @@ export const TaskTypeSchema: Schema<TaskType> = new Schema({
   fieldsIds: [String],
 });
 
-export const TaskTypeModel: Model<TaskTypeDocument> = model('TaskType', TaskTypeSchema);
+export const TaskTypeModel: Model<TaskTypeDocument> = model(
+  'TaskType',
+  TaskTypeSchema,
+);

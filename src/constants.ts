@@ -1,5 +1,5 @@
 type KEYOF_TYPE_VALUE_MAP<T, V> = {
-  [K in keyof T]: V
+  [K in keyof T]: V;
 };
 
 export type STATUS = '201' | '408' | '410';
@@ -53,7 +53,10 @@ export enum FIELD_TYPE {
   NESTED = 'NESTED',
 }
 
-export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FIELD_TYPE, V>;
+export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<
+  typeof FIELD_TYPE,
+  V
+>;
 
 export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string> = {
   CHOICE: 'id',

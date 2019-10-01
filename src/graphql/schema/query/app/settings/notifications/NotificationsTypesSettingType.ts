@@ -8,9 +8,15 @@ export const NotificationsTypesSettingType = new GraphQLObjectType({
   description: 'notifications schema setting type',
   fields: () => ({
     id: globalIdField('NotificationsTypesSettingType', ({ _id }) => _id),
-    ...Object.keys(TASK_TYPE).reduce((acc, key) => ({ ...acc, [`${key.toLowerCase()}s`]: {
-      type: new GraphQLNonNull(GraphQLBoolean),
-    }}), {}),
+    ...Object.keys(TASK_TYPE).reduce(
+      (acc, key) => ({
+        ...acc,
+        [`${key.toLowerCase()}s`]: {
+          type: new GraphQLNonNull(GraphQLBoolean),
+        },
+      }),
+      {},
+    ),
   }),
   interfaces: [nodeInterface],
 });

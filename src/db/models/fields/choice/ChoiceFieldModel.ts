@@ -21,10 +21,12 @@ const ChoiceFieldSchema = new Schema({
       required: true,
     },
     options: {
-      type: [{
-        text: String,
-        value: String,
-      }],
+      type: [
+        {
+          text: String,
+          value: String,
+        },
+      ],
       required: true,
     },
     disabled: {
@@ -47,7 +49,9 @@ ChoiceFieldSchema.methods.validateField = function(): string[] {
   return required && !disabled ? [validator(this.value.id)] : [];
 };
 
-export const ChoiceFieldModel: Model<FieldDocument> = (TaskFieldsSchema as unknown as Model<TaskDocument>).discriminator(
+export const ChoiceFieldModel: Model<
+  FieldDocument
+> = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
   FIELD_TYPE.CHOICE,
   ChoiceFieldSchema,
 );

@@ -38,7 +38,9 @@ NestedFieldSchema.methods.validateField = function(): string[] {
   return [];
 };
 
-export const NestedFieldModel: Model<FieldDocument> = (TaskFieldsSchema as unknown as Model<TaskDocument>).discriminator(
+export const NestedFieldModel: Model<
+  FieldDocument
+> = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
   FIELD_TYPE.NESTED,
   NestedFieldSchema,
 );

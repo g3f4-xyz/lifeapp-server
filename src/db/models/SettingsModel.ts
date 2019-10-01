@@ -40,10 +40,12 @@ export const SettingsSchema: Schema<Settings> = new Schema({
         default: true,
       },
     },
-    subscriptions: [{
-      type: SubscriptionSchema,
-      default: [],
-    }],
+    subscriptions: [
+      {
+        type: SubscriptionSchema,
+        default: [],
+      },
+    ],
   },
   taskList: {
     filters: {
@@ -51,10 +53,12 @@ export const SettingsSchema: Schema<Settings> = new Schema({
         type: String,
         default: '',
       },
-      taskType: [{
-        type: String,
-        enum: Object.values(TASK_TYPE),
-      }],
+      taskType: [
+        {
+          type: String,
+          enum: Object.values(TASK_TYPE),
+        },
+      ],
       status: {
         type: String,
         enum: Object.values(TASK_STATUS).concat([null]),
@@ -64,7 +68,10 @@ export const SettingsSchema: Schema<Settings> = new Schema({
   },
 });
 
-export const SettingsModel: Model<SettingsDocument> = model('Settings', SettingsSchema);
+export const SettingsModel: Model<SettingsDocument> = model(
+  'Settings',
+  SettingsSchema,
+);
 
 (async () => {
   try {

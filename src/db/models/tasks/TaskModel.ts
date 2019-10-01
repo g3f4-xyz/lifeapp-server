@@ -8,9 +8,10 @@ import {
   FIELD_ID_VALUE_MAP,
   FIELD_TYPE,
   MONTH_CYCLE,
-  TASK_TYPE, TASK_TYPE_VALUE_MAP,
+  TASK_TYPE,
+  TASK_TYPE_VALUE_MAP,
   TIME_CYCLE,
-  WEEK_CYCLE
+  WEEK_CYCLE,
 } from '../../../constants';
 
 import { Field, FieldValue, Task } from '../../interfaces';
@@ -20,27 +21,36 @@ export interface TaskDocument extends Task, Document {
   validateFields(this: TaskDocument): boolean;
 }
 
-export const TaskSchema = new Schema({
-  ownerId: {
-    type: String,
-    required: true,
+export const TaskSchema = new Schema(
+  {
+    ownerId: {
+      type: String,
+      required: true,
+    },
+    taskType: {
+      type: String,
+      required: true,
+    },
+    updatedAt: Date,
+    lastChangedFieldId: String,
+    notificationAt: Date,
+    lastNotificationAt: Date,
+    fields: [FieldSchema],
   },
-  taskType: {
-    type: String,
-    required: true,
-  },
-  updatedAt: Date,
-  lastChangedFieldId: String,
-  notificationAt: Date,
-  lastNotificationAt: Date,
-  fields: [FieldSchema],
-}, { discriminatorKey: 'taskType' });
+  { discriminatorKey: 'taskType' },
+);
 
-export const TaskModel = model<TaskDocument, Model<TaskDocument>>('Task', TaskSchema);
+export const TaskModel = model<TaskDocument, Model<TaskDocument>>(
+  'Task',
+  TaskSchema,
+);
 
 export const TaskFieldsSchema = TaskSchema.path('fields');
 
-export const isNotificationAtUpdateNeeded = (taskType: TASK_TYPE, lastChangedFieldId: FIELD_ID) => {
+export const isNotificationAtUpdateNeeded = (
+  taskType: TASK_TYPE,
+  lastChangedFieldId: FIELD_ID,
+) => {
   switch (taskType) {
     case TASK_TYPE.ROUTINE:
       return lastChangedFieldId === FIELD_ID.CYCLE;
@@ -53,8 +63,12 @@ export const isNotificationAtUpdateNeeded = (taskType: TASK_TYPE, lastChangedFie
 
 export const calculateNextCycle = (fieldValue: FieldValue): Moment | null => {
   if (fieldValue && fieldValue.ownValue) {
-    if (fieldValue.ownValue.id === CYCLE.DAY && fieldValue.childrenValue && fieldValue.childrenValue.ownValue) {
-      switch (fieldValue.childrenValue.ownValue.id as unknown as DAY_CYCLE) {
+    if (
+      fieldValue.ownValue.id === CYCLE.DAY &&
+      fieldValue.childrenValue &&
+      fieldValue.childrenValue.ownValue
+    ) {
+      switch ((fieldValue.childrenValue.ownValue.id as unknown) as DAY_CYCLE) {
         case DAY_CYCLE.EVENING: {
           const eveningMoment = moment(Date.now())
             .startOf('day')
@@ -84,8 +98,14 @@ export const calculateNextCycle = (fieldValue: FieldValue): Moment | null => {
       }
     }
 
-    if (fieldValue.ownValue.id === CYCLE.MONTH && fieldValue.childrenValue && fieldValue.childrenValue.ownValue) {
-      switch (fieldValue.childrenValue.ownValue.id as unknown as MONTH_CYCLE) {
+    if (
+      fieldValue.ownValue.id === CYCLE.MONTH &&
+      fieldValue.childrenValue &&
+      fieldValue.childrenValue.ownValue
+    ) {
+      switch (
+        (fieldValue.childrenValue.ownValue.id as unknown) as MONTH_CYCLE
+      ) {
         case MONTH_CYCLE.END:
           return moment(Date.now())
             .endOf('month')
@@ -103,8 +123,12 @@ export const calculateNextCycle = (fieldValue: FieldValue): Moment | null => {
       }
     }
 
-    if (fieldValue.ownValue.id === CYCLE.WEEK && fieldValue.childrenValue && fieldValue.childrenValue.ownValue) {
-      switch (fieldValue.childrenValue.ownValue.id as unknown as WEEK_CYCLE) {
+    if (
+      fieldValue.ownValue.id === CYCLE.WEEK &&
+      fieldValue.childrenValue &&
+      fieldValue.childrenValue.ownValue
+    ) {
+      switch ((fieldValue.childrenValue.ownValue.id as unknown) as WEEK_CYCLE) {
         case WEEK_CYCLE.FIRST_DAY:
           return moment(Date.now())
             .endOf('week')
@@ -126,21 +150,28 @@ export const calculateNextCycle = (fieldValue: FieldValue): Moment | null => {
       }
     }
 
-    if (fieldValue.ownValue.id === CYCLE.TIME && fieldValue.childrenValue && fieldValue.childrenValue.ownValue) {
-      switch (fieldValue.childrenValue.ownValue.id as unknown as TIME_CYCLE) {
+    if (
+      fieldValue.ownValue.id === CYCLE.TIME &&
+      fieldValue.childrenValue &&
+      fieldValue.childrenValue.ownValue
+    ) {
+      switch ((fieldValue.childrenValue.ownValue.id as unknown) as TIME_CYCLE) {
         case TIME_CYCLE.HOUR:
-          return moment(Date.now())
-            .add(1, 'hour');
+          return moment(Date.now()).add(1, 'hour');
         case TIME_CYCLE.HOURS_3:
-          return moment(Date.now())
-            .add(3, 'hour');
+          return moment(Date.now()).add(3, 'hour');
         case TIME_CYCLE.HOURS_12:
-          return moment(Date.now())
-            .add(12, 'hour');
+          return moment(Date.now()).add(12, 'hour');
         case TIME_CYCLE.MINUTES:
-          return fieldValue.childrenValue.childrenValue && fieldValue.childrenValue.childrenValue.ownValue
-            ? moment(Date.now())
-              .add(parseInt(fieldValue.childrenValue.childrenValue.ownValue.text, 10), 'minute')
+          return fieldValue.childrenValue.childrenValue &&
+            fieldValue.childrenValue.childrenValue.ownValue
+            ? moment(Date.now()).add(
+                parseInt(
+                  fieldValue.childrenValue.childrenValue.ownValue.text,
+                  10,
+                ),
+                'minute',
+              )
             : null;
         default:
           return null;
@@ -156,14 +187,27 @@ export const calculateNotificationAt = (
   lastNotificationAt: Date,
   fieldValue: FieldValue,
 ): Date | null => {
-  console.log(['calculateNotificationAt'], taskType, lastNotificationAt, fieldValue);
+  console.log(
+    ['calculateNotificationAt'],
+    taskType,
+    lastNotificationAt,
+    fieldValue,
+  );
   switch (taskType) {
     case TASK_TYPE.TODO:
-      return moment(lastNotificationAt).add(1, 'day').toDate();
+      return moment(lastNotificationAt)
+        .add(1, 'day')
+        .toDate();
     case TASK_TYPE.EVENT:
-      return moment(fieldValue.text).startOf('day').toDate();
+      return moment(fieldValue.text)
+        .startOf('day')
+        .toDate();
     case TASK_TYPE.MEETING:
-      return lastNotificationAt ? null : moment(fieldValue.text).subtract(1, 'hour').toDate();
+      return lastNotificationAt
+        ? null
+        : moment(fieldValue.text)
+            .subtract(1, 'hour')
+            .toDate();
     case TASK_TYPE.ROUTINE: {
       const nextCycleAt = calculateNextCycle(fieldValue);
 
@@ -204,16 +248,20 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
       label: 'Status',
       helperText: 'Informacje o testowym polu Status',
       required: true,
-      options: [{
-        text: 'To do',
-        value: 'TODO',
-      }, {
-        text: 'Done',
-        value: 'DONE',
-      }, {
-        text: 'In progress',
-        value: 'IN_PROGRESS',
-      }],
+      options: [
+        {
+          text: 'To do',
+          value: 'TODO',
+        },
+        {
+          text: 'Done',
+          value: 'DONE',
+        },
+        {
+          text: 'In progress',
+          value: 'IN_PROGRESS',
+        },
+      ],
     },
   },
   ACTIVE: {
@@ -339,19 +387,24 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
         label: 'Cycle',
         helperText: 'Cycle helperText',
         required: true,
-        options: [{
-          text: 'Time',
-          value: 'TIME_CYCLE',
-        }, {
-          text: 'Day',
-          value: 'DAY_CYCLE',
-        }, {
-          text: 'Week',
-          value: 'WEEK_CYCLE',
-        }, {
-          text: 'Month',
-          value: 'MONTH_CYCLE',
-        }],
+        options: [
+          {
+            text: 'Time',
+            value: 'TIME_CYCLE',
+          },
+          {
+            text: 'Day',
+            value: 'DAY_CYCLE',
+          },
+          {
+            text: 'Week',
+            value: 'WEEK_CYCLE',
+          },
+          {
+            text: 'Month',
+            value: 'MONTH_CYCLE',
+          },
+        ],
       },
       childrenMeta: [
         {
@@ -364,36 +417,44 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
             label: 'Time cycle',
             helperText: 'Time cycle helperText',
             required: true,
-            options: [{
-              text: 'Half an hour',
-              value: 'HALF_HOUR',
-            }, {
-              text: 'Hour',
-              value: 'HOUR',
-            }, {
-              text: '3 hours',
-              value: 'HOURS_3',
-            }, {
-              text: '12 hours',
-              value: 'HOURS_12',
-            }, {
-              text: 'Interval in minutes',
-              value: 'MINUTES',
-            }],
+            options: [
+              {
+                text: 'Half an hour',
+                value: 'HALF_HOUR',
+              },
+              {
+                text: 'Hour',
+                value: 'HOUR',
+              },
+              {
+                text: '3 hours',
+                value: 'HOURS_3',
+              },
+              {
+                text: '12 hours',
+                value: 'HOURS_12',
+              },
+              {
+                text: 'Interval in minutes',
+                value: 'MINUTES',
+              },
+            ],
           },
-          childrenMeta: [{
-            fieldType: FIELD_TYPE.NESTED,
-            parentValue: {
-              id: 'MINUTES',
+          childrenMeta: [
+            {
+              fieldType: FIELD_TYPE.NESTED,
+              parentValue: {
+                id: 'MINUTES',
+              },
+              ownMeta: {
+                fieldType: FIELD_TYPE.TEXT,
+                label: 'Minutes time cycle',
+                helperText: 'Minutes time cycle helperText',
+                required: true,
+                inputType: 'number',
+              },
             },
-            ownMeta: {
-              fieldType: FIELD_TYPE.TEXT,
-              label: 'Minutes time cycle',
-              helperText: 'Minutes time cycle helperText',
-              required: true,
-              inputType: 'number',
-            },
-          }],
+          ],
         },
         {
           fieldType: FIELD_TYPE.NESTED,
@@ -405,16 +466,20 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
             label: 'Day cycle',
             helperText: 'Day cycle helperText',
             required: true,
-            options: [{
-              text: 'Morning',
-              value: 'MORNING',
-            }, {
-              text: 'Noon',
-              value: 'NOON',
-            }, {
-              text: 'Evening',
-              value: 'EVENING',
-            }],
+            options: [
+              {
+                text: 'Morning',
+                value: 'MORNING',
+              },
+              {
+                text: 'Noon',
+                value: 'NOON',
+              },
+              {
+                text: 'Evening',
+                value: 'EVENING',
+              },
+            ],
           },
         },
         {
@@ -427,19 +492,24 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
             label: 'Week cycle',
             helperText: 'Week cycle helperText',
             required: true,
-            options: [{
-              text: 'Week days',
-              value: 'WEEK_DAYS',
-            }, {
-              text: 'Weekend',
-              value: 'WEEKEND',
-            }, {
-              text: 'First day of week',
-              value: 'FIRST_DAY',
-            }, {
-              text: 'Last day of week',
-              value: 'LAST_DAY',
-            }],
+            options: [
+              {
+                text: 'Week days',
+                value: 'WEEK_DAYS',
+              },
+              {
+                text: 'Weekend',
+                value: 'WEEKEND',
+              },
+              {
+                text: 'First day of week',
+                value: 'FIRST_DAY',
+              },
+              {
+                text: 'Last day of week',
+                value: 'LAST_DAY',
+              },
+            ],
           },
         },
         {
@@ -452,16 +522,20 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
             label: 'Month cycle',
             helperText: 'Month cycle helperText',
             required: true,
-            options: [{
-              text: 'Start of the month',
-              value: 'MONTH_START',
-            }, {
-              text: 'End of the month',
-              value: 'MONTH_END',
-            }, {
-              text: 'Middle of the month',
-              value: 'MONTH_MIDDLE',
-            }],
+            options: [
+              {
+                text: 'Start of the month',
+                value: 'MONTH_START',
+              },
+              {
+                text: 'End of the month',
+                value: 'MONTH_END',
+              },
+              {
+                text: 'Middle of the month',
+                value: 'MONTH_MIDDLE',
+              },
+            ],
           },
         },
       ],
@@ -497,7 +571,7 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
   },
 };
 
-export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<Field>>> =  {
+export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<Field>>> = {
   EVENT: [
     FIELDS_CONFIG.TITLE,
     FIELDS_CONFIG.PRIORITY,
@@ -540,5 +614,5 @@ export const TASK_FIELDS: TASK_TYPE_VALUE_MAP<Array<Partial<Field>>> =  {
     FIELDS_CONFIG.STATUS,
     FIELDS_CONFIG.NOTE,
     FIELDS_CONFIG.NOTIFICATIONS,
-  ]
+  ],
 };

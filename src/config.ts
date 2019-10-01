@@ -1,9 +1,10 @@
 import { SessionOptions } from 'express-session';
 import { ConfigMap } from './db/interfaces';
 
-export const DB_HOST: string = process.env.DB === 'remote'
-  ? 'mongodb://mo1563_lifeapp:Gitara15@85.194.240.29:27017/mo1563_lifeapp'
-  : 'mongodb://localhost/lifeapp';
+export const DB_HOST: string =
+  process.env.DB === 'remote'
+    ? 'mongodb://mo1563_lifeapp:Gitara15@85.194.240.29:27017/mo1563_lifeapp'
+    : 'mongodb://localhost/lifeapp';
 export const DEMO_USER = {
   id: '1234567890',
 };

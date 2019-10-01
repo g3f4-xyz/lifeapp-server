@@ -36,7 +36,9 @@ SwitchFieldSchema.methods.validateField = function(): string[] {
   return [];
 };
 
-export const SwitchFieldModel: Model<FieldDocument> = (TaskFieldsSchema as unknown as Model<TaskDocument>).discriminator(
+export const SwitchFieldModel: Model<
+  FieldDocument
+> = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
   FIELD_TYPE.SWITCH,
   SwitchFieldSchema,
 );

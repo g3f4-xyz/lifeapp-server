@@ -31,6 +31,8 @@ export const FieldsUnion = new GraphQLUnionType({
       return type;
     }
 
-    throw new Error(`cannot resolve type for FieldsUnion | ${JSON.stringify(field)}`);
+    throw new Error(
+      `cannot resolve type for FieldsUnion | ${JSON.stringify(field)}`,
+    );
   },
 });

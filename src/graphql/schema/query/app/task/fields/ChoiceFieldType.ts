@@ -1,4 +1,10 @@
-import { GraphQLInt, GraphQLNonNull, GraphQLObjectType, GraphQLList, GraphQLString } from 'graphql';
+import {
+  GraphQLInt,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLList,
+  GraphQLString,
+} from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { Context, Field } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
@@ -7,7 +13,10 @@ import { nodeInterface } from '../../../../../nodeDefinitions';
 import { ChoiceMetaType } from './meta/ChoiceMetaType';
 import { ChoiceValueType } from './value/ChoiceValueType';
 
-export const ChoiceFieldType: GraphQLObjectType<Field, Context> = new GraphQLObjectType<Field, Context>({
+export const ChoiceFieldType: GraphQLObjectType<
+  Field,
+  Context
+> = new GraphQLObjectType<Field, Context>({
   name: 'ChoiceFieldType',
   description: 'choice field type',
   fields: () => ({
@@ -34,7 +43,7 @@ export const ChoiceFieldType: GraphQLObjectType<Field, Context> = new GraphQLObj
       resolve(field) {
         const { fieldType, meta } = field;
 
-        return ({ ...meta, fieldType });
+        return { ...meta, fieldType };
       },
     },
     validationErrors: {
