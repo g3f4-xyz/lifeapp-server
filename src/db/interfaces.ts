@@ -18,6 +18,7 @@ export interface FieldMeta {
   min?: number;
   max?: number;
   step?: number;
+  defaultOption?: string;
   options?: FieldMetaOptions[];
   label?: string;
   helperText?: string;

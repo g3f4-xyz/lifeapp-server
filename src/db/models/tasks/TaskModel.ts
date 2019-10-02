@@ -248,6 +248,7 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
       label: 'Status',
       helperText: 'Informacje o testowym polu Status',
       required: true,
+      defaultOption: 'TODO',
       options: [
         {
           text: 'To do',

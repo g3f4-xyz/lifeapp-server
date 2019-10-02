@@ -53,7 +53,15 @@ describe('getFieldDefaultValue', () => {
       fieldType: FIELD_TYPE.TEXT,
       fieldId: FIELD_ID.DATE_TIME,
     } as unknown) as Field);
+    const statusField = mapFieldDefaultValue(({
+      fieldType: FIELD_TYPE.CHOICE,
+      fieldId: FIELD_ID.STATUS,
+      meta: {
+        defaultOption: 'TEST',
+      },
+    } as unknown) as Field);
 
     expect(dateTimeField.value).toEqual({ text: '2019-10-02T16:07:28.857Z' });
+    expect(statusField.value).toEqual({ id: 'TEST' });
   });
 });
