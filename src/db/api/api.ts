@@ -8,7 +8,7 @@ import {
 } from '../interfaces';
 import { SettingsModel } from '../models/SettingsModel';
 import { TaskTypeModel } from '../models/TaskTypeModel';
-import { deleteTasks } from './taskApi';
+import { deleteTasks } from './task/taskApi';
 
 export const addSubscription = async (
   ownerId: string,

@@ -1,6 +1,6 @@
 import { GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
-import { updateTaskListTitleFilterSetting } from '../../../../db/api';
+import { updateTaskListTitleFilterSetting } from '../../../../db/api/api';
 
 export const updateTaskListTitleFilterSettingMutation = mutationWithClientMutationId(
   {

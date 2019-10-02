@@ -1,7 +1,7 @@
 import { sendNotification } from 'web-push';
 import { STATUSES } from '../constants';
 
-import { getSubscriptionData } from '../db/api';
+import { getSubscriptionData } from '../db/api/api';
 
 export const testSubscription = async (
   ownerId: string,

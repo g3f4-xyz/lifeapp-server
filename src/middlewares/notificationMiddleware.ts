@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { parse } from 'useragent';
 import { sendNotification } from 'web-push';
 import { DEMO_USER } from '../config';
-import { addSubscription } from '../db/api';
+import { addSubscription } from '../db/api/api';
 import { User } from '../db/interfaces';
 
 export const notificationMiddleware = async (req: Request, res: Response) => {

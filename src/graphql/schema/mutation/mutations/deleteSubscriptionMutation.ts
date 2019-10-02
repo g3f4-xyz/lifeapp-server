@@ -1,6 +1,6 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import { deleteSubscription } from '../../../../db/api';
+import { deleteSubscription } from '../../../../db/api/api';
 
 export const deleteSubscriptionMutation = mutationWithClientMutationId({
   name: 'deleteSubscriptionMutation',

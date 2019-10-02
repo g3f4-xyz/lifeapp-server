@@ -1,7 +1,7 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { ROUTES } from '../../../../config';
-import { cleanApplication } from '../../../../db/api';
+import { cleanApplication } from '../../../../db/api/api';
 
 export const cleanApplicationMutation = mutationWithClientMutationId({
   name: 'cleanApplicationMutation',

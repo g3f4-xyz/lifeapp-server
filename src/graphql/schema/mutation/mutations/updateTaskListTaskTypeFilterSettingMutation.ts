@@ -1,6 +1,6 @@
 import { GraphQLList, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
-import { updateTaskListTaskTypeFilterSetting } from '../../../../db/api';
+import { updateTaskListTaskTypeFilterSetting } from '../../../../db/api/api';
 import { TaskTypeEnum } from '../../../enums/TaskTypeEnum';
 
 export const updateTaskListTaskTypeFilterSettingMutation = mutationWithClientMutationId(

@@ -9,14 +9,14 @@ import {
   TASK_TYPE_VALUE_MAP,
   TIME_FORMAT,
 } from './constants';
-import { getSettings } from './db/api';
+import { getSettings } from './db/api/api';
 import {
   deleteUntouchedTasks,
   disableTaskNotification,
   getTasksWithActiveNotification,
   getTasksWithActiveNotificationInPeriod,
   updateNotificationAt,
-} from './db/api/taskApi';
+} from './db/api/task/taskApi';
 import { Task } from './db/interfaces';
 import { calculateNotificationAt } from './db/models/tasks/TaskModel';
 

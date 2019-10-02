@@ -1,6 +1,6 @@
 import { TASK_TYPE } from '../../../constants';
 import connectDB from '../../connect';
-import { getEmptyTask } from '../taskApi';
+import { getEmptyTask } from '../task/taskApi';
 
 describe('taskApi', () => {
   beforeAll(async () => {

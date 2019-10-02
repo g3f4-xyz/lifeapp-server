@@ -1,15 +1,15 @@
 import { Moment } from 'moment';
 import * as moment from 'moment-timezone';
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../../constants';
-import { Field, FieldValue, Task } from '../interfaces';
-import { registerFieldsDiscriminators } from '../models/registerFieldsDiscriminators';
+import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../../../constants';
+import { Field, FieldValue, Task } from '../../interfaces';
+import { registerFieldsDiscriminators } from '../../models/registerFieldsDiscriminators';
 import {
   calculateNotificationAt,
   isNotificationAtUpdateNeeded,
   TASK_FIELDS,
   TaskModel,
-} from '../models/tasks/TaskModel';
-import { getSettings } from './index';
+} from '../../models/tasks/TaskModel';
+import { getSettings } from '../api';
 
 registerFieldsDiscriminators();
 

@@ -30,12 +30,12 @@ export interface FieldMeta {
 }
 
 export interface FieldValue {
-  enabled?: boolean | null;
-  progress?: boolean | null;
-  id?: string | null;
-  text?: string | null;
-  ownValue?: this | null;
-  childrenValue?: this | null;
+  enabled?: boolean;
+  progress?: number;
+  id?: string;
+  text?: string;
+  ownValue?: FieldValue | null;
+  childrenValue?: FieldValue | null;
 }
 
 export interface Field {
