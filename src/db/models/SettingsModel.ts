@@ -75,7 +75,7 @@ export const SettingsModel: Model<SettingsDocument> = model(
 
 (async () => {
   try {
-    await SettingsModel.ensureIndexes();
+    await SettingsModel.createIndexes();
   } catch (e) {
     throw new Error(`error creating SettingsModel indexes | ${e}`);
   }
