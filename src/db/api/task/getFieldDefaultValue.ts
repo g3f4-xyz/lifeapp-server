@@ -1,5 +1,5 @@
-import { FIELD_ID, FIELD_TYPE, FIELD_TYPE_VALUE_MAP } from '../../../constants';
-import { FieldValue } from '../../interfaces';
+import { FIELD_ID, FIELD_TYPE_VALUE_MAP } from '../../../constants';
+import { Field, FieldValue } from '../../interfaces';
 
 interface DefaultFieldValue {
   (): FieldValue;
@@ -19,10 +19,18 @@ const DEFAULT_FIELD_VALUE_BY_TYPES: FIELD_TYPE_VALUE_MAP<DefaultFieldValue> = {
   TEXT: () => ({ text: '' }),
 };
 
-export default (fieldType: FIELD_TYPE, fieldId?: FIELD_ID) => {
-  if (fieldId && DEFAULT_FILED_VALUE_BY_ID[fieldId]) {
-    return DEFAULT_FILED_VALUE_BY_ID[fieldId]();
+export default (field: Field): Field => {
+  const { fieldType, fieldId } = field;
+
+  if (DEFAULT_FILED_VALUE_BY_ID[fieldId]) {
+    return {
+      ...field,
+      value: DEFAULT_FILED_VALUE_BY_ID[fieldId](),
+    };
   }
 
-  return DEFAULT_FIELD_VALUE_BY_TYPES[fieldType]();
+  return {
+    ...field,
+    value: DEFAULT_FIELD_VALUE_BY_TYPES[fieldType](),
+  };
 };

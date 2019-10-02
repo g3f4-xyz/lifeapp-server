@@ -1,11 +1,22 @@
 import { TASK_TYPE } from '../../../../constants';
 import connectDB from '../../../connect';
 import { getEmptyTask } from '../taskApi';
+import SpyInstance = jest.SpyInstance;
 
 describe('taskApi', () => {
+  let dateNowSpy: SpyInstance;
+
   beforeAll(async () => {
     // @ts-ignore
     await connectDB(global.__MONGO_URI__);
+
+    dateNowSpy = jest
+      .spyOn(Date, 'now')
+      .mockImplementation(() => 1570032448857);
+  });
+
+  afterAll(() => {
+    dateNowSpy.mockRestore();
   });
 
   describe('getEmptyTask', () => {
@@ -69,7 +80,7 @@ describe('taskApi', () => {
       expect(task.fields[2].value.id).toBe('');
       expect(task.fields[3].value.text).toBe('');
       expect(task.fields[4].value.text).toBe('');
-      expect(task.fields[5].value.text).toBe('');
+      expect(task.fields[5].value.text).toBe('2019-10-02T16:07:28.857Z');
       expect(task.fields[6].value.text).toBe('');
       expect(task.fields[7].value.text).toBe('');
       expect(task.fields[8].value.ownValue).toBe(null);

@@ -10,6 +10,7 @@ import {
   TaskModel,
 } from '../../models/tasks/TaskModel';
 import { getSettings } from '../api';
+import getFieldDefaultValue from './getFieldDefaultValue';
 
 registerFieldsDiscriminators();
 
@@ -192,7 +193,7 @@ export const getEmptyTask = async (
   const taskDocument = await TaskModel.create({
     ownerId,
     taskType,
-    fields: TASK_FIELDS[taskType],
+    fields: TASK_FIELDS[taskType].map(getFieldDefaultValue),
   });
 
   await taskDocument.save();
