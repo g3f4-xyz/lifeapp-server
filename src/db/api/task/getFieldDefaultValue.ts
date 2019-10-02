@@ -7,9 +7,9 @@ interface DefaultFieldValue {
 
 type DefaultFieldValueById = Partial<Record<FIELD_ID, DefaultFieldValue>>;
 
-const DEFAULT_FILED_VALUE_BY_ID: DefaultFieldValueById = ({
+const DEFAULT_FILED_VALUE_BY_ID: DefaultFieldValueById = {
   [FIELD_ID.DATE_TIME]: () => ({ text: new Date(Date.now()).toISOString() }),
-});
+};
 
 const DEFAULT_FIELD_VALUE_BY_TYPES: FIELD_TYPE_VALUE_MAP<DefaultFieldValue> = {
   CHOICE: () => ({ id: '' }),

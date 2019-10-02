@@ -17,11 +17,26 @@ describe('getFieldDefaultValue', () => {
   });
 
   it('should return default values for fields by field type', async () => {
-    const choiceField = mapFieldDefaultValue({ fieldType: FIELD_TYPE.CHOICE, fieldId: '' } as unknown as Field);
-    const nestedField = mapFieldDefaultValue({ fieldType: FIELD_TYPE.NESTED, fieldId: '' } as unknown as Field);
-    const sliderField = mapFieldDefaultValue({ fieldType: FIELD_TYPE.SLIDER, fieldId: '' } as unknown as Field);
-    const switchField = mapFieldDefaultValue({ fieldType: FIELD_TYPE.SWITCH, fieldId: '' } as unknown as Field);
-    const textField = mapFieldDefaultValue({ fieldType: FIELD_TYPE.TEXT, fieldId: '' } as unknown as Field);
+    const choiceField = mapFieldDefaultValue(({
+      fieldType: FIELD_TYPE.CHOICE,
+      fieldId: '',
+    } as unknown) as Field);
+    const nestedField = mapFieldDefaultValue(({
+      fieldType: FIELD_TYPE.NESTED,
+      fieldId: '',
+    } as unknown) as Field);
+    const sliderField = mapFieldDefaultValue(({
+      fieldType: FIELD_TYPE.SLIDER,
+      fieldId: '',
+    } as unknown) as Field);
+    const switchField = mapFieldDefaultValue(({
+      fieldType: FIELD_TYPE.SWITCH,
+      fieldId: '',
+    } as unknown) as Field);
+    const textField = mapFieldDefaultValue(({
+      fieldType: FIELD_TYPE.TEXT,
+      fieldId: '',
+    } as unknown) as Field);
 
     expect(choiceField.value).toEqual({ id: '' });
     expect(nestedField.value).toEqual({
@@ -34,7 +49,10 @@ describe('getFieldDefaultValue', () => {
   });
 
   it('should return default values for fields by field id', async () => {
-    const dateTimeField = mapFieldDefaultValue({ fieldType: FIELD_TYPE.TEXT, fieldId: FIELD_ID.DATE_TIME } as unknown as Field);
+    const dateTimeField = mapFieldDefaultValue(({
+      fieldType: FIELD_TYPE.TEXT,
+      fieldId: FIELD_ID.DATE_TIME,
+    } as unknown) as Field);
 
     expect(dateTimeField.value).toEqual({ text: '2019-10-02T16:07:28.857Z' });
   });
