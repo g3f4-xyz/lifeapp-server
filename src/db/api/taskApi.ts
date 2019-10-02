@@ -53,7 +53,8 @@ export const updateTaskField = async (
   // });
 
   return {
-    ...task.fields[fieldIndex],
+    // @ts-ignore
+    ...task.fields[fieldIndex].toJSON(),
     validationErrors,
   };
 };
