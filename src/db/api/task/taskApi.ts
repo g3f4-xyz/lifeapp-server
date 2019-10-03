@@ -155,7 +155,9 @@ export const getTasksWithActiveNotification = async (
 
   return routines.map(doc => doc.toJSON());
 };
-export const disableTaskNotification = async (taskId: any): Promise<void> => {
+export const disableTaskNotification = async (
+  taskId: string,
+): Promise<void> => {
   await TaskModel.findOneAndUpdate(
     {
       _id: taskId,
