@@ -39,7 +39,6 @@ const sendUserNotification = async (
   notification: any,
 ): Promise<void> => {
   try {
-    console.log(['sendUserNotification'], ownerId, taskType, title);
     const {
       notifications: {
         general: {
@@ -113,8 +112,10 @@ export default () => {
           console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.ROUTINE}`);
           const routines = await getTasksWithActiveNotificationInPeriod(
             TASK_TYPE.ROUTINE,
-            moment(Date.now()),
-            moment(Date.now()).add(30, 'second'),
+            moment(Date.now()).toDate(),
+            moment(Date.now())
+              .add(30, 'second')
+              .toDate(),
           );
           const usersRoutines = groupBy<Task>(routines, 'ownerId');
 
@@ -197,7 +198,7 @@ export default () => {
               }),
             );
 
-          usersTodosData.forEach(async todosData => {
+          for (const todosData of usersTodosData) {
             const [{ ownerId }] = todosData;
             const title = 'Daily todos status';
             const body = todosData.reduce(
@@ -219,15 +220,14 @@ export default () => {
               title,
               notification,
             );
-          });
+          }
         });
 
-        await agenda.define(JOBS_NAMES.EVENT, async () => {
+        agenda.define(JOBS_NAMES.EVENT, async () => {
           console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.EVENT}`);
           const events = await getTasksWithActiveNotification(TASK_TYPE.EVENT);
           const usersEvents = groupBy<Task>(events, 'ownerId');
           const sendTimeMoment = moment(Date.now());
-
           const todayUsersEventsData = Object.keys(usersEvents)
             .map(userId => usersEvents[userId])
             .map(list =>
@@ -253,7 +253,6 @@ export default () => {
                   ).value;
                   const dateTimeMoment = moment(dateTime);
                   const isToday = sendTimeMoment.isSame(dateTimeMoment, 'day');
-
                   return {
                     location,
                     duration,
@@ -269,14 +268,12 @@ export default () => {
                 })
                 .filter(data => data.isToday),
             );
-
-          todayUsersEventsData.forEach(async todosData => {
+          for (const todosData of todayUsersEventsData) {
             if (todosData.length > 0) {
               const [{ ownerId }] = todosData;
               const title = "Today's events ";
               const body = todosData.reduce(
-                (acc, data) =>
-                  `
+                (acc, data) => `
               ${acc}\n${data.title}
               | location: ${data.location}
               | note: ${data.note}
@@ -288,7 +285,6 @@ export default () => {
               const notification = {
                 body,
               };
-
               await sendUserNotification(
                 ownerId,
                 TASK_TYPE.TODO,
@@ -299,15 +295,17 @@ export default () => {
                 todosData.map(todo => todo.id).map(disableTaskNotification),
               );
             }
-          });
+          }
         });
 
         await agenda.define(JOBS_NAMES.MEETING, async () => {
           console.info(CONSOLE_COLORS.YELLOW, `job: ${JOBS_NAMES.MEETING}`);
           const meetings = await getTasksWithActiveNotificationInPeriod(
             TASK_TYPE.MEETING,
-            moment(Date.now()),
-            moment(Date.now()).add(1, 'minute'),
+            moment(Date.now()).toDate(),
+            moment(Date.now())
+              .add(1, 'minute')
+              .toDate(),
           );
           const usersMeetings = groupBy<Task>(meetings, 'ownerId');
           const userIds = Object.keys(usersMeetings);

@@ -1,6 +1,10 @@
-import { Moment } from 'moment';
-import * as moment from 'moment-timezone';
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../../../constants';
+import { format } from 'date-fns';
+import {
+  DATE_TIME_FORMAT,
+  FIELD_ID,
+  FIELD_TYPE,
+  TASK_TYPE,
+} from '../../../constants';
 import { Field, FieldValue, Task } from '../../interfaces';
 import { registerFieldsDiscriminators } from '../../models/registerFieldsDiscriminators';
 import {
@@ -31,14 +35,16 @@ export const updateTaskField = async (
       field => field.fieldId === task.lastChangedFieldId,
     );
 
-    task.notificationAt = calculateNotificationAt(
+    const notificationAt = calculateNotificationAt(
       task.taskType,
       task.lastNotificationAt,
       lastChangedField.value,
     );
+
+    task.notificationAt = notificationAt;
   }
 
-  task.updatedAt = moment(new Date()).toISOString();
+  task.updatedAt = format(new Date(Date.now()), DATE_TIME_FORMAT);
   task.lastChangedFieldId = fieldId;
 
   await task.save();
@@ -80,14 +86,14 @@ export const deleteUntouchedTasks = async (): Promise<void> => {
 };
 export const getTasksWithActiveNotificationInPeriod = async (
   taskType: TASK_TYPE,
-  startDate: Moment,
-  endDate: Moment,
+  startDate: Date,
+  endDate: Date,
 ): Promise<Task[]> => {
   const routines = await TaskModel.find({
     taskType,
     notificationAt: {
-      $gte: startDate.toDate(),
-      $lte: endDate.toDate(),
+      $gte: startDate,
+      $lte: endDate,
     },
     fields: {
       $elemMatch: {

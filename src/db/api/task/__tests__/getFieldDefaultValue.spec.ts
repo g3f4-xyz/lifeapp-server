@@ -61,7 +61,7 @@ describe('getFieldDefaultValue', () => {
       },
     } as unknown) as Field);
 
-    expect(dateTimeField.value).toEqual({ text: '2019-10-02T16:07:28.857Z' });
+    expect(dateTimeField.value).toEqual({ text: '2019-10-02T18:07' });
     expect(statusField.value).toEqual({ id: 'TEST' });
   });
 });
