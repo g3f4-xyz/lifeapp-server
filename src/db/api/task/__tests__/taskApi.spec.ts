@@ -80,7 +80,7 @@ describe('taskApi', () => {
       expect(task.fields[2].value.id).toBe('TODO');
       expect(task.fields[3].value.text).toBe('');
       expect(task.fields[4].value.text).toBe('');
-      expect(task.fields[5].value.text).toBe('2019-10-02T18:07');
+      expect(task.fields[5].value.text).toBe('2019-10-02T16:07:28.857Z');
       expect(task.fields[6].value.text).toBe('');
       expect(task.fields[7].value.text).toBe('');
       expect(task.fields[8].value.ownValue).toBe(null);

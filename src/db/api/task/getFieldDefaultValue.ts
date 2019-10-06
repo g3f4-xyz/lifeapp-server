@@ -1,6 +1,4 @@
-import { format } from 'date-fns';
 import {
-  DATE_TIME_FORMAT,
   FIELD_ID,
   FIELD_TYPE_VALUE_MAP,
 } from '../../../constants';
@@ -14,7 +12,7 @@ type DefaultFieldValueById = Partial<Record<FIELD_ID, DefaultFieldValue>>;
 
 const DEFAULT_FILED_VALUE_BY_ID: DefaultFieldValueById = {
   [FIELD_ID.DATE_TIME]: () => ({
-    text: format(new Date(Date.now()), DATE_TIME_FORMAT),
+    text: new Date(Date.now()).toISOString(),
   }),
   [FIELD_ID.STATUS]: fieldConfig => ({
     id: fieldConfig.meta.defaultOption || '',
