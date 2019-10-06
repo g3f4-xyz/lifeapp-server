@@ -66,7 +66,6 @@ export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string> = {
   TEXT: 'text',
 };
 
-export const DATE_TIME_FORMAT = `yyyy-MM-dd'T'HH:mm`;
 export const TIME_FORMAT = 'hh:mm';
 
 export enum CONSOLE_COLORS {

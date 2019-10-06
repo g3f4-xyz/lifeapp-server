@@ -1,6 +1,4 @@
-import { format } from 'date-fns';
 import {
-  DATE_TIME_FORMAT,
   FIELD_ID,
   FIELD_TYPE,
   TASK_TYPE,
@@ -44,7 +42,7 @@ export const updateTaskField = async (
     task.notificationAt = notificationAt;
   }
 
-  task.updatedAt = format(new Date(Date.now()), DATE_TIME_FORMAT);
+  task.updatedAt = new Date(Date.now());
   task.lastChangedFieldId = fieldId;
 
   await task.save();
