@@ -5,7 +5,6 @@ import { TaskDocument, TaskModel } from '../TaskModel';
 const GoalSchema: Schema<TaskDocument> = new Schema({});
 
 GoalSchema.methods.validateFields = function() {
-  console.log(['GoalSchema.methods.validateFields']);
   return this.fields.every(field => field.validateField());
 };
 

@@ -5,8 +5,12 @@ import {
   GraphQLString,
 } from 'graphql';
 import { fromGlobalId, globalIdField } from 'graphql-relay';
-import { getSettings, getTaskTypeList } from '../../../../db/api';
-import { getEmptyTask, getTask, getTaskList } from '../../../../db/api/taskApi';
+import { getSettings, getTaskTypeList } from '../../../../db/api/api';
+import {
+  getEmptyTask,
+  getTask,
+  getTaskList,
+} from '../../../../db/api/task/taskApi';
 import { Context, Settings, Task } from '../../../../db/interfaces';
 import { SettingsType } from './settings/SettingsType';
 import { TaskListType } from './task-list/TaskListType';

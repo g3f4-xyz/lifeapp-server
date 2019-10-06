@@ -1,6 +1,6 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import { deleteTask } from '../../../../db/api/taskApi';
+import { deleteTask } from '../../../../db/api/task/taskApi';
 
 export const deleteTaskMutation = mutationWithClientMutationId({
   name: 'deleteTaskMutation',

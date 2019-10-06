@@ -5,7 +5,6 @@ import { TaskDocument, TaskModel } from '../TaskModel';
 const EventSchema: Schema<TaskDocument> = new Schema({});
 
 EventSchema.methods.validateFields = function() {
-  console.log(['EventSchema.methods.validateFields']);
   return this.fields.every(field => field.validateField());
 };
 

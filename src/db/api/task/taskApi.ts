@@ -1,15 +1,18 @@
-import { Moment } from 'moment';
-import * as moment from 'moment-timezone';
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../../constants';
-import { Field, FieldValue, Task } from '../interfaces';
-import { registerFieldsDiscriminators } from '../models/registerFieldsDiscriminators';
+import {
+  FIELD_ID,
+  FIELD_TYPE,
+  TASK_TYPE,
+} from '../../../constants';
+import { Field, FieldValue, Task } from '../../interfaces';
+import { registerFieldsDiscriminators } from '../../models/registerFieldsDiscriminators';
 import {
   calculateNotificationAt,
   isNotificationAtUpdateNeeded,
   TASK_FIELDS,
   TaskModel,
-} from '../models/tasks/TaskModel';
-import { getSettings } from './index';
+} from '../../models/tasks/TaskModel';
+import { getSettings } from '../api';
+import getFieldDefaultValue from './getFieldDefaultValue';
 
 registerFieldsDiscriminators();
 
@@ -30,14 +33,16 @@ export const updateTaskField = async (
       field => field.fieldId === task.lastChangedFieldId,
     );
 
-    task.notificationAt = calculateNotificationAt(
+    const notificationAt = calculateNotificationAt(
       task.taskType,
       task.lastNotificationAt,
       lastChangedField.value,
     );
+
+    task.notificationAt = notificationAt;
   }
 
-  task.updatedAt = moment(new Date()).toISOString();
+  task.updatedAt = new Date(Date.now());
   task.lastChangedFieldId = fieldId;
 
   await task.save();
@@ -79,14 +84,14 @@ export const deleteUntouchedTasks = async (): Promise<void> => {
 };
 export const getTasksWithActiveNotificationInPeriod = async (
   taskType: TASK_TYPE,
-  startDate: Moment,
-  endDate: Moment,
+  startDate: Date,
+  endDate: Date,
 ): Promise<Task[]> => {
   const routines = await TaskModel.find({
     taskType,
     notificationAt: {
-      $gte: startDate.toDate(),
-      $lte: endDate.toDate(),
+      $gte: startDate,
+      $lte: endDate,
     },
     fields: {
       $elemMatch: {
@@ -148,7 +153,9 @@ export const getTasksWithActiveNotification = async (
 
   return routines.map(doc => doc.toJSON());
 };
-export const disableTaskNotification = async (taskId: any): Promise<void> => {
+export const disableTaskNotification = async (
+  taskId: string,
+): Promise<void> => {
   await TaskModel.findOneAndUpdate(
     {
       _id: taskId,
@@ -192,7 +199,7 @@ export const getEmptyTask = async (
   const taskDocument = await TaskModel.create({
     ownerId,
     taskType,
-    fields: TASK_FIELDS[taskType],
+    fields: TASK_FIELDS[taskType].map(getFieldDefaultValue),
   });
 
   await taskDocument.save();

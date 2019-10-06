@@ -5,7 +5,6 @@ import { TaskDocument, TaskModel } from '../TaskModel';
 const TodoSchema: Schema<TaskDocument> = new Schema({});
 
 TodoSchema.methods.validateFields = function() {
-  console.log(['TodoSchema.methods.validateFields']);
   return this.fields.every(field => field.validateField());
 };
 
