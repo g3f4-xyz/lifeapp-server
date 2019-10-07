@@ -1,6 +1,6 @@
-import { GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import { updateTaskField } from '../../../../db/api/task/taskApi';
+import { Context } from '../../../../db/interfaces';
 import { FieldIdEnum } from '../../../enums/FieldIdEnum';
 import { ValuesUnion } from '../../query/app/task/fields/value/ValuesUnion';
 import { ValueInputType } from './inputs/value/ValueInputType';
@@ -32,13 +32,15 @@ export const updateTaskFieldMutation = mutationWithClientMutationId({
       type: new GraphQLList(new GraphQLNonNull(ValuesUnion)),
     },
   },
-  mutateAndGetPayload: async ({ fieldId, value, taskId }) => {
+  mutateAndGetPayload: async (
+    { fieldId, value, taskId },
+    { taskService }: Context,
+  ) => {
     const { id: taskIdRaw } = fromGlobalId(taskId);
-    const { value: updatedValue, validationErrors } = await updateTaskField(
-      taskIdRaw,
-      fieldId,
-      value,
-    );
+    const {
+      value: updatedValue,
+      validationErrors,
+    } = await taskService.updateTaskField(taskIdRaw, fieldId, value);
 
     return { fieldId, updatedValue, validationErrors, taskId };
   },

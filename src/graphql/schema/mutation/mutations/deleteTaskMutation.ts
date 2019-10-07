@@ -1,6 +1,6 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import { deleteTask } from '../../../../db/api/task/taskApi';
+import { Context } from '../../../../db/interfaces';
 
 export const deleteTaskMutation = mutationWithClientMutationId({
   name: 'deleteTaskMutation',
@@ -12,11 +12,11 @@ export const deleteTaskMutation = mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  mutateAndGetPayload: async ({ id: hashId }) => {
+  mutateAndGetPayload: async ({ id: hashId }, { taskService }: Context) => {
     try {
       const { id } = await fromGlobalId(hashId);
 
-      await deleteTask(id);
+      await taskService.deleteTask(id);
 
       return { deletedTaskId: hashId };
     } catch (error) {

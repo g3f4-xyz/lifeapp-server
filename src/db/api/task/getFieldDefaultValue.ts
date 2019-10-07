@@ -1,7 +1,4 @@
-import {
-  FIELD_ID,
-  FIELD_TYPE_VALUE_MAP,
-} from '../../../constants';
+import { FIELD_ID, FIELD_TYPE_VALUE_MAP } from '../../../constants';
 import { Field, FieldValue } from '../../interfaces';
 
 interface DefaultFieldValue {

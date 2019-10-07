@@ -1,28 +1,14 @@
 import { TASK_TYPE } from '../../../../constants';
-import connectDB from '../../../connect';
-import { getEmptyTask } from '../taskApi';
-import SpyInstance = jest.SpyInstance;
+import setupMongo from '../../../../utils/tests/setupMongo';
+import taskApi from '../taskApi';
 
 describe('taskApi', () => {
-  let dateNowSpy: SpyInstance;
-
-  beforeAll(async () => {
-    // @ts-ignore
-    await connectDB(global.__MONGO_URI__);
-
-    dateNowSpy = jest
-      .spyOn(Date, 'now')
-      .mockImplementation(() => 1570032448857);
-  });
-
-  afterAll(() => {
-    dateNowSpy.mockRestore();
-  });
+  setupMongo();
 
   describe('getEmptyTask', () => {
     it('should get empty todo task', async () => {
       const ownerId = '1234567890';
-      const task = await getEmptyTask(TASK_TYPE.TODO, ownerId);
+      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.TODO);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
@@ -37,7 +23,7 @@ describe('taskApi', () => {
 
     it('should get empty event task', async () => {
       const ownerId = '1234567890';
-      const task = await getEmptyTask(TASK_TYPE.EVENT, ownerId);
+      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.EVENT);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
@@ -55,7 +41,7 @@ describe('taskApi', () => {
 
     it('should get empty goal task', async () => {
       const ownerId = '1234567890';
-      const task = await getEmptyTask(TASK_TYPE.GOAL, ownerId);
+      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.GOAL);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
@@ -70,7 +56,7 @@ describe('taskApi', () => {
 
     it('should get empty meeting task', async () => {
       const ownerId = '1234567890';
-      const task = await getEmptyTask(TASK_TYPE.MEETING, ownerId);
+      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.MEETING);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
@@ -89,7 +75,7 @@ describe('taskApi', () => {
 
     it('should get empty routine task', async () => {
       const ownerId = '1234567890';
-      const task = await getEmptyTask(TASK_TYPE.ROUTINE, ownerId);
+      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.ROUTINE);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);

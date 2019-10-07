@@ -1,7 +1,7 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { ROUTES } from '../../../../config';
-import { cleanApplication } from '../../../../db/api/api';
+import { Context } from '../../../../db/interfaces';
 
 export const cleanApplicationMutation = mutationWithClientMutationId({
   name: 'cleanApplicationMutation',
@@ -13,9 +13,9 @@ export const cleanApplicationMutation = mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  mutateAndGetPayload: async ({ ownerId }: any) => {
+  mutateAndGetPayload: async ({ ownerId }, { appService }: Context) => {
     try {
-      await cleanApplication(ownerId);
+      await appService.cleanApplication(ownerId);
 
       return {
         navigationUrl: ROUTES.AUTH,

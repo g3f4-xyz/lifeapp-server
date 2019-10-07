@@ -1,5 +1,9 @@
 import { PushSubscription } from 'web-push';
 import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
+import AppService from '../services/AppService';
+import SettingsService from '../services/SettingsService';
+import TaskService from '../services/TaskService';
+import TaskTypeService from '../services/TaskTypeService';
 
 export interface ConfigMap<T = string | boolean> {
   [key: string]: T;
@@ -101,11 +105,13 @@ export interface Notifications {
 }
 
 export interface TaskListSettings {
-  filters: {
-    title: string;
-    taskType: string[];
-    status: string;
-  };
+  filters: TaskListSettingsFilters;
+}
+
+export interface TaskListSettingsFilters {
+  title: string;
+  taskType: string[];
+  status: string;
 }
 
 export interface Settings {
@@ -120,4 +126,8 @@ export interface User {
 
 export interface Context {
   user: User;
+  appService: AppService;
+  taskService: TaskService;
+  taskTypeService: TaskTypeService;
+  settingsService: SettingsService;
 }

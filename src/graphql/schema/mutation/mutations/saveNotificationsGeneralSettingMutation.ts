@@ -1,6 +1,6 @@
 import { GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
-import { saveNotificationsGeneralSetting } from '../../../../db/api/api';
+import { Context } from '../../../../db/interfaces';
 import { NotificationsGeneralSettingType } from '../../query/app/settings/notifications/NotificationsGeneralSettingType';
 import { SettingsNotificationsGeneralInputType } from './inputs/settings/SettingsNotificationsGeneralInputType';
 
@@ -17,11 +17,14 @@ export const saveNotificationsGeneralSettingMutation = mutationWithClientMutatio
         type: new GraphQLNonNull(NotificationsGeneralSettingType),
       },
     },
-    mutateAndGetPayload: async ({ general }, { user }) => {
+    mutateAndGetPayload: async (
+      { general },
+      { user, settingsService }: Context,
+    ) => {
       try {
         const { id: ownerId } = user;
 
-        const savedGeneral = await saveNotificationsGeneralSetting(
+        const savedGeneral = await settingsService.updateNotificationsGeneralSetting(
           ownerId,
           general,
         );

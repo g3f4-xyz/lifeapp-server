@@ -1,5 +1,5 @@
 import { FIELD_TYPE, TASK_TYPE } from '../../../../constants';
-import connectDB from '../../../connect';
+import setupMongo from '../../../../utils/tests/setupMongo';
 import { ChoiceFieldModel } from '../../fields/choice/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/nested/NestedFieldModel';
 import { SliderFieldModel } from '../../fields/slider/SliderFieldModel';
@@ -8,10 +8,7 @@ import { TextFieldModel } from '../../fields/text/TextFieldModel';
 import { TaskModel } from '../TaskModel';
 
 describe('TaskModel', () => {
-  beforeAll(async () => {
-    // @ts-ignore
-    await connectDB(global.__MONGO_URI__);
-  });
+  setupMongo();
 
   it('should be defined', () => {
     expect(TaskModel).toBeDefined();
