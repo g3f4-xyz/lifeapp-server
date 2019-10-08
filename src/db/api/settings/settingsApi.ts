@@ -5,7 +5,7 @@ import {
   SettingsNotificationsTypes,
   SubscriptionData,
 } from '../../interfaces';
-import { SettingsModel } from '../../models/SettingsModel';
+import { SettingsModel } from '../../models/settings/SettingsModel';
 
 const settingsApi = {
   async addSubscription(
