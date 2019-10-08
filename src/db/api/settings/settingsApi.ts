@@ -1,4 +1,5 @@
-import { TASK_STATUS, TASK_TYPE } from '../../../constants';
+import { MongoError } from 'mongodb';
+import { MONGO_ERROR, TASK_STATUS, TASK_TYPE } from '../../../constants';
 import {
   Settings,
   SettingsNotificationsGeneral,
@@ -6,6 +7,11 @@ import {
   SubscriptionData,
 } from '../../interfaces';
 import { SettingsModel } from '../../models/settings/SettingsModel';
+import ApiError from '../ApiError';
+
+export enum SettingsApiErrorCode {
+  DUPLICATE_SETTINGS = 'DUPLICATE_SETTINGS',
+}
 
 const settingsApi = {
   async addSubscription(
@@ -151,19 +157,29 @@ const settingsApi = {
 
     return taskTypeFilter;
   },
-  async getSettings(ownerId: string): Promise<Settings> {
+  async getSettings(ownerId: string): Promise<Settings | null> {
     const settingsModel = await SettingsModel.findOne({ ownerId });
 
     if (settingsModel) {
       return settingsModel.toJSON();
     }
 
-    const newSettings = new SettingsModel();
+    return null;
+  },
+  async createSettings(ownerId: string): Promise<Settings> {
+    try {
+      const newSettings = await SettingsModel.create({ ownerId });
 
-    newSettings.ownerId = ownerId;
-    newSettings.taskList.filters.taskType = Object.values(TASK_TYPE);
+      await newSettings.save();
 
-    return await newSettings.save();
+      return newSettings.toJSON();
+    } catch (error) {
+      if (error instanceof MongoError) {
+        if (error.code === MONGO_ERROR.DUPLICATE_KEY) {
+          throw new ApiError(SettingsApiErrorCode.DUPLICATE_SETTINGS);
+        }
+      }
+    }
   },
   async deleteSettings(ownerId: string): Promise<string> {
     await SettingsModel.findOne({ ownerId }).remove();

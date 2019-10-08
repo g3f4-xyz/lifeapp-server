@@ -76,6 +76,7 @@ export const SettingsModel: Model<SettingsDocument> = model(
   SettingsSchema,
 );
 
+// TODO dlaczego to jest potrzebne
 (async () => {
   try {
     await SettingsModel.createIndexes();

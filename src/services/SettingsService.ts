@@ -17,7 +17,13 @@ export default class SettingsService {
   }
 
   async getUserSettings(ownerId: string) {
-    return await this.settingsApi.getSettings(ownerId);
+    const settings = await this.settingsApi.getSettings(ownerId);
+
+    if (settings) {
+      return settings;
+    }
+
+    return await this.settingsApi.createSettings(ownerId);
   }
 
   async testSubscription(ownerId: string, subscriptionModelId: string) {

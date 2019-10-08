@@ -10,7 +10,7 @@ describe('SettingsModel', () => {
   });
 
   it('should be able to create document with default values', async () => {
-    const ownerId = '1234567890';
+    const ownerId = '1234';
 
     const doc = (await SettingsModel.create({ ownerId })).toJSON();
 

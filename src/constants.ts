@@ -106,3 +106,7 @@ export enum MONTH_CYCLE {
   MIDDLE = 'MONTH_MIDDLE',
   START = 'MONTH_START',
 }
+
+export enum MONGO_ERROR {
+  DUPLICATE_KEY = 11000,
+}
