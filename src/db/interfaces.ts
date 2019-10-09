@@ -1,6 +1,6 @@
 import { PushSubscription } from 'web-push';
 import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
-import AppService from '../services/AppService';
+import UserService from '../services/UserService';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
@@ -126,7 +126,7 @@ export interface User {
 
 export interface Context {
   user: User;
-  appService: AppService;
+  appService: UserService;
   taskService: TaskService;
   taskTypeService: TaskTypeService;
   settingsService: SettingsService;

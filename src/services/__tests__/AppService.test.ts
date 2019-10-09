@@ -1,11 +1,11 @@
 import settingsApi from '../../db/api/settings/settingsApi';
 import taskApi from '../../db/api/task/taskApi';
 import AppError from '../../utils/AppError';
-import AppService from '../AppService';
+import UserService from '../UserService';
 
-describe('AppService', () => {
+describe('UserService', () => {
   it('should create new service', async () => {
-    const appService = new AppService(taskApi, settingsApi);
+    const appService = new UserService(taskApi, settingsApi);
 
     expect(appService).toBeDefined();
   });
@@ -19,7 +19,7 @@ describe('AppService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockResolvedValue(ownerId);
-      const appService = new AppService(taskApi, settingsApi);
+      const appService = new UserService(taskApi, settingsApi);
 
       expect(await appService.cleanApplication(ownerId)).toBe(ownerId);
       expect(deleteTasksSpy).toHaveBeenCalledWith(ownerId);
@@ -34,7 +34,7 @@ describe('AppService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockResolvedValue(ownerId);
-      const appService = new AppService(taskApi, settingsApi);
+      const appService = new UserService(taskApi, settingsApi);
 
       try {
         await appService.cleanApplication(ownerId);
@@ -56,7 +56,7 @@ describe('AppService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockRejectedValue(ownerId);
-      const appService = new AppService(taskApi, settingsApi);
+      const appService = new UserService(taskApi, settingsApi);
 
       try {
         expect(await appService.cleanApplication(ownerId)).toBe(ownerId);
@@ -78,7 +78,7 @@ describe('AppService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockRejectedValue(ownerId);
-      const appService = new AppService(taskApi, settingsApi);
+      const appService = new UserService(taskApi, settingsApi);
 
       try {
         await appService.cleanApplication(ownerId);

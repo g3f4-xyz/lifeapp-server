@@ -6,7 +6,7 @@ export enum AppServiceErrorCode {
   CLEAN_APPLICATION_ERROR = 'CLEAN_APPLICATION_ERROR',
 }
 
-export default class AppService {
+export default class UserService {
   constructor(readonly taskApi: TaskApi, readonly settingsApi: SettingsApi) {}
 
   async cleanApplication(ownerId: string): Promise<string> {
