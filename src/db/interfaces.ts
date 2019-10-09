@@ -92,7 +92,7 @@ export interface SettingsNotificationsGeneral {
 
 export interface SettingsNotificationsTypes {
   events: boolean;
-  goal: boolean;
+  goals: boolean;
   meetings: boolean;
   routines: boolean;
   todos: boolean;
