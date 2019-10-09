@@ -5,9 +5,9 @@ import UserService from '../UserService';
 
 describe('UserService', () => {
   it('should create new service', async () => {
-    const appService = new UserService(taskApi, settingsApi);
+    const userService = new UserService(taskApi, settingsApi);
 
-    expect(appService).toBeDefined();
+    expect(userService).toBeDefined();
   });
 
   describe('cleanApplication method', () => {
@@ -19,9 +19,9 @@ describe('UserService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockResolvedValue(ownerId);
-      const appService = new UserService(taskApi, settingsApi);
+      const userService = new UserService(taskApi, settingsApi);
 
-      expect(await appService.cleanApplication(ownerId)).toBe(ownerId);
+      expect(await userService.cleanApplication(ownerId)).toBe(ownerId);
       expect(deleteTasksSpy).toHaveBeenCalledWith(ownerId);
       expect(deleteSettingsSpy).toHaveBeenCalledWith(ownerId);
     });
@@ -34,10 +34,10 @@ describe('UserService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockResolvedValue(ownerId);
-      const appService = new UserService(taskApi, settingsApi);
+      const userService = new UserService(taskApi, settingsApi);
 
       try {
-        await appService.cleanApplication(ownerId);
+        await userService.cleanApplication(ownerId);
       } catch (e) {
         expect(e).toBeInstanceOf(AppError);
         expect(e.code).toBe('CLEAN_APPLICATION_ERROR');
@@ -56,10 +56,10 @@ describe('UserService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockRejectedValue(ownerId);
-      const appService = new UserService(taskApi, settingsApi);
+      const userService = new UserService(taskApi, settingsApi);
 
       try {
-        expect(await appService.cleanApplication(ownerId)).toBe(ownerId);
+        expect(await userService.cleanApplication(ownerId)).toBe(ownerId);
       } catch (e) {
         expect(e).toBeInstanceOf(AppError);
         expect(e.code).toBe('CLEAN_APPLICATION_ERROR');
@@ -78,10 +78,10 @@ describe('UserService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockRejectedValue(ownerId);
-      const appService = new UserService(taskApi, settingsApi);
+      const userService = new UserService(taskApi, settingsApi);
 
       try {
-        await appService.cleanApplication(ownerId);
+        await userService.cleanApplication(ownerId);
       } catch (e) {
         expect(e).toBeInstanceOf(AppError);
         expect(e.code).toBe('CLEAN_APPLICATION_ERROR');

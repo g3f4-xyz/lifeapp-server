@@ -126,7 +126,7 @@ export interface User {
 
 export interface Context {
   user: User;
-  appService: UserService;
+  userService: UserService;
   taskService: TaskService;
   taskTypeService: TaskTypeService;
   settingsService: SettingsService;

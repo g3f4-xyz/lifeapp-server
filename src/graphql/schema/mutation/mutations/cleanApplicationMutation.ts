@@ -13,9 +13,9 @@ export const cleanApplicationMutation = mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  mutateAndGetPayload: async ({ ownerId }, { appService }: Context) => {
+  mutateAndGetPayload: async ({ ownerId }, { userService }: Context) => {
     try {
-      await appService.cleanApplication(ownerId);
+      await userService.cleanApplication(ownerId);
 
       return {
         navigationUrl: ROUTES.AUTH,

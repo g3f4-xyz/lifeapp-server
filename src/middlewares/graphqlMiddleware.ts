@@ -19,7 +19,7 @@ export const graphqlMiddleware: Middleware = graphqlHTTP(
     graphiql: true,
     context: {
       user: req.user || DEMO_USER,
-      appService: new UserService(taskApi, settingsApi),
+      userService: new UserService(taskApi, settingsApi),
       taskService: new TaskService(taskApi, settingsApi),
       taskTypeService: new TaskTypeService(taskTypeApi),
       settingsService: new SettingsService(settingsApi),
