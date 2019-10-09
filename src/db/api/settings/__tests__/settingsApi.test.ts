@@ -2,7 +2,7 @@ import { TASK_TYPE } from '../../../../constants';
 import mockMongoCollection from '../../../../utils/tests/mockMongoCollection';
 import setupMongo from '../../../../utils/tests/setupMongo';
 import { SettingsModel } from '../../../models/settings/SettingsModel';
-import ApiError from '../../ApiError';
+import AppError from '../../../../utils/AppError';
 import settingsApi from '../settingsApi';
 
 describe('settingsApi', () => {
@@ -128,10 +128,9 @@ describe('settingsApi', () => {
       try {
         await settingsApi.createSettings(ownerId);
       } catch (e) {
-        expect(e).toBeInstanceOf(ApiError);
-        expect(e).toEqual({
-          code: 'DUPLICATE_SETTINGS',
-        });
+        expect(e).toBeInstanceOf(AppError);
+        expect(e.code).toBe('DUPLICATE_SETTINGS');
+        expect(e.level).toBe('api');
       }
     });
   });

@@ -7,7 +7,7 @@ import {
   SubscriptionData,
 } from '../../interfaces';
 import { SettingsModel } from '../../models/settings/SettingsModel';
-import ApiError from '../ApiError';
+import AppError from '../../../utils/AppError';
 
 export enum SettingsApiErrorCode {
   DUPLICATE_SETTINGS = 'DUPLICATE_SETTINGS',
@@ -176,7 +176,7 @@ const settingsApi = {
     } catch (error) {
       if (error instanceof MongoError) {
         if (error.code === MONGO_ERROR.DUPLICATE_KEY) {
-          throw new ApiError(SettingsApiErrorCode.DUPLICATE_SETTINGS);
+          throw new AppError(SettingsApiErrorCode.DUPLICATE_SETTINGS, 'api');
         }
       }
     }
