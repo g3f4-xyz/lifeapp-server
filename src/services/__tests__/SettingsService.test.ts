@@ -1,3 +1,4 @@
+import { TASK_TYPE } from '../../constants';
 import settingsApi from '../../db/api/settings/settingsApi';
 import AppError from '../../utils/AppError';
 import SettingsService from '../SettingsService';
@@ -15,12 +16,35 @@ describe('SettingsService', () => {
       const subscriptionId = '12345678';
       const deleteSubscriptionSpy = jest
         .spyOn(settingsApi, 'deleteSubscription')
-        .mockResolvedValue(ownerId);
+        .mockResolvedValue({
+          ownerId,
+          notifications: {
+            general: {
+              show: true,
+              vibrate: true,
+            },
+            types: {
+              events: true,
+              meetings: true,
+              todos: true,
+              routines: true,
+              goals: true,
+            },
+            subscriptions: [],
+          },
+          taskList: {
+            filters: {
+              title: '',
+              taskType: Object.values(TASK_TYPE),
+              status: null,
+            },
+          },
+        });
       const userService = new SettingsService(settingsApi);
 
-      expect(
-        await userService.deleteUserSubscription(ownerId, subscriptionId),
-      ).toBe(ownerId);
+      expect(async () => {
+        await userService.deleteUserSubscription(ownerId, subscriptionId);
+      }).not.toThrow();
       expect(deleteSubscriptionSpy).toHaveBeenCalledWith(
         ownerId,
         subscriptionId,

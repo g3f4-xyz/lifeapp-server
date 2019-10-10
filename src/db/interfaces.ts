@@ -1,5 +1,5 @@
 import { PushSubscription } from 'web-push';
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
+import { FIELD_ID, FIELD_TYPE, TASK_STATUS, TASK_TYPE } from '../constants';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
@@ -111,8 +111,8 @@ export interface TaskListSettings {
 
 export interface TaskListSettingsFilters {
   title: string;
-  taskType: string[];
-  status: string;
+  taskType: TASK_TYPE[];
+  status: TASK_STATUS;
 }
 
 export interface Settings {

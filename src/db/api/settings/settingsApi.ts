@@ -3,7 +3,8 @@ import { MONGO_ERROR, TASK_STATUS, TASK_TYPE } from '../../../constants';
 import {
   Settings,
   SettingsNotificationsGeneral,
-  SettingsNotificationsTypes, Subscription,
+  SettingsNotificationsTypes,
+  Subscription,
   SubscriptionData,
 } from '../../interfaces';
 import { SettingsModel } from '../../models/settings/SettingsModel';
@@ -44,15 +45,15 @@ const settingsApi = {
 
     return null;
   },
-//  async saveSettings(ownerId: string, settings: Settings): Promise<Settings> {
-//    const settingsDoc = await SettingsModel.findOneAndUpdate(
-//      { ownerId },
-//      settings,
-//      { new: true },
-//    );
-//
-//    return settingsDoc.toJSON();
-//  },
+  //  async saveSettings(ownerId: string, settings: Settings): Promise<Settings> {
+  //    const settingsDoc = await SettingsModel.findOneAndUpdate(
+  //      { ownerId },
+  //      settings,
+  //      { new: true },
+  //    );
+  //
+  //    return settingsDoc.toJSON();
+  //  },
 
   async addSubscription(
     ownerId: string,
@@ -87,6 +88,10 @@ const settingsApi = {
       },
       { new: true },
     );
+
+    if (!settingsDocument) {
+      throw new AppError(SettingsApiErrorCode.NO_USER_SETTINGS, 'api');
+    }
 
     return settingsDocument.toJSON();
   },

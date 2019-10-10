@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { TASK_TYPE } from '../../../../constants';
 import AppError from '../../../../utils/AppError';
 import mockMongoCollection from '../../../../utils/tests/mockMongoCollection';
@@ -34,6 +35,7 @@ describe('settingsApi', () => {
             },
             subscriptions: [
               {
+                _id: new ObjectId(firstUser.subscriptionId),
                 subscriptionData: {
                   endpoint: 'endpoint',
                   expirationTime: 'expirationTime',
@@ -102,7 +104,21 @@ describe('settingsApi', () => {
           routines: true,
           goals: true,
         },
-        subscriptions: [],
+        subscriptions: [
+          {
+            _id: new ObjectId('5d94cb40d4b62b5aeec481c5'),
+            subscriptionData: {
+              endpoint: 'endpoint',
+              expirationTime: 'expirationTime',
+              keys: {
+                auth: 'auth',
+                p256dh: 'p256dh',
+              },
+            },
+            userAgent: 'userAgent',
+            userDeviceType: 'userDeviceType',
+          },
+        ],
       });
       expect(settings.taskList).toEqual({
         filters: {
@@ -187,13 +203,15 @@ describe('settingsApi', () => {
   });
 
   describe('deleteSubscription', () => {
-    // TODO dlaczego ten test nie przechodzi?
-    xit('should delete subscription', async () => {
+    it('should delete subscription', async () => {
       const ownerId = firstUser.id;
+      const subscriptionId = firstUser.subscriptionId;
       const settings = await settingsApi.getSettings(ownerId);
-      const subscriptionId = settings.notifications.subscriptions[0]._id;
+      const subscription = settings.notifications.subscriptions.find(
+        ({ _id }) => _id.toString() === subscriptionId.toString(),
+      );
 
-      expect(settings.notifications.subscriptions[0]._id).toBe(subscriptionId);
+      expect(subscription).toBeDefined();
       expect(settings.notifications.subscriptions.length).toBe(1);
 
       const settingsAfter = await settingsApi.deleteSubscription(
@@ -202,7 +220,35 @@ describe('settingsApi', () => {
       );
 
       expect(settingsAfter.notifications.subscriptions[0]).not.toBeDefined();
-      expect(settings.notifications.subscriptions.length).toBe(0);
+      expect(settingsAfter.notifications.subscriptions.length).toBe(0);
+    });
+
+    it('should not change nothing trying to delete non-existing subscription', async () => {
+      const ownerId = firstUser.id;
+      const subscriptionId = new ObjectId().toString();
+      const settings = await settingsApi.getSettings(ownerId);
+
+      expect(settings.notifications.subscriptions.length).toBe(1);
+
+      const settingsAfter = await settingsApi.deleteSubscription(
+        ownerId,
+        subscriptionId,
+      );
+
+      expect(settingsAfter.notifications.subscriptions.length).toBe(1);
+    });
+
+    it('should handle error', async () => {
+      const ownerId = '1';
+      const subscriptionId = new ObjectId().toString();
+
+      try {
+        await settingsApi.deleteSubscription(ownerId, subscriptionId);
+      } catch (e) {
+        expect(e).toBeInstanceOf(AppError);
+        expect(e.code).toBe('NO_USER_SETTINGS');
+        expect(e.level).toBe('api');
+      }
     });
   });
 });

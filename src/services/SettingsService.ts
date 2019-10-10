@@ -43,7 +43,7 @@ export default class SettingsService {
     ownerId: string,
     subscriptionId: string,
   ): Promise<void> {
-    return await this.settingsApi.deleteSubscription(ownerId, subscriptionId);
+    await this.settingsApi.deleteSubscription(ownerId, subscriptionId);
   }
 
   async getUserSettings(ownerId: string) {
@@ -62,12 +62,17 @@ export default class SettingsService {
   ): Promise<SubscriptionData | null> {
     const userSettings = await this.settingsApi.getSettings(ownerId);
 
-    const subscription = userSettings.notifications.subscriptions.find(({ _id }) => _id === subscriptionId);
+    const subscription = userSettings.notifications.subscriptions.find(
+      ({ _id }) => _id === subscriptionId,
+    );
 
     return subscription ? subscription.subscriptionData : null;
   }
 
-  async testSubscription(ownerId: string, subscriptionModelId: string): STATUS {
+  async testSubscription(
+    ownerId: string,
+    subscriptionModelId: string,
+  ): Promise<STATUS> {
     try {
       const subscriptionData = await this.getSubscriptionData(
         ownerId,
@@ -109,41 +114,69 @@ export default class SettingsService {
 
       const { statusCode } = await sendNotification(subscriptionData, payload);
 
-      return statusCode;
+      return statusCode as STATUS;
     } catch (error) {
       return error.statusCode ? error.statusCode : STATUSES.REQUEST_TIMEOUT;
     }
   }
 
-  async updateTaskListTitleFilterSetting(ownerId: string, title: string) {
-    return await this.settingsApi.saveTaskListTitleFilter(ownerId, title);
+  async updateTaskListTitleFilterSetting(
+    ownerId: string,
+    title: string,
+  ): Promise<string> {
+    const updatedSettings = await this.settingsApi.saveTaskListTitleFilter(
+      ownerId,
+      title,
+    );
+
+    return updatedSettings.taskList.filters.title;
   }
 
   async updateTaskListTaskTypeFilterSetting(
     ownerId: string,
     taskType: TASK_TYPE[],
-  ) {
-    return await this.settingsApi.saveTaskListTaskTypeFilter(ownerId, taskType);
+  ): Promise<TASK_TYPE[]> {
+    const updatedSettings = await this.settingsApi.saveTaskListTaskTypeFilter(
+      ownerId,
+      taskType,
+    );
+
+    return updatedSettings.taskList.filters.taskType;
   }
 
   async updateTaskListStatusFilterSetting(
     ownerId: string,
     taskStatus: TASK_STATUS,
-  ) {
-    return await this.settingsApi.saveTaskListStatusFilter(ownerId, taskStatus);
+  ): Promise<TASK_STATUS> {
+    const updatedSettings = await this.settingsApi.saveTaskListStatusFilter(
+      ownerId,
+      taskStatus,
+    );
+
+    return updatedSettings.taskList.filters.status;
   }
 
   async updateNotificationsGeneralSetting(
     ownerId: string,
     general: SettingsNotificationsGeneral,
-  ) {
-    return await this.settingsApi.saveNotificationsGeneral(ownerId, general);
+  ): Promise<SettingsNotificationsGeneral> {
+    const updatedSettings = await this.settingsApi.saveNotificationsGeneral(
+      ownerId,
+      general,
+    );
+
+    return updatedSettings.notifications.general;
   }
 
   async updateNotificationsTypesSetting(
     ownerId: string,
     types: SettingsNotificationsTypes,
-  ) {
-    return await this.settingsApi.saveNotificationsTypes(ownerId, types);
+  ): Promise<SettingsNotificationsTypes> {
+    const updatedSettings = await this.settingsApi.saveNotificationsTypes(
+      ownerId,
+      types,
+    );
+
+    return updatedSettings.notifications.types;
   }
 }
