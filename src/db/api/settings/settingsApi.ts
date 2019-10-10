@@ -1,14 +1,13 @@
 import { MongoError } from 'mongodb';
 import { MONGO_ERROR, TASK_STATUS, TASK_TYPE } from '../../../constants';
+import AppError from '../../../utils/AppError';
 import {
   Settings,
   SettingsNotificationsGeneral,
   SettingsNotificationsTypes,
   Subscription,
-  SubscriptionData,
 } from '../../interfaces';
 import { SettingsModel } from '../../models/settings/SettingsModel';
-import AppError from '../../../utils/AppError';
 
 export enum SettingsApiErrorCode {
   DUPLICATE_SETTINGS = 'DUPLICATE_SETTINGS',

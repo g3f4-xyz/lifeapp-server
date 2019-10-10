@@ -17,7 +17,7 @@ describe('settingsApi', () => {
   };
 
   setupMongo({
-    async beforeAllExtend() {
+    async beforeEachExtend() {
       await mockMongoCollection(SettingsModel, [
         {
           ownerId: firstUser.id,
