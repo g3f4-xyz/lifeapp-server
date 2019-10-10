@@ -31,7 +31,13 @@ const settingsApi = {
     }
   },
   async deleteSettings(ownerId: string): Promise<string> {
-    await SettingsModel.findOne({ ownerId }).remove();
+    const settings = await SettingsModel.findOne({ ownerId });
+
+    if (!settings) {
+      throw new AppError(SettingsApiErrorCode.NO_USER_SETTINGS, 'api');
+    }
+
+    await settings.remove();
 
     return ownerId;
   },
@@ -58,7 +64,7 @@ const settingsApi = {
     ownerId: string,
     subscription: Subscription,
   ): Promise<Settings> {
-    const settingsDocument = await SettingsModel.findOneAndUpdate(
+    const updatedSettings = await SettingsModel.findOneAndUpdate(
       {
         ownerId,
       },
@@ -70,7 +76,11 @@ const settingsApi = {
       { new: true },
     );
 
-    return settingsDocument.toJSON();
+    if (!updatedSettings) {
+      throw new AppError(SettingsApiErrorCode.NO_USER_SETTINGS, 'api');
+    }
+
+    return updatedSettings.toJSON();
   },
   async deleteSubscription(
     ownerId: string,
@@ -111,6 +121,10 @@ const settingsApi = {
       { new: true },
     );
 
+    if (!updatedSettings) {
+      throw new AppError(SettingsApiErrorCode.NO_USER_SETTINGS, 'api');
+    }
+
     return updatedSettings.toJSON();
   },
   async saveNotificationsTypes(
@@ -128,6 +142,10 @@ const settingsApi = {
       },
       { new: true },
     );
+
+    if (!updatedSettings) {
+      throw new AppError(SettingsApiErrorCode.NO_USER_SETTINGS, 'api');
+    }
 
     return updatedSettings.toJSON();
   },
@@ -147,6 +165,10 @@ const settingsApi = {
       { new: true },
     );
 
+    if (!updatedSettings) {
+      throw new AppError(SettingsApiErrorCode.NO_USER_SETTINGS, 'api');
+    }
+
     return updatedSettings.toJSON();
   },
   async saveTaskListTitleFilter(
@@ -165,6 +187,10 @@ const settingsApi = {
       { new: true },
     );
 
+    if (!updatedSettings) {
+      throw new AppError(SettingsApiErrorCode.NO_USER_SETTINGS, 'api');
+    }
+
     return updatedSettings.toJSON();
   },
   async saveTaskListTaskTypeFilter(
@@ -182,6 +208,10 @@ const settingsApi = {
       },
       { new: true },
     );
+
+    if (!updatedSettings) {
+      throw new AppError(SettingsApiErrorCode.NO_USER_SETTINGS, 'api');
+    }
 
     return updatedSettings.toJSON();
   },

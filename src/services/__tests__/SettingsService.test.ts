@@ -253,7 +253,7 @@ describe('SettingsService', () => {
       expect(getSettingsSpy).toHaveBeenCalledWith(ownerId);
     });
 
-    it('should catch api error when api fails', async () => {
+    it('should handle error when api fails', async () => {
       const ownerId = '1234';
       const getSettingsSpy = jest
         .spyOn(settingsApi, 'getSettings')
@@ -269,6 +269,56 @@ describe('SettingsService', () => {
       }
 
       expect(getSettingsSpy).toHaveBeenCalledWith(ownerId);
+    });
+  });
+
+  describe('updateNotificationsGeneral', () => {
+    it('should update notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('updateNotificationsTypes', () => {
+    it('should update notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('updateTaskListStatusFilter', () => {
+    it('should update notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('updateTaskListTitleFilter', () => {
+    it('should update notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('updateTaskListTaskTypeFilter', () => {
+    it('should update notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
     });
   });
 });

@@ -251,4 +251,54 @@ describe('settingsApi', () => {
       }
     });
   });
+
+  describe('saveNotificationsGeneral', () => {
+    it('should save notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('saveNotificationsTypes', () => {
+    it('should save notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('saveTaskListStatusFilter', () => {
+    it('should save notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('saveTaskListTitleFilter', () => {
+    it('should save notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('saveTaskListTaskTypeFilter', () => {
+    it('should save notifications general setting', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
 });

@@ -13,6 +13,7 @@ import {
 
 import { FieldValue, Task } from '../../interfaces';
 import { FieldSchema } from '../../schemas/FieldSchema';
+import { registerFieldsDiscriminators } from '../registerFieldsDiscriminators';
 
 export interface TaskDocument extends Task, Document {
   validateFields(this: TaskDocument): boolean;
@@ -212,3 +213,5 @@ export const calculateNotificationAt = (
     }
   }
 };
+
+registerFieldsDiscriminators();

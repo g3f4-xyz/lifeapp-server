@@ -5,6 +5,26 @@ import taskApi from '../taskApi';
 describe('taskApi', () => {
   setupMongo();
 
+  describe('deleteTask', () => {
+    it('should delete task', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('deleteTasks', () => {
+    it('should delete all user tasks', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
   describe('getEmptyTask', () => {
     it('should get empty todo task', async () => {
       const ownerId = '1234567890';
@@ -88,6 +108,36 @@ describe('taskApi', () => {
       expect(task.fields[4].value.text).toBe('');
       expect(task.fields[5].value.ownValue).toBe(null);
       expect(task.fields[5].value.childrenValue).toBe(null);
+    });
+  });
+
+  describe('getTask', () => {
+    it('should get task', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('getTaskList', () => {
+    it('should get task list', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
+    });
+  });
+
+  describe('saveTask', () => {
+    it('should save task', () => {
+      // TODO
+    });
+
+    it('should handle error', () => {
+      // TODO
     });
   });
 });
