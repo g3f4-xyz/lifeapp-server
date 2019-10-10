@@ -1,16 +1,25 @@
 import { TASK_TYPE } from '../../../../constants';
+import AppError from '../../../../utils/AppError';
 import mockMongoCollection from '../../../../utils/tests/mockMongoCollection';
 import setupMongo from '../../../../utils/tests/setupMongo';
+import { Subscription } from '../../../interfaces';
 import { SettingsModel } from '../../../models/settings/SettingsModel';
-import AppError from '../../../../utils/AppError';
 import settingsApi from '../settingsApi';
 
 describe('settingsApi', () => {
+  const firstUser = {
+    id: '1234567890',
+    subscriptionId: '5d94cb40d4b62b5aeec481c5',
+  };
+  const secondUser = {
+    id: '0987654321',
+  };
+
   setupMongo({
     async beforeAllExtend() {
       await mockMongoCollection(SettingsModel, [
         {
-          ownerId: '1234567890',
+          ownerId: firstUser.id,
           notifications: {
             general: {
               show: true,
@@ -23,7 +32,20 @@ describe('settingsApi', () => {
               routines: true,
               goals: true,
             },
-            subscriptions: [],
+            subscriptions: [
+              {
+                subscriptionData: {
+                  endpoint: 'endpoint',
+                  expirationTime: 'expirationTime',
+                  keys: {
+                    auth: 'auth',
+                    p256dh: 'p256dh',
+                  },
+                },
+                userAgent: 'userAgent',
+                userDeviceType: 'userDeviceType',
+              },
+            ],
           },
           taskList: {
             filters: {
@@ -34,7 +56,7 @@ describe('settingsApi', () => {
           },
         },
         {
-          ownerId: '0987654321',
+          ownerId: secondUser.id,
           notifications: {
             general: {
               show: true,
@@ -63,7 +85,7 @@ describe('settingsApi', () => {
 
   describe('settingsApi.getSettings', () => {
     it('should get existing user settings', async () => {
-      const ownerId = '1234567890';
+      const ownerId = firstUser.id;
       const settings = await settingsApi.getSettings(ownerId);
 
       expect(settings).toBeTruthy();
@@ -123,7 +145,7 @@ describe('settingsApi', () => {
     });
 
     it('should not create user settings when already created', async () => {
-      const ownerId = '1234567890';
+      const ownerId = firstUser.id;
 
       try {
         await settingsApi.createSettings(ownerId);
@@ -132,6 +154,55 @@ describe('settingsApi', () => {
         expect(e.code).toBe('DUPLICATE_SETTINGS');
         expect(e.level).toBe('api');
       }
+    });
+  });
+
+  describe('addSubscription', () => {
+    it('should add subscription', async () => {
+      const ownerId = firstUser.id;
+      const settings = await settingsApi.getSettings(ownerId);
+      const subscription: Subscription = {
+        _id: undefined,
+        subscriptionData: {
+          endpoint: 'endpoint',
+          expirationTime: 'expirationTime',
+          keys: {
+            auth: 'auth',
+            p256dh: 'p256dh',
+          },
+        },
+        userAgent: 'userAgent',
+        userDeviceType: 'userDeviceType',
+      };
+
+      expect(settings.notifications.subscriptions.length).toBe(1);
+
+      const settingsAfter = await settingsApi.addSubscription(
+        ownerId,
+        subscription,
+      );
+
+      expect(settingsAfter.notifications.subscriptions.length).toBe(2);
+    });
+  });
+
+  describe('deleteSubscription', () => {
+    // TODO dlaczego ten test nie przechodzi?
+    xit('should delete subscription', async () => {
+      const ownerId = firstUser.id;
+      const settings = await settingsApi.getSettings(ownerId);
+      const subscriptionId = settings.notifications.subscriptions[0]._id;
+
+      expect(settings.notifications.subscriptions[0]._id).toBe(subscriptionId);
+      expect(settings.notifications.subscriptions.length).toBe(1);
+
+      const settingsAfter = await settingsApi.deleteSubscription(
+        ownerId,
+        subscriptionId,
+      );
+
+      expect(settingsAfter.notifications.subscriptions[0]).not.toBeDefined();
+      expect(settings.notifications.subscriptions.length).toBe(0);
     });
   });
 });

@@ -3,7 +3,7 @@ import { MONGO_ERROR, TASK_STATUS, TASK_TYPE } from '../../../constants';
 import {
   Settings,
   SettingsNotificationsGeneral,
-  SettingsNotificationsTypes,
+  SettingsNotificationsTypes, Subscription,
   SubscriptionData,
 } from '../../interfaces';
 import { SettingsModel } from '../../models/settings/SettingsModel';
@@ -11,161 +11,10 @@ import AppError from '../../../utils/AppError';
 
 export enum SettingsApiErrorCode {
   DUPLICATE_SETTINGS = 'DUPLICATE_SETTINGS',
+  NO_USER_SETTINGS = 'NO_USER_SETTINGS',
 }
 
 const settingsApi = {
-  async addSubscription(
-    ownerId: string,
-    subscriptionData: SubscriptionData,
-    userAgent: string,
-    userDeviceType: string,
-  ): Promise<void> {
-    const userSettings = await SettingsModel.findOne({
-      ownerId,
-    });
-
-    if (!userSettings) {
-      console.error('no user settings while trying to add subscription.');
-      return;
-    }
-
-    const subscriptions = userSettings.notifications.subscriptions;
-    const oldSubscription = subscriptions.find(
-      subscription =>
-        subscription.subscriptionData.endpoint === subscriptionData.endpoint,
-    );
-
-    if (!oldSubscription) {
-      userSettings.notifications.subscriptions.push({
-        subscriptionData,
-        userAgent,
-        userDeviceType,
-      });
-
-      await userSettings.save();
-    }
-  },
-  async deleteSubscription(
-    ownerId: string,
-    subscriptionId: string,
-  ): Promise<string> {
-    await SettingsModel.findOneAndUpdate(
-      {
-        ownerId,
-      },
-      {
-        $pull: {
-          ['notifications.subscriptions']: { _id: subscriptionId },
-        },
-      },
-    );
-
-    return ownerId;
-  },
-  async getSubscriptionData(
-    ownerId: string,
-    subscriptionId: string,
-  ): Promise<SubscriptionData> {
-    const settings = await SettingsModel.findOne({ ownerId });
-
-    // @ts-ignore
-    return settings.notifications.subscriptions.id(subscriptionId).toJSON()
-      .subscriptionData;
-  },
-  async saveNotificationsGeneral(
-    ownerId: string,
-    general: SettingsNotificationsGeneral,
-  ): Promise<SettingsNotificationsGeneral> {
-    await SettingsModel.findOneAndUpdate(
-      {
-        ownerId,
-      },
-      {
-        $set: {
-          ['notifications.general']: general,
-        },
-      },
-    );
-
-    return general;
-  },
-  async saveTaskListStatusFilter(
-    ownerId: string,
-    status: TASK_STATUS,
-  ): Promise<string> {
-    await SettingsModel.findOneAndUpdate(
-      {
-        ownerId,
-      },
-      {
-        $set: {
-          ['taskList.filters.status']: status,
-        },
-      },
-    );
-
-    return status;
-  },
-  async saveTaskListTitleFilter(
-    ownerId: string,
-    title: string,
-  ): Promise<string> {
-    await SettingsModel.findOneAndUpdate(
-      {
-        ownerId,
-      },
-      {
-        $set: {
-          ['taskList.filters.title']: title,
-        },
-      },
-    );
-
-    return title;
-  },
-  async saveNotificationsTypes(
-    ownerId: string,
-    types: SettingsNotificationsTypes,
-  ): Promise<SettingsNotificationsTypes> {
-    await SettingsModel.findOneAndUpdate(
-      {
-        ownerId,
-      },
-      {
-        $set: {
-          ['notifications.types']: types,
-        },
-      },
-    );
-
-    return types;
-  },
-  async saveTaskListTaskTypeFilter(
-    ownerId: string,
-    taskTypeFilter: TASK_TYPE[],
-  ): Promise<TASK_TYPE[]> {
-    await SettingsModel.findOneAndUpdate(
-      {
-        ownerId,
-      },
-      {
-        $set: {
-          ['taskList.filters.taskType']: taskTypeFilter,
-        },
-      },
-    );
-
-    return taskTypeFilter;
-  },
-  async getSettings(ownerId: string): Promise<Settings | null> {
-    const settingsModel = await SettingsModel.findOne({ ownerId });
-
-    if (settingsModel) {
-      return settingsModel.toJSON();
-    }
-
-    return null;
-  },
   async createSettings(ownerId: string): Promise<Settings> {
     try {
       const newSettings = await SettingsModel.create({ ownerId });
@@ -185,6 +34,152 @@ const settingsApi = {
     await SettingsModel.findOne({ ownerId }).remove();
 
     return ownerId;
+  },
+  async getSettings(ownerId: string): Promise<Settings | null> {
+    const settingsModel = await SettingsModel.findOne({ ownerId });
+
+    if (settingsModel) {
+      return settingsModel.toJSON();
+    }
+
+    return null;
+  },
+//  async saveSettings(ownerId: string, settings: Settings): Promise<Settings> {
+//    const settingsDoc = await SettingsModel.findOneAndUpdate(
+//      { ownerId },
+//      settings,
+//      { new: true },
+//    );
+//
+//    return settingsDoc.toJSON();
+//  },
+
+  async addSubscription(
+    ownerId: string,
+    subscription: Subscription,
+  ): Promise<Settings> {
+    const settingsDocument = await SettingsModel.findOneAndUpdate(
+      {
+        ownerId,
+      },
+      {
+        $push: {
+          ['notifications.subscriptions']: subscription,
+        },
+      },
+      { new: true },
+    );
+
+    return settingsDocument.toJSON();
+  },
+  async deleteSubscription(
+    ownerId: string,
+    subscriptionId: string,
+  ): Promise<Settings> {
+    const settingsDocument = await SettingsModel.findOneAndUpdate(
+      {
+        ownerId,
+      },
+      {
+        $pull: {
+          ['notifications.subscriptions']: { _id: subscriptionId },
+        },
+      },
+      { new: true },
+    );
+
+    return settingsDocument.toJSON();
+  },
+
+  async saveNotificationsGeneral(
+    ownerId: string,
+    general: SettingsNotificationsGeneral,
+  ): Promise<Settings> {
+    const updatedSettings = await SettingsModel.findOneAndUpdate(
+      {
+        ownerId,
+      },
+      {
+        $set: {
+          ['notifications.general']: general,
+        },
+      },
+      { new: true },
+    );
+
+    return updatedSettings.toJSON();
+  },
+  async saveNotificationsTypes(
+    ownerId: string,
+    types: SettingsNotificationsTypes,
+  ): Promise<Settings> {
+    const updatedSettings = await SettingsModel.findOneAndUpdate(
+      {
+        ownerId,
+      },
+      {
+        $set: {
+          ['notifications.types']: types,
+        },
+      },
+      { new: true },
+    );
+
+    return updatedSettings.toJSON();
+  },
+  async saveTaskListStatusFilter(
+    ownerId: string,
+    status: TASK_STATUS,
+  ): Promise<Settings> {
+    const updatedSettings = await SettingsModel.findOneAndUpdate(
+      {
+        ownerId,
+      },
+      {
+        $set: {
+          ['taskList.filters.status']: status,
+        },
+      },
+      { new: true },
+    );
+
+    return updatedSettings.toJSON();
+  },
+  async saveTaskListTitleFilter(
+    ownerId: string,
+    title: string,
+  ): Promise<Settings> {
+    const updatedSettings = await SettingsModel.findOneAndUpdate(
+      {
+        ownerId,
+      },
+      {
+        $set: {
+          ['taskList.filters.title']: title,
+        },
+      },
+      { new: true },
+    );
+
+    return updatedSettings.toJSON();
+  },
+  async saveTaskListTaskTypeFilter(
+    ownerId: string,
+    taskTypeFilter: TASK_TYPE[],
+  ): Promise<Settings> {
+    const updatedSettings = await SettingsModel.findOneAndUpdate(
+      {
+        ownerId,
+      },
+      {
+        $set: {
+          ['taskList.filters.taskType']: taskTypeFilter,
+        },
+      },
+      { new: true },
+    );
+
+    return updatedSettings.toJSON();
   },
 };
 

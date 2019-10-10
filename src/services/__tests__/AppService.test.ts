@@ -30,7 +30,7 @@ describe('UserService', () => {
       const ownerId = '1234';
       const deleteTasksSpy = jest
         .spyOn(taskApi, 'deleteTasks')
-        .mockRejectedValue(ownerId);
+        .mockRejectedValue(null);
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockResolvedValue(ownerId);
@@ -55,7 +55,7 @@ describe('UserService', () => {
         .mockResolvedValue(ownerId);
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
-        .mockRejectedValue(ownerId);
+        .mockRejectedValue(null);
       const userService = new UserService(taskApi, settingsApi);
 
       try {
@@ -74,10 +74,10 @@ describe('UserService', () => {
       const ownerId = '1234';
       const deleteTasksSpy = jest
         .spyOn(taskApi, 'deleteTasks')
-        .mockRejectedValue(ownerId);
+        .mockRejectedValue(null);
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
-        .mockRejectedValue(ownerId);
+        .mockRejectedValue(null);
       const userService = new UserService(taskApi, settingsApi);
 
       try {

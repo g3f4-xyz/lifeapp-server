@@ -1,9 +1,9 @@
 import { PushSubscription } from 'web-push';
 import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
-import UserService from '../services/UserService';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
+import UserService from '../services/UserService';
 
 export interface ConfigMap<T = string | boolean> {
   [key: string]: T;
@@ -80,7 +80,8 @@ export interface SubscriptionData extends PushSubscription {
 }
 
 export interface Subscription {
-  subscriptionData: PushSubscription;
+  _id: any;
+  subscriptionData: SubscriptionData;
   userAgent: string;
   userDeviceType: string;
 }

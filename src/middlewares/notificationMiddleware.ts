@@ -4,6 +4,9 @@ import { sendNotification } from 'web-push';
 import { DEMO_USER } from '../config';
 import settingsApi from '../db/api/settings/settingsApi';
 import { User } from '../db/interfaces';
+import SettingsService from '../services/SettingsService';
+
+const settingsService = new SettingsService(settingsApi);
 
 export const notificationMiddleware = async (req: Request, res: Response) => {
   const {
@@ -17,7 +20,7 @@ export const notificationMiddleware = async (req: Request, res: Response) => {
     os: { family: userDeviceType },
   } = parse(req.headers['user-agent']);
   const { id: ownerId } = (req.user as User) || DEMO_USER;
-  await settingsApi.addSubscription(
+  await settingsService.addSubscription(
     ownerId,
     subscriptionData,
     userAgent,

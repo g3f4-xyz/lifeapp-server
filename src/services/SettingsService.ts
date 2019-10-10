@@ -1,18 +1,48 @@
 import { sendNotification } from 'web-push';
-import { STATUSES, TASK_STATUS, TASK_TYPE } from '../constants';
+import { STATUS, STATUSES, TASK_STATUS, TASK_TYPE } from '../constants';
 import { SettingsApi } from '../db/api/settings/settingsApi';
 import {
   SettingsNotificationsGeneral,
   SettingsNotificationsTypes,
+  Subscription,
+  SubscriptionData,
 } from '../db/interfaces';
 
 export default class SettingsService {
   constructor(readonly settingsApi: SettingsApi) {}
 
+  async addSubscription(
+    ownerId: string,
+    subscriptionData: SubscriptionData,
+    userAgent: string,
+    userDeviceType: string,
+  ): Promise<void> {
+    const userSettings = await this.settingsApi.getSettings(ownerId);
+
+    const subscriptions = userSettings.notifications.subscriptions;
+    const oldSubscription = subscriptions.find(
+      subscription =>
+        subscription.subscriptionData.endpoint === subscriptionData.endpoint,
+    );
+
+    if (oldSubscription) {
+      await this.settingsApi.deleteSubscription(ownerId, oldSubscription._id);
+    }
+
+    const subscription: Subscription = {
+      _id: undefined,
+      subscriptionData,
+      userAgent,
+      userDeviceType,
+    };
+
+    await this.settingsApi.addSubscription(ownerId, subscription);
+  }
+
   async deleteUserSubscription(
     ownerId: string,
     subscriptionId: string,
-  ): Promise<string> {
+  ): Promise<void> {
     return await this.settingsApi.deleteSubscription(ownerId, subscriptionId);
   }
 
@@ -26,12 +56,27 @@ export default class SettingsService {
     return await this.settingsApi.createSettings(ownerId);
   }
 
-  async testSubscription(ownerId: string, subscriptionModelId: string) {
+  private async getSubscriptionData(
+    ownerId: string,
+    subscriptionId: string,
+  ): Promise<SubscriptionData | null> {
+    const userSettings = await this.settingsApi.getSettings(ownerId);
+
+    const subscription = userSettings.notifications.subscriptions.find(({ _id }) => _id === subscriptionId);
+
+    return subscription ? subscription.subscriptionData : null;
+  }
+
+  async testSubscription(ownerId: string, subscriptionModelId: string): STATUS {
     try {
-      const subscriptionData = await this.settingsApi.getSubscriptionData(
+      const subscriptionData = await this.getSubscriptionData(
         ownerId,
         subscriptionModelId,
       );
+
+      if (!subscriptionData) {
+        return STATUSES.NOT_FOUND;
+      }
 
       const payload = JSON.stringify({
         title: 'Welcome to LifeApp!',
