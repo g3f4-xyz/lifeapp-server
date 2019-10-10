@@ -22,7 +22,7 @@ export const deleteSubscriptionMutation = mutationWithClientMutationId({
       const { id: ownerId } = user;
       const { id } = await fromGlobalId(subscriptionId);
 
-      await settingsService.deleteUserSubscription(ownerId, id);
+      await settingsService.deleteSubscription(ownerId, id);
 
       return { subscriptionId };
     } catch (error) {

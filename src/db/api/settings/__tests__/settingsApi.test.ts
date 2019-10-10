@@ -85,7 +85,7 @@ describe('settingsApi', () => {
     },
   });
 
-  describe('settingsApi.getSettings', () => {
+  describe('getSettings', () => {
     it('should get existing user settings', async () => {
       const ownerId = firstUser.id;
       const settings = await settingsApi.getSettings(ownerId);
@@ -130,7 +130,7 @@ describe('settingsApi', () => {
     });
   });
 
-  describe('settingsApi.createSettings', () => {
+  describe('createSettings', () => {
     it('should create user settings', async () => {
       const ownerId = '1234';
       const settings = await settingsApi.createSettings(ownerId);

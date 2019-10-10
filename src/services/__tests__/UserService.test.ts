@@ -10,7 +10,7 @@ describe('UserService', () => {
     expect(userService).toBeDefined();
   });
 
-  describe('cleanApplication method', () => {
+  describe('cleanApplication', () => {
     it('should clean user data', async () => {
       const ownerId = '1234';
       const deleteTasksSpy = jest
