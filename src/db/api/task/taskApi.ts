@@ -1,14 +1,23 @@
 import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../../../constants';
+import AppError from '../../../utils/AppError';
 import { Task, TaskListSettingsFilters } from '../../interfaces';
 import { TASK_FIELDS } from '../../models/tasks/taskFields';
 import { TaskModel } from '../../models/tasks/TaskModel';
 import getFieldDefaultValue from './getFieldDefaultValue';
 
+export enum TaskApiErrorCode {
+  NO_TASK = 'NO_TASK',
+}
+
 const taskApi = {
   async deleteTask(taskId: string): Promise<string> {
-    const task = await TaskModel.findById(taskId);
+    const taskDocument = await TaskModel.findById(taskId);
 
-    await task.remove();
+    if (!taskDocument) {
+      throw new AppError(TaskApiErrorCode.NO_TASK, 'api');
+    }
+
+    await taskDocument.remove();
 
     return taskId;
   },
@@ -31,9 +40,13 @@ const taskApi = {
     return taskDocument.toJSON();
   },
   async getTask(taskId: string): Promise<Task> {
-    const task = await TaskModel.findById(taskId);
+    const taskDocument = await TaskModel.findById(taskId);
 
-    return task.toJSON();
+    if (!taskDocument) {
+      throw new AppError(TaskApiErrorCode.NO_TASK, 'api');
+    }
+
+    return taskDocument.toJSON();
   },
   async getTaskList(
     ownerId: string,
@@ -88,6 +101,10 @@ const taskApi = {
     const taskDocument = await TaskModel.findByIdAndUpdate(task._id, task, {
       new: true,
     });
+
+    if (!taskDocument) {
+      throw new AppError(TaskApiErrorCode.NO_TASK, 'api');
+    }
 
     return await taskDocument.toJSON();
   },
