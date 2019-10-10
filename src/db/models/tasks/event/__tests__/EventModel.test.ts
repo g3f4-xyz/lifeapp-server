@@ -1,17 +1,15 @@
 import { FIELD_ID, TASK_TYPE } from '../../../../../constants';
-import connectDB from '../../../../connect';
+import setupMongo from '../../../../../utils/tests/setupMongo';
 import { ChoiceFieldModel } from '../../../fields/choice/ChoiceFieldModel';
 import { NestedFieldModel } from '../../../fields/nested/NestedFieldModel';
 import { SwitchFieldModel } from '../../../fields/switch/SwitchFieldModel';
 import { TextFieldModel } from '../../../fields/text/TextFieldModel';
-import { TASK_FIELDS, TaskModel } from '../../TaskModel';
+import { TASK_FIELDS } from '../../taskFields';
+import { TaskModel } from '../../TaskModel';
 import { EventModel } from '../EventModel';
 
 describe('EventModel', () => {
-  beforeAll(async () => {
-    // @ts-ignore
-    await connectDB(global.__MONGO_URI__);
-  });
+  setupMongo();
 
   it('should be defined', () => {
     expect(EventModel).toBeDefined();

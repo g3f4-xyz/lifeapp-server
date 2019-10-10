@@ -1,13 +1,14 @@
 import { fromGlobalId } from 'graphql-relay';
-import { getSettings, getTaskType, getTaskTypeList } from '../db/api/api';
-import { getTask, getTaskList } from '../db/api/task/taskApi';
+import settingsApi from '../db/api/settings/settingsApi';
+import taskTypeApi from '../db/api/task-type/taskTypeApi';
+import taskApi from '../db/api/task/taskApi';
 
 const GETTERS = {
-  TaskType: getTask,
-  TaskListType: getTaskList,
-  TaskTypeType: getTaskType,
-  TaskTypeListType: getTaskTypeList,
-  SettingsType: getSettings,
+  TaskType: taskApi.getTask,
+  TaskListType: taskApi.getTaskList,
+  TaskTypeType: taskTypeApi.getTaskType,
+  TaskTypeListType: taskTypeApi.getTaskTypeList,
+  SettingsType: settingsApi.getSettings,
 };
 
 export const idFetcher = async (globalId: string): Promise<any> => {

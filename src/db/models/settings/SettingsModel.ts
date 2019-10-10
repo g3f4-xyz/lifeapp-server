@@ -1,7 +1,6 @@
 import { Document, model, Model, Schema } from 'mongoose';
-import { TASK_STATUS, TASK_TYPE } from '../../constants';
-import { Settings } from '../interfaces';
-import { SubscriptionSchema } from '../schemas/SubscriptionSchema';
+import { TASK_STATUS, TASK_TYPE } from '../../../constants';
+import { Settings } from '../../interfaces';
 
 export interface SettingsDocument extends Settings, Document {}
 
@@ -40,12 +39,39 @@ export const SettingsSchema: Schema<Settings> = new Schema({
         default: true,
       },
     },
-    subscriptions: [
-      {
-        type: SubscriptionSchema,
-        default: [],
-      },
-    ],
+    subscriptions: {
+      type: [
+        {
+          subscriptionData: {
+            type: {
+              endpoint: {
+                type: String,
+                required: true,
+              },
+              expirationTime: {
+                type: String,
+                required: true,
+              },
+              keys: {
+                p256dh: {
+                  type: String,
+                  required: true,
+                },
+                auth: {
+                  type: String,
+                  required: true,
+                },
+              },
+            },
+            required: true,
+          },
+          userAgent: String,
+          userDeviceType: String,
+        },
+      ],
+      default: [],
+      required: true,
+    },
   },
   taskList: {
     filters: {
@@ -53,12 +79,15 @@ export const SettingsSchema: Schema<Settings> = new Schema({
         type: String,
         default: '',
       },
-      taskType: [
-        {
-          type: String,
-          enum: Object.values(TASK_TYPE),
-        },
-      ],
+      taskType: {
+        type: [
+          {
+            type: String,
+            enum: Object.values(TASK_TYPE),
+          },
+        ],
+        default: Object.values(TASK_TYPE),
+      },
       status: {
         type: String,
         enum: Object.values(TASK_STATUS).concat([null]),
@@ -73,6 +102,7 @@ export const SettingsModel: Model<SettingsDocument> = model(
   SettingsSchema,
 );
 
+// TODO dlaczego to jest potrzebne
 (async () => {
   try {
     await SettingsModel.createIndexes();

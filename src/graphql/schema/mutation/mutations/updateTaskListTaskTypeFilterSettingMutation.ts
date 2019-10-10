@@ -1,6 +1,6 @@
 import { GraphQLList, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
-import { updateTaskListTaskTypeFilterSetting } from '../../../../db/api/api';
+import { Context } from '../../../../db/interfaces';
 import { TaskTypeEnum } from '../../../enums/TaskTypeEnum';
 
 export const updateTaskListTaskTypeFilterSettingMutation = mutationWithClientMutationId(
@@ -20,12 +20,15 @@ export const updateTaskListTaskTypeFilterSettingMutation = mutationWithClientMut
         ),
       },
     },
-    mutateAndGetPayload: async ({ taskType }, { user }) => {
+    mutateAndGetPayload: async (
+      { taskType },
+      { user, settingsService }: Context,
+    ) => {
       try {
         const { id: ownerId } = user;
 
         return {
-          taskType: await updateTaskListTaskTypeFilterSetting(
+          taskType: await settingsService.updateTaskListTaskTypeFilterSetting(
             ownerId,
             taskType,
           ),

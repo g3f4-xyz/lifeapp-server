@@ -1,5 +1,10 @@
 import { PushSubscription } from 'web-push';
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../constants';
+import { FIELD_ID, FIELD_TYPE, TASK_STATUS, TASK_TYPE } from '../constants';
+import NotificationsService from '../services/NotificationsService';
+import SettingsService from '../services/SettingsService';
+import TaskService from '../services/TaskService';
+import TaskTypeService from '../services/TaskTypeService';
+import UserService from '../services/UserService';
 
 export interface ConfigMap<T = string | boolean> {
   [key: string]: T;
@@ -76,7 +81,8 @@ export interface SubscriptionData extends PushSubscription {
 }
 
 export interface Subscription {
-  subscriptionData: PushSubscription;
+  _id: any;
+  subscriptionData: SubscriptionData;
   userAgent: string;
   userDeviceType: string;
 }
@@ -88,7 +94,7 @@ export interface SettingsNotificationsGeneral {
 
 export interface SettingsNotificationsTypes {
   events: boolean;
-  goal: boolean;
+  goals: boolean;
   meetings: boolean;
   routines: boolean;
   todos: boolean;
@@ -101,11 +107,13 @@ export interface Notifications {
 }
 
 export interface TaskListSettings {
-  filters: {
-    title: string;
-    taskType: string[];
-    status: string;
-  };
+  filters: TaskListSettingsFilters;
+}
+
+export interface TaskListSettingsFilters {
+  title: string;
+  taskType: TASK_TYPE[];
+  status: TASK_STATUS;
 }
 
 export interface Settings {
@@ -120,4 +128,9 @@ export interface User {
 
 export interface Context {
   user: User;
+  userService: UserService;
+  taskService: TaskService;
+  taskTypeService: TaskTypeService;
+  settingsService: SettingsService;
+  notificationsService: NotificationsService;
 }

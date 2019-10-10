@@ -5,17 +5,11 @@ import {
   GraphQLString,
 } from 'graphql';
 import { fromGlobalId, globalIdField } from 'graphql-relay';
-import { getSettings, getTaskTypeList } from '../../../../db/api/api';
-import {
-  getEmptyTask,
-  getTask,
-  getTaskList,
-} from '../../../../db/api/task/taskApi';
 import { Context, Settings, Task } from '../../../../db/interfaces';
 import { SettingsType } from './settings/SettingsType';
 import { TaskListType } from './task-list/TaskListType';
-import { TaskType } from './task/TaskType';
 import { TaskTypeListType } from './task-type-list/TaskTypeListType';
+import { TaskType } from './task/TaskType';
 
 export const AppType = new GraphQLObjectType<boolean, Context>({
   name: 'AppType',
@@ -24,8 +18,12 @@ export const AppType = new GraphQLObjectType<boolean, Context>({
     id: globalIdField('App'),
     settings: {
       type: new GraphQLNonNull(SettingsType),
-      async resolve(_, __, { user: { id: ownerId } }): Promise<Settings> {
-        return await getSettings(ownerId);
+      async resolve(
+        _,
+        __,
+        { user: { id: ownerId }, settingsService },
+      ): Promise<Settings> {
+        return await settingsService.getSettings(ownerId);
       },
     },
     task: {
@@ -41,25 +39,25 @@ export const AppType = new GraphQLObjectType<boolean, Context>({
       resolve: async (
         _,
         { id, type },
-        { user: { id: ownerId } },
+        { user: { id: ownerId }, taskService },
       ): Promise<Task> => {
         if (id && id.length > 0) {
-          return await getTask(fromGlobalId(id).id);
+          return await taskService.getTask(fromGlobalId(id).id);
         }
 
-        return await getEmptyTask(type, ownerId);
+        return await taskService.getEmptyTask(ownerId, type);
       },
     },
     taskList: {
       type: new GraphQLNonNull(TaskListType),
-      async resolve(_rootValue, _args, { user: { id } }) {
-        return await getTaskList(id);
+      async resolve(_rootValue, _args, { user: { id }, taskService }) {
+        return await taskService.getTaskList(id);
       },
     },
     taskTypeList: {
       type: new GraphQLNonNull(TaskTypeListType),
-      async resolve() {
-        return await getTaskTypeList();
+      async resolve(_rootValue, _args, { taskTypeService }) {
+        return await taskTypeService.getTaskTypeList();
       },
     },
   }),

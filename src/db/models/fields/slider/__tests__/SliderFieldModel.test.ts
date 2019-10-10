@@ -1,13 +1,10 @@
 import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
-import connectDB from '../../../../connect';
-import { FIELDS_CONFIG } from '../../../tasks/TaskModel';
+import setupMongo from '../../../../../utils/tests/setupMongo';
+import { FIELDS_CONFIG } from '../../../tasks/fieldsConfig';
 import { SliderFieldModel } from '../SliderFieldModel';
 
 describe('SliderFieldModel', () => {
-  beforeAll(async () => {
-    // @ts-ignore
-    await connectDB(global.__MONGO_URI__);
-  });
+  setupMongo();
 
   it('should be defined', () => {
     expect(SliderFieldModel).toBeDefined();

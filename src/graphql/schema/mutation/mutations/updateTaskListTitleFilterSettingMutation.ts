@@ -1,6 +1,6 @@
 import { GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
-import { updateTaskListTitleFilterSetting } from '../../../../db/api/api';
+import { Context } from '../../../../db/interfaces';
 
 export const updateTaskListTitleFilterSettingMutation = mutationWithClientMutationId(
   {
@@ -15,12 +15,18 @@ export const updateTaskListTitleFilterSettingMutation = mutationWithClientMutati
         type: GraphQLString,
       },
     },
-    mutateAndGetPayload: async ({ title }, { user }) => {
+    mutateAndGetPayload: async (
+      { title },
+      { user, settingsService }: Context,
+    ) => {
       try {
         const { id: ownerId } = user;
 
         return {
-          title: await updateTaskListTitleFilterSetting(ownerId, title),
+          title: await settingsService.updateTaskListTitleFilterSetting(
+            ownerId,
+            title,
+          ),
         };
       } catch (error) {
         return error;

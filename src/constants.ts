@@ -2,12 +2,13 @@ type KEYOF_TYPE_VALUE_MAP<T, V> = {
   [K in keyof T]: V;
 };
 
-export type STATUS = '201' | '408' | '410';
+export type STATUS = 201 | 408 | 410 | 404;
 
 export const STATUSES: { [key: string]: STATUS } = {
-  OK: '201',
-  REQUEST_TIMEOUT: '408',
-  NOT_REGISTERED: '410',
+  OK: 201,
+  REQUEST_TIMEOUT: 408,
+  NOT_REGISTERED: 410,
+  NOT_FOUND: 404,
 };
 
 export enum FIELD_ID {
@@ -105,4 +106,8 @@ export enum MONTH_CYCLE {
   END = 'MONTH_END',
   MIDDLE = 'MONTH_MIDDLE',
   START = 'MONTH_START',
+}
+
+export enum MONGO_ERROR {
+  DUPLICATE_KEY = 11000,
 }
