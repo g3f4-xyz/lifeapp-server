@@ -5,8 +5,9 @@ import { DEMO_USER } from '../config';
 import settingsApi from '../db/api/settings/settingsApi';
 import taskTypeApi from '../db/api/task-type/taskTypeApi';
 import taskApi from '../db/api/task/taskApi';
-import { User } from '../db/interfaces';
+import { Context, User } from '../db/interfaces';
 import { Schema } from '../graphql/schema/Schema';
+import NotificationsService from '../services/NotificationsService';
 import UserService from '../services/UserService';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
@@ -23,6 +24,7 @@ export const graphqlMiddleware: Middleware = graphqlHTTP(
       taskService: new TaskService(taskApi, settingsApi),
       taskTypeService: new TaskTypeService(taskTypeApi),
       settingsService: new SettingsService(settingsApi),
-    },
+      notificationsService: new NotificationsService(settingsApi),
+    } as Context,
   }),
 );

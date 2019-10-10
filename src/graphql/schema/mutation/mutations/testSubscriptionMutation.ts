@@ -14,13 +14,13 @@ export const testSubscriptionMutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async (
     { subscriptionId },
-    { user, settingsService }: Context,
+    { user, notificationsService }: Context,
   ) => {
     try {
       const { id: ownerId } = user;
       const { id: subscriptionModelId } = await fromGlobalId(subscriptionId);
 
-      const statusCode = await settingsService.testSubscription(
+      const statusCode = await notificationsService.testSubscription(
         ownerId,
         subscriptionModelId,
       );

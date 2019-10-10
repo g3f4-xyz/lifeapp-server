@@ -1,7 +1,7 @@
-import { sendNotification } from 'web-push';
-import { STATUS, STATUSES, TASK_STATUS, TASK_TYPE } from '../constants';
+import { TASK_STATUS, TASK_TYPE } from '../constants';
 import { SettingsApi } from '../db/api/settings/settingsApi';
 import {
+  Settings,
   SettingsNotificationsGeneral,
   SettingsNotificationsTypes,
   Subscription,
@@ -39,14 +39,14 @@ export default class SettingsService {
     await this.settingsApi.addSubscription(ownerId, subscription);
   }
 
-  async deleteUserSubscription(
+  async deleteSubscription(
     ownerId: string,
     subscriptionId: string,
   ): Promise<void> {
     await this.settingsApi.deleteSubscription(ownerId, subscriptionId);
   }
 
-  async getUserSettings(ownerId: string) {
+  async getSettings(ownerId: string): Promise<Settings> {
     const settings = await this.settingsApi.getSettings(ownerId);
 
     if (settings) {
@@ -54,70 +54,6 @@ export default class SettingsService {
     }
 
     return await this.settingsApi.createSettings(ownerId);
-  }
-
-  private async getSubscriptionData(
-    ownerId: string,
-    subscriptionId: string,
-  ): Promise<SubscriptionData | null> {
-    const userSettings = await this.settingsApi.getSettings(ownerId);
-
-    const subscription = userSettings.notifications.subscriptions.find(
-      ({ _id }) => _id === subscriptionId,
-    );
-
-    return subscription ? subscription.subscriptionData : null;
-  }
-
-  async testSubscription(
-    ownerId: string,
-    subscriptionModelId: string,
-  ): Promise<STATUS> {
-    try {
-      const subscriptionData = await this.getSubscriptionData(
-        ownerId,
-        subscriptionModelId,
-      );
-
-      if (!subscriptionData) {
-        return STATUSES.NOT_FOUND;
-      }
-
-      const payload = JSON.stringify({
-        title: 'Welcome to LifeApp!',
-        notification: {
-          body:
-            'This notification is test.' +
-            ' It will be send always after entering page if notifications were allowed on this page.',
-          icon: 'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4',
-          vibrate: [100, 50, 100],
-          data: {
-            dateOfArrival: Date.now(),
-            primaryKey: 1,
-          },
-          actions: [
-            {
-              action: 'test',
-              title: 'Test',
-              icon:
-                'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4',
-            },
-            {
-              action: 'close',
-              title: 'Close notification',
-              icon:
-                'https://avatars2.githubusercontent.com/u/25178950?s=200&v=4',
-            },
-          ],
-        },
-      });
-
-      const { statusCode } = await sendNotification(subscriptionData, payload);
-
-      return statusCode as STATUS;
-    } catch (error) {
-      return error.statusCode ? error.statusCode : STATUSES.REQUEST_TIMEOUT;
-    }
   }
 
   async updateTaskListTitleFilterSetting(

@@ -23,7 +23,7 @@ export const AppType = new GraphQLObjectType<boolean, Context>({
         __,
         { user: { id: ownerId }, settingsService },
       ): Promise<Settings> {
-        return await settingsService.getUserSettings(ownerId);
+        return await settingsService.getSettings(ownerId);
       },
     },
     task: {
