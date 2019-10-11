@@ -24,7 +24,7 @@ export const saveNotificationsTypesSettingMutation = mutationWithClientMutationI
       try {
         const { id: ownerId } = user;
 
-        const savedTypes = await settingsService.updateNotificationsTypesSetting(
+        const savedTypes = await settingsService.updateNotificationsTypes(
           ownerId,
           types,
         );

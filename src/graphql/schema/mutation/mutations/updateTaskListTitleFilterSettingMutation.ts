@@ -23,7 +23,7 @@ export const updateTaskListTitleFilterSettingMutation = mutationWithClientMutati
         const { id: ownerId } = user;
 
         return {
-          title: await settingsService.updateTaskListTitleFilterSetting(
+          title: await settingsService.updateTaskListTitleFilter(
             ownerId,
             title,
           ),
