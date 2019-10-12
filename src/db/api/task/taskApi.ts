@@ -1,19 +1,25 @@
 import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../../../constants';
+import AppError from '../../../utils/AppError';
 import { Task, TaskListSettingsFilters } from '../../interfaces';
-import { registerFieldsDiscriminators } from '../../models/registerFieldsDiscriminators';
 import { TASK_FIELDS } from '../../models/tasks/taskFields';
 import { TaskModel } from '../../models/tasks/TaskModel';
 import getFieldDefaultValue from './getFieldDefaultValue';
 
-registerFieldsDiscriminators();
+export enum TaskApiErrorCode {
+  NO_TASK = 'NO_TASK',
+}
 
 const taskApi = {
-  async deleteTask(id: string): Promise<string> {
-    const task = await TaskModel.findById(id);
+  async deleteTask(taskId: string): Promise<string> {
+    const taskDocument = await TaskModel.findById(taskId);
 
-    await task.remove();
+    if (!taskDocument) {
+      throw new AppError(TaskApiErrorCode.NO_TASK, 'api');
+    }
 
-    return id;
+    await taskDocument.remove();
+
+    return taskId;
   },
   async deleteTasks(ownerId: string): Promise<string> {
     const tasks = await TaskModel.find({ ownerId });
@@ -21,6 +27,86 @@ const taskApi = {
     tasks.forEach(model => model.remove());
 
     return ownerId;
+  },
+  async getEmptyTask(ownerId: string, taskType: TASK_TYPE): Promise<Task> {
+    const taskDocument = await TaskModel.create({
+      ownerId,
+      taskType,
+      fields: TASK_FIELDS[taskType].map(getFieldDefaultValue),
+    });
+
+    await taskDocument.save();
+
+    return taskDocument.toJSON();
+  },
+  async getTask(taskId: string): Promise<Task> {
+    const taskDocument = await TaskModel.findById(taskId);
+
+    if (!taskDocument) {
+      throw new AppError(TaskApiErrorCode.NO_TASK, 'api');
+    }
+
+    return taskDocument.toJSON();
+  },
+  async getTaskList(
+    ownerId: string,
+    filters: TaskListSettingsFilters,
+  ): Promise<Task[]> {
+    return (await TaskModel.find({
+      ownerId,
+      updatedAt: { $exists: true },
+      taskType: { $in: filters.taskType },
+      $and: [
+        ...[
+          {
+            fields: {
+              $elemMatch: {
+                $and: [
+                  { fieldId: FIELD_ID.TITLE },
+                  { fieldType: FIELD_TYPE.TEXT },
+                  { value: { $exists: true } },
+                  { ['value.text']: { $exists: true } },
+                  {
+                    ['value.text']: {
+                      $regex: new RegExp(filters.title),
+                      $options: 'i',
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        ...(filters.status
+          ? [
+              {
+                fields: {
+                  $elemMatch: {
+                    $and: [
+                      { fieldId: FIELD_ID.STATUS },
+                      { fieldType: FIELD_TYPE.CHOICE },
+                      { value: { $exists: true } },
+                      { ['value.id']: { $exists: true } },
+                      { ['value.id']: filters.status },
+                    ],
+                  },
+                },
+              },
+            ]
+          : []),
+      ],
+    }).sort({ _id: -1 })).map(doc => doc.toJSON());
+  },
+  async saveTask(task: Task): Promise<Task> {
+    const taskDocument = await TaskModel.findByIdAndUpdate(task._id, task, {
+      new: true,
+    });
+
+    if (!taskDocument) {
+      throw new AppError(TaskApiErrorCode.NO_TASK, 'api');
+    }
+
+    return await taskDocument.toJSON();
   },
   //  async deleteUntouchedTasks(): Promise<void> {
   //    const tasks = await TaskModel.find({ updatedAt: { $exists: false } });
@@ -133,78 +219,6 @@ const taskApi = {
   //      },
   //    });
   //  },
-  async getEmptyTask(ownerId: string, taskType: TASK_TYPE): Promise<Task> {
-    const taskDocument = await TaskModel.create({
-      ownerId,
-      taskType,
-      fields: TASK_FIELDS[taskType].map(getFieldDefaultValue),
-    });
-
-    await taskDocument.save();
-
-    return taskDocument.toJSON();
-  },
-  async getTask(id: string): Promise<Task> {
-    const task = await TaskModel.findById(id);
-
-    return task.toJSON();
-  },
-  async getTaskList(
-    ownerId: string,
-    filters: TaskListSettingsFilters,
-  ): Promise<Task[]> {
-    return (await TaskModel.find({
-      ownerId,
-      updatedAt: { $exists: true },
-      taskType: { $in: filters.taskType },
-      $and: [
-        ...[
-          {
-            fields: {
-              $elemMatch: {
-                $and: [
-                  { fieldId: FIELD_ID.TITLE },
-                  { fieldType: FIELD_TYPE.TEXT },
-                  { value: { $exists: true } },
-                  { ['value.text']: { $exists: true } },
-                  {
-                    ['value.text']: {
-                      $regex: new RegExp(filters.title),
-                      $options: 'i',
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        ],
-        ...(filters.status
-          ? [
-              {
-                fields: {
-                  $elemMatch: {
-                    $and: [
-                      { fieldId: FIELD_ID.STATUS },
-                      { fieldType: FIELD_TYPE.CHOICE },
-                      { value: { $exists: true } },
-                      { ['value.id']: { $exists: true } },
-                      { ['value.id']: filters.status },
-                    ],
-                  },
-                },
-              },
-            ]
-          : []),
-      ],
-    }).sort({ _id: -1 })).map(doc => doc.toJSON());
-  },
-  async saveTask(task: Task): Promise<Task> {
-    const taskDocument = await TaskModel.findByIdAndUpdate(task._id, task, {
-      new: true,
-    });
-
-    return await taskDocument.toJSON();
-  },
 };
 
 export default taskApi;

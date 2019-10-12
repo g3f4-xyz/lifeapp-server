@@ -56,7 +56,7 @@ export default class SettingsService {
     return await this.settingsApi.createSettings(ownerId);
   }
 
-  async updateTaskListTitleFilterSetting(
+  async updateTaskListTitleFilter(
     ownerId: string,
     title: string,
   ): Promise<string> {
@@ -68,7 +68,7 @@ export default class SettingsService {
     return updatedSettings.taskList.filters.title;
   }
 
-  async updateTaskListTaskTypeFilterSetting(
+  async updateTaskListTaskTypeFilter(
     ownerId: string,
     taskType: TASK_TYPE[],
   ): Promise<TASK_TYPE[]> {
@@ -80,7 +80,7 @@ export default class SettingsService {
     return updatedSettings.taskList.filters.taskType;
   }
 
-  async updateTaskListStatusFilterSetting(
+  async updateTaskListStatusFilter(
     ownerId: string,
     taskStatus: TASK_STATUS,
   ): Promise<TASK_STATUS> {
@@ -92,7 +92,7 @@ export default class SettingsService {
     return updatedSettings.taskList.filters.status;
   }
 
-  async updateNotificationsGeneralSetting(
+  async updateNotificationsGeneral(
     ownerId: string,
     general: SettingsNotificationsGeneral,
   ): Promise<SettingsNotificationsGeneral> {
@@ -104,7 +104,7 @@ export default class SettingsService {
     return updatedSettings.notifications.general;
   }
 
-  async updateNotificationsTypesSetting(
+  async updateNotificationsTypes(
     ownerId: string,
     types: SettingsNotificationsTypes,
   ): Promise<SettingsNotificationsTypes> {

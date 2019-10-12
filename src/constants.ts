@@ -2,9 +2,9 @@ type KEYOF_TYPE_VALUE_MAP<T, V> = {
   [K in keyof T]: V;
 };
 
-export type STATUS = 201 | 408 | 410 | 404;
+export type HttpStatus = 201 | 408 | 410 | 404;
 
-export const STATUSES: { [key: string]: STATUS } = {
+export const httpStatuses: { [key: string]: HttpStatus } = {
   OK: 201,
   REQUEST_TIMEOUT: 408,
   NOT_REGISTERED: 410,

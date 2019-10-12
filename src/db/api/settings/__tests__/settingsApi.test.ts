@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongodb';
-import { TASK_TYPE } from '../../../../constants';
+import { HttpStatus, TASK_STATUS, TASK_TYPE } from '../../../../constants';
 import AppError from '../../../../utils/AppError';
 import mockMongoCollection from '../../../../utils/tests/mockMongoCollection';
 import setupMongo from '../../../../utils/tests/setupMongo';
-import { Subscription } from '../../../interfaces';
+import { SettingsNotificationsGeneral, SettingsNotificationsTypes, Subscription } from '../../../interfaces';
 import { SettingsModel } from '../../../models/settings/SettingsModel';
 import settingsApi from '../settingsApi';
 
@@ -193,12 +193,12 @@ describe('settingsApi', () => {
 
       expect(settings.notifications.subscriptions.length).toBe(1);
 
-      const settingsAfter = await settingsApi.addSubscription(
+      const updatedSettings = await settingsApi.addSubscription(
         ownerId,
         subscription,
       );
 
-      expect(settingsAfter.notifications.subscriptions.length).toBe(2);
+      expect(updatedSettings.notifications.subscriptions.length).toBe(2);
     });
   });
 
@@ -214,13 +214,13 @@ describe('settingsApi', () => {
       expect(subscription).toBeDefined();
       expect(settings.notifications.subscriptions.length).toBe(1);
 
-      const settingsAfter = await settingsApi.deleteSubscription(
+      const updatedSettings = await settingsApi.deleteSubscription(
         ownerId,
         subscriptionId,
       );
 
-      expect(settingsAfter.notifications.subscriptions[0]).not.toBeDefined();
-      expect(settingsAfter.notifications.subscriptions.length).toBe(0);
+      expect(updatedSettings.notifications.subscriptions[0]).not.toBeDefined();
+      expect(updatedSettings.notifications.subscriptions.length).toBe(0);
     });
 
     it('should not change nothing trying to delete non-existing subscription', async () => {
@@ -230,12 +230,12 @@ describe('settingsApi', () => {
 
       expect(settings.notifications.subscriptions.length).toBe(1);
 
-      const settingsAfter = await settingsApi.deleteSubscription(
+      const updatedSettings = await settingsApi.deleteSubscription(
         ownerId,
         subscriptionId,
       );
 
-      expect(settingsAfter.notifications.subscriptions.length).toBe(1);
+      expect(updatedSettings.notifications.subscriptions.length).toBe(1);
     });
 
     it('should handle error', async () => {
@@ -244,6 +244,149 @@ describe('settingsApi', () => {
 
       try {
         await settingsApi.deleteSubscription(ownerId, subscriptionId);
+      } catch (e) {
+        expect(e).toBeInstanceOf(AppError);
+        expect(e.code).toBe('NO_USER_SETTINGS');
+        expect(e.level).toBe('api');
+      }
+    });
+  });
+
+  describe('saveNotificationsGeneral', () => {
+    it('should save notifications general setting', async () => {
+      const ownerId = firstUser.id;
+      const general: SettingsNotificationsGeneral = {
+        vibrate: false,
+        show: false,
+      };
+
+      const settings = await settingsApi.getSettings(ownerId);
+
+      expect(settings.notifications.general).toEqual({
+        vibrate: true,
+        show: true,
+      });
+
+      const updatedSettings = await settingsApi.saveNotificationsGeneral(
+        ownerId,
+        general,
+      );
+
+      expect(updatedSettings.notifications.general).toEqual({
+        vibrate: false,
+        show: false,
+      });
+    });
+
+    it('should handle error', async () => {
+      const ownerId = '123';
+      const general: SettingsNotificationsGeneral = {
+        vibrate: false,
+        show: false,
+      };
+
+      try {
+        await settingsApi.saveNotificationsGeneral(ownerId, general);
+      } catch (e) {
+        expect(e).toBeInstanceOf(AppError);
+        expect(e.code).toBe('NO_USER_SETTINGS');
+        expect(e.level).toBe('api');
+      }
+    });
+  });
+
+  describe('saveNotificationsTypes', () => {
+    it('should save notifications types setting', async () => {
+      // TODO
+    });
+
+    it('should handle error', async () => {
+      const ownerId = '123';
+      const types: SettingsNotificationsTypes = {
+        todos: false,
+        routines: false,
+        meetings: false,
+        goals: false,
+        events: false,
+      };
+
+      try {
+        await settingsApi.saveNotificationsTypes(ownerId, types);
+      } catch (e) {
+        expect(e).toBeInstanceOf(AppError);
+        expect(e.code).toBe('NO_USER_SETTINGS');
+        expect(e.level).toBe('api');
+      }
+    });
+  });
+
+  describe('saveTaskListStatusFilter', () => {
+    it('should save task list status setting', async () => {
+      const ownerId = firstUser.id;
+      const status = TASK_STATUS.DONE;
+
+      const settings = await settingsApi.getSettings(ownerId);
+
+      expect(settings.taskList.filters.status).toEqual(null);
+
+      const updatedSettings = await settingsApi.saveTaskListStatusFilter(
+        ownerId,
+        status,
+      );
+
+      expect(updatedSettings.taskList.filters.status).toEqual(status);
+    });
+
+    it('should handle error', async () => {
+      const ownerId = '123';
+      const status = TASK_STATUS.DONE;
+
+      try {
+        await settingsApi.saveTaskListStatusFilter(ownerId, status);
+      } catch (e) {
+        expect(e).toBeInstanceOf(AppError);
+        expect(e.code).toBe('NO_USER_SETTINGS');
+        expect(e.level).toBe('api');
+      }
+    });
+  });
+
+  describe('saveTaskListTitleFilter', () => {
+    it('should save notifications general setting', async () => {
+      // TODO
+    });
+
+    it('should handle error', async () => {
+      const ownerId = '123';
+      const general: SettingsNotificationsGeneral = {
+        vibrate: false,
+        show: false,
+      };
+
+      try {
+        await settingsApi.saveNotificationsGeneral(ownerId, general);
+      } catch (e) {
+        expect(e).toBeInstanceOf(AppError);
+        expect(e.code).toBe('NO_USER_SETTINGS');
+        expect(e.level).toBe('api');
+      }
+    });
+  });
+
+  describe('saveTaskListTaskTypeFilter', () => {
+    it('should save notifications general setting', async () => {
+      // TODO
+    });
+
+    it('should handle error', async () => {
+      const ownerId = '123';
+      const general: SettingsNotificationsGeneral = {
+        vibrate: false,
+        show: false,
+      };
+
+      try {
+        await settingsApi.saveNotificationsGeneral(ownerId, general);
       } catch (e) {
         expect(e).toBeInstanceOf(AppError);
         expect(e.code).toBe('NO_USER_SETTINGS');

@@ -1,5 +1,5 @@
 import { sendNotification } from 'web-push';
-import { STATUS, STATUSES } from '../constants';
+import { HttpStatus, httpStatuses } from '../constants';
 import { SettingsApi } from '../db/api/settings/settingsApi';
 
 export default class NotificationsService {
@@ -8,7 +8,7 @@ export default class NotificationsService {
   async testSubscription(
     ownerId: string,
     subscriptionId: string,
-  ): Promise<STATUS> {
+  ): Promise<HttpStatus> {
     try {
       const userSettings = await this.settingsApi.getSettings(ownerId);
       const {
@@ -18,7 +18,7 @@ export default class NotificationsService {
       );
 
       if (!subscriptionData) {
-        return STATUSES.NOT_FOUND;
+        return httpStatuses.NOT_FOUND;
       }
 
       const payload = JSON.stringify({
@@ -52,9 +52,9 @@ export default class NotificationsService {
 
       const { statusCode } = await sendNotification(subscriptionData, payload);
 
-      return statusCode as STATUS;
+      return statusCode as HttpStatus;
     } catch (error) {
-      return error.statusCode ? error.statusCode : STATUSES.REQUEST_TIMEOUT;
+      return error.statusCode ? error.statusCode : httpStatuses.REQUEST_TIMEOUT;
     }
   }
 }
