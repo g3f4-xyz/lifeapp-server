@@ -28,6 +28,22 @@ export enum FIELD_ID {
   NOTIFICATIONS = 'NOTIFICATIONS',
 }
 
+export type FieldId =
+  | 'TITLE'
+  | 'PRIORITY'
+  | 'PROGRESS'
+  | 'ACTIVE'
+  | 'STATUS'
+  | 'DATE'
+  | 'DATE_TIME'
+  | 'DURATION'
+  | 'LOCATION'
+  | 'PERSON'
+  | 'NOTE'
+  | 'ACTION'
+  | 'CYCLE'
+  | 'NOTIFICATIONS';
+
 export type FIELD_ID_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FIELD_ID, V>;
 
 export enum TASK_TYPE {
@@ -53,6 +69,8 @@ export enum FIELD_TYPE {
   TEXT = 'TEXT',
   NESTED = 'NESTED',
 }
+
+export type FieldType = 'SLIDER' | 'SWITCH' | 'CHOICE' | 'TEXT' | 'NESTED';
 
 export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<
   typeof FIELD_TYPE,

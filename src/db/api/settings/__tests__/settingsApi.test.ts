@@ -3,7 +3,11 @@ import { HttpStatus, TASK_STATUS, TASK_TYPE } from '../../../../constants';
 import AppError from '../../../../utils/AppError';
 import mockMongoCollection from '../../../../utils/tests/mockMongoCollection';
 import setupMongo from '../../../../utils/tests/setupMongo';
-import { SettingsNotificationsGeneral, SettingsNotificationsTypes, Subscription } from '../../../interfaces';
+import {
+  SettingsNotificationsGeneral,
+  SettingsNotificationsTypes,
+  Subscription,
+} from '../../../interfaces';
 import { SettingsModel } from '../../../models/settings/SettingsModel';
 import settingsApi from '../settingsApi';
 

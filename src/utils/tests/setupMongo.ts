@@ -33,7 +33,7 @@ export default ({
     if (beforeEachExtend) {
       await beforeEachExtend();
     }
-  });
+  }, 10000);
 
   afterEach(async () => {
     if (afterEachExtend) {

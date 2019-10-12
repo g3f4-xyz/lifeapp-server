@@ -1,5 +1,12 @@
 import { PushSubscription } from 'web-push';
-import { FIELD_ID, FIELD_TYPE, TASK_STATUS, TASK_TYPE } from '../constants';
+import {
+  FIELD_ID,
+  FIELD_TYPE,
+  FieldId,
+  FieldType,
+  TASK_STATUS,
+  TASK_TYPE,
+} from '../constants';
 import NotificationsService from '../services/NotificationsService';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
@@ -46,14 +53,14 @@ export interface FieldValue {
 
 export interface Field {
   _id: any;
-  fieldId: FIELD_ID;
-  fieldType: FIELD_TYPE;
+  fieldId: FieldId;
+  fieldType: FieldType;
   order: number;
   meta: Partial<FieldMeta>;
   value: Partial<FieldValue>;
-  validationErrors: string[];
+  validationErrors?: string[];
 
-  validateField(): string[];
+  validateField?(): string[];
 }
 
 export interface Task {
@@ -117,6 +124,7 @@ export interface TaskListSettingsFilters {
 }
 
 export interface Settings {
+  _id: any;
   ownerId: string;
   notifications: Notifications;
   taskList: TaskListSettings;
