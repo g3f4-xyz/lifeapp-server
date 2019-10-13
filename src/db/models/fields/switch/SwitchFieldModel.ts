@@ -31,6 +31,14 @@ const SwitchFieldSchema = new Schema({
   },
 });
 
+SwitchFieldSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+SwitchFieldSchema.set('toJSON', {
+  virtuals: true,
+});
+
 // tslint:disable-next-line:only-arrow-functions
 SwitchFieldSchema.methods.validateField = function(): string[] {
   return [];

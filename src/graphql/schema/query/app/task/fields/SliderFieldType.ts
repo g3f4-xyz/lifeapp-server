@@ -14,7 +14,7 @@ export const SliderFieldType: GraphQLObjectType<
   name: 'SliderFieldType',
   description: 'slider field type',
   fields: () => ({
-    id: globalIdField('SliderFieldType', ({ _id }) => _id),
+    id: globalIdField('SliderFieldType'),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

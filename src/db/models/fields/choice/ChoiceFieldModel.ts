@@ -42,6 +42,14 @@ const ChoiceFieldSchema = new Schema({
   },
 });
 
+ChoiceFieldSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+ChoiceFieldSchema.set('toJSON', {
+  virtuals: true,
+});
+
 ChoiceFieldSchema.methods.validateField = function(): string[] {
   const { required, disabled } = this.meta;
   const validator = requiredValidator();

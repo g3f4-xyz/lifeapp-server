@@ -9,7 +9,8 @@ export const DEMO_USER = {
   id: '1234567890',
 };
 export const HOST: string = process.env.HOST || 'http://localhost:30000';
-export const PORT: string = process.env.PORT || '30000';
+export const PORT: string =
+  process.env.PORT || process.env.NODE_ENV === 'test' ? '12345' : '30000';
 export const PUBLIC_PATH = `${process.cwd()}/build`;
 export const ROUTES: ConfigMap<string> = {
   AUTH: '/auth',

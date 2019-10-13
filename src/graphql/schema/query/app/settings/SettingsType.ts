@@ -9,7 +9,7 @@ export const SettingsType = new GraphQLObjectType<Settings, Context>({
   name: 'SettingsType',
   description: 'task type type',
   fields: () => ({
-    id: globalIdField('SettingsType', ({ _id }) => _id),
+    id: globalIdField('SettingsType'),
     ownerId: {
       type: new GraphQLNonNull(GraphQLString),
     },

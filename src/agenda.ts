@@ -345,7 +345,7 @@
 //                };
 //
 //                await updateNotificationAt(
-//                  meeting._id,
+//                  meeting.id,
 //                  null,
 //                  meeting.notificationAt,
 //                );

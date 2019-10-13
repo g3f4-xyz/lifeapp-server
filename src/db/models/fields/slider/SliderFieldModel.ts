@@ -45,6 +45,14 @@ const SliderFieldSchema = new Schema({
   },
 });
 
+SliderFieldSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+SliderFieldSchema.set('toJSON', {
+  virtuals: true,
+});
+
 SliderFieldSchema.methods.validateField = function(): string[] {
   const validators = [progressValidator(this.meta.min, this.meta.max)];
 

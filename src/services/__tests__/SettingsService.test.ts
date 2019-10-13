@@ -1,3 +1,4 @@
+import { ObjectId } from 'bson';
 import { TASK_TYPE } from '../../constants';
 import settingsApi from '../../db/api/settings/settingsApi';
 import { Settings } from '../../db/interfaces';
@@ -26,6 +27,7 @@ describe('SettingsService', () => {
       const userDeviceType = 'userDeviceType';
 
       jest.spyOn(settingsApi, 'getSettings').mockResolvedValue({
+        _id: new ObjectId('5d94cb40aab62b5aeec481c6'),
         ownerId,
         notifications: {
           general: {
@@ -41,7 +43,7 @@ describe('SettingsService', () => {
           },
           subscriptions: [
             {
-              _id: '5d94cb40d4b62b5aeec481c5',
+              id: '5d94cb40d4b62b5aeec481c5',
               subscriptionData: {
                 endpoint: 'endpoint',
                 expirationTime: 'expirationTime',
@@ -82,7 +84,7 @@ describe('SettingsService', () => {
       const ownerId = '1234';
       const subscriptionId = '5d94cb40d4b62b5aeec481c5';
       const subscriptionData = {
-        _id: subscriptionId,
+        id: subscriptionId,
         endpoint,
         expirationTime: 'expirationTime',
         keys: {
@@ -93,6 +95,7 @@ describe('SettingsService', () => {
       const userAgent = 'userAgent';
       const userDeviceType = 'userDeviceType';
       jest.spyOn(settingsApi, 'getSettings').mockResolvedValue({
+        _id: new ObjectId('5d94cb40aab62b5aeec481c5'),
         ownerId,
         notifications: {
           general: {
@@ -108,7 +111,7 @@ describe('SettingsService', () => {
           },
           subscriptions: [
             {
-              _id: subscriptionId,
+              id: subscriptionId,
               subscriptionData: {
                 endpoint,
                 expirationTime: 'expirationTime',
@@ -160,6 +163,7 @@ describe('SettingsService', () => {
       const deleteSubscriptionSpy = jest
         .spyOn(settingsApi, 'deleteSubscription')
         .mockResolvedValue({
+          _id: new ObjectId('5d94cb40aab62b5aeec481c1'),
           ownerId,
           notifications: {
             general: {
@@ -221,6 +225,7 @@ describe('SettingsService', () => {
     it('should get user settings', async () => {
       const ownerId = '1234';
       const settings: Settings = {
+        _id: new ObjectId('5d94cb40acb62b5aeec481c6'),
         ownerId,
         notifications: {
           general: {

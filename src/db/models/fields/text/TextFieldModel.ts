@@ -40,6 +40,14 @@ const TextFieldSchema = new Schema<Field>({
   },
 });
 
+TextFieldSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+TextFieldSchema.set('toJSON', {
+  virtuals: true,
+});
+
 TextFieldSchema.methods.validateField = function(): string[] {
   const validators = [
     requiredValidator(),

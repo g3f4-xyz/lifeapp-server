@@ -26,11 +26,11 @@ export default class SettingsService {
     );
 
     if (oldSubscription) {
-      await this.settingsApi.deleteSubscription(ownerId, oldSubscription._id);
+      await this.settingsApi.deleteSubscription(ownerId, oldSubscription.id);
     }
 
     const subscription: Subscription = {
-      _id: undefined,
+      id: undefined,
       subscriptionData,
       userAgent,
       userDeviceType,

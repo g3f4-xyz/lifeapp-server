@@ -95,10 +95,10 @@ const taskApi = {
             ]
           : []),
       ],
-    }).sort({ _id: -1 })).map(doc => doc.toJSON());
+    }).sort({ id: -1 })).map(doc => doc.toJSON());
   },
   async saveTask(task: Task): Promise<Task> {
-    const taskDocument = await TaskModel.findByIdAndUpdate(task._id, task, {
+    const taskDocument = await TaskModel.findByIdAndUpdate(task.id, task, {
       new: true,
     });
 

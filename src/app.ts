@@ -5,39 +5,29 @@ import * as session from 'express-session';
 import * as morgan from 'morgan';
 import * as passport from 'passport';
 import { PORT, SESSION } from './config';
-import { CONSOLE_COLORS } from './constants';
 import { router } from './router';
 
 const app = express();
 
-export default () => {
-  // dev tools
-  if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
-  }
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
-  // set body parser
-  app.use(json());
-  app.use(cookieParser());
+// set body parser
+app.use(json());
+app.use(cookieParser());
 
-  // express Session
-  app.use(session(SESSION));
+// express Session
+app.use(session(SESSION));
 
-  // passport init
-  app.use(passport.initialize());
-  app.use(passport.session());
+// passport init
+app.use(passport.initialize());
+app.use(passport.session());
 
-  // register router
-  app.use(router);
+// register router
+app.use(router);
 
-  // set Port
-  app.set('port', process.env.PORT || PORT);
+// set Port
+app.set('port', PORT);
 
-  // start server
-  app.listen(app.get('port'), () => {
-    console.info(
-      CONSOLE_COLORS.BLUE,
-      `express app running on port: ${app.get('port')}`,
-    );
-  });
-};
+export default app;
