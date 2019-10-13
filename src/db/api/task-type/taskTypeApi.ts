@@ -8,7 +8,7 @@ const taskTypeApi = {
   async getTaskTypeList(): Promise<TaskType[]> {
     const taskTypeList = await TaskTypeModel.find({
       parentTypeIds: { $exists: true },
-    }).sort({ _id: -1 });
+    }).sort({ id: -1 });
 
     return taskTypeList.map(model => model.toJSON());
   },

@@ -2,7 +2,9 @@ import { Document, Schema } from 'mongoose';
 
 import { SubscriptionData } from '../interfaces';
 
-export interface SubscriptionDataDocument extends SubscriptionData, Document {}
+export interface SubscriptionDataDocument
+  extends SubscriptionData,
+    Pick<Document, 'id'> {}
 
 export const SubscriptionDataSchema: Schema<
   SubscriptionDataDocument

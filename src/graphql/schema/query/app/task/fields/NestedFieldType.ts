@@ -14,7 +14,7 @@ export const NestedFieldType: GraphQLObjectType<
   name: 'NestedFieldType',
   description: 'nested field type',
   fields: () => ({
-    id: globalIdField('NestedFieldType', ({ _id }) => _id),
+    id: globalIdField('NestedFieldType'),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

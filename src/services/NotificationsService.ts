@@ -14,7 +14,7 @@ export default class NotificationsService {
       const {
         subscriptionData,
       } = userSettings.notifications.subscriptions.find(
-        ({ _id }) => _id === subscriptionId,
+        ({ id }) => id === subscriptionId,
       );
 
       if (!subscriptionData) {

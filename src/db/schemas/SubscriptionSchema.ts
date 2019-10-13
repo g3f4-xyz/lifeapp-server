@@ -1,19 +1,38 @@
 import { Document, Schema } from 'mongoose';
-
 import { Subscription } from '../interfaces';
-import { SubscriptionDataSchema } from './SubscriptionDataSchema';
 
-export interface SubscriptionDocument extends Subscription, Document {}
-
-export const SubscriptionSchema: Schema<SubscriptionDocument> = new Schema({
+export const SubscriptionSchema: Schema<Subscription & Document> = new Schema({
   subscriptionData: {
-    endpoint: String,
-    expirationTime: String,
-    keys: {
-      p256dh: String,
-      auth: String,
+    type: {
+      endpoint: {
+        type: String,
+        required: true,
+      },
+      expirationTime: {
+        type: String,
+        required: true,
+      },
+      keys: {
+        p256dh: {
+          type: String,
+          required: true,
+        },
+        auth: {
+          type: String,
+          required: true,
+        },
+      },
     },
+    required: true,
   },
   userAgent: String,
   userDeviceType: String,
+});
+
+SubscriptionSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+SubscriptionSchema.set('toJSON', {
+  virtuals: true,
 });

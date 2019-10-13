@@ -1,11 +1,10 @@
 import { PushSubscription } from 'web-push';
 import {
-  FIELD_ID,
-  FIELD_TYPE,
   FieldId,
   FieldType,
   TASK_STATUS,
   TASK_TYPE,
+  TypeOfTask,
 } from '../constants';
 import NotificationsService from '../services/NotificationsService';
 import SettingsService from '../services/SettingsService';
@@ -52,7 +51,8 @@ export interface FieldValue {
 }
 
 export interface Field {
-  _id: any;
+  _id?: any;
+  id?: string;
   fieldId: FieldId;
   fieldType: FieldType;
   order: number;
@@ -64,17 +64,20 @@ export interface Field {
 }
 
 export interface Task {
-  _id: any;
+  _id?: any;
+  id?: string;
   ownerId: string;
   updatedAt?: Date | string;
   notificationAt?: Date;
   lastNotificationAt?: Date;
-  lastChangedFieldId?: FIELD_ID;
-  taskType: TASK_TYPE;
+  lastChangedFieldId?: FieldId;
+  taskType: TypeOfTask;
   fields: Field[];
 }
 
 export interface TaskType {
+  _id?: any;
+  id?: string;
   typeId: string;
   label: string;
   description: string;
@@ -88,7 +91,8 @@ export interface SubscriptionData extends PushSubscription {
 }
 
 export interface Subscription {
-  _id: any;
+  _id?: any;
+  id?: string;
   subscriptionData: SubscriptionData;
   userAgent: string;
   userDeviceType: string;
@@ -124,7 +128,8 @@ export interface TaskListSettingsFilters {
 }
 
 export interface Settings {
-  _id: any;
+  _id?: any;
+  id?: string;
   ownerId: string;
   notifications: Notifications;
   taskList: TaskListSettings;

@@ -13,7 +13,7 @@ export const NotificationsType = new GraphQLObjectType({
   name: 'NotificationsType',
   description: 'notifications type',
   fields: () => ({
-    id: globalIdField('NotificationsType', ({ _id }) => _id),
+    id: globalIdField('NotificationsType'),
     types: {
       type: new GraphQLNonNull(NotificationsTypesSettingType),
     },

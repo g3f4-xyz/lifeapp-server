@@ -13,7 +13,7 @@ export const TaskTypeType = new GraphQLObjectType({
   name: 'TaskTypeType',
   description: 'task type type',
   fields: () => ({
-    id: globalIdField('TaskTypeType', ({ _id }) => _id),
+    id: globalIdField('TaskTypeType'),
     typeId: {
       type: new GraphQLNonNull(TaskTypeEnum),
     },

@@ -6,7 +6,7 @@ export const SubscriptionType = new GraphQLObjectType({
   name: 'SubscriptionType',
   description: 'subscription type',
   fields: () => ({
-    id: globalIdField('SubscriptionType', ({ _id }) => _id),
+    id: globalIdField('SubscriptionType'),
     subscriptionData: {
       type: new GraphQLNonNull(GraphQLString),
     },

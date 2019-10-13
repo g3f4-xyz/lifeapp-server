@@ -43,7 +43,7 @@ describe('SettingsService', () => {
           },
           subscriptions: [
             {
-              _id: '5d94cb40d4b62b5aeec481c5',
+              id: '5d94cb40d4b62b5aeec481c5',
               subscriptionData: {
                 endpoint: 'endpoint',
                 expirationTime: 'expirationTime',
@@ -84,7 +84,7 @@ describe('SettingsService', () => {
       const ownerId = '1234';
       const subscriptionId = '5d94cb40d4b62b5aeec481c5';
       const subscriptionData = {
-        _id: subscriptionId,
+        id: subscriptionId,
         endpoint,
         expirationTime: 'expirationTime',
         keys: {
@@ -111,7 +111,7 @@ describe('SettingsService', () => {
           },
           subscriptions: [
             {
-              _id: subscriptionId,
+              id: subscriptionId,
               subscriptionData: {
                 endpoint,
                 expirationTime: 'expirationTime',

@@ -1,8 +1,7 @@
 import { Document, model, Model, Schema } from 'mongoose';
 import { TASK_STATUS, TASK_TYPE } from '../../../constants';
 import { Settings } from '../../interfaces';
-
-export interface SettingsDocument extends Settings, Document {}
+import { SubscriptionSchema } from '../../schemas/SubscriptionSchema';
 
 export const SettingsSchema: Schema<Settings> = new Schema({
   ownerId: { type: String, index: { unique: true }, required: true },
@@ -40,35 +39,7 @@ export const SettingsSchema: Schema<Settings> = new Schema({
       },
     },
     subscriptions: {
-      type: [
-        {
-          subscriptionData: {
-            type: {
-              endpoint: {
-                type: String,
-                required: true,
-              },
-              expirationTime: {
-                type: String,
-                required: true,
-              },
-              keys: {
-                p256dh: {
-                  type: String,
-                  required: true,
-                },
-                auth: {
-                  type: String,
-                  required: true,
-                },
-              },
-            },
-            required: true,
-          },
-          userAgent: String,
-          userDeviceType: String,
-        },
-      ],
+      type: [SubscriptionSchema],
       default: [],
       required: true,
     },
@@ -97,7 +68,15 @@ export const SettingsSchema: Schema<Settings> = new Schema({
   },
 });
 
-export const SettingsModel: Model<SettingsDocument> = model(
+SettingsSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+SettingsSchema.set('toJSON', {
+  virtuals: true,
+});
+
+export const SettingsModel: Model<Settings & Document> = model(
   'Settings',
   SettingsSchema,
 );

@@ -20,7 +20,7 @@ export const ChoiceFieldType: GraphQLObjectType<
   name: 'ChoiceFieldType',
   description: 'choice field type',
   fields: () => ({
-    id: globalIdField('ChoiceFieldType', ({ _id }) => _id),
+    id: globalIdField('ChoiceFieldType'),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

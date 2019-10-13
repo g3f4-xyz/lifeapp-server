@@ -33,6 +33,14 @@ const NestedFieldSchema = new Schema({
   },
 });
 
+NestedFieldSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+NestedFieldSchema.set('toJSON', {
+  virtuals: true,
+});
+
 // tslint:disable-next-line:only-arrow-functions
 NestedFieldSchema.methods.validateField = function(): string[] {
   return [];

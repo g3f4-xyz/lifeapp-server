@@ -14,7 +14,7 @@ export const TextFieldType: GraphQLObjectType<
   name: 'TextFieldType',
   description: 'text field type',
   fields: () => ({
-    id: globalIdField('TextFieldType', ({ _id }) => _id),
+    id: globalIdField('TextFieldType'),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

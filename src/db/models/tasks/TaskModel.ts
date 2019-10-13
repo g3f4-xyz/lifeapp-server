@@ -4,10 +4,10 @@ import { Document, Model, model, Schema } from 'mongoose';
 import {
   CYCLE,
   DAY_CYCLE,
-  FIELD_ID,
+  FieldId,
   MONTH_CYCLE,
-  TASK_TYPE,
   TIME_CYCLE,
+  TypeOfTask,
   WEEK_CYCLE,
 } from '../../../constants';
 
@@ -15,7 +15,7 @@ import { FieldValue, Task } from '../../interfaces';
 import { FieldSchema } from '../../schemas/FieldSchema';
 import { registerFieldsDiscriminators } from '../registerFieldsDiscriminators';
 
-export interface TaskDocument extends Task, Document {
+export interface TaskDocument extends Omit<Task, 'id'>, Document {
   validateFields(this: TaskDocument): boolean;
 }
 
@@ -38,6 +38,14 @@ export const TaskSchema = new Schema(
   { discriminatorKey: 'taskType' },
 );
 
+TaskSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+TaskSchema.set('toJSON', {
+  virtuals: true,
+});
+
 export const TaskModel = model<TaskDocument, Model<TaskDocument>>(
   'Task',
   TaskSchema,
@@ -46,14 +54,14 @@ export const TaskModel = model<TaskDocument, Model<TaskDocument>>(
 export const TaskFieldsSchema = TaskSchema.path('fields');
 
 export const isNotificationAtUpdateNeeded = (
-  taskType: TASK_TYPE,
-  lastChangedFieldId: FIELD_ID,
+  taskType: TypeOfTask,
+  lastChangedFieldId: FieldId,
 ) => {
   switch (taskType) {
-    case TASK_TYPE.ROUTINE:
-      return lastChangedFieldId === FIELD_ID.CYCLE;
-    case TASK_TYPE.MEETING:
-      return lastChangedFieldId === FIELD_ID.DATE_TIME;
+    case 'ROUTINE':
+      return lastChangedFieldId === 'CYCLE';
+    case 'MEETING':
+      return lastChangedFieldId === 'DATE_TIME';
     default:
       return false;
   }
@@ -181,32 +189,26 @@ export const calculateNextCycle = (fieldValue: FieldValue): Moment | null => {
 };
 
 export const calculateNotificationAt = (
-  taskType: TASK_TYPE,
+  taskType: TypeOfTask,
   lastNotificationAt: Date,
   fieldValue: FieldValue,
 ): Date | null => {
-  console.log(
-    ['calculateNotificationAt'],
-    taskType,
-    lastNotificationAt,
-    fieldValue,
-  );
   switch (taskType) {
-    case TASK_TYPE.TODO:
+    case 'TODO':
       return moment(lastNotificationAt)
         .add(1, 'day')
         .toDate();
-    case TASK_TYPE.EVENT:
+    case 'EVENT':
       return moment(fieldValue.text)
         .startOf('day')
         .toDate();
-    case TASK_TYPE.MEETING:
+    case 'MEETING':
       return lastNotificationAt
         ? null
         : moment(fieldValue.text)
             .subtract(1, 'hour')
             .toDate();
-    case TASK_TYPE.ROUTINE: {
+    case 'ROUTINE': {
       const nextCycleAt = calculateNextCycle(fieldValue);
 
       return nextCycleAt ? nextCycleAt.toDate() : null;

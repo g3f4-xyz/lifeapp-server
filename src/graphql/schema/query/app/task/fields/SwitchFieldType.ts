@@ -14,7 +14,7 @@ export const SwitchFieldType: GraphQLObjectType<
   name: 'SwitchFieldType',
   description: 'switch field type',
   fields: () => ({
-    id: globalIdField('SwitchFieldType', ({ _id }) => _id),
+    id: globalIdField('SwitchFieldType'),
     fieldId: {
       description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),

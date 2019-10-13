@@ -54,6 +54,8 @@ export enum TASK_TYPE {
   ROUTINE = 'ROUTINE',
 }
 
+export type TypeOfTask = 'GOAL' | 'TODO' | 'MEETING' | 'EVENT' | 'ROUTINE';
+
 export enum TASK_STATUS {
   TODO = 'TODO',
   DONE = 'DONE',

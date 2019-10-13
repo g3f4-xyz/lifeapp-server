@@ -1,13 +1,7 @@
-import { Document, model, Model } from 'mongoose';
+import { Document } from 'mongoose';
 import { Field } from '../../interfaces';
-import { FieldSchema } from '../../schemas/FieldSchema';
 import { registerFieldsDiscriminators } from '../registerFieldsDiscriminators';
 
-export interface FieldDocument extends Field, Document {}
-
-export const FieldConfigModel: Model<FieldDocument> = model(
-  'FieldConfig',
-  FieldSchema,
-);
+export interface FieldDocument extends Omit<Field, 'id'>, Document {}
 
 registerFieldsDiscriminators();

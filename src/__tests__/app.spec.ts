@@ -89,7 +89,7 @@ describe('app', () => {
       await mockMongoCollection<Task>(TaskModel, [
         {
           _id: new ObjectId('5d94cb40d4b62b5aeec482c1'),
-          taskType: TASK_TYPE.EVENT,
+          taskType: 'EVENT',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -258,7 +258,7 @@ describe('app', () => {
         },
         {
           _id: new ObjectId('5d94cb40d4b62b5aeec482c2'),
-          taskType: TASK_TYPE.GOAL,
+          taskType: 'GOAL',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -376,7 +376,7 @@ describe('app', () => {
         },
         {
           _id: new ObjectId('5d94cb40d4b62b5aeec482c3'),
-          taskType: TASK_TYPE.MEETING,
+          taskType: 'MEETING',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -562,7 +562,7 @@ describe('app', () => {
         },
         {
           _id: new ObjectId('5d94cb40dab62b5aeec481c4'),
-          taskType: TASK_TYPE.ROUTINE,
+          taskType: 'ROUTINE',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -850,7 +850,7 @@ describe('app', () => {
         },
         {
           _id: new ObjectId('5d94cb40d4b62b5aeec482c5'),
-          taskType: TASK_TYPE.TODO,
+          taskType: 'TODO',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -993,6 +993,558 @@ describe('app', () => {
               edges: [
                 {
                   cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+                  node: {
+                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMx',
+                    taskType: 'EVENT',
+                    fields: [
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgyYzY=',
+                        fieldId: 'TITLE',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Title',
+                          label: 'Title',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 400,
+                          minLength: 0,
+                          required: true,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'SwitchFieldType',
+                        id:
+                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+                        fieldId: 'PRIORITY',
+                        meta: {
+                          fieldType: 'SWITCH',
+                          label: 'Important',
+                          disabled: false,
+                          required: true,
+                        },
+                        value: {
+                          enabled: false,
+                        },
+                      },
+                      {
+                        __typename: 'ChoiceFieldType',
+                        id:
+                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDJiNjJiNWFlZWM0ODFjNg==',
+                        fieldId: 'STATUS',
+                        meta: {
+                          fieldType: 'CHOICE',
+                          helperText: 'Informacje o testowym polu Status',
+                          label: 'Status',
+                          defaultValue: null,
+                          options: [
+                            {
+                              text: 'To do',
+                              value: 'TODO',
+                            },
+                            {
+                              text: 'Done',
+                              value: 'DONE',
+                            },
+                            {
+                              text: 'In progress',
+                              value: 'IN_PROGRESS',
+                            },
+                          ],
+                          required: true,
+                        },
+                        value: {
+                          id: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo0ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzY=',
+                        fieldId: 'NOTE',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Description',
+                          label: 'Note',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 3,
+                          required: false,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MWQ0YjYyYjVhZWVjNDgxYzY=',
+                        fieldId: 'LOCATION',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Location',
+                          label: 'Location',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 3,
+                          required: false,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhYWVjNDgxYzY=',
+                        fieldId: 'DATE',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Date',
+                          label: 'Date',
+                          inputType: 'date-local',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 3,
+                          required: false,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MWQ0YjYyYjVhZWVjNDgxYzY=',
+                        fieldId: 'DURATION',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Duration',
+                          label: 'Duration',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 0,
+                          required: false,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'NestedFieldType',
+                        id:
+                          'TmVzdGVkRmllbGRUeXBlOjVkOTRhYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+                        fieldId: 'NOTIFICATIONS',
+                        meta: {
+                          fieldType: 'NESTED',
+                          parentValue: null,
+                          ownMeta: {
+                            __typename: 'SwitchMetaType',
+                            fieldType: 'SWITCH',
+                            label: 'Notifications',
+                            disabled: false,
+                            required: true,
+                          },
+                          childrenMeta: [
+                            {
+                              fieldType: 'NESTED',
+                              parentValue: {
+                                __typename: 'SwitchValueType',
+                                enabled: true,
+                              },
+                              ownMeta: {
+                                __typename: 'TextMetaType',
+                                fieldType: 'TEXT',
+                                helperText: 'Additional note helperText',
+                                label: 'Additional note',
+                                inputType: null,
+                                min: null,
+                                max: null,
+                                maxLength: null,
+                                minLength: null,
+                                required: true,
+                              },
+                              childrenMeta: null,
+                            },
+                          ],
+                        },
+                        value: {
+                          ownValue: null,
+                          childrenValue: null,
+                        },
+                      },
+                    ],
+                    __typename: 'TaskType',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+                  node: {
+                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMy',
+                    taskType: 'GOAL',
+                    fields: [
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I1MGQ0YjYyYjVhZWVjNDgxYzY=',
+                        fieldId: 'TITLE',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Title',
+                          label: 'Title',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 400,
+                          minLength: 0,
+                          required: true,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'SwitchFieldType',
+                        id:
+                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRjNjJiNWFlZWM0ODFjNg==',
+                        fieldId: 'PRIORITY',
+                        meta: {
+                          fieldType: 'SWITCH',
+                          label: 'Important',
+                          disabled: false,
+                          required: true,
+                        },
+                        value: {
+                          enabled: false,
+                        },
+                      },
+                      {
+                        __typename: 'ChoiceFieldType',
+                        id:
+                          'Q2hvaWNlRmllbGRUeXBlOjVlOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+                        fieldId: 'STATUS',
+                        meta: {
+                          fieldType: 'CHOICE',
+                          helperText: 'Informacje o testowym polu Status',
+                          label: 'Status',
+                          defaultValue: null,
+                          options: [
+                            {
+                              text: 'To do',
+                              value: 'TODO',
+                            },
+                            {
+                              text: 'Done',
+                              value: 'DONE',
+                            },
+                            {
+                              text: 'In progress',
+                              value: 'IN_PROGRESS',
+                            },
+                          ],
+                          required: true,
+                        },
+                        value: {
+                          id: '',
+                        },
+                      },
+                      {
+                        __typename: 'SliderFieldType',
+                        id:
+                          'U2xpZGVyRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0OTFjNg==',
+                        fieldId: 'PROGRESS',
+                        meta: {
+                          fieldType: 'SLIDER',
+                          label: 'Progress',
+                          disabled: false,
+                          required: false,
+                          max: 100,
+                          min: 0,
+                          step: 1,
+                        },
+                        value: {
+                          progress: 0,
+                        },
+                      },
+                      {
+                        __typename: 'NestedFieldType',
+                        id:
+                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0OTFjNg==',
+                        fieldId: 'NOTIFICATIONS',
+                        meta: {
+                          fieldType: 'NESTED',
+                          parentValue: null,
+                          ownMeta: {
+                            __typename: 'SwitchMetaType',
+                            fieldType: 'SWITCH',
+                            label: 'Notifications',
+                            disabled: false,
+                            required: true,
+                          },
+                          childrenMeta: [
+                            {
+                              fieldType: 'NESTED',
+                              parentValue: {
+                                __typename: 'SwitchValueType',
+                                enabled: true,
+                              },
+                              ownMeta: {
+                                __typename: 'TextMetaType',
+                                fieldType: 'TEXT',
+                                helperText: 'Additional note helperText',
+                                label: 'Additional note',
+                                inputType: null,
+                                min: null,
+                                max: null,
+                                maxLength: null,
+                                minLength: null,
+                                required: true,
+                              },
+                              childrenMeta: null,
+                            },
+                          ],
+                        },
+                        value: {
+                          ownValue: null,
+                          childrenValue: null,
+                        },
+                      },
+                    ],
+                    __typename: 'TaskType',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+                  node: {
+                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMz',
+                    taskType: 'MEETING',
+                    fields: [
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVhNDgxYzY=',
+                        fieldId: 'TITLE',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Title',
+                          label: 'Title',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 400,
+                          minLength: 0,
+                          required: true,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'SwitchFieldType',
+                        id:
+                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM1ODFjNg==',
+                        fieldId: 'PRIORITY',
+                        meta: {
+                          fieldType: 'SWITCH',
+                          label: 'Important',
+                          disabled: false,
+                          required: true,
+                        },
+                        value: {
+                          enabled: false,
+                        },
+                      },
+                      {
+                        __typename: 'ChoiceFieldType',
+                        id:
+                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWNlZWM0ODFjNg==',
+                        fieldId: 'STATUS',
+                        meta: {
+                          fieldType: 'CHOICE',
+                          helperText: 'Informacje o testowym polu Status',
+                          label: 'Status',
+                          defaultValue: null,
+                          options: [
+                            {
+                              text: 'To do',
+                              value: 'TODO',
+                            },
+                            {
+                              text: 'Done',
+                              value: 'DONE',
+                            },
+                            {
+                              text: 'In progress',
+                              value: 'IN_PROGRESS',
+                            },
+                          ],
+                          required: true,
+                        },
+                        value: {
+                          id: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzc=',
+                        fieldId: 'NOTE',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Description',
+                          label: 'Note',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 3,
+                          required: false,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzg=',
+                        fieldId: 'LOCATION',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Location',
+                          label: 'Location',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 3,
+                          required: false,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzk=',
+                        fieldId: 'DATE_TIME',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Date',
+                          label: 'Date',
+                          inputType: 'datetime-local',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 3,
+                          required: false,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzI=',
+                        fieldId: 'DURATION',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Informacje o testowym polu Duration',
+                          label: 'Duration',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 0,
+                          required: false,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'TextFieldType',
+                        id:
+                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVhNDgxYzY=',
+                        fieldId: 'PERSON',
+                        meta: {
+                          fieldType: 'TEXT',
+                          helperText: 'Person helperText',
+                          label: 'Person',
+                          inputType: 'text',
+                          min: null,
+                          max: null,
+                          maxLength: 100,
+                          minLength: 3,
+                          required: true,
+                        },
+                        value: {
+                          text: '',
+                        },
+                      },
+                      {
+                        __typename: 'NestedFieldType',
+                        id:
+                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZGRiNjJiNWFlZWM0ODFjNg==',
+                        fieldId: 'NOTIFICATIONS',
+                        meta: {
+                          fieldType: 'NESTED',
+                          parentValue: null,
+                          ownMeta: {
+                            __typename: 'SwitchMetaType',
+                            fieldType: 'SWITCH',
+                            label: 'Notifications',
+                            disabled: false,
+                            required: true,
+                          },
+                          childrenMeta: [
+                            {
+                              fieldType: 'NESTED',
+                              parentValue: {
+                                __typename: 'SwitchValueType',
+                                enabled: true,
+                              },
+                              ownMeta: {
+                                __typename: 'TextMetaType',
+                                fieldType: 'TEXT',
+                                helperText: 'Additional note helperText',
+                                label: 'Additional note',
+                                inputType: null,
+                                min: null,
+                                max: null,
+                                maxLength: null,
+                                minLength: null,
+                                required: true,
+                              },
+                              childrenMeta: null,
+                            },
+                          ],
+                        },
+                        value: {
+                          ownValue: null,
+                          childrenValue: null,
+                        },
+                      },
+                    ],
+                    __typename: 'TaskType',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
                   node: {
                     id: 'VGFza1R5cGU6NWQ5NGNiNDBkYWI2MmI1YWVlYzQ4MWM0',
                     taskType: 'ROUTINE',
@@ -1325,7 +1877,7 @@ describe('app', () => {
                   },
                 },
                 {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
                   node: {
                     id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmM1',
                     taskType: 'TODO',
@@ -1419,558 +1971,6 @@ describe('app', () => {
                         __typename: 'NestedFieldType',
                         id:
                           'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0NzFjNg==',
-                        fieldId: 'NOTIFICATIONS',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'SwitchMetaType',
-                            fieldType: 'SWITCH',
-                            label: 'Notifications',
-                            disabled: false,
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'SwitchValueType',
-                                enabled: true,
-                              },
-                              ownMeta: {
-                                __typename: 'TextMetaType',
-                                fieldType: 'TEXT',
-                                helperText: 'Additional note helperText',
-                                label: 'Additional note',
-                                inputType: null,
-                                min: null,
-                                max: null,
-                                maxLength: null,
-                                minLength: null,
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                    ],
-                    __typename: 'TaskType',
-                  },
-                },
-                {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-                  node: {
-                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMz',
-                    taskType: 'MEETING',
-                    fields: [
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVhNDgxYzY=',
-                        fieldId: 'TITLE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Title',
-                          label: 'Title',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 400,
-                          minLength: 0,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'SwitchFieldType',
-                        id:
-                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM1ODFjNg==',
-                        fieldId: 'PRIORITY',
-                        meta: {
-                          fieldType: 'SWITCH',
-                          label: 'Important',
-                          disabled: false,
-                          required: true,
-                        },
-                        value: {
-                          enabled: false,
-                        },
-                      },
-                      {
-                        __typename: 'ChoiceFieldType',
-                        id:
-                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWNlZWM0ODFjNg==',
-                        fieldId: 'STATUS',
-                        meta: {
-                          fieldType: 'CHOICE',
-                          helperText: 'Informacje o testowym polu Status',
-                          label: 'Status',
-                          defaultValue: null,
-                          options: [
-                            {
-                              text: 'To do',
-                              value: 'TODO',
-                            },
-                            {
-                              text: 'Done',
-                              value: 'DONE',
-                            },
-                            {
-                              text: 'In progress',
-                              value: 'IN_PROGRESS',
-                            },
-                          ],
-                          required: true,
-                        },
-                        value: {
-                          id: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzc=',
-                        fieldId: 'NOTE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Description',
-                          label: 'Note',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzg=',
-                        fieldId: 'LOCATION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Location',
-                          label: 'Location',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzk=',
-                        fieldId: 'DATE_TIME',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Date',
-                          label: 'Date',
-                          inputType: 'datetime-local',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzI=',
-                        fieldId: 'DURATION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Duration',
-                          label: 'Duration',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 0,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVhNDgxYzY=',
-                        fieldId: 'PERSON',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Person helperText',
-                          label: 'Person',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZGRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'NOTIFICATIONS',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'SwitchMetaType',
-                            fieldType: 'SWITCH',
-                            label: 'Notifications',
-                            disabled: false,
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'SwitchValueType',
-                                enabled: true,
-                              },
-                              ownMeta: {
-                                __typename: 'TextMetaType',
-                                fieldType: 'TEXT',
-                                helperText: 'Additional note helperText',
-                                label: 'Additional note',
-                                inputType: null,
-                                min: null,
-                                max: null,
-                                maxLength: null,
-                                minLength: null,
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                    ],
-                    __typename: 'TaskType',
-                  },
-                },
-                {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-                  node: {
-                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMy',
-                    taskType: 'GOAL',
-                    fields: [
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I1MGQ0YjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'TITLE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Title',
-                          label: 'Title',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 400,
-                          minLength: 0,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'SwitchFieldType',
-                        id:
-                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRjNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'PRIORITY',
-                        meta: {
-                          fieldType: 'SWITCH',
-                          label: 'Important',
-                          disabled: false,
-                          required: true,
-                        },
-                        value: {
-                          enabled: false,
-                        },
-                      },
-                      {
-                        __typename: 'ChoiceFieldType',
-                        id:
-                          'Q2hvaWNlRmllbGRUeXBlOjVlOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'STATUS',
-                        meta: {
-                          fieldType: 'CHOICE',
-                          helperText: 'Informacje o testowym polu Status',
-                          label: 'Status',
-                          defaultValue: null,
-                          options: [
-                            {
-                              text: 'To do',
-                              value: 'TODO',
-                            },
-                            {
-                              text: 'Done',
-                              value: 'DONE',
-                            },
-                            {
-                              text: 'In progress',
-                              value: 'IN_PROGRESS',
-                            },
-                          ],
-                          required: true,
-                        },
-                        value: {
-                          id: '',
-                        },
-                      },
-                      {
-                        __typename: 'SliderFieldType',
-                        id:
-                          'U2xpZGVyRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0OTFjNg==',
-                        fieldId: 'PROGRESS',
-                        meta: {
-                          fieldType: 'SLIDER',
-                          label: 'Progress',
-                          disabled: false,
-                          required: false,
-                          max: 100,
-                          min: 0,
-                          step: 1,
-                        },
-                        value: {
-                          progress: 0,
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0OTFjNg==',
-                        fieldId: 'NOTIFICATIONS',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'SwitchMetaType',
-                            fieldType: 'SWITCH',
-                            label: 'Notifications',
-                            disabled: false,
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'SwitchValueType',
-                                enabled: true,
-                              },
-                              ownMeta: {
-                                __typename: 'TextMetaType',
-                                fieldType: 'TEXT',
-                                helperText: 'Additional note helperText',
-                                label: 'Additional note',
-                                inputType: null,
-                                min: null,
-                                max: null,
-                                maxLength: null,
-                                minLength: null,
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                    ],
-                    __typename: 'TaskType',
-                  },
-                },
-                {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-                  node: {
-                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMx',
-                    taskType: 'EVENT',
-                    fields: [
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgyYzY=',
-                        fieldId: 'TITLE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Title',
-                          label: 'Title',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 400,
-                          minLength: 0,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'SwitchFieldType',
-                        id:
-                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'PRIORITY',
-                        meta: {
-                          fieldType: 'SWITCH',
-                          label: 'Important',
-                          disabled: false,
-                          required: true,
-                        },
-                        value: {
-                          enabled: false,
-                        },
-                      },
-                      {
-                        __typename: 'ChoiceFieldType',
-                        id:
-                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDJiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'STATUS',
-                        meta: {
-                          fieldType: 'CHOICE',
-                          helperText: 'Informacje o testowym polu Status',
-                          label: 'Status',
-                          defaultValue: null,
-                          options: [
-                            {
-                              text: 'To do',
-                              value: 'TODO',
-                            },
-                            {
-                              text: 'Done',
-                              value: 'DONE',
-                            },
-                            {
-                              text: 'In progress',
-                              value: 'IN_PROGRESS',
-                            },
-                          ],
-                          required: true,
-                        },
-                        value: {
-                          id: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo0ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'NOTE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Description',
-                          label: 'Note',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MWQ0YjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'LOCATION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Location',
-                          label: 'Location',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhYWVjNDgxYzY=',
-                        fieldId: 'DATE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Date',
-                          label: 'Date',
-                          inputType: 'date-local',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MWQ0YjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'DURATION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Duration',
-                          label: 'Duration',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 0,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRhYjQwZDRiNjJiNWFlZWM0ODFjNg==',
                         fieldId: 'NOTIFICATIONS',
                         meta: {
                           fieldType: 'NESTED',
