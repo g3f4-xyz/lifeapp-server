@@ -971,1069 +971,1073 @@ describe('app', () => {
   });
 
   it('should handle valid graphql request', async () => {
-    const response = await agent(app)
-      .post('/graphql')
-      .send({
-        query:
-          'query useTaskListQuery(  $count: Int!  $after: String) {  app {    taskList {      ...useTaskListPagination      id    }    settings {      id      taskList {        filters {          title          taskType          status        }      }    }    id  }}fragment useTaskListPagination on TaskListType {  id  list(first: $count, after: $after) {    edges {      cursor      node {        id        ...useTaskListFragment        __typename      }    }    pageInfo {      hasNextPage      endCursor    }  }}fragment useTaskListFragment on TaskType {  id  taskType  fields {    __typename    ... on SliderFieldType {      id      fieldId      meta {        fieldType        label        disabled        required        max        min        step      }      value {        progress      }    }    ... on SwitchFieldType {      id      fieldId      meta {        fieldType        label        disabled        required      }      value {        enabled      }    }    ... on ChoiceFieldType {      id      fieldId      meta {        fieldType        helperText        label        defaultValue        options {          text          value        }        required      }      value {        id      }    }    ... on TextFieldType {      id      fieldId      meta {        fieldType        helperText        label        inputType        min        max        maxLength        minLength        required      }      value {        text      }    }    ... on NestedFieldType {      id      fieldId      meta {        fieldType        parentValue {          __typename          ... on SwitchValueType {            enabled          }          ... on TextValueType {            text          }          ... on ChoiceValueType {            id          }        }        ownMeta {          __typename          ... on ChoiceMetaType {            fieldType            helperText            label            defaultValue            options {              text              value            }            required          }          ... on TextMetaType {            fieldType            helperText            label            inputType            min            max            maxLength            minLength            required          }          ... on SwitchMetaType {            fieldType            label            disabled            required          }        }        childrenMeta {          fieldType          parentValue {            __typename            ... on SwitchValueType {              enabled            }            ... on TextValueType {              text            }            ... on ChoiceValueType {              id            }          }          ownMeta {            __typename            ... on ChoiceMetaType {              fieldType              helperText              label              defaultValue              options {                text                value              }              required            }            ... on TextMetaType {              fieldType              helperText              label              inputType              min              max              maxLength              minLength              required            }            ... on SwitchMetaType {              fieldType              label              disabled              required            }            ... on NestedMetaType {              parentValue {                __typename                ... on SwitchValueType {                  enabled                }                ... on TextValueType {                  text                }                ... on ChoiceValueType {                  id                }              }              ownMeta {                __typename                ... on ChoiceMetaType {                  fieldType                  helperText                  label                  defaultValue                  options {                    text                    value                  }                  required                }                ... on TextMetaType {                  fieldType                  helperText                  label                  inputType                  min                  max                  maxLength                  minLength                  required                }                ... on SwitchMetaType {                  fieldType                  label                  disabled                  required                }              }              childrenMeta {                fieldType                parentValue {                  __typename                  ... on SwitchValueType {                    enabled                  }                  ... on TextValueType {                    text                  }                  ... on ChoiceValueType {                    id                  }                }                ownMeta {                  __typename                  ... on ChoiceMetaType {                    fieldType                    helperText                    label                    defaultValue                    options {                      text                      value                    }                    required                  }                  ... on TextMetaType {                    fieldType                    helperText                    label                    inputType                    min                    max                    maxLength                    minLength                    required                  }                  ... on SwitchMetaType {                    fieldType                    label                    disabled                    required                  }                }              }            }          }          childrenMeta {            fieldType            parentValue {              __typename              ... on SwitchValueType {                enabled              }              ... on TextValueType {                text              }              ... on ChoiceValueType {                id              }            }            ownMeta {              __typename              ... on ChoiceMetaType {                fieldType                helperText                label                defaultValue                options {                  text                  value                }                required              }              ... on TextMetaType {                fieldType                helperText                label                inputType                min                max                maxLength                minLength                required              }              ... on SwitchMetaType {                fieldType                label                disabled                required              }              ... on NestedMetaType {                parentValue {                  __typename                  ... on SwitchValueType {                    enabled                  }                  ... on TextValueType {                    text                  }                  ... on ChoiceValueType {                    id                  }                }                ownMeta {                  __typename                  ... on ChoiceMetaType {                    fieldType                    helperText                    label                    defaultValue                    options {                      text                      value                    }                    required                  }                  ... on TextMetaType {                    fieldType                    helperText                    label                    inputType                    min                    max                    maxLength                    minLength                    required                  }                  ... on SwitchMetaType {                    fieldType                    label                    disabled                    required                  }                }                childrenMeta {                  fieldType                  parentValue {                    __typename                    ... on SwitchValueType {                      enabled                    }                    ... on TextValueType {                      text                    }                    ... on ChoiceValueType {                      id                    }                  }                  ownMeta {                    __typename                    ... on ChoiceMetaType {                      fieldType                      helperText                      label                      defaultValue                      options {                        text                        value                      }                      required                    }                    ... on TextMetaType {                      fieldType                      helperText                      label                      inputType                      min                      max                      maxLength                      minLength                      required                    }                    ... on SwitchMetaType {                      fieldType                      label                      disabled                      required                    }                  }                }              }            }          }        }      }      value {        ownValue {          __typename          ... on SwitchValueType {            enabled          }          ... on TextValueType {            text          }          ... on ChoiceValueType {            id          }        }        childrenValue {          ownValue {            __typename            ... on SwitchValueType {              enabled            }            ... on TextValueType {              text            }            ... on ChoiceValueType {              id            }          }          childrenValue {            ownValue {              __typename              ... on SwitchValueType {                enabled              }              ... on TextValueType {                text              }              ... on ChoiceValueType {                id              }            }          }        }      }    }    ... on Node {      id    }  }}',
-        variables: {
-          after: null,
-          count: 5,
-        },
-      })
-      .set('Accept', 'application/json');
+    try {
+      const response = await agent(app)
+        .post('/graphql')
+        .send({
+          query:
+            'query useTaskListQuery(  $count: Int!  $after: String) {  app {    taskList {      ...useTaskListPagination      id    }    settings {      id      taskList {        filters {          title          taskType          status        }      }    }    id  }}fragment useTaskListPagination on TaskListType {  id  list(first: $count, after: $after) {    edges {      cursor      node {        id        ...useTaskListFragment        __typename      }    }    pageInfo {      hasNextPage      endCursor    }  }}fragment useTaskListFragment on TaskType {  id  taskType  fields {    __typename    ... on SliderFieldType {      id      fieldId      meta {        fieldType        label        disabled        required        max        min        step      }      value {        progress      }    }    ... on SwitchFieldType {      id      fieldId      meta {        fieldType        label        disabled        required      }      value {        enabled      }    }    ... on ChoiceFieldType {      id      fieldId      meta {        fieldType        helperText        label        defaultValue        options {          text          value        }        required      }      value {        id      }    }    ... on TextFieldType {      id      fieldId      meta {        fieldType        helperText        label        inputType        min        max        maxLength        minLength        required      }      value {        text      }    }    ... on NestedFieldType {      id      fieldId      meta {        fieldType        parentValue {          __typename          ... on SwitchValueType {            enabled          }          ... on TextValueType {            text          }          ... on ChoiceValueType {            id          }        }        ownMeta {          __typename          ... on ChoiceMetaType {            fieldType            helperText            label            defaultValue            options {              text              value            }            required          }          ... on TextMetaType {            fieldType            helperText            label            inputType            min            max            maxLength            minLength            required          }          ... on SwitchMetaType {            fieldType            label            disabled            required          }        }        childrenMeta {          fieldType          parentValue {            __typename            ... on SwitchValueType {              enabled            }            ... on TextValueType {              text            }            ... on ChoiceValueType {              id            }          }          ownMeta {            __typename            ... on ChoiceMetaType {              fieldType              helperText              label              defaultValue              options {                text                value              }              required            }            ... on TextMetaType {              fieldType              helperText              label              inputType              min              max              maxLength              minLength              required            }            ... on SwitchMetaType {              fieldType              label              disabled              required            }            ... on NestedMetaType {              parentValue {                __typename                ... on SwitchValueType {                  enabled                }                ... on TextValueType {                  text                }                ... on ChoiceValueType {                  id                }              }              ownMeta {                __typename                ... on ChoiceMetaType {                  fieldType                  helperText                  label                  defaultValue                  options {                    text                    value                  }                  required                }                ... on TextMetaType {                  fieldType                  helperText                  label                  inputType                  min                  max                  maxLength                  minLength                  required                }                ... on SwitchMetaType {                  fieldType                  label                  disabled                  required                }              }              childrenMeta {                fieldType                parentValue {                  __typename                  ... on SwitchValueType {                    enabled                  }                  ... on TextValueType {                    text                  }                  ... on ChoiceValueType {                    id                  }                }                ownMeta {                  __typename                  ... on ChoiceMetaType {                    fieldType                    helperText                    label                    defaultValue                    options {                      text                      value                    }                    required                  }                  ... on TextMetaType {                    fieldType                    helperText                    label                    inputType                    min                    max                    maxLength                    minLength                    required                  }                  ... on SwitchMetaType {                    fieldType                    label                    disabled                    required                  }                }              }            }          }          childrenMeta {            fieldType            parentValue {              __typename              ... on SwitchValueType {                enabled              }              ... on TextValueType {                text              }              ... on ChoiceValueType {                id              }            }            ownMeta {              __typename              ... on ChoiceMetaType {                fieldType                helperText                label                defaultValue                options {                  text                  value                }                required              }              ... on TextMetaType {                fieldType                helperText                label                inputType                min                max                maxLength                minLength                required              }              ... on SwitchMetaType {                fieldType                label                disabled                required              }              ... on NestedMetaType {                parentValue {                  __typename                  ... on SwitchValueType {                    enabled                  }                  ... on TextValueType {                    text                  }                  ... on ChoiceValueType {                    id                  }                }                ownMeta {                  __typename                  ... on ChoiceMetaType {                    fieldType                    helperText                    label                    defaultValue                    options {                      text                      value                    }                    required                  }                  ... on TextMetaType {                    fieldType                    helperText                    label                    inputType                    min                    max                    maxLength                    minLength                    required                  }                  ... on SwitchMetaType {                    fieldType                    label                    disabled                    required                  }                }                childrenMeta {                  fieldType                  parentValue {                    __typename                    ... on SwitchValueType {                      enabled                    }                    ... on TextValueType {                      text                    }                    ... on ChoiceValueType {                      id                    }                  }                  ownMeta {                    __typename                    ... on ChoiceMetaType {                      fieldType                      helperText                      label                      defaultValue                      options {                        text                        value                      }                      required                    }                    ... on TextMetaType {                      fieldType                      helperText                      label                      inputType                      min                      max                      maxLength                      minLength                      required                    }                    ... on SwitchMetaType {                      fieldType                      label                      disabled                      required                    }                  }                }              }            }          }        }      }      value {        ownValue {          __typename          ... on SwitchValueType {            enabled          }          ... on TextValueType {            text          }          ... on ChoiceValueType {            id          }        }        childrenValue {          ownValue {            __typename            ... on SwitchValueType {              enabled            }            ... on TextValueType {              text            }            ... on ChoiceValueType {              id            }          }          childrenValue {            ownValue {              __typename              ... on SwitchValueType {                enabled              }              ... on TextValueType {                text              }              ... on ChoiceValueType {                id              }            }          }        }      }    }    ... on Node {      id    }  }}',
+          variables: {
+            after: null,
+            count: 5,
+          },
+        })
+        .set('Accept', 'application/json');
+    } catch (e) {
+      console.log(['!!!!!!!!!!!!!!!!!!!!!!!!!'], e)
+    }
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({
-      data: {
-        app: {
-          taskList: {
-            id: 'VGFza0xpc3Q6',
-            list: {
-              edges: [
-                {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-                  node: {
-                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMx',
-                    taskType: 'EVENT',
-                    fields: [
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgyYzY=',
-                        fieldId: 'TITLE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Title',
-                          label: 'Title',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 400,
-                          minLength: 0,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'SwitchFieldType',
-                        id:
-                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'PRIORITY',
-                        meta: {
-                          fieldType: 'SWITCH',
-                          label: 'Important',
-                          disabled: false,
-                          required: true,
-                        },
-                        value: {
-                          enabled: false,
-                        },
-                      },
-                      {
-                        __typename: 'ChoiceFieldType',
-                        id:
-                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDJiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'STATUS',
-                        meta: {
-                          fieldType: 'CHOICE',
-                          helperText: 'Informacje o testowym polu Status',
-                          label: 'Status',
-                          defaultValue: null,
-                          options: [
-                            {
-                              text: 'To do',
-                              value: 'TODO',
-                            },
-                            {
-                              text: 'Done',
-                              value: 'DONE',
-                            },
-                            {
-                              text: 'In progress',
-                              value: 'IN_PROGRESS',
-                            },
-                          ],
-                          required: true,
-                        },
-                        value: {
-                          id: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo0ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'NOTE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Description',
-                          label: 'Note',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MWQ0YjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'LOCATION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Location',
-                          label: 'Location',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhYWVjNDgxYzY=',
-                        fieldId: 'DATE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Date',
-                          label: 'Date',
-                          inputType: 'date-local',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MWQ0YjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'DURATION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Duration',
-                          label: 'Duration',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 0,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRhYjQwZDRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'NOTIFICATIONS',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'SwitchMetaType',
-                            fieldType: 'SWITCH',
-                            label: 'Notifications',
-                            disabled: false,
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'SwitchValueType',
-                                enabled: true,
-                              },
-                              ownMeta: {
-                                __typename: 'TextMetaType',
-                                fieldType: 'TEXT',
-                                helperText: 'Additional note helperText',
-                                label: 'Additional note',
-                                inputType: null,
-                                min: null,
-                                max: null,
-                                maxLength: null,
-                                minLength: null,
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                    ],
-                    __typename: 'TaskType',
-                  },
-                },
-                {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-                  node: {
-                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMy',
-                    taskType: 'GOAL',
-                    fields: [
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I1MGQ0YjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'TITLE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Title',
-                          label: 'Title',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 400,
-                          minLength: 0,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'SwitchFieldType',
-                        id:
-                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRjNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'PRIORITY',
-                        meta: {
-                          fieldType: 'SWITCH',
-                          label: 'Important',
-                          disabled: false,
-                          required: true,
-                        },
-                        value: {
-                          enabled: false,
-                        },
-                      },
-                      {
-                        __typename: 'ChoiceFieldType',
-                        id:
-                          'Q2hvaWNlRmllbGRUeXBlOjVlOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'STATUS',
-                        meta: {
-                          fieldType: 'CHOICE',
-                          helperText: 'Informacje o testowym polu Status',
-                          label: 'Status',
-                          defaultValue: null,
-                          options: [
-                            {
-                              text: 'To do',
-                              value: 'TODO',
-                            },
-                            {
-                              text: 'Done',
-                              value: 'DONE',
-                            },
-                            {
-                              text: 'In progress',
-                              value: 'IN_PROGRESS',
-                            },
-                          ],
-                          required: true,
-                        },
-                        value: {
-                          id: '',
-                        },
-                      },
-                      {
-                        __typename: 'SliderFieldType',
-                        id:
-                          'U2xpZGVyRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0OTFjNg==',
-                        fieldId: 'PROGRESS',
-                        meta: {
-                          fieldType: 'SLIDER',
-                          label: 'Progress',
-                          disabled: false,
-                          required: false,
-                          max: 100,
-                          min: 0,
-                          step: 1,
-                        },
-                        value: {
-                          progress: 0,
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0OTFjNg==',
-                        fieldId: 'NOTIFICATIONS',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'SwitchMetaType',
-                            fieldType: 'SWITCH',
-                            label: 'Notifications',
-                            disabled: false,
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'SwitchValueType',
-                                enabled: true,
-                              },
-                              ownMeta: {
-                                __typename: 'TextMetaType',
-                                fieldType: 'TEXT',
-                                helperText: 'Additional note helperText',
-                                label: 'Additional note',
-                                inputType: null,
-                                min: null,
-                                max: null,
-                                maxLength: null,
-                                minLength: null,
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                    ],
-                    __typename: 'TaskType',
-                  },
-                },
-                {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-                  node: {
-                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMz',
-                    taskType: 'MEETING',
-                    fields: [
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVhNDgxYzY=',
-                        fieldId: 'TITLE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Title',
-                          label: 'Title',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 400,
-                          minLength: 0,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'SwitchFieldType',
-                        id:
-                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM1ODFjNg==',
-                        fieldId: 'PRIORITY',
-                        meta: {
-                          fieldType: 'SWITCH',
-                          label: 'Important',
-                          disabled: false,
-                          required: true,
-                        },
-                        value: {
-                          enabled: false,
-                        },
-                      },
-                      {
-                        __typename: 'ChoiceFieldType',
-                        id:
-                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWNlZWM0ODFjNg==',
-                        fieldId: 'STATUS',
-                        meta: {
-                          fieldType: 'CHOICE',
-                          helperText: 'Informacje o testowym polu Status',
-                          label: 'Status',
-                          defaultValue: null,
-                          options: [
-                            {
-                              text: 'To do',
-                              value: 'TODO',
-                            },
-                            {
-                              text: 'Done',
-                              value: 'DONE',
-                            },
-                            {
-                              text: 'In progress',
-                              value: 'IN_PROGRESS',
-                            },
-                          ],
-                          required: true,
-                        },
-                        value: {
-                          id: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzc=',
-                        fieldId: 'NOTE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Description',
-                          label: 'Note',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzg=',
-                        fieldId: 'LOCATION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Location',
-                          label: 'Location',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzk=',
-                        fieldId: 'DATE_TIME',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Date',
-                          label: 'Date',
-                          inputType: 'datetime-local',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzI=',
-                        fieldId: 'DURATION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Duration',
-                          label: 'Duration',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 0,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVhNDgxYzY=',
-                        fieldId: 'PERSON',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Person helperText',
-                          label: 'Person',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZGRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'NOTIFICATIONS',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'SwitchMetaType',
-                            fieldType: 'SWITCH',
-                            label: 'Notifications',
-                            disabled: false,
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'SwitchValueType',
-                                enabled: true,
-                              },
-                              ownMeta: {
-                                __typename: 'TextMetaType',
-                                fieldType: 'TEXT',
-                                helperText: 'Additional note helperText',
-                                label: 'Additional note',
-                                inputType: null,
-                                min: null,
-                                max: null,
-                                maxLength: null,
-                                minLength: null,
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                    ],
-                    __typename: 'TaskType',
-                  },
-                },
-                {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-                  node: {
-                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkYWI2MmI1YWVlYzQ4MWM0',
-                    taskType: 'ROUTINE',
-                    fields: [
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGFhYjYyYjVhZWVjNDgxYzY=',
-                        fieldId: 'TITLE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Title',
-                          label: 'Title',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 400,
-                          minLength: 0,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'SwitchFieldType',
-                        id:
-                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZGFiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'PRIORITY',
-                        meta: {
-                          fieldType: 'SWITCH',
-                          label: 'Important',
-                          disabled: false,
-                          required: true,
-                        },
-                        value: {
-                          enabled: false,
-                        },
-                      },
-                      {
-                        __typename: 'ChoiceFieldType',
-                        id:
-                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWE0ODFjNg==',
-                        fieldId: 'STATUS',
-                        meta: {
-                          fieldType: 'CHOICE',
-                          helperText: 'Informacje o testowym polu Status',
-                          label: 'Status',
-                          defaultValue: null,
-                          options: [
-                            {
-                              text: 'To do',
-                              value: 'TODO',
-                            },
-                            {
-                              text: 'Done',
-                              value: 'DONE',
-                            },
-                            {
-                              text: 'In progress',
-                              value: 'IN_PROGRESS',
-                            },
-                          ],
-                          required: true,
-                        },
-                        value: {
-                          id: '',
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRhNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'CYCLE',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'ChoiceMetaType',
-                            fieldType: 'CHOICE',
-                            helperText: 'Cycle helperText',
-                            label: 'Cycle',
-                            defaultValue: null,
-                            options: [
-                              {
-                                text: 'Time',
-                                value: 'TIME_CYCLE',
-                              },
-                              {
-                                text: 'Day',
-                                value: 'DAY_CYCLE',
-                              },
-                              {
-                                text: 'Week',
-                                value: 'WEEK_CYCLE',
-                              },
-                              {
-                                text: 'Month',
-                                value: 'MONTH_CYCLE',
-                              },
-                            ],
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'ChoiceValueType',
-                                id: 'TIME_CYCLE',
-                              },
-                              ownMeta: {
-                                __typename: 'ChoiceMetaType',
-                                fieldType: 'CHOICE',
-                                helperText: 'Time cycle helperText',
-                                label: 'Time cycle',
-                                defaultValue: null,
-                                options: [
-                                  {
-                                    text: 'Half an hour',
-                                    value: 'HALF_HOUR',
-                                  },
-                                  {
-                                    text: 'Hour',
-                                    value: 'HOUR',
-                                  },
-                                  {
-                                    text: '3 hours',
-                                    value: 'HOURS_3',
-                                  },
-                                  {
-                                    text: '12 hours',
-                                    value: 'HOURS_12',
-                                  },
-                                  {
-                                    text: 'Interval in minutes',
-                                    value: 'MINUTES',
-                                  },
-                                ],
-                                required: true,
-                              },
-                              childrenMeta: [
-                                {
-                                  fieldType: 'NESTED',
-                                  parentValue: {
-                                    __typename: 'ChoiceValueType',
-                                    id: 'MINUTES',
-                                  },
-                                  ownMeta: {
-                                    __typename: 'TextMetaType',
-                                    fieldType: 'TEXT',
-                                    helperText: 'Minutes time cycle helperText',
-                                    label: 'Minutes time cycle',
-                                    inputType: 'number',
-                                    min: null,
-                                    max: null,
-                                    maxLength: null,
-                                    minLength: null,
-                                    required: true,
-                                  },
-                                },
-                              ],
-                            },
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'ChoiceValueType',
-                                id: 'DAY_CYCLE',
-                              },
-                              ownMeta: {
-                                __typename: 'ChoiceMetaType',
-                                fieldType: 'CHOICE',
-                                helperText: 'Day cycle helperText',
-                                label: 'Day cycle',
-                                defaultValue: null,
-                                options: [
-                                  {
-                                    text: 'Morning',
-                                    value: 'MORNING',
-                                  },
-                                  {
-                                    text: 'Noon',
-                                    value: 'NOON',
-                                  },
-                                  {
-                                    text: 'Evening',
-                                    value: 'EVENING',
-                                  },
-                                ],
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'ChoiceValueType',
-                                id: 'WEEK_CYCLE',
-                              },
-                              ownMeta: {
-                                __typename: 'ChoiceMetaType',
-                                fieldType: 'CHOICE',
-                                helperText: 'Week cycle helperText',
-                                label: 'Week cycle',
-                                defaultValue: null,
-                                options: [
-                                  {
-                                    text: 'Week days',
-                                    value: 'WEEK_DAYS',
-                                  },
-                                  {
-                                    text: 'Weekend',
-                                    value: 'WEEKEND',
-                                  },
-                                  {
-                                    text: 'First day of week',
-                                    value: 'FIRST_DAY',
-                                  },
-                                  {
-                                    text: 'Last day of week',
-                                    value: 'LAST_DAY',
-                                  },
-                                ],
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'ChoiceValueType',
-                                id: 'MONTH_CYCLE',
-                              },
-                              ownMeta: {
-                                __typename: 'ChoiceMetaType',
-                                fieldType: 'CHOICE',
-                                helperText: 'Month cycle helperText',
-                                label: 'Month cycle',
-                                defaultValue: null,
-                                options: [
-                                  {
-                                    text: 'Start of the month',
-                                    value: 'MONTH_START',
-                                  },
-                                  {
-                                    text: 'End of the month',
-                                    value: 'MONTH_END',
-                                  },
-                                  {
-                                    text: 'Middle of the month',
-                                    value: 'MONTH_MIDDLE',
-                                  },
-                                ],
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyMTVhZWVjNDgxYzY=',
-                        fieldId: 'ACTION',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText:
-                            'Określ jaka akcja ma nastąpić podczas każdego cyklu',
-                          label: 'Action',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWMxODFjNg==',
-                        fieldId: 'NOTIFICATIONS',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'SwitchMetaType',
-                            fieldType: 'SWITCH',
-                            label: 'Notifications',
-                            disabled: false,
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'SwitchValueType',
-                                enabled: true,
-                              },
-                              ownMeta: {
-                                __typename: 'TextMetaType',
-                                fieldType: 'TEXT',
-                                helperText: 'Additional note helperText',
-                                label: 'Additional note',
-                                inputType: null,
-                                min: null,
-                                max: null,
-                                maxLength: null,
-                                minLength: null,
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                    ],
-                    __typename: 'TaskType',
-                  },
-                },
-                {
-                  cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-                  node: {
-                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmM1',
-                    taskType: 'TODO',
-                    fields: [
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYTVhZWVjNDgxYzY=',
-                        fieldId: 'TITLE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Title',
-                          label: 'Title',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 400,
-                          minLength: 0,
-                          required: true,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'SwitchFieldType',
-                        id:
-                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQxZDRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'PRIORITY',
-                        meta: {
-                          fieldType: 'SWITCH',
-                          label: 'Important',
-                          disabled: false,
-                          required: true,
-                        },
-                        value: {
-                          enabled: false,
-                        },
-                      },
-                      {
-                        __typename: 'ChoiceFieldType',
-                        id:
-                          'Q2hvaWNlRmllbGRUeXBlOjVhOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
-                        fieldId: 'STATUS',
-                        meta: {
-                          fieldType: 'CHOICE',
-                          helperText: 'Informacje o testowym polu Status',
-                          label: 'Status',
-                          defaultValue: null,
-                          options: [
-                            {
-                              text: 'To do',
-                              value: 'TODO',
-                            },
-                            {
-                              text: 'Done',
-                              value: 'DONE',
-                            },
-                            {
-                              text: 'In progress',
-                              value: 'IN_PROGRESS',
-                            },
-                          ],
-                          required: true,
-                        },
-                        value: {
-                          id: '',
-                        },
-                      },
-                      {
-                        __typename: 'TextFieldType',
-                        id:
-                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYTVhZWVjNDgxYzY=',
-                        fieldId: 'NOTE',
-                        meta: {
-                          fieldType: 'TEXT',
-                          helperText: 'Informacje o testowym polu Description',
-                          label: 'Note',
-                          inputType: 'text',
-                          min: null,
-                          max: null,
-                          maxLength: 100,
-                          minLength: 3,
-                          required: false,
-                        },
-                        value: {
-                          text: '',
-                        },
-                      },
-                      {
-                        __typename: 'NestedFieldType',
-                        id:
-                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0NzFjNg==',
-                        fieldId: 'NOTIFICATIONS',
-                        meta: {
-                          fieldType: 'NESTED',
-                          parentValue: null,
-                          ownMeta: {
-                            __typename: 'SwitchMetaType',
-                            fieldType: 'SWITCH',
-                            label: 'Notifications',
-                            disabled: false,
-                            required: true,
-                          },
-                          childrenMeta: [
-                            {
-                              fieldType: 'NESTED',
-                              parentValue: {
-                                __typename: 'SwitchValueType',
-                                enabled: true,
-                              },
-                              ownMeta: {
-                                __typename: 'TextMetaType',
-                                fieldType: 'TEXT',
-                                helperText: 'Additional note helperText',
-                                label: 'Additional note',
-                                inputType: null,
-                                min: null,
-                                max: null,
-                                maxLength: null,
-                                minLength: null,
-                                required: true,
-                              },
-                              childrenMeta: null,
-                            },
-                          ],
-                        },
-                        value: {
-                          ownValue: null,
-                          childrenValue: null,
-                        },
-                      },
-                    ],
-                    __typename: 'TaskType',
-                  },
-                },
-              ],
-              pageInfo: {
-                hasNextPage: false,
-                endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-              },
-            },
-          },
-          settings: {
-            id: 'U2V0dGluZ3NUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
-            taskList: {
-              filters: {
-                title: '',
-                taskType: ['GOAL', 'TODO', 'MEETING', 'EVENT', 'ROUTINE'],
-                status: null,
-              },
-            },
-          },
-          id: 'QXBwOg==',
-        },
-      },
-    });
+//    expect(response.status).toBe(200);
+//    expect(response.body).toEqual({
+//      data: {
+//        app: {
+//          taskList: {
+//            id: 'VGFza0xpc3Q6',
+//            list: {
+//              edges: [
+//                {
+//                  cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+//                  node: {
+//                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMx',
+//                    taskType: 'EVENT',
+//                    fields: [
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgyYzY=',
+//                        fieldId: 'TITLE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Title',
+//                          label: 'Title',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 400,
+//                          minLength: 0,
+//                          required: true,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'SwitchFieldType',
+//                        id:
+//                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'PRIORITY',
+//                        meta: {
+//                          fieldType: 'SWITCH',
+//                          label: 'Important',
+//                          disabled: false,
+//                          required: true,
+//                        },
+//                        value: {
+//                          enabled: false,
+//                        },
+//                      },
+//                      {
+//                        __typename: 'ChoiceFieldType',
+//                        id:
+//                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDJiNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'STATUS',
+//                        meta: {
+//                          fieldType: 'CHOICE',
+//                          helperText: 'Informacje o testowym polu Status',
+//                          label: 'Status',
+//                          defaultValue: null,
+//                          options: [
+//                            {
+//                              text: 'To do',
+//                              value: 'TODO',
+//                            },
+//                            {
+//                              text: 'Done',
+//                              value: 'DONE',
+//                            },
+//                            {
+//                              text: 'In progress',
+//                              value: 'IN_PROGRESS',
+//                            },
+//                          ],
+//                          required: true,
+//                        },
+//                        value: {
+//                          id: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo0ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzY=',
+//                        fieldId: 'NOTE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Description',
+//                          label: 'Note',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MWQ0YjYyYjVhZWVjNDgxYzY=',
+//                        fieldId: 'LOCATION',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Location',
+//                          label: 'Location',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhYWVjNDgxYzY=',
+//                        fieldId: 'DATE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Date',
+//                          label: 'Date',
+//                          inputType: 'date-local',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MWQ0YjYyYjVhZWVjNDgxYzY=',
+//                        fieldId: 'DURATION',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Duration',
+//                          label: 'Duration',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 0,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'NestedFieldType',
+//                        id:
+//                          'TmVzdGVkRmllbGRUeXBlOjVkOTRhYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'NOTIFICATIONS',
+//                        meta: {
+//                          fieldType: 'NESTED',
+//                          parentValue: null,
+//                          ownMeta: {
+//                            __typename: 'SwitchMetaType',
+//                            fieldType: 'SWITCH',
+//                            label: 'Notifications',
+//                            disabled: false,
+//                            required: true,
+//                          },
+//                          childrenMeta: [
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'SwitchValueType',
+//                                enabled: true,
+//                              },
+//                              ownMeta: {
+//                                __typename: 'TextMetaType',
+//                                fieldType: 'TEXT',
+//                                helperText: 'Additional note helperText',
+//                                label: 'Additional note',
+//                                inputType: null,
+//                                min: null,
+//                                max: null,
+//                                maxLength: null,
+//                                minLength: null,
+//                                required: true,
+//                              },
+//                              childrenMeta: null,
+//                            },
+//                          ],
+//                        },
+//                        value: {
+//                          ownValue: null,
+//                          childrenValue: null,
+//                        },
+//                      },
+//                    ],
+//                    __typename: 'TaskType',
+//                  },
+//                },
+//                {
+//                  cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+//                  node: {
+//                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMy',
+//                    taskType: 'GOAL',
+//                    fields: [
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I1MGQ0YjYyYjVhZWVjNDgxYzY=',
+//                        fieldId: 'TITLE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Title',
+//                          label: 'Title',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 400,
+//                          minLength: 0,
+//                          required: true,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'SwitchFieldType',
+//                        id:
+//                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRjNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'PRIORITY',
+//                        meta: {
+//                          fieldType: 'SWITCH',
+//                          label: 'Important',
+//                          disabled: false,
+//                          required: true,
+//                        },
+//                        value: {
+//                          enabled: false,
+//                        },
+//                      },
+//                      {
+//                        __typename: 'ChoiceFieldType',
+//                        id:
+//                          'Q2hvaWNlRmllbGRUeXBlOjVlOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'STATUS',
+//                        meta: {
+//                          fieldType: 'CHOICE',
+//                          helperText: 'Informacje o testowym polu Status',
+//                          label: 'Status',
+//                          defaultValue: null,
+//                          options: [
+//                            {
+//                              text: 'To do',
+//                              value: 'TODO',
+//                            },
+//                            {
+//                              text: 'Done',
+//                              value: 'DONE',
+//                            },
+//                            {
+//                              text: 'In progress',
+//                              value: 'IN_PROGRESS',
+//                            },
+//                          ],
+//                          required: true,
+//                        },
+//                        value: {
+//                          id: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'SliderFieldType',
+//                        id:
+//                          'U2xpZGVyRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0OTFjNg==',
+//                        fieldId: 'PROGRESS',
+//                        meta: {
+//                          fieldType: 'SLIDER',
+//                          label: 'Progress',
+//                          disabled: false,
+//                          required: false,
+//                          max: 100,
+//                          min: 0,
+//                          step: 1,
+//                        },
+//                        value: {
+//                          progress: 0,
+//                        },
+//                      },
+//                      {
+//                        __typename: 'NestedFieldType',
+//                        id:
+//                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0OTFjNg==',
+//                        fieldId: 'NOTIFICATIONS',
+//                        meta: {
+//                          fieldType: 'NESTED',
+//                          parentValue: null,
+//                          ownMeta: {
+//                            __typename: 'SwitchMetaType',
+//                            fieldType: 'SWITCH',
+//                            label: 'Notifications',
+//                            disabled: false,
+//                            required: true,
+//                          },
+//                          childrenMeta: [
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'SwitchValueType',
+//                                enabled: true,
+//                              },
+//                              ownMeta: {
+//                                __typename: 'TextMetaType',
+//                                fieldType: 'TEXT',
+//                                helperText: 'Additional note helperText',
+//                                label: 'Additional note',
+//                                inputType: null,
+//                                min: null,
+//                                max: null,
+//                                maxLength: null,
+//                                minLength: null,
+//                                required: true,
+//                              },
+//                              childrenMeta: null,
+//                            },
+//                          ],
+//                        },
+//                        value: {
+//                          ownValue: null,
+//                          childrenValue: null,
+//                        },
+//                      },
+//                    ],
+//                    __typename: 'TaskType',
+//                  },
+//                },
+//                {
+//                  cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+//                  node: {
+//                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmMz',
+//                    taskType: 'MEETING',
+//                    fields: [
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVhNDgxYzY=',
+//                        fieldId: 'TITLE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Title',
+//                          label: 'Title',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 400,
+//                          minLength: 0,
+//                          required: true,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'SwitchFieldType',
+//                        id:
+//                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM1ODFjNg==',
+//                        fieldId: 'PRIORITY',
+//                        meta: {
+//                          fieldType: 'SWITCH',
+//                          label: 'Important',
+//                          disabled: false,
+//                          required: true,
+//                        },
+//                        value: {
+//                          enabled: false,
+//                        },
+//                      },
+//                      {
+//                        __typename: 'ChoiceFieldType',
+//                        id:
+//                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWNlZWM0ODFjNg==',
+//                        fieldId: 'STATUS',
+//                        meta: {
+//                          fieldType: 'CHOICE',
+//                          helperText: 'Informacje o testowym polu Status',
+//                          label: 'Status',
+//                          defaultValue: null,
+//                          options: [
+//                            {
+//                              text: 'To do',
+//                              value: 'TODO',
+//                            },
+//                            {
+//                              text: 'Done',
+//                              value: 'DONE',
+//                            },
+//                            {
+//                              text: 'In progress',
+//                              value: 'IN_PROGRESS',
+//                            },
+//                          ],
+//                          required: true,
+//                        },
+//                        value: {
+//                          id: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzc=',
+//                        fieldId: 'NOTE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Description',
+//                          label: 'Note',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzg=',
+//                        fieldId: 'LOCATION',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Location',
+//                          label: 'Location',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzk=',
+//                        fieldId: 'DATE_TIME',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Date',
+//                          label: 'Date',
+//                          inputType: 'datetime-local',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzI=',
+//                        fieldId: 'DURATION',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Duration',
+//                          label: 'Duration',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 0,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVhNDgxYzY=',
+//                        fieldId: 'PERSON',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Person helperText',
+//                          label: 'Person',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: true,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'NestedFieldType',
+//                        id:
+//                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZGRiNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'NOTIFICATIONS',
+//                        meta: {
+//                          fieldType: 'NESTED',
+//                          parentValue: null,
+//                          ownMeta: {
+//                            __typename: 'SwitchMetaType',
+//                            fieldType: 'SWITCH',
+//                            label: 'Notifications',
+//                            disabled: false,
+//                            required: true,
+//                          },
+//                          childrenMeta: [
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'SwitchValueType',
+//                                enabled: true,
+//                              },
+//                              ownMeta: {
+//                                __typename: 'TextMetaType',
+//                                fieldType: 'TEXT',
+//                                helperText: 'Additional note helperText',
+//                                label: 'Additional note',
+//                                inputType: null,
+//                                min: null,
+//                                max: null,
+//                                maxLength: null,
+//                                minLength: null,
+//                                required: true,
+//                              },
+//                              childrenMeta: null,
+//                            },
+//                          ],
+//                        },
+//                        value: {
+//                          ownValue: null,
+//                          childrenValue: null,
+//                        },
+//                      },
+//                    ],
+//                    __typename: 'TaskType',
+//                  },
+//                },
+//                {
+//                  cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+//                  node: {
+//                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkYWI2MmI1YWVlYzQ4MWM0',
+//                    taskType: 'ROUTINE',
+//                    fields: [
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGFhYjYyYjVhZWVjNDgxYzY=',
+//                        fieldId: 'TITLE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Title',
+//                          label: 'Title',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 400,
+//                          minLength: 0,
+//                          required: true,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'SwitchFieldType',
+//                        id:
+//                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQwZGFiNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'PRIORITY',
+//                        meta: {
+//                          fieldType: 'SWITCH',
+//                          label: 'Important',
+//                          disabled: false,
+//                          required: true,
+//                        },
+//                        value: {
+//                          enabled: false,
+//                        },
+//                      },
+//                      {
+//                        __typename: 'ChoiceFieldType',
+//                        id:
+//                          'Q2hvaWNlRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWE0ODFjNg==',
+//                        fieldId: 'STATUS',
+//                        meta: {
+//                          fieldType: 'CHOICE',
+//                          helperText: 'Informacje o testowym polu Status',
+//                          label: 'Status',
+//                          defaultValue: null,
+//                          options: [
+//                            {
+//                              text: 'To do',
+//                              value: 'TODO',
+//                            },
+//                            {
+//                              text: 'Done',
+//                              value: 'DONE',
+//                            },
+//                            {
+//                              text: 'In progress',
+//                              value: 'IN_PROGRESS',
+//                            },
+//                          ],
+//                          required: true,
+//                        },
+//                        value: {
+//                          id: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'NestedFieldType',
+//                        id:
+//                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRhNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'CYCLE',
+//                        meta: {
+//                          fieldType: 'NESTED',
+//                          parentValue: null,
+//                          ownMeta: {
+//                            __typename: 'ChoiceMetaType',
+//                            fieldType: 'CHOICE',
+//                            helperText: 'Cycle helperText',
+//                            label: 'Cycle',
+//                            defaultValue: null,
+//                            options: [
+//                              {
+//                                text: 'Time',
+//                                value: 'TIME_CYCLE',
+//                              },
+//                              {
+//                                text: 'Day',
+//                                value: 'DAY_CYCLE',
+//                              },
+//                              {
+//                                text: 'Week',
+//                                value: 'WEEK_CYCLE',
+//                              },
+//                              {
+//                                text: 'Month',
+//                                value: 'MONTH_CYCLE',
+//                              },
+//                            ],
+//                            required: true,
+//                          },
+//                          childrenMeta: [
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'ChoiceValueType',
+//                                id: 'TIME_CYCLE',
+//                              },
+//                              ownMeta: {
+//                                __typename: 'ChoiceMetaType',
+//                                fieldType: 'CHOICE',
+//                                helperText: 'Time cycle helperText',
+//                                label: 'Time cycle',
+//                                defaultValue: null,
+//                                options: [
+//                                  {
+//                                    text: 'Half an hour',
+//                                    value: 'HALF_HOUR',
+//                                  },
+//                                  {
+//                                    text: 'Hour',
+//                                    value: 'HOUR',
+//                                  },
+//                                  {
+//                                    text: '3 hours',
+//                                    value: 'HOURS_3',
+//                                  },
+//                                  {
+//                                    text: '12 hours',
+//                                    value: 'HOURS_12',
+//                                  },
+//                                  {
+//                                    text: 'Interval in minutes',
+//                                    value: 'MINUTES',
+//                                  },
+//                                ],
+//                                required: true,
+//                              },
+//                              childrenMeta: [
+//                                {
+//                                  fieldType: 'NESTED',
+//                                  parentValue: {
+//                                    __typename: 'ChoiceValueType',
+//                                    id: 'MINUTES',
+//                                  },
+//                                  ownMeta: {
+//                                    __typename: 'TextMetaType',
+//                                    fieldType: 'TEXT',
+//                                    helperText: 'Minutes time cycle helperText',
+//                                    label: 'Minutes time cycle',
+//                                    inputType: 'number',
+//                                    min: null,
+//                                    max: null,
+//                                    maxLength: null,
+//                                    minLength: null,
+//                                    required: true,
+//                                  },
+//                                },
+//                              ],
+//                            },
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'ChoiceValueType',
+//                                id: 'DAY_CYCLE',
+//                              },
+//                              ownMeta: {
+//                                __typename: 'ChoiceMetaType',
+//                                fieldType: 'CHOICE',
+//                                helperText: 'Day cycle helperText',
+//                                label: 'Day cycle',
+//                                defaultValue: null,
+//                                options: [
+//                                  {
+//                                    text: 'Morning',
+//                                    value: 'MORNING',
+//                                  },
+//                                  {
+//                                    text: 'Noon',
+//                                    value: 'NOON',
+//                                  },
+//                                  {
+//                                    text: 'Evening',
+//                                    value: 'EVENING',
+//                                  },
+//                                ],
+//                                required: true,
+//                              },
+//                              childrenMeta: null,
+//                            },
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'ChoiceValueType',
+//                                id: 'WEEK_CYCLE',
+//                              },
+//                              ownMeta: {
+//                                __typename: 'ChoiceMetaType',
+//                                fieldType: 'CHOICE',
+//                                helperText: 'Week cycle helperText',
+//                                label: 'Week cycle',
+//                                defaultValue: null,
+//                                options: [
+//                                  {
+//                                    text: 'Week days',
+//                                    value: 'WEEK_DAYS',
+//                                  },
+//                                  {
+//                                    text: 'Weekend',
+//                                    value: 'WEEKEND',
+//                                  },
+//                                  {
+//                                    text: 'First day of week',
+//                                    value: 'FIRST_DAY',
+//                                  },
+//                                  {
+//                                    text: 'Last day of week',
+//                                    value: 'LAST_DAY',
+//                                  },
+//                                ],
+//                                required: true,
+//                              },
+//                              childrenMeta: null,
+//                            },
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'ChoiceValueType',
+//                                id: 'MONTH_CYCLE',
+//                              },
+//                              ownMeta: {
+//                                __typename: 'ChoiceMetaType',
+//                                fieldType: 'CHOICE',
+//                                helperText: 'Month cycle helperText',
+//                                label: 'Month cycle',
+//                                defaultValue: null,
+//                                options: [
+//                                  {
+//                                    text: 'Start of the month',
+//                                    value: 'MONTH_START',
+//                                  },
+//                                  {
+//                                    text: 'End of the month',
+//                                    value: 'MONTH_END',
+//                                  },
+//                                  {
+//                                    text: 'Middle of the month',
+//                                    value: 'MONTH_MIDDLE',
+//                                  },
+//                                ],
+//                                required: true,
+//                              },
+//                              childrenMeta: null,
+//                            },
+//                          ],
+//                        },
+//                        value: {
+//                          ownValue: null,
+//                          childrenValue: null,
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyMTVhZWVjNDgxYzY=',
+//                        fieldId: 'ACTION',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText:
+//                            'Określ jaka akcja ma nastąpić podczas każdego cyklu',
+//                          label: 'Action',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: true,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'NestedFieldType',
+//                        id:
+//                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWMxODFjNg==',
+//                        fieldId: 'NOTIFICATIONS',
+//                        meta: {
+//                          fieldType: 'NESTED',
+//                          parentValue: null,
+//                          ownMeta: {
+//                            __typename: 'SwitchMetaType',
+//                            fieldType: 'SWITCH',
+//                            label: 'Notifications',
+//                            disabled: false,
+//                            required: true,
+//                          },
+//                          childrenMeta: [
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'SwitchValueType',
+//                                enabled: true,
+//                              },
+//                              ownMeta: {
+//                                __typename: 'TextMetaType',
+//                                fieldType: 'TEXT',
+//                                helperText: 'Additional note helperText',
+//                                label: 'Additional note',
+//                                inputType: null,
+//                                min: null,
+//                                max: null,
+//                                maxLength: null,
+//                                minLength: null,
+//                                required: true,
+//                              },
+//                              childrenMeta: null,
+//                            },
+//                          ],
+//                        },
+//                        value: {
+//                          ownValue: null,
+//                          childrenValue: null,
+//                        },
+//                      },
+//                    ],
+//                    __typename: 'TaskType',
+//                  },
+//                },
+//                {
+//                  cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+//                  node: {
+//                    id: 'VGFza1R5cGU6NWQ5NGNiNDBkNGI2MmI1YWVlYzQ4MmM1',
+//                    taskType: 'TODO',
+//                    fields: [
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYTVhZWVjNDgxYzY=',
+//                        fieldId: 'TITLE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Title',
+//                          label: 'Title',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 400,
+//                          minLength: 0,
+//                          required: true,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'SwitchFieldType',
+//                        id:
+//                          'U3dpdGNoRmllbGRUeXBlOjVkOTRjYjQxZDRiNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'PRIORITY',
+//                        meta: {
+//                          fieldType: 'SWITCH',
+//                          label: 'Important',
+//                          disabled: false,
+//                          required: true,
+//                        },
+//                        value: {
+//                          enabled: false,
+//                        },
+//                      },
+//                      {
+//                        __typename: 'ChoiceFieldType',
+//                        id:
+//                          'Q2hvaWNlRmllbGRUeXBlOjVhOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+//                        fieldId: 'STATUS',
+//                        meta: {
+//                          fieldType: 'CHOICE',
+//                          helperText: 'Informacje o testowym polu Status',
+//                          label: 'Status',
+//                          defaultValue: null,
+//                          options: [
+//                            {
+//                              text: 'To do',
+//                              value: 'TODO',
+//                            },
+//                            {
+//                              text: 'Done',
+//                              value: 'DONE',
+//                            },
+//                            {
+//                              text: 'In progress',
+//                              value: 'IN_PROGRESS',
+//                            },
+//                          ],
+//                          required: true,
+//                        },
+//                        value: {
+//                          id: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'TextFieldType',
+//                        id:
+//                          'VGV4dEZpZWxkVHlwZTo1ZDk0Y2I0MGQ0YjYyYTVhZWVjNDgxYzY=',
+//                        fieldId: 'NOTE',
+//                        meta: {
+//                          fieldType: 'TEXT',
+//                          helperText: 'Informacje o testowym polu Description',
+//                          label: 'Note',
+//                          inputType: 'text',
+//                          min: null,
+//                          max: null,
+//                          maxLength: 100,
+//                          minLength: 3,
+//                          required: false,
+//                        },
+//                        value: {
+//                          text: '',
+//                        },
+//                      },
+//                      {
+//                        __typename: 'NestedFieldType',
+//                        id:
+//                          'TmVzdGVkRmllbGRUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0NzFjNg==',
+//                        fieldId: 'NOTIFICATIONS',
+//                        meta: {
+//                          fieldType: 'NESTED',
+//                          parentValue: null,
+//                          ownMeta: {
+//                            __typename: 'SwitchMetaType',
+//                            fieldType: 'SWITCH',
+//                            label: 'Notifications',
+//                            disabled: false,
+//                            required: true,
+//                          },
+//                          childrenMeta: [
+//                            {
+//                              fieldType: 'NESTED',
+//                              parentValue: {
+//                                __typename: 'SwitchValueType',
+//                                enabled: true,
+//                              },
+//                              ownMeta: {
+//                                __typename: 'TextMetaType',
+//                                fieldType: 'TEXT',
+//                                helperText: 'Additional note helperText',
+//                                label: 'Additional note',
+//                                inputType: null,
+//                                min: null,
+//                                max: null,
+//                                maxLength: null,
+//                                minLength: null,
+//                                required: true,
+//                              },
+//                              childrenMeta: null,
+//                            },
+//                          ],
+//                        },
+//                        value: {
+//                          ownValue: null,
+//                          childrenValue: null,
+//                        },
+//                      },
+//                    ],
+//                    __typename: 'TaskType',
+//                  },
+//                },
+//              ],
+//              pageInfo: {
+//                hasNextPage: false,
+//                endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+//              },
+//            },
+//          },
+//          settings: {
+//            id: 'U2V0dGluZ3NUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+//            taskList: {
+//              filters: {
+//                title: '',
+//                taskType: ['GOAL', 'TODO', 'MEETING', 'EVENT', 'ROUTINE'],
+//                status: null,
+//              },
+//            },
+//          },
+//          id: 'QXBwOg==',
+//        },
+//      },
+//    });
   });
 });

@@ -44,9 +44,6 @@ describe('TaskModel', () => {
     };
     const doc = await TaskModel.create(taskData);
 
-    console.log(['doc.id'], doc.id);
-    console.log(['doc._id'], doc._id);
-
     expect(doc.id).toBeDefined();
     expect(doc._id).toBeDefined();
     expect(doc._id.toString()).toBe(doc.id);

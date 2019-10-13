@@ -15,7 +15,7 @@ import { FieldValue, Task } from '../../interfaces';
 import { FieldSchema } from '../../schemas/FieldSchema';
 import { registerFieldsDiscriminators } from '../registerFieldsDiscriminators';
 
-export interface TaskDocument extends Omit<Task, 'id'>, Document {
+export interface TaskDocument extends Omit<Task, 'id' | '_id'>, Document {
   validateFields(this: TaskDocument): boolean;
 }
 
