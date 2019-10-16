@@ -3,19 +3,19 @@ require('dotenv').config();
 // import agenda from './agenda';
 import app from './app';
 import authentication from './authentication';
-import { CONSOLE_COLORS } from './constants';
+import settingsApi from './db/api/settings/settingsApi';
+import taskApi from './db/api/task/taskApi';
+import userApi from './db/api/user/userApi';
 import connectDB from './db/connect';
+import UserService from './services/UserService';
 import initWebPush from './webPush/initWebPush';
 
 (async () => {
+  const userService = new UserService(taskApi, settingsApi, userApi);
+
   await connectDB();
-  app.listen(app.get('port'), () => {
-    console.info(
-      CONSOLE_COLORS.BLUE,
-      `express app running on port: ${app.get('port')}`,
-    );
-  });
-  authentication();
+  authentication(userService);
   initWebPush();
+  app(userService);
   // agenda();
 })();

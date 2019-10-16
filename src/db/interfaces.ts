@@ -135,8 +135,16 @@ export interface Settings {
   taskList: TaskListSettings;
 }
 
+export interface UserInfo {
+  name?: string;
+  photo?: string;
+  provider?: string;
+}
+
 export interface User {
-  id: string;
+  id?: string;
+  userId: string;
+  info: UserInfo;
 }
 
 export interface Context {
