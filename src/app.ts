@@ -41,7 +41,6 @@ export default (userService: UserService) => {
     });
   });
 
-  app.set('port', process.env.PORT || 30000);
   app.set('io', io);
 
   app.get('/user-info', async (req, res) => {
@@ -63,7 +62,5 @@ export default (userService: UserService) => {
 
   app.use(router);
 
-  server.listen(app.get('port'), () => {
-    console.info(`express app running on port: ${app.get('port')}`);
-  });
+  return server;
 };

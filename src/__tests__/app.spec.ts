@@ -2,9 +2,13 @@ import { ObjectId } from 'mongodb';
 import { agent } from 'supertest';
 import app from '../app';
 import { TASK_TYPE } from '../constants';
+import settingsApi from '../db/api/settings/settingsApi';
+import taskApi from '../db/api/task/taskApi';
+import userApi from '../db/api/user/userApi';
 import { Settings, Task } from '../db/interfaces';
 import { SettingsModel } from '../db/models/settings/SettingsModel';
 import { TaskModel } from '../db/models/tasks/TaskModel';
+import UserService from '../services/UserService';
 import mockMongoCollection from '../utils/tests/mockMongoCollection';
 import setupMongo from '../utils/tests/setupMongo';
 
@@ -17,6 +21,7 @@ describe('app', () => {
   const secondUser = {
     id: '0987654321',
   };
+  const userService = new UserService(taskApi, settingsApi, userApi);
 
   setupMongo({
     async beforeEachExtend() {
@@ -971,7 +976,7 @@ describe('app', () => {
   });
 
   it('should handle valid graphql request', async () => {
-    const response = await agent(app)
+    const response = await agent(app(userService))
       .post('/graphql')
       .send({
         query:

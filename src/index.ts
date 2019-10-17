@@ -3,6 +3,7 @@ require('dotenv').config();
 // import agenda from './agenda';
 import app from './app';
 import authentication from './authentication';
+import { PORT } from './config';
 import settingsApi from './db/api/settings/settingsApi';
 import taskApi from './db/api/task/taskApi';
 import userApi from './db/api/user/userApi';
@@ -16,6 +17,8 @@ import initWebPush from './webPush/initWebPush';
   await connectDB();
   authentication(userService);
   initWebPush();
-  app(userService);
+  app(userService).listen(PORT, () => {
+    console.info(`express app running on port: ${PORT}`);
+  });
   // agenda();
 })();
