@@ -1,8 +1,11 @@
-const ts_preset = require('ts-jest/jest-preset');
-const mongodb_preset = require('@shelf/jest-mongodb/jest-preset');
+const os = require('os');
+const tsPreset = require('ts-jest/jest-preset');
+const mongodbPreset = require('@shelf/jest-mongodb/jest-preset');
 
 module.exports = {
-  ...ts_preset,
-  ...mongodb_preset,
+  ...tsPreset,
+  ...mongodbPreset,
+  setupFiles: ['<rootDir>/test/setup-tests.ts'],
   collectCoverage: true,
+  maxConcurrency: os.cpus().length,
 };

@@ -208,7 +208,7 @@ describe('settingsApi', () => {
   });
 
   describe('deleteSubscription', () => {
-    xit('should delete subscription', async () => {
+    it('should delete subscription', async () => {
       const ownerId = firstUser.id;
       const subscriptionId = firstUser.subscriptionId;
       const settings = await settingsApi.getSettings(ownerId);

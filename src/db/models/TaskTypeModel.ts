@@ -2,8 +2,6 @@ import { Document, model, Model, Schema } from 'mongoose';
 
 import { TaskType } from '../interfaces';
 
-export interface TaskTypeDocument extends TaskType, Pick<Document, 'id'> {}
-
 export const TaskTypeSchema: Schema<TaskType> = new Schema({
   typeId: String,
   label: String,

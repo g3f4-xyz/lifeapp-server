@@ -1,18 +1,17 @@
-import { SessionOptions } from 'express-session';
-import { ConfigMap } from './db/interfaces';
+export const PORT = process.env.PORT || '30000';
 
-export const DB_HOST: string =
+export const DB_HOST =
   process.env.DB === 'remote'
     ? 'mongodb://mo1563_lifeapp:Gitara15@85.194.240.29:27017/mo1563_lifeapp'
     : 'mongodb://localhost/lifeapp';
+
 export const DEMO_USER = {
   id: '1234567890',
 };
-export const HOST: string = process.env.HOST || 'http://localhost:30000';
-export const PORT: string =
-  process.env.PORT || process.env.NODE_ENV === 'test' ? '12345' : '30000';
-export const PUBLIC_PATH = `${process.cwd()}/build`;
-export const ROUTES: ConfigMap<string> = {
+
+export const HOST = process.env.HOST || 'http://localhost:30000';
+
+export const ROUTES = {
   AUTH: '/auth',
   DEMO: '/demo',
   LOGOUT: '/logout',
@@ -20,16 +19,8 @@ export const ROUTES: ConfigMap<string> = {
   NOTIFICATIONS: '/notifications',
   ROOT: '/',
 };
-export const HTML_PATHS: ConfigMap<string> = {
-  APP: `${PUBLIC_PATH}/index.html`,
-};
-export const SUB_ROUTES: ConfigMap<string> = {
+
+export const SUB_ROUTES = {
   GOOGLE_AUTH: '/google',
   GOOGLE_LOGGED: '/google/logged',
-};
-export const SESSION: SessionOptions = {
-  secret: '#PNW&(RX#MIP&#7i',
-  resave: false,
-  saveUninitialized: true,
-  // cookie: { secure: true },
 };

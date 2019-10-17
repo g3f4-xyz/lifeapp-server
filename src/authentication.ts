@@ -1,8 +1,9 @@
 import * as passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { HOST, ROUTES, SUB_ROUTES } from './config';
+import UserService from './services/UserService';
 
-export default () => {
+export default (userService: UserService) => {
   passport.use(
     new GoogleStrategy(
       {
@@ -12,8 +13,22 @@ export default () => {
         clientSecret: 'zW2ebcvBaxAZFqMu00OTb9-d', // #TODO jw.
         callbackURL: `${HOST}${ROUTES.AUTH}${SUB_ROUTES.GOOGLE_LOGGED}`,
       },
-      (_accessToken: any, _refreshToken: any, profile: any, cb: any) => {
-        cb(null, { id: profile.id });
+      async (_accessToken: any, _refreshToken: any, profile: any, cb: any) => {
+        await userService.addUser({
+          userId: profile.id,
+          info: {
+            name: profile.displayName,
+            photo: profile._json.picture,
+            provider: profile.provider,
+          },
+        });
+
+        cb(null, {
+          id: profile.id,
+          picture: profile._json.picture,
+          displayName: profile.displayName,
+          provider: profile.provider,
+        });
       },
     ),
   );

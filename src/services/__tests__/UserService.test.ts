@@ -1,11 +1,12 @@
 import settingsApi from '../../db/api/settings/settingsApi';
 import taskApi from '../../db/api/task/taskApi';
+import userApi from '../../db/api/user/userApi';
 import AppError from '../../utils/AppError';
 import UserService from '../UserService';
 
 describe('UserService', () => {
   it('should create new service', async () => {
-    const userService = new UserService(taskApi, settingsApi);
+    const userService = new UserService(taskApi, settingsApi, userApi);
 
     expect(userService).toBeDefined();
   });
@@ -19,7 +20,7 @@ describe('UserService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockResolvedValue(ownerId);
-      const userService = new UserService(taskApi, settingsApi);
+      const userService = new UserService(taskApi, settingsApi, userApi);
 
       expect(await userService.cleanApplication(ownerId)).toBe(ownerId);
       expect(deleteTasksSpy).toHaveBeenCalledWith(ownerId);
@@ -34,7 +35,7 @@ describe('UserService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockResolvedValue(ownerId);
-      const userService = new UserService(taskApi, settingsApi);
+      const userService = new UserService(taskApi, settingsApi, userApi);
 
       try {
         await userService.cleanApplication(ownerId);
@@ -56,7 +57,7 @@ describe('UserService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockRejectedValue(null);
-      const userService = new UserService(taskApi, settingsApi);
+      const userService = new UserService(taskApi, settingsApi, userApi);
 
       try {
         expect(await userService.cleanApplication(ownerId)).toBe(ownerId);
@@ -78,7 +79,7 @@ describe('UserService', () => {
       const deleteSettingsSpy = jest
         .spyOn(settingsApi, 'deleteSettings')
         .mockRejectedValue(null);
-      const userService = new UserService(taskApi, settingsApi);
+      const userService = new UserService(taskApi, settingsApi, userApi);
 
       try {
         await userService.cleanApplication(ownerId);

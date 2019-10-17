@@ -12,10 +12,6 @@ import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
 import UserService from '../services/UserService';
 
-export interface ConfigMap<T = string | boolean> {
-  [key: string]: T;
-}
-
 export interface FieldMetaOptions {
   text: string;
   value: string;
@@ -135,8 +131,16 @@ export interface Settings {
   taskList: TaskListSettings;
 }
 
+export interface UserInfo {
+  name?: string;
+  photo?: string;
+  provider?: string;
+}
+
 export interface User {
-  id: string;
+  id?: string;
+  userId: string;
+  info: UserInfo;
 }
 
 export interface Context {

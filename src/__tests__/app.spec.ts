@@ -2,9 +2,14 @@ import { ObjectId } from 'mongodb';
 import { agent } from 'supertest';
 import app from '../app';
 import { TASK_TYPE } from '../constants';
-import { Settings, Task } from '../db/interfaces';
+import settingsApi from '../db/api/settings/settingsApi';
+import taskApi from '../db/api/task/taskApi';
+import userApi from '../db/api/user/userApi';
+import { Settings, Task, TaskType } from '../db/interfaces';
 import { SettingsModel } from '../db/models/settings/SettingsModel';
 import { TaskModel } from '../db/models/tasks/TaskModel';
+import { TaskTypeModel } from '../db/models/TaskTypeModel';
+import UserService from '../services/UserService';
 import mockMongoCollection from '../utils/tests/mockMongoCollection';
 import setupMongo from '../utils/tests/setupMongo';
 
@@ -17,6 +22,7 @@ describe('app', () => {
   const secondUser = {
     id: '0987654321',
   };
+  const userService = new UserService(taskApi, settingsApi, userApi);
 
   setupMongo({
     async beforeEachExtend() {
@@ -967,11 +973,59 @@ describe('app', () => {
           ],
         },
       ]);
+
+      await mockMongoCollection<TaskType>(TaskTypeModel, [
+        {
+          _id: new ObjectId('5d94cb40d4b62b5aeec482c1'),
+          typeId: 'EVENT',
+          label: 'string',
+          description: 'string',
+          order: 1,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+        {
+          _id: new ObjectId('5d94cb40d4b62b5aeec482c2'),
+          typeId: 'GOAL',
+          label: 'string',
+          description: 'string',
+          order: 2,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+        {
+          _id: new ObjectId('5d94cb40d4b62b5aeec482c3'),
+          typeId: 'MEETING',
+          label: 'string',
+          description: 'string',
+          order: 3,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+        {
+          _id: new ObjectId('5d94cb40dab62b5aeec481c4'),
+          typeId: 'ROUTINE',
+          label: 'string',
+          description: 'string',
+          order: 4,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+        {
+          _id: new ObjectId('5d94cb40d4b62b5aeec482c5'),
+          typeId: 'TODO',
+          label: 'string',
+          description: 'string',
+          order: 5,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+      ]);
     },
   });
 
-  it('should handle valid graphql request', async () => {
-    const response = await agent(app)
+  it('should return task list', async () => {
+    const response = await agent(app(userService))
       .post('/graphql')
       .send({
         query:
@@ -2032,6 +2086,3901 @@ describe('app', () => {
             },
           },
           id: 'QXBwOg==',
+        },
+      },
+    });
+  });
+
+  it('should return task type list', async () => {
+    const response = await agent(app(userService))
+      .post('/graphql')
+      .send({
+        query: `
+          query useTaskTypeListQuery(
+          $count: Int!
+          $after: String
+          ) {
+            app {
+              taskTypeList {
+              ...useTaskTypePagination
+                id
+              }
+              id
+            }
+          }
+          
+          fragment useTaskTypePagination on TaskTypeListType {
+            id
+            list(first: $count, after: $after) {
+              edges {
+                node {
+                  id
+                  order
+                ...useTaskTypeFragment
+                  __typename
+                }
+                cursor
+              }
+              pageInfo {
+                endCursor
+                hasNextPage
+              }
+            }
+          }
+          
+          fragment useTaskTypeFragment on TaskTypeType {
+            id
+            typeId
+            label
+            description
+          }
+        `,
+        variables: {
+          after: null,
+          count: 5,
+        },
+      })
+      .set('Accept', 'application/json');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        app: {
+          id: 'QXBwOg==',
+          taskTypeList: {
+            id: 'VGFza1R5cGVMaXN0Og==',
+            list: {
+              edges: [
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODJjMQ==',
+                    label: 'string',
+                    order: 1,
+                    typeId: 'EVENT',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODJjMg==',
+                    label: 'string',
+                    order: 2,
+                    typeId: 'GOAL',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODJjMw==',
+                    label: 'string',
+                    order: 3,
+                    typeId: 'MEETING',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZGFiNjJiNWFlZWM0ODFjNA==',
+                    label: 'string',
+                    order: 4,
+                    typeId: 'ROUTINE',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODJjNQ==',
+                    label: 'string',
+                    order: 5,
+                    typeId: 'TODO',
+                  },
+                },
+              ],
+              pageInfo: {
+                endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+                hasNextPage: false,
+              },
+            },
+          },
+        },
+      },
+    });
+  });
+
+  it('should return settings', async () => {
+    const response = await agent(app(userService))
+      .post('/graphql')
+      .send({
+        query: `
+          query SettingsQuery(
+            $count: Int!
+            $after: String
+            ) {
+              app {
+                settings {
+                  id
+                ...SettingsFragment_data
+                }
+                id
+              }
+            }
+            
+            fragment SettingsFragment_data on SettingsType {
+              id
+              ownerId
+              notifications {
+                id
+                general {
+                ...NotificationsGeneralFragment_data
+                }
+                types {
+                ...NotificationsTypesFragment_data
+                }
+              ...SubscriptionsPagination_data
+              }
+            }
+            
+            fragment NotificationsGeneralFragment_data on NotificationsGeneralSettingType {
+              show
+              vibrate
+            }
+            
+            fragment NotificationsTypesFragment_data on NotificationsTypesSettingType {
+              events
+              goals
+              meetings
+              routines
+              todos
+            }
+            
+            fragment SubscriptionsPagination_data on NotificationsType {
+              subscriptions(first: $count, after: $after) {
+                edges {
+                  node {
+                    id
+                  ...SubscriptionFragment_data
+                    __typename
+                  }
+                  cursor
+                }
+                pageInfo {
+                  endCursor
+                  hasNextPage
+                }
+              }
+            }
+            
+            fragment SubscriptionFragment_data on SubscriptionType {
+              id
+              userAgent
+              userDeviceType
+            }
+        `,
+        variables: {
+          after: null,
+          count: 5,
+        },
+      })
+      .set('Accept', 'application/json');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        app: {
+          id: 'QXBwOg==',
+          settings: {
+            id: 'U2V0dGluZ3NUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODFjNg==',
+            notifications: {
+              general: {
+                show: true,
+                vibrate: true,
+              },
+              id: 'Tm90aWZpY2F0aW9uc1R5cGU6',
+              subscriptions: {
+                edges: [
+                  {
+                    cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+                    node: {
+                      __typename: 'SubscriptionType',
+                      id:
+                        'U3Vic2NyaXB0aW9uVHlwZTo1ZDk0Y2I0MGQ0YjYyYjVhZWVjNDgxYzU=',
+                      userAgent: 'userAgent',
+                      userDeviceType: 'userDeviceType',
+                    },
+                  },
+                ],
+                pageInfo: {
+                  endCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+                  hasNextPage: false,
+                },
+              },
+              types: {
+                events: true,
+                goals: true,
+                meetings: true,
+                routines: true,
+                todos: true,
+              },
+            },
+            ownerId: '1234567890',
+          },
+        },
+      },
+    });
+  });
+
+  it('should return empty todo task', async () => {
+    const response = await agent(app(userService))
+      .post('/graphql')
+      .send({
+        variables: {
+          id: '',
+          type: 'TODO',
+        },
+        query: `
+          query useTaskQuery(
+            $id: ID
+            $type: String
+          ) {
+            app {
+              task(id: $id, type: $type) {
+                id
+                ...useTaskFragment
+              }
+              taskList {
+                id
+              }
+              id
+            }
+          }
+          
+          fragment useTaskFragment on TaskType {
+            id
+            fields {
+              __typename
+              ... on ChoiceFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SwitchFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SliderFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on NestedFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on TextFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ...SliderFieldFragment_data
+              ...SwitchFieldFragment_data
+              ...ChoiceFieldFragment_data
+              ...TextFieldFragment_data
+              ...NestedFieldFragment_data
+              ... on Node {
+                id
+              }
+            }
+          }
+          
+          fragment SliderFieldFragment_data on SliderFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+              max
+              min
+              step
+            }
+            value {
+              progress
+            }
+          }
+          
+          fragment SwitchFieldFragment_data on SwitchFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+            }
+            value {
+              enabled
+            }
+          }
+          
+          fragment ChoiceFieldFragment_data on ChoiceFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              defaultValue
+              options {
+                text
+                value
+              }
+              required
+            }
+            value {
+              id
+            }
+          }
+          
+          fragment TextFieldFragment_data on TextFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              inputType
+              min
+              max
+              maxLength
+              minLength
+              required
+            }
+            value {
+              text
+            }
+          }
+          
+          fragment NestedFieldFragment_data on NestedFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              parentValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              ownMeta {
+                __typename
+                ... on ChoiceMetaType {
+                  fieldType
+                  helperText
+                  label
+                  defaultValue
+                  options {
+                    text
+                    value
+                  }
+                  required
+                }
+                ... on TextMetaType {
+                  fieldType
+                  helperText
+                  label
+                  inputType
+                  min
+                  max
+                  maxLength
+                  minLength
+                  required
+                }
+                ... on SwitchMetaType {
+                  fieldType
+                  label
+                  disabled
+                  required
+                }
+              }
+              childrenMeta {
+                fieldType
+                parentValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                ownMeta {
+                  __typename
+                  ... on ChoiceMetaType {
+                    fieldType
+                    helperText
+                    label
+                    defaultValue
+                    options {
+                      text
+                      value
+                    }
+                    required
+                  }
+                  ... on TextMetaType {
+                    fieldType
+                    helperText
+                    label
+                    inputType
+                    min
+                    max
+                    maxLength
+                    minLength
+                    required
+                  }
+                  ... on SwitchMetaType {
+                    fieldType
+                    label
+                    disabled
+                    required
+                  }
+                  ... on NestedMetaType {
+                    parentValue {
+                      __typename
+                      ... on SwitchValueType {
+                        enabled
+                      }
+                      ... on TextValueType {
+                        text
+                      }
+                      ... on ChoiceValueType {
+                        id
+                      }
+                    }
+                    ownMeta {
+                      __typename
+                      ... on ChoiceMetaType {
+                        fieldType
+                        helperText
+                        label
+                        defaultValue
+                        options {
+                          text
+                          value
+                        }
+                        required
+                      }
+                      ... on TextMetaType {
+                        fieldType
+                        helperText
+                        label
+                        inputType
+                        min
+                        max
+                        maxLength
+                        minLength
+                        required
+                      }
+                      ... on SwitchMetaType {
+                        fieldType
+                        label
+                        disabled
+                        required
+                      }
+                    }
+                    childrenMeta {
+                      fieldType
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                    }
+                  }
+                }
+                childrenMeta {
+                  fieldType
+                  parentValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                  ownMeta {
+                    __typename
+                    ... on ChoiceMetaType {
+                      fieldType
+                      helperText
+                      label
+                      defaultValue
+                      options {
+                        text
+                        value
+                      }
+                      required
+                    }
+                    ... on TextMetaType {
+                      fieldType
+                      helperText
+                      label
+                      inputType
+                      min
+                      max
+                      maxLength
+                      minLength
+                      required
+                    }
+                    ... on SwitchMetaType {
+                      fieldType
+                      label
+                      disabled
+                      required
+                    }
+                    ... on NestedMetaType {
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                      childrenMeta {
+                        fieldType
+                        parentValue {
+                          __typename
+                          ... on SwitchValueType {
+                            enabled
+                          }
+                          ... on TextValueType {
+                            text
+                          }
+                          ... on ChoiceValueType {
+                            id
+                          }
+                        }
+                        ownMeta {
+                          __typename
+                          ... on ChoiceMetaType {
+                            fieldType
+                            helperText
+                            label
+                            defaultValue
+                            options {
+                              text
+                              value
+                            }
+                            required
+                          }
+                          ... on TextMetaType {
+                            fieldType
+                            helperText
+                            label
+                            inputType
+                            min
+                            max
+                            maxLength
+                            minLength
+                            required
+                          }
+                          ... on SwitchMetaType {
+                            fieldType
+                            label
+                            disabled
+                            required
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            value {
+              ownValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              childrenValue {
+                ownValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                childrenValue {
+                  ownValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+      })
+      .set('Accept', 'application/json');
+
+    // TODO jak zamockować id podczas tworzenia nowego modelu?
+    response.body.data.app.task.id = 'mocked id';
+    response.body.data.app.task.fields.forEach(
+      (field: any) => (field.id = 'mocked id'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        app: {
+          id: 'QXBwOg==',
+          task: {
+            fields: [
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'TITLE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Title',
+                  inputType: 'text',
+                  label: 'Title',
+                  max: null,
+                  maxLength: 400,
+                  min: null,
+                  minLength: 0,
+                  required: true,
+                },
+                order: 1,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'SwitchFieldType',
+                fieldId: 'PRIORITY',
+                fieldType: 'SWITCH',
+                id: 'mocked id',
+                meta: {
+                  disabled: false,
+                  fieldType: 'SWITCH',
+                  label: 'Important',
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  enabled: false,
+                },
+              },
+              {
+                __typename: 'ChoiceFieldType',
+                fieldId: 'STATUS',
+                fieldType: 'CHOICE',
+                id: 'mocked id',
+                meta: {
+                  defaultValue: null,
+                  fieldType: 'CHOICE',
+                  helperText: 'Informacje o testowym polu Status',
+                  label: 'Status',
+                  options: [
+                    {
+                      text: 'To do',
+                      value: 'TODO',
+                    },
+                    {
+                      text: 'Done',
+                      value: 'DONE',
+                    },
+                    {
+                      text: 'In progress',
+                      value: 'IN_PROGRESS',
+                    },
+                  ],
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  id: 'TODO',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'NOTE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Description',
+                  inputType: 'text',
+                  label: 'Note',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: false,
+                },
+                order: 2,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'NestedFieldType',
+                fieldId: 'NOTIFICATIONS',
+                fieldType: 'NESTED',
+                id: 'mocked id',
+                meta: {
+                  childrenMeta: [
+                    {
+                      childrenMeta: null,
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'TextMetaType',
+                        fieldType: 'TEXT',
+                        helperText: 'Additional note helperText',
+                        inputType: null,
+                        label: 'Additional note',
+                        max: null,
+                        maxLength: null,
+                        min: null,
+                        minLength: null,
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'SwitchValueType',
+                        enabled: true,
+                      },
+                    },
+                  ],
+                  fieldType: 'NESTED',
+                  ownMeta: {
+                    __typename: 'SwitchMetaType',
+                    disabled: false,
+                    fieldType: 'SWITCH',
+                    label: 'Notifications',
+                    required: true,
+                  },
+                  parentValue: null,
+                },
+                order: 8,
+                value: {
+                  childrenValue: null,
+                  ownValue: null,
+                },
+              },
+            ],
+            id: 'mocked id',
+          },
+          taskList: {
+            id: 'VGFza0xpc3Q6',
+          },
+        },
+      },
+    });
+  });
+
+  it('should return empty goal task', async () => {
+    const response = await agent(app(userService))
+      .post('/graphql')
+      .send({
+        variables: {
+          id: '',
+          type: 'GOAL',
+        },
+        query: `
+          query useTaskQuery(
+            $id: ID
+            $type: String
+          ) {
+            app {
+              task(id: $id, type: $type) {
+                id
+                ...useTaskFragment
+              }
+              taskList {
+                id
+              }
+              id
+            }
+          }
+          
+          fragment useTaskFragment on TaskType {
+            id
+            fields {
+              __typename
+              ... on ChoiceFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SwitchFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SliderFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on NestedFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on TextFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ...SliderFieldFragment_data
+              ...SwitchFieldFragment_data
+              ...ChoiceFieldFragment_data
+              ...TextFieldFragment_data
+              ...NestedFieldFragment_data
+              ... on Node {
+                id
+              }
+            }
+          }
+          
+          fragment SliderFieldFragment_data on SliderFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+              max
+              min
+              step
+            }
+            value {
+              progress
+            }
+          }
+          
+          fragment SwitchFieldFragment_data on SwitchFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+            }
+            value {
+              enabled
+            }
+          }
+          
+          fragment ChoiceFieldFragment_data on ChoiceFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              defaultValue
+              options {
+                text
+                value
+              }
+              required
+            }
+            value {
+              id
+            }
+          }
+          
+          fragment TextFieldFragment_data on TextFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              inputType
+              min
+              max
+              maxLength
+              minLength
+              required
+            }
+            value {
+              text
+            }
+          }
+          
+          fragment NestedFieldFragment_data on NestedFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              parentValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              ownMeta {
+                __typename
+                ... on ChoiceMetaType {
+                  fieldType
+                  helperText
+                  label
+                  defaultValue
+                  options {
+                    text
+                    value
+                  }
+                  required
+                }
+                ... on TextMetaType {
+                  fieldType
+                  helperText
+                  label
+                  inputType
+                  min
+                  max
+                  maxLength
+                  minLength
+                  required
+                }
+                ... on SwitchMetaType {
+                  fieldType
+                  label
+                  disabled
+                  required
+                }
+              }
+              childrenMeta {
+                fieldType
+                parentValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                ownMeta {
+                  __typename
+                  ... on ChoiceMetaType {
+                    fieldType
+                    helperText
+                    label
+                    defaultValue
+                    options {
+                      text
+                      value
+                    }
+                    required
+                  }
+                  ... on TextMetaType {
+                    fieldType
+                    helperText
+                    label
+                    inputType
+                    min
+                    max
+                    maxLength
+                    minLength
+                    required
+                  }
+                  ... on SwitchMetaType {
+                    fieldType
+                    label
+                    disabled
+                    required
+                  }
+                  ... on NestedMetaType {
+                    parentValue {
+                      __typename
+                      ... on SwitchValueType {
+                        enabled
+                      }
+                      ... on TextValueType {
+                        text
+                      }
+                      ... on ChoiceValueType {
+                        id
+                      }
+                    }
+                    ownMeta {
+                      __typename
+                      ... on ChoiceMetaType {
+                        fieldType
+                        helperText
+                        label
+                        defaultValue
+                        options {
+                          text
+                          value
+                        }
+                        required
+                      }
+                      ... on TextMetaType {
+                        fieldType
+                        helperText
+                        label
+                        inputType
+                        min
+                        max
+                        maxLength
+                        minLength
+                        required
+                      }
+                      ... on SwitchMetaType {
+                        fieldType
+                        label
+                        disabled
+                        required
+                      }
+                    }
+                    childrenMeta {
+                      fieldType
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                    }
+                  }
+                }
+                childrenMeta {
+                  fieldType
+                  parentValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                  ownMeta {
+                    __typename
+                    ... on ChoiceMetaType {
+                      fieldType
+                      helperText
+                      label
+                      defaultValue
+                      options {
+                        text
+                        value
+                      }
+                      required
+                    }
+                    ... on TextMetaType {
+                      fieldType
+                      helperText
+                      label
+                      inputType
+                      min
+                      max
+                      maxLength
+                      minLength
+                      required
+                    }
+                    ... on SwitchMetaType {
+                      fieldType
+                      label
+                      disabled
+                      required
+                    }
+                    ... on NestedMetaType {
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                      childrenMeta {
+                        fieldType
+                        parentValue {
+                          __typename
+                          ... on SwitchValueType {
+                            enabled
+                          }
+                          ... on TextValueType {
+                            text
+                          }
+                          ... on ChoiceValueType {
+                            id
+                          }
+                        }
+                        ownMeta {
+                          __typename
+                          ... on ChoiceMetaType {
+                            fieldType
+                            helperText
+                            label
+                            defaultValue
+                            options {
+                              text
+                              value
+                            }
+                            required
+                          }
+                          ... on TextMetaType {
+                            fieldType
+                            helperText
+                            label
+                            inputType
+                            min
+                            max
+                            maxLength
+                            minLength
+                            required
+                          }
+                          ... on SwitchMetaType {
+                            fieldType
+                            label
+                            disabled
+                            required
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            value {
+              ownValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              childrenValue {
+                ownValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                childrenValue {
+                  ownValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+      })
+      .set('Accept', 'application/json');
+
+    // TODO jak zamockować id podczas tworzenia nowego modelu?
+    response.body.data.app.task.id = 'mocked id';
+    response.body.data.app.task.fields.forEach(
+      (field: any) => (field.id = 'mocked id'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        app: {
+          id: 'QXBwOg==',
+          task: {
+            fields: [
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'TITLE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Title',
+                  inputType: 'text',
+                  label: 'Title',
+                  max: null,
+                  maxLength: 400,
+                  min: null,
+                  minLength: 0,
+                  required: true,
+                },
+                order: 1,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'SwitchFieldType',
+                fieldId: 'PRIORITY',
+                fieldType: 'SWITCH',
+                id: 'mocked id',
+                meta: {
+                  disabled: false,
+                  fieldType: 'SWITCH',
+                  label: 'Important',
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  enabled: false,
+                },
+              },
+              {
+                __typename: 'ChoiceFieldType',
+                fieldId: 'STATUS',
+                fieldType: 'CHOICE',
+                id: 'mocked id',
+                meta: {
+                  defaultValue: null,
+                  fieldType: 'CHOICE',
+                  helperText: 'Informacje o testowym polu Status',
+                  label: 'Status',
+                  options: [
+                    {
+                      text: 'To do',
+                      value: 'TODO',
+                    },
+                    {
+                      text: 'Done',
+                      value: 'DONE',
+                    },
+                    {
+                      text: 'In progress',
+                      value: 'IN_PROGRESS',
+                    },
+                  ],
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  id: 'TODO',
+                },
+              },
+              {
+                __typename: 'SliderFieldType',
+                fieldId: 'PROGRESS',
+                fieldType: 'SLIDER',
+                id: 'mocked id',
+                meta: {
+                  disabled: false,
+                  fieldType: 'SLIDER',
+                  label: 'Progress',
+                  max: 100,
+                  min: 0,
+                  required: false,
+                  step: 1,
+                },
+                order: 5,
+                value: {
+                  progress: 0,
+                },
+              },
+              {
+                __typename: 'NestedFieldType',
+                fieldId: 'NOTIFICATIONS',
+                fieldType: 'NESTED',
+                id: 'mocked id',
+                meta: {
+                  childrenMeta: [
+                    {
+                      childrenMeta: null,
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'TextMetaType',
+                        fieldType: 'TEXT',
+                        helperText: 'Additional note helperText',
+                        inputType: null,
+                        label: 'Additional note',
+                        max: null,
+                        maxLength: null,
+                        min: null,
+                        minLength: null,
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'SwitchValueType',
+                        enabled: true,
+                      },
+                    },
+                  ],
+                  fieldType: 'NESTED',
+                  ownMeta: {
+                    __typename: 'SwitchMetaType',
+                    disabled: false,
+                    fieldType: 'SWITCH',
+                    label: 'Notifications',
+                    required: true,
+                  },
+                  parentValue: null,
+                },
+                order: 8,
+                value: {
+                  childrenValue: null,
+                  ownValue: null,
+                },
+              },
+            ],
+            id: 'mocked id',
+          },
+          taskList: {
+            id: 'VGFza0xpc3Q6',
+          },
+        },
+      },
+    });
+  });
+
+  it('should return empty event task', async () => {
+    const response = await agent(app(userService))
+      .post('/graphql')
+      .send({
+        variables: {
+          id: '',
+          type: 'EVENT',
+        },
+        query: `
+          query useTaskQuery(
+            $id: ID
+            $type: String
+          ) {
+            app {
+              task(id: $id, type: $type) {
+                id
+                ...useTaskFragment
+              }
+              taskList {
+                id
+              }
+              id
+            }
+          }
+          
+          fragment useTaskFragment on TaskType {
+            id
+            fields {
+              __typename
+              ... on ChoiceFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SwitchFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SliderFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on NestedFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on TextFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ...SliderFieldFragment_data
+              ...SwitchFieldFragment_data
+              ...ChoiceFieldFragment_data
+              ...TextFieldFragment_data
+              ...NestedFieldFragment_data
+              ... on Node {
+                id
+              }
+            }
+          }
+          
+          fragment SliderFieldFragment_data on SliderFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+              max
+              min
+              step
+            }
+            value {
+              progress
+            }
+          }
+          
+          fragment SwitchFieldFragment_data on SwitchFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+            }
+            value {
+              enabled
+            }
+          }
+          
+          fragment ChoiceFieldFragment_data on ChoiceFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              defaultValue
+              options {
+                text
+                value
+              }
+              required
+            }
+            value {
+              id
+            }
+          }
+          
+          fragment TextFieldFragment_data on TextFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              inputType
+              min
+              max
+              maxLength
+              minLength
+              required
+            }
+            value {
+              text
+            }
+          }
+          
+          fragment NestedFieldFragment_data on NestedFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              parentValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              ownMeta {
+                __typename
+                ... on ChoiceMetaType {
+                  fieldType
+                  helperText
+                  label
+                  defaultValue
+                  options {
+                    text
+                    value
+                  }
+                  required
+                }
+                ... on TextMetaType {
+                  fieldType
+                  helperText
+                  label
+                  inputType
+                  min
+                  max
+                  maxLength
+                  minLength
+                  required
+                }
+                ... on SwitchMetaType {
+                  fieldType
+                  label
+                  disabled
+                  required
+                }
+              }
+              childrenMeta {
+                fieldType
+                parentValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                ownMeta {
+                  __typename
+                  ... on ChoiceMetaType {
+                    fieldType
+                    helperText
+                    label
+                    defaultValue
+                    options {
+                      text
+                      value
+                    }
+                    required
+                  }
+                  ... on TextMetaType {
+                    fieldType
+                    helperText
+                    label
+                    inputType
+                    min
+                    max
+                    maxLength
+                    minLength
+                    required
+                  }
+                  ... on SwitchMetaType {
+                    fieldType
+                    label
+                    disabled
+                    required
+                  }
+                  ... on NestedMetaType {
+                    parentValue {
+                      __typename
+                      ... on SwitchValueType {
+                        enabled
+                      }
+                      ... on TextValueType {
+                        text
+                      }
+                      ... on ChoiceValueType {
+                        id
+                      }
+                    }
+                    ownMeta {
+                      __typename
+                      ... on ChoiceMetaType {
+                        fieldType
+                        helperText
+                        label
+                        defaultValue
+                        options {
+                          text
+                          value
+                        }
+                        required
+                      }
+                      ... on TextMetaType {
+                        fieldType
+                        helperText
+                        label
+                        inputType
+                        min
+                        max
+                        maxLength
+                        minLength
+                        required
+                      }
+                      ... on SwitchMetaType {
+                        fieldType
+                        label
+                        disabled
+                        required
+                      }
+                    }
+                    childrenMeta {
+                      fieldType
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                    }
+                  }
+                }
+                childrenMeta {
+                  fieldType
+                  parentValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                  ownMeta {
+                    __typename
+                    ... on ChoiceMetaType {
+                      fieldType
+                      helperText
+                      label
+                      defaultValue
+                      options {
+                        text
+                        value
+                      }
+                      required
+                    }
+                    ... on TextMetaType {
+                      fieldType
+                      helperText
+                      label
+                      inputType
+                      min
+                      max
+                      maxLength
+                      minLength
+                      required
+                    }
+                    ... on SwitchMetaType {
+                      fieldType
+                      label
+                      disabled
+                      required
+                    }
+                    ... on NestedMetaType {
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                      childrenMeta {
+                        fieldType
+                        parentValue {
+                          __typename
+                          ... on SwitchValueType {
+                            enabled
+                          }
+                          ... on TextValueType {
+                            text
+                          }
+                          ... on ChoiceValueType {
+                            id
+                          }
+                        }
+                        ownMeta {
+                          __typename
+                          ... on ChoiceMetaType {
+                            fieldType
+                            helperText
+                            label
+                            defaultValue
+                            options {
+                              text
+                              value
+                            }
+                            required
+                          }
+                          ... on TextMetaType {
+                            fieldType
+                            helperText
+                            label
+                            inputType
+                            min
+                            max
+                            maxLength
+                            minLength
+                            required
+                          }
+                          ... on SwitchMetaType {
+                            fieldType
+                            label
+                            disabled
+                            required
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            value {
+              ownValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              childrenValue {
+                ownValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                childrenValue {
+                  ownValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+      })
+      .set('Accept', 'application/json');
+
+    // TODO jak zamockować id podczas tworzenia nowego modelu?
+    response.body.data.app.task.id = 'mocked id';
+    response.body.data.app.task.fields.forEach(
+      (field: any) => (field.id = 'mocked id'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        app: {
+          id: 'QXBwOg==',
+          task: {
+            id: 'mocked id',
+            fields: [
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'TITLE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Title',
+                  inputType: 'text',
+                  label: 'Title',
+                  max: null,
+                  maxLength: 400,
+                  min: null,
+                  minLength: 0,
+                  required: true,
+                },
+                order: 1,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'SwitchFieldType',
+                fieldId: 'PRIORITY',
+                fieldType: 'SWITCH',
+                id: 'mocked id',
+                meta: {
+                  disabled: false,
+                  fieldType: 'SWITCH',
+                  label: 'Important',
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  enabled: false,
+                },
+              },
+              {
+                __typename: 'ChoiceFieldType',
+                fieldId: 'STATUS',
+                fieldType: 'CHOICE',
+                id: 'mocked id',
+                meta: {
+                  defaultValue: null,
+                  fieldType: 'CHOICE',
+                  helperText: 'Informacje o testowym polu Status',
+                  label: 'Status',
+                  options: [
+                    {
+                      text: 'To do',
+                      value: 'TODO',
+                    },
+                    {
+                      text: 'Done',
+                      value: 'DONE',
+                    },
+                    {
+                      text: 'In progress',
+                      value: 'IN_PROGRESS',
+                    },
+                  ],
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  id: 'TODO',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'NOTE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Description',
+                  inputType: 'text',
+                  label: 'Note',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: false,
+                },
+                order: 2,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'LOCATION',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Location',
+                  inputType: 'text',
+                  label: 'Location',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: false,
+                },
+                order: 3,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'DATE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Date',
+                  inputType: 'date-local',
+                  label: 'Date',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: false,
+                },
+                order: 4,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'DURATION',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Duration',
+                  inputType: 'text',
+                  label: 'Duration',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 0,
+                  required: false,
+                },
+                order: 3,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'NestedFieldType',
+                fieldId: 'NOTIFICATIONS',
+                fieldType: 'NESTED',
+                id: 'mocked id',
+                meta: {
+                  childrenMeta: [
+                    {
+                      childrenMeta: null,
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'TextMetaType',
+                        fieldType: 'TEXT',
+                        helperText: 'Additional note helperText',
+                        inputType: null,
+                        label: 'Additional note',
+                        max: null,
+                        maxLength: null,
+                        min: null,
+                        minLength: null,
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'SwitchValueType',
+                        enabled: true,
+                      },
+                    },
+                  ],
+                  fieldType: 'NESTED',
+                  ownMeta: {
+                    __typename: 'SwitchMetaType',
+                    disabled: false,
+                    fieldType: 'SWITCH',
+                    label: 'Notifications',
+                    required: true,
+                  },
+                  parentValue: null,
+                },
+                order: 8,
+                value: {
+                  childrenValue: null,
+                  ownValue: null,
+                },
+              },
+            ],
+          },
+          taskList: {
+            id: 'VGFza0xpc3Q6',
+          },
+        },
+      },
+    });
+  });
+
+  it('should return empty meeting task', async () => {
+    const response = await agent(app(userService))
+      .post('/graphql')
+      .send({
+        variables: {
+          id: '',
+          type: 'MEETING',
+        },
+        query: `
+          query useTaskQuery(
+            $id: ID
+            $type: String
+          ) {
+            app {
+              task(id: $id, type: $type) {
+                id
+                ...useTaskFragment
+              }
+              taskList {
+                id
+              }
+              id
+            }
+          }
+          
+          fragment useTaskFragment on TaskType {
+            id
+            fields {
+              __typename
+              ... on ChoiceFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SwitchFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SliderFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on NestedFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on TextFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ...SliderFieldFragment_data
+              ...SwitchFieldFragment_data
+              ...ChoiceFieldFragment_data
+              ...TextFieldFragment_data
+              ...NestedFieldFragment_data
+              ... on Node {
+                id
+              }
+            }
+          }
+          
+          fragment SliderFieldFragment_data on SliderFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+              max
+              min
+              step
+            }
+            value {
+              progress
+            }
+          }
+          
+          fragment SwitchFieldFragment_data on SwitchFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+            }
+            value {
+              enabled
+            }
+          }
+          
+          fragment ChoiceFieldFragment_data on ChoiceFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              defaultValue
+              options {
+                text
+                value
+              }
+              required
+            }
+            value {
+              id
+            }
+          }
+          
+          fragment TextFieldFragment_data on TextFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              inputType
+              min
+              max
+              maxLength
+              minLength
+              required
+            }
+            value {
+              text
+            }
+          }
+          
+          fragment NestedFieldFragment_data on NestedFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              parentValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              ownMeta {
+                __typename
+                ... on ChoiceMetaType {
+                  fieldType
+                  helperText
+                  label
+                  defaultValue
+                  options {
+                    text
+                    value
+                  }
+                  required
+                }
+                ... on TextMetaType {
+                  fieldType
+                  helperText
+                  label
+                  inputType
+                  min
+                  max
+                  maxLength
+                  minLength
+                  required
+                }
+                ... on SwitchMetaType {
+                  fieldType
+                  label
+                  disabled
+                  required
+                }
+              }
+              childrenMeta {
+                fieldType
+                parentValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                ownMeta {
+                  __typename
+                  ... on ChoiceMetaType {
+                    fieldType
+                    helperText
+                    label
+                    defaultValue
+                    options {
+                      text
+                      value
+                    }
+                    required
+                  }
+                  ... on TextMetaType {
+                    fieldType
+                    helperText
+                    label
+                    inputType
+                    min
+                    max
+                    maxLength
+                    minLength
+                    required
+                  }
+                  ... on SwitchMetaType {
+                    fieldType
+                    label
+                    disabled
+                    required
+                  }
+                  ... on NestedMetaType {
+                    parentValue {
+                      __typename
+                      ... on SwitchValueType {
+                        enabled
+                      }
+                      ... on TextValueType {
+                        text
+                      }
+                      ... on ChoiceValueType {
+                        id
+                      }
+                    }
+                    ownMeta {
+                      __typename
+                      ... on ChoiceMetaType {
+                        fieldType
+                        helperText
+                        label
+                        defaultValue
+                        options {
+                          text
+                          value
+                        }
+                        required
+                      }
+                      ... on TextMetaType {
+                        fieldType
+                        helperText
+                        label
+                        inputType
+                        min
+                        max
+                        maxLength
+                        minLength
+                        required
+                      }
+                      ... on SwitchMetaType {
+                        fieldType
+                        label
+                        disabled
+                        required
+                      }
+                    }
+                    childrenMeta {
+                      fieldType
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                    }
+                  }
+                }
+                childrenMeta {
+                  fieldType
+                  parentValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                  ownMeta {
+                    __typename
+                    ... on ChoiceMetaType {
+                      fieldType
+                      helperText
+                      label
+                      defaultValue
+                      options {
+                        text
+                        value
+                      }
+                      required
+                    }
+                    ... on TextMetaType {
+                      fieldType
+                      helperText
+                      label
+                      inputType
+                      min
+                      max
+                      maxLength
+                      minLength
+                      required
+                    }
+                    ... on SwitchMetaType {
+                      fieldType
+                      label
+                      disabled
+                      required
+                    }
+                    ... on NestedMetaType {
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                      childrenMeta {
+                        fieldType
+                        parentValue {
+                          __typename
+                          ... on SwitchValueType {
+                            enabled
+                          }
+                          ... on TextValueType {
+                            text
+                          }
+                          ... on ChoiceValueType {
+                            id
+                          }
+                        }
+                        ownMeta {
+                          __typename
+                          ... on ChoiceMetaType {
+                            fieldType
+                            helperText
+                            label
+                            defaultValue
+                            options {
+                              text
+                              value
+                            }
+                            required
+                          }
+                          ... on TextMetaType {
+                            fieldType
+                            helperText
+                            label
+                            inputType
+                            min
+                            max
+                            maxLength
+                            minLength
+                            required
+                          }
+                          ... on SwitchMetaType {
+                            fieldType
+                            label
+                            disabled
+                            required
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            value {
+              ownValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              childrenValue {
+                ownValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                childrenValue {
+                  ownValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+      })
+      .set('Accept', 'application/json');
+
+    // TODO jak zamockować id podczas tworzenia nowego modelu?
+    response.body.data.app.task.id = 'mocked id';
+    response.body.data.app.task.fields.forEach(
+      (field: any) => (field.id = 'mocked id'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        app: {
+          id: 'QXBwOg==',
+          task: {
+            id: 'mocked id',
+            fields: [
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'TITLE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Title',
+                  inputType: 'text',
+                  label: 'Title',
+                  max: null,
+                  maxLength: 400,
+                  min: null,
+                  minLength: 0,
+                  required: true,
+                },
+                order: 1,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'SwitchFieldType',
+                fieldId: 'PRIORITY',
+                fieldType: 'SWITCH',
+                id: 'mocked id',
+                meta: {
+                  disabled: false,
+                  fieldType: 'SWITCH',
+                  label: 'Important',
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  enabled: false,
+                },
+              },
+              {
+                __typename: 'ChoiceFieldType',
+                fieldId: 'STATUS',
+                fieldType: 'CHOICE',
+                id: 'mocked id',
+                meta: {
+                  defaultValue: null,
+                  fieldType: 'CHOICE',
+                  helperText: 'Informacje o testowym polu Status',
+                  label: 'Status',
+                  options: [
+                    {
+                      text: 'To do',
+                      value: 'TODO',
+                    },
+                    {
+                      text: 'Done',
+                      value: 'DONE',
+                    },
+                    {
+                      text: 'In progress',
+                      value: 'IN_PROGRESS',
+                    },
+                  ],
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  id: 'TODO',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'NOTE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Description',
+                  inputType: 'text',
+                  label: 'Note',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: false,
+                },
+                order: 2,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'LOCATION',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Location',
+                  inputType: 'text',
+                  label: 'Location',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: false,
+                },
+                order: 3,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'DATE_TIME',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Date',
+                  inputType: 'datetime-local',
+                  label: 'Date',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: false,
+                },
+                order: 3,
+                value: {
+                  text: '2019-10-02T16:07:28.857Z',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'DURATION',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Duration',
+                  inputType: 'text',
+                  label: 'Duration',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 0,
+                  required: false,
+                },
+                order: 3,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'PERSON',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Person helperText',
+                  inputType: 'text',
+                  label: 'Person',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: true,
+                },
+                order: 4,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'NestedFieldType',
+                fieldId: 'NOTIFICATIONS',
+                fieldType: 'NESTED',
+                id: 'mocked id',
+                meta: {
+                  childrenMeta: [
+                    {
+                      childrenMeta: null,
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'TextMetaType',
+                        fieldType: 'TEXT',
+                        helperText: 'Additional note helperText',
+                        inputType: null,
+                        label: 'Additional note',
+                        max: null,
+                        maxLength: null,
+                        min: null,
+                        minLength: null,
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'SwitchValueType',
+                        enabled: true,
+                      },
+                    },
+                  ],
+                  fieldType: 'NESTED',
+                  ownMeta: {
+                    __typename: 'SwitchMetaType',
+                    disabled: false,
+                    fieldType: 'SWITCH',
+                    label: 'Notifications',
+                    required: true,
+                  },
+                  parentValue: null,
+                },
+                order: 8,
+                value: {
+                  childrenValue: null,
+                  ownValue: null,
+                },
+              },
+            ],
+          },
+          taskList: {
+            id: 'VGFza0xpc3Q6',
+          },
+        },
+      },
+    });
+  });
+
+  it('should return empty routine task', async () => {
+    const response = await agent(app(userService))
+      .post('/graphql')
+      .send({
+        variables: {
+          id: '',
+          type: 'ROUTINE',
+        },
+        query: `
+          query useTaskQuery(
+            $id: ID
+            $type: String
+          ) {
+            app {
+              task(id: $id, type: $type) {
+                id
+                ...useTaskFragment
+              }
+              taskList {
+                id
+              }
+              id
+            }
+          }
+          
+          fragment useTaskFragment on TaskType {
+            id
+            fields {
+              __typename
+              ... on ChoiceFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SwitchFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on SliderFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on NestedFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ... on TextFieldType {
+                fieldId
+                fieldType
+                order
+              }
+              ...SliderFieldFragment_data
+              ...SwitchFieldFragment_data
+              ...ChoiceFieldFragment_data
+              ...TextFieldFragment_data
+              ...NestedFieldFragment_data
+              ... on Node {
+                id
+              }
+            }
+          }
+          
+          fragment SliderFieldFragment_data on SliderFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+              max
+              min
+              step
+            }
+            value {
+              progress
+            }
+          }
+          
+          fragment SwitchFieldFragment_data on SwitchFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              label
+              disabled
+              required
+            }
+            value {
+              enabled
+            }
+          }
+          
+          fragment ChoiceFieldFragment_data on ChoiceFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              defaultValue
+              options {
+                text
+                value
+              }
+              required
+            }
+            value {
+              id
+            }
+          }
+          
+          fragment TextFieldFragment_data on TextFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              helperText
+              label
+              inputType
+              min
+              max
+              maxLength
+              minLength
+              required
+            }
+            value {
+              text
+            }
+          }
+          
+          fragment NestedFieldFragment_data on NestedFieldType {
+            id
+            fieldId
+            meta {
+              fieldType
+              parentValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              ownMeta {
+                __typename
+                ... on ChoiceMetaType {
+                  fieldType
+                  helperText
+                  label
+                  defaultValue
+                  options {
+                    text
+                    value
+                  }
+                  required
+                }
+                ... on TextMetaType {
+                  fieldType
+                  helperText
+                  label
+                  inputType
+                  min
+                  max
+                  maxLength
+                  minLength
+                  required
+                }
+                ... on SwitchMetaType {
+                  fieldType
+                  label
+                  disabled
+                  required
+                }
+              }
+              childrenMeta {
+                fieldType
+                parentValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                ownMeta {
+                  __typename
+                  ... on ChoiceMetaType {
+                    fieldType
+                    helperText
+                    label
+                    defaultValue
+                    options {
+                      text
+                      value
+                    }
+                    required
+                  }
+                  ... on TextMetaType {
+                    fieldType
+                    helperText
+                    label
+                    inputType
+                    min
+                    max
+                    maxLength
+                    minLength
+                    required
+                  }
+                  ... on SwitchMetaType {
+                    fieldType
+                    label
+                    disabled
+                    required
+                  }
+                  ... on NestedMetaType {
+                    parentValue {
+                      __typename
+                      ... on SwitchValueType {
+                        enabled
+                      }
+                      ... on TextValueType {
+                        text
+                      }
+                      ... on ChoiceValueType {
+                        id
+                      }
+                    }
+                    ownMeta {
+                      __typename
+                      ... on ChoiceMetaType {
+                        fieldType
+                        helperText
+                        label
+                        defaultValue
+                        options {
+                          text
+                          value
+                        }
+                        required
+                      }
+                      ... on TextMetaType {
+                        fieldType
+                        helperText
+                        label
+                        inputType
+                        min
+                        max
+                        maxLength
+                        minLength
+                        required
+                      }
+                      ... on SwitchMetaType {
+                        fieldType
+                        label
+                        disabled
+                        required
+                      }
+                    }
+                    childrenMeta {
+                      fieldType
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                    }
+                  }
+                }
+                childrenMeta {
+                  fieldType
+                  parentValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                  ownMeta {
+                    __typename
+                    ... on ChoiceMetaType {
+                      fieldType
+                      helperText
+                      label
+                      defaultValue
+                      options {
+                        text
+                        value
+                      }
+                      required
+                    }
+                    ... on TextMetaType {
+                      fieldType
+                      helperText
+                      label
+                      inputType
+                      min
+                      max
+                      maxLength
+                      minLength
+                      required
+                    }
+                    ... on SwitchMetaType {
+                      fieldType
+                      label
+                      disabled
+                      required
+                    }
+                    ... on NestedMetaType {
+                      parentValue {
+                        __typename
+                        ... on SwitchValueType {
+                          enabled
+                        }
+                        ... on TextValueType {
+                          text
+                        }
+                        ... on ChoiceValueType {
+                          id
+                        }
+                      }
+                      ownMeta {
+                        __typename
+                        ... on ChoiceMetaType {
+                          fieldType
+                          helperText
+                          label
+                          defaultValue
+                          options {
+                            text
+                            value
+                          }
+                          required
+                        }
+                        ... on TextMetaType {
+                          fieldType
+                          helperText
+                          label
+                          inputType
+                          min
+                          max
+                          maxLength
+                          minLength
+                          required
+                        }
+                        ... on SwitchMetaType {
+                          fieldType
+                          label
+                          disabled
+                          required
+                        }
+                      }
+                      childrenMeta {
+                        fieldType
+                        parentValue {
+                          __typename
+                          ... on SwitchValueType {
+                            enabled
+                          }
+                          ... on TextValueType {
+                            text
+                          }
+                          ... on ChoiceValueType {
+                            id
+                          }
+                        }
+                        ownMeta {
+                          __typename
+                          ... on ChoiceMetaType {
+                            fieldType
+                            helperText
+                            label
+                            defaultValue
+                            options {
+                              text
+                              value
+                            }
+                            required
+                          }
+                          ... on TextMetaType {
+                            fieldType
+                            helperText
+                            label
+                            inputType
+                            min
+                            max
+                            maxLength
+                            minLength
+                            required
+                          }
+                          ... on SwitchMetaType {
+                            fieldType
+                            label
+                            disabled
+                            required
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            value {
+              ownValue {
+                __typename
+                ... on SwitchValueType {
+                  enabled
+                }
+                ... on TextValueType {
+                  text
+                }
+                ... on ChoiceValueType {
+                  id
+                }
+              }
+              childrenValue {
+                ownValue {
+                  __typename
+                  ... on SwitchValueType {
+                    enabled
+                  }
+                  ... on TextValueType {
+                    text
+                  }
+                  ... on ChoiceValueType {
+                    id
+                  }
+                }
+                childrenValue {
+                  ownValue {
+                    __typename
+                    ... on SwitchValueType {
+                      enabled
+                    }
+                    ... on TextValueType {
+                      text
+                    }
+                    ... on ChoiceValueType {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+      })
+      .set('Accept', 'application/json');
+
+    // TODO jak zamockować id podczas tworzenia nowego modelu?
+    response.body.data.app.task.id = 'mocked id';
+    response.body.data.app.task.fields.forEach(
+      (field: any) => (field.id = 'mocked id'),
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        app: {
+          id: 'QXBwOg==',
+          task: {
+            id: 'mocked id',
+            fields: [
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'TITLE',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText: 'Informacje o testowym polu Title',
+                  inputType: 'text',
+                  label: 'Title',
+                  max: null,
+                  maxLength: 400,
+                  min: null,
+                  minLength: 0,
+                  required: true,
+                },
+                order: 1,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'SwitchFieldType',
+                fieldId: 'PRIORITY',
+                fieldType: 'SWITCH',
+                id: 'mocked id',
+                meta: {
+                  disabled: false,
+                  fieldType: 'SWITCH',
+                  label: 'Important',
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  enabled: false,
+                },
+              },
+              {
+                __typename: 'ChoiceFieldType',
+                fieldId: 'STATUS',
+                fieldType: 'CHOICE',
+                id: 'mocked id',
+                meta: {
+                  defaultValue: null,
+                  fieldType: 'CHOICE',
+                  helperText: 'Informacje o testowym polu Status',
+                  label: 'Status',
+                  options: [
+                    {
+                      text: 'To do',
+                      value: 'TODO',
+                    },
+                    {
+                      text: 'Done',
+                      value: 'DONE',
+                    },
+                    {
+                      text: 'In progress',
+                      value: 'IN_PROGRESS',
+                    },
+                  ],
+                  required: true,
+                },
+                order: 0,
+                value: {
+                  id: 'TODO',
+                },
+              },
+              {
+                __typename: 'NestedFieldType',
+                fieldId: 'CYCLE',
+                fieldType: 'NESTED',
+                id: 'mocked id',
+                meta: {
+                  childrenMeta: [
+                    {
+                      childrenMeta: [
+                        {
+                          fieldType: 'NESTED',
+                          ownMeta: {
+                            __typename: 'TextMetaType',
+                            fieldType: 'TEXT',
+                            helperText: 'Minutes time cycle helperText',
+                            inputType: 'number',
+                            label: 'Minutes time cycle',
+                            max: null,
+                            maxLength: null,
+                            min: null,
+                            minLength: null,
+                            required: true,
+                          },
+                          parentValue: {
+                            __typename: 'ChoiceValueType',
+                            id: 'MINUTES',
+                          },
+                        },
+                      ],
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'ChoiceMetaType',
+                        defaultValue: null,
+                        fieldType: 'CHOICE',
+                        helperText: 'Time cycle helperText',
+                        label: 'Time cycle',
+                        options: [
+                          {
+                            text: 'Half an hour',
+                            value: 'HALF_HOUR',
+                          },
+                          {
+                            text: 'Hour',
+                            value: 'HOUR',
+                          },
+                          {
+                            text: '3 hours',
+                            value: 'HOURS_3',
+                          },
+                          {
+                            text: '12 hours',
+                            value: 'HOURS_12',
+                          },
+                          {
+                            text: 'Interval in minutes',
+                            value: 'MINUTES',
+                          },
+                        ],
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'ChoiceValueType',
+                        id: 'TIME_CYCLE',
+                      },
+                    },
+                    {
+                      childrenMeta: null,
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'ChoiceMetaType',
+                        defaultValue: null,
+                        fieldType: 'CHOICE',
+                        helperText: 'Day cycle helperText',
+                        label: 'Day cycle',
+                        options: [
+                          {
+                            text: 'Morning',
+                            value: 'MORNING',
+                          },
+                          {
+                            text: 'Noon',
+                            value: 'NOON',
+                          },
+                          {
+                            text: 'Evening',
+                            value: 'EVENING',
+                          },
+                        ],
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'ChoiceValueType',
+                        id: 'DAY_CYCLE',
+                      },
+                    },
+                    {
+                      childrenMeta: null,
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'ChoiceMetaType',
+                        defaultValue: null,
+                        fieldType: 'CHOICE',
+                        helperText: 'Week cycle helperText',
+                        label: 'Week cycle',
+                        options: [
+                          {
+                            text: 'Week days',
+                            value: 'WEEK_DAYS',
+                          },
+                          {
+                            text: 'Weekend',
+                            value: 'WEEKEND',
+                          },
+                          {
+                            text: 'First day of week',
+                            value: 'FIRST_DAY',
+                          },
+                          {
+                            text: 'Last day of week',
+                            value: 'LAST_DAY',
+                          },
+                        ],
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'ChoiceValueType',
+                        id: 'WEEK_CYCLE',
+                      },
+                    },
+                    {
+                      childrenMeta: null,
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'ChoiceMetaType',
+                        defaultValue: null,
+                        fieldType: 'CHOICE',
+                        helperText: 'Month cycle helperText',
+                        label: 'Month cycle',
+                        options: [
+                          {
+                            text: 'Start of the month',
+                            value: 'MONTH_START',
+                          },
+                          {
+                            text: 'End of the month',
+                            value: 'MONTH_END',
+                          },
+                          {
+                            text: 'Middle of the month',
+                            value: 'MONTH_MIDDLE',
+                          },
+                        ],
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'ChoiceValueType',
+                        id: 'MONTH_CYCLE',
+                      },
+                    },
+                  ],
+                  fieldType: 'NESTED',
+                  ownMeta: {
+                    __typename: 'ChoiceMetaType',
+                    defaultValue: null,
+                    fieldType: 'CHOICE',
+                    helperText: 'Cycle helperText',
+                    label: 'Cycle',
+                    options: [
+                      {
+                        text: 'Time',
+                        value: 'TIME_CYCLE',
+                      },
+                      {
+                        text: 'Day',
+                        value: 'DAY_CYCLE',
+                      },
+                      {
+                        text: 'Week',
+                        value: 'WEEK_CYCLE',
+                      },
+                      {
+                        text: 'Month',
+                        value: 'MONTH_CYCLE',
+                      },
+                    ],
+                    required: true,
+                  },
+                  parentValue: null,
+                },
+                order: 5,
+                value: {
+                  childrenValue: null,
+                  ownValue: null,
+                },
+              },
+              {
+                __typename: 'TextFieldType',
+                fieldId: 'ACTION',
+                fieldType: 'TEXT',
+                id: 'mocked id',
+                meta: {
+                  fieldType: 'TEXT',
+                  helperText:
+                    'Określ jaka akcja ma nastąpić podczas każdego cyklu',
+                  inputType: 'text',
+                  label: 'Action',
+                  max: null,
+                  maxLength: 100,
+                  min: null,
+                  minLength: 3,
+                  required: true,
+                },
+                order: 6,
+                value: {
+                  text: '',
+                },
+              },
+              {
+                __typename: 'NestedFieldType',
+                fieldId: 'NOTIFICATIONS',
+                fieldType: 'NESTED',
+                id: 'mocked id',
+                meta: {
+                  childrenMeta: [
+                    {
+                      childrenMeta: null,
+                      fieldType: 'NESTED',
+                      ownMeta: {
+                        __typename: 'TextMetaType',
+                        fieldType: 'TEXT',
+                        helperText: 'Additional note helperText',
+                        inputType: null,
+                        label: 'Additional note',
+                        max: null,
+                        maxLength: null,
+                        min: null,
+                        minLength: null,
+                        required: true,
+                      },
+                      parentValue: {
+                        __typename: 'SwitchValueType',
+                        enabled: true,
+                      },
+                    },
+                  ],
+                  fieldType: 'NESTED',
+                  ownMeta: {
+                    __typename: 'SwitchMetaType',
+                    disabled: false,
+                    fieldType: 'SWITCH',
+                    label: 'Notifications',
+                    required: true,
+                  },
+                  parentValue: null,
+                },
+                order: 8,
+                value: {
+                  childrenValue: null,
+                  ownValue: null,
+                },
+              },
+            ],
+          },
+          taskList: {
+            id: 'VGFza0xpc3Q6',
+          },
         },
       },
     });
