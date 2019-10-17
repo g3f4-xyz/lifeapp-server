@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import * as express from 'express';
 import * as session from 'express-session';
 import { createServer } from 'http';
+import * as morgan from 'morgan';
 import { initialize as passportInitialize } from 'passport';
 import * as socketio from 'socket.io';
 import { router } from './router';
@@ -14,6 +15,10 @@ export default (userService: UserService) => {
   const app = express();
 
   const server = createServer(app);
+
+  if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'));
+  }
 
   app.use(express.json());
   app.use(passportInitialize());
@@ -61,6 +66,10 @@ export default (userService: UserService) => {
   });
 
   app.use(router);
+
+  app.get('/', (_req, res) => {
+    res.send('this is api server only, no static content');
+  });
 
   return server;
 };
