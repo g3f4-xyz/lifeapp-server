@@ -54,11 +54,11 @@ export default (userService: UserService) => {
       io.in(socketId).emit(user.info.provider, user.info);
 
       res.send(user.info);
+    } else {
+      res.send({
+        error: 'no user info',
+      });
     }
-
-    res.send({
-      error: 'no user info',
-    });
   });
 
   app.use(router);
