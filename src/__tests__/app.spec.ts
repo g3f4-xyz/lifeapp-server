@@ -5,9 +5,10 @@ import { TASK_TYPE } from '../constants';
 import settingsApi from '../db/api/settings/settingsApi';
 import taskApi from '../db/api/task/taskApi';
 import userApi from '../db/api/user/userApi';
-import { Settings, Task } from '../db/interfaces';
+import { Settings, Task, TaskType } from '../db/interfaces';
 import { SettingsModel } from '../db/models/settings/SettingsModel';
 import { TaskModel } from '../db/models/tasks/TaskModel';
+import { TaskTypeModel } from '../db/models/TaskTypeModel';
 import UserService from '../services/UserService';
 import mockMongoCollection from '../utils/tests/mockMongoCollection';
 import setupMongo from '../utils/tests/setupMongo';
@@ -972,10 +973,58 @@ describe('app', () => {
           ],
         },
       ]);
+
+      await mockMongoCollection<TaskType>(TaskTypeModel, [
+        {
+          _id: new ObjectId('5d94cb40d4b62b5aeec482c1'),
+          typeId: 'EVENT',
+          label: 'string',
+          description: 'string',
+          order: 1,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+        {
+          _id: new ObjectId('5d94cb40d4b62b5aeec482c2'),
+          typeId: 'GOAL',
+          label: 'string',
+          description: 'string',
+          order: 2,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+        {
+          _id: new ObjectId('5d94cb40d4b62b5aeec482c3'),
+          typeId: 'MEETING',
+          label: 'string',
+          description: 'string',
+          order: 3,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+        {
+          _id: new ObjectId('5d94cb40dab62b5aeec481c4'),
+          typeId: 'ROUTINE',
+          label: 'string',
+          description: 'string',
+          order: 4,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+        {
+          _id: new ObjectId('5d94cb40d4b62b5aeec482c5'),
+          typeId: 'TODO',
+          label: 'string',
+          description: 'string',
+          order: 5,
+          parentTypeIds: ['TASK'],
+          fieldsIds: ['string'],
+        },
+      ]);
     },
   });
 
-  it('should handle valid graphql request', async () => {
+  it('should return task list', async () => {
     const response = await agent(app(userService))
       .post('/graphql')
       .send({
@@ -2037,6 +2086,133 @@ describe('app', () => {
             },
           },
           id: 'QXBwOg==',
+        },
+      },
+    });
+  });
+
+  it('should return task type list', async () => {
+    const response = await agent(app(userService))
+      .post('/graphql')
+      .send({
+        query: `
+          query useTaskTypeListQuery(
+          $count: Int!
+          $after: String
+          ) {
+            app {
+              taskTypeList {
+              ...useTaskTypePagination
+                id
+              }
+              id
+            }
+          }
+          
+          fragment useTaskTypePagination on TaskTypeListType {
+            id
+            list(first: $count, after: $after) {
+              edges {
+                node {
+                  id
+                  order
+                ...useTaskTypeFragment
+                  __typename
+                }
+                cursor
+              }
+              pageInfo {
+                endCursor
+                hasNextPage
+              }
+            }
+          }
+          
+          fragment useTaskTypeFragment on TaskTypeType {
+            id
+            typeId
+            label
+            description
+          }
+        `,
+        variables: {
+          after: null,
+          count: 5,
+        },
+      })
+      .set('Accept', 'application/json');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      data: {
+        app: {
+          id: 'QXBwOg==',
+          taskTypeList: {
+            id: 'VGFza1R5cGVMaXN0Og==',
+            list: {
+              edges: [
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODJjMQ==',
+                    label: 'string',
+                    order: 1,
+                    typeId: 'EVENT',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODJjMg==',
+                    label: 'string',
+                    order: 2,
+                    typeId: 'GOAL',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODJjMw==',
+                    label: 'string',
+                    order: 3,
+                    typeId: 'MEETING',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZGFiNjJiNWFlZWM0ODFjNA==',
+                    label: 'string',
+                    order: 4,
+                    typeId: 'ROUTINE',
+                  },
+                },
+                {
+                  cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+                  node: {
+                    __typename: 'TaskTypeType',
+                    description: 'string',
+                    id: 'VGFza1R5cGVUeXBlOjVkOTRjYjQwZDRiNjJiNWFlZWM0ODJjNQ==',
+                    label: 'string',
+                    order: 5,
+                    typeId: 'TODO',
+                  },
+                },
+              ],
+              pageInfo: {
+                endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+                hasNextPage: false,
+              },
+            },
+          },
         },
       },
     });
