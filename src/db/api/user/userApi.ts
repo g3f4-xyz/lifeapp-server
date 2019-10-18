@@ -3,7 +3,13 @@ import { UserModel } from '../../models/user/User';
 
 const userApi = {
   async findUser(userId: string): Promise<User | null> {
-    return (await UserModel.findOne({ userId })).toJSON();
+    const userInfo = await UserModel.findOne({ userId });
+
+    if (userInfo) {
+      return userInfo.toJSON();
+    }
+
+    return null;
   },
 
   async createUser(user: User): Promise<User> {
