@@ -3,7 +3,7 @@ import { HttpStatus, httpStatuses } from '../constants';
 import { SettingsApi } from '../db/api/settings/settingsApi';
 
 export default class NotificationsService {
-  constructor(readonly settingsApi: SettingsApi) {}
+  constructor(private readonly settingsApi: SettingsApi) {}
 
   async testSubscription(
     ownerId: string,

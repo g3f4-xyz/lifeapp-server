@@ -10,12 +10,13 @@ export enum UserServiceErrorCode {
 
 export default class UserService {
   constructor(
-    readonly taskApi: TaskApi,
-    readonly settingsApi: SettingsApi,
-    readonly userApi: UserApi,
+    private readonly taskApi: TaskApi,
+    private readonly settingsApi: SettingsApi,
+    private readonly userApi: UserApi,
   ) {}
 
   async getUser(userId: string): Promise<User | null> {
+    console.log(['UserService.getUser'], userId);
     return await this.userApi.findUser(userId);
   }
 

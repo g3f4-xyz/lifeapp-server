@@ -9,7 +9,7 @@ import {
 } from '../db/interfaces';
 
 export default class SettingsService {
-  constructor(readonly settingsApi: SettingsApi) {}
+  constructor(private readonly settingsApi: SettingsApi) {}
 
   async addSubscription(
     ownerId: string,

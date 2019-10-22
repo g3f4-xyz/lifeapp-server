@@ -9,7 +9,10 @@ import {
 } from '../db/models/tasks/TaskModel';
 
 export default class TaskService {
-  constructor(readonly taskApi: TaskApi, readonly settingsApi: SettingsApi) {}
+  constructor(
+    private readonly taskApi: TaskApi,
+    private readonly settingsApi: SettingsApi,
+  ) {}
 
   async deleteTask(taskId: string) {
     return await this.taskApi.deleteTask(taskId);
