@@ -1,19 +1,15 @@
 language: node_js
-
 node_js:
-  - "14"
-
+- '14'
 cache:
   directories:
-    - node_modules
-
+  - node_modules
 script:
-  - yarn test
-
+- yarn test
 deploy:
   provider: heroku
   api_key:
-    secure: DkObiosGkkAduBI/cx6VIW0l44eL3BgQxq5B6Tf08JIC6CleBeze5mGOXbQaOSyaBBZxK02ICDUw+v+k1I1KvhO92VmLjPLV/LNz7bVO3hHk/E9J9I6aNxpZJynxMxVRXkiCGaYgwEKj5TEYjeYmRhcyZcN3nFUTaBEkkx9KXQSmahucp6PxkqwxYxhmSHNy9j4ZUHv1zyo9mwIXty2I4J93bbrQfqbxo07456TK6kl1nfW+6RtJBGfyOZIisfgsFCTnOeBpoJN9MDhN2Gq/BuWvDmeeKReqzGDby8Y5M1cXV2D58KgmYe/UNeJ2uOAOh9fiBDG1W8y7/gd5kZheMmqMVONf/orbUjPs0AjHya7T0ot0cSP6qEHE3xzo9Acd3BEsU+ObEri066Wz91ISN9IB5CI5WRfX3+xXXfDCSo5em24MWeHEWEKcsPGS4HCfezFwW/Q1vLK86x0s2cgmMJaNQb0kN3DVvUwUWKDls+2eY0tn2If+eV/ZaXtg8g0PPuTcobqI89T3Pj5KgSxs0bxi7f/yP+LhMHxeJBCsp4/pnrFUK9JK7eFJGQA4Ms1F7LdD7F16qUOQ13czUrRHm1LzijKcqbMrV2OESQlKKqrFO2lyjBvv91BMpwyigzaaM83LgjTZW5tkI7XFKPuHIDJbCdUB96R+iuqxnq8uCL8=
+    secure: qVzkx3RB7lBuhkv3+JWvJwH6nr5BCvg1PqcCBIMJwyd+l6qY+Gdm5uPgxuGysy5L/bDFfl63EyASwLoYpeAC6Jn4f4eiYcHr5mcHNOImUN8hwp7WyuxAD7I8Tkm2VjnZ30PmQvJlzB08294KTwZMbC4RMtKhTH8B/LDf/t/iz1sJYmrMf2gYAQp7/u+JvDi9r7pgBXuByNyUl+u9+ZfF6co6q38ex9UJOUQcntgZfCZuvOjLjoSU1cBcDRWAe3TcRmr4rMgi830ThkvCNCH2azYY91EgPJapQyUnhZ3XrkAG+3h4dz448Ix1Y+8Wi0roUGp5yDNYdYNfmALG0vUpoYTHx3oeKZH+aKj7qnyRuG1P+vO8rFEVd6NxCKt7XvWBTetpDpyW+iHNBQA7seM1S4z9utBYBX+J/ZXu4+jzX8z3VhioauGr2xnUB/zbAvcgpTH0O6tHOBQAS0tzpN+nq3+O31klgd6mxwFHGswDTPSpRkmB4BBfpNBdgQvpQjjrkmTOtr9RS3edgZGawsZVy6t/WFm72mzxi764K+8r87v05GMYjoIr8nPqap04gStttJXzHi2ncfxF1C0GtPIACyOldDu17HVB3T8CfawnFkM9JVBsi37Llpk1gl9f0lQ3HuZflgW9TiTYwOU2qECiGyfxth/3NfCuBt/cMQ7FbkY=
   app: lifeapp-server
   on:
     branch: master
