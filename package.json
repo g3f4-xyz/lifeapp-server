@@ -13,7 +13,7 @@
     "db:remote:shell": "mongo \"mongodb+srv://cluster0.twrjo.mongodb.net/lifeapp\" --username admin",
     "start": "DB=remote ts-node src",
     "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
-    "test": "jest --coverage",
+    "test": "jest",
     "test:watch": "jest --coverage --watch",
     "test:debug": "DEBUG=jest-mongodb:* jest --coverage --detectOpenHandles"
   },

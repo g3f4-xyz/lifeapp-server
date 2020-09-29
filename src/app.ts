@@ -37,7 +37,7 @@ export default (userService: UserService) => {
       saveUninitialized: true,
       cookie: {
         sameSite: false,
-        // secure: true,
+        secure: process.env.NODE_ENV !== 'development',
       },
     }),
   );
