@@ -76,7 +76,6 @@
     "agenda": "2.1.0",
     "body-parser": "1.19.0",
     "cookie-parser": "1.4.4",
-    "cors": "2.8.5",
     "date-fns": "2.4.1",
     "date-fns-timezone": "0.1.4",
     "dotenv": "8.1.0",
