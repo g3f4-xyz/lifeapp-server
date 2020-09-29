@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as passport from 'passport';
+import { SUB_ROUTES } from '../config';
 
 export const authRouter = Router();
 
@@ -16,11 +17,11 @@ const googleMiddleware = (req: any, res: any) => {
 
 const googleAuth = passport.authenticate('google', { scope: ['profile'] });
 
-authRouter.get('/google/logged', googleAuth, googleMiddleware);
+authRouter.get(SUB_ROUTES.GOOGLE_LOGGED, googleAuth, googleMiddleware);
 
 authRouter.use((req: any, _res: any, next: any) => {
   req.session.socketId = req.query.socketId;
   next();
 });
 
-authRouter.get('/google', googleAuth);
+authRouter.get(SUB_ROUTES.GOOGLE_AUTH, googleAuth);

@@ -1,21 +1,13 @@
-/* eslint no-undef: 0 */
-/* eslint quotes: [0, 'double'] */
-const dbHook = db.getSiblingDB(DB_NAME);
+var DB_NAME = 'lifeapp';
 
 print(`Initializing db with name: ${DB_NAME}`);
 
-if (dbHook.tasks) {
-  dbHook.fieldconfigs.drop();
-  dbHook.tasks.drop();
-  dbHook.tasktypes.drop();
-} else {
-  dbHook.createCollection('fieldconfigs');
-  dbHook.createCollection('tasks');
-  dbHook.createCollection('tasktypes');
-}
+db.getSiblingDB(DB_NAME).tasks.drop();
+db.getSiblingDB(DB_NAME).tasktypes.drop();
+db.getSiblingDB(DB_NAME).createCollection('tasks');
+db.getSiblingDB(DB_NAME).createCollection('tasktypes');
 
-// TYPY ZADAŃ
-dbHook.tasktypes.insert([{
+db.getSiblingDB(DB_NAME).tasktypes.insert([{
   typeId: 'TASK',
   label: '',
   description: 'Pole bazowe',
@@ -59,6 +51,6 @@ dbHook.tasktypes.insert([{
 }]);
 
 print('Collections:');
-dbHook.getCollectionNames().forEach((name, index) => {
-  print(`  ${index + 1}: name: ${name} | length: ${dbHook[name].count()}`);
+db.getSiblingDB(DB_NAME).getCollectionNames().forEach((name, index) => {
+  print(`  ${index + 1}: name: ${name} | length: ${db.getSiblingDB(DB_NAME)[name].count()}`);
 });

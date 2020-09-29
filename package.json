@@ -10,8 +10,7 @@
     "dev:debug:agenda": "DEBUG=\"agenda:*\" NODE_ENV=development nodemon",
     "lint": "eslint $npm_package_source",
     "lint:fix": "eslint $npm_package_source --fix",
-    "init:db:local": "mongo --eval \"var DB_NAME='lifeapp'\" scripts/initDatabase.js",
-    "init:db:remote": "mongo --eval \"var DB_NAME='mo1563_lifeapp'\" --port 27017 -u mo1563_lifeapp -p Gitara15 --host 85.194.240.29 mo1563_lifeapp scripts/initDatabase.js",
+    "db:remote:shell": "mongo \"mongodb+srv://cluster0.twrjo.mongodb.net/lifeapp\" --username admin",
     "start": "DB=remote ts-node src",
     "add-tag": "git tag -a v$npm_package_version -m \"server version $npm_package_version\"",
     "test": "jest --coverage",
@@ -36,7 +35,7 @@
   },
   "homepage": "https://github.com/g3f4-xyz/lifeapp-server#readme",
   "engines": {
-    "node": "12.*.*"
+    "node": "14.*.*"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "1.1.1",
