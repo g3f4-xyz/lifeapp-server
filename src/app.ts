@@ -1,3 +1,4 @@
+import * as cors from 'cors';
 import { config } from 'dotenv';
 import * as express from 'express';
 import * as session from 'express-session';
@@ -22,21 +23,12 @@ export default (userService: UserService) => {
   app.use(express.json());
   app.use(passportInitialize());
 
-  app.use(function(req, res, next) {
-    // @ts-ignore
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin', req.headers.origin as string);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header(
-      'Access-Control-Allow-Headers',
-      'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept',
-    );
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    } else {
-      next();
-    }
-  });
+  app.use(
+    cors({
+      origin: process.env.CLIENT_ORIGIN,
+      credentials: true,
+    }),
+  );
 
   app.use(
     session({
@@ -45,6 +37,7 @@ export default (userService: UserService) => {
       saveUninitialized: true,
       cookie: {
         sameSite: false,
+        secure: false,
       },
     }),
   );
