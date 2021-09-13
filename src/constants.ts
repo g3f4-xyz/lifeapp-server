@@ -11,7 +11,7 @@ export const httpStatuses: { [key: string]: HttpStatus } = {
   NOT_FOUND: 404,
 };
 
-export enum FIELD_ID {
+export enum FieldId {
   TITLE = 'TITLE',
   PRIORITY = 'PRIORITY',
   PROGRESS = 'PROGRESS',
@@ -28,7 +28,7 @@ export enum FIELD_ID {
   NOTIFICATIONS = 'NOTIFICATIONS',
 }
 
-export type FieldId =
+export type FieldIdType =
   | 'TITLE'
   | 'PRIORITY'
   | 'PROGRESS'
@@ -44,7 +44,7 @@ export type FieldId =
   | 'CYCLE'
   | 'NOTIFICATIONS';
 
-export type FIELD_ID_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FIELD_ID, V>;
+export type FIELD_ID_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FieldId, V>;
 
 export enum TASK_TYPE {
   GOAL = 'GOAL',
@@ -64,7 +64,7 @@ export enum TASK_STATUS {
 
 export type TASK_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof TASK_TYPE, V>;
 
-export enum FIELD_TYPE {
+export enum FieldType {
   SLIDER = 'SLIDER',
   SWITCH = 'SWITCH',
   CHOICE = 'CHOICE',
@@ -72,10 +72,10 @@ export enum FIELD_TYPE {
   NESTED = 'NESTED',
 }
 
-export type FieldType = 'SLIDER' | 'SWITCH' | 'CHOICE' | 'TEXT' | 'NESTED';
+export type FieldTypeType = 'SLIDER' | 'SWITCH' | 'CHOICE' | 'TEXT' | 'NESTED';
 
 export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<
-  typeof FIELD_TYPE,
+  typeof FieldType,
   V
 >;
 

@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { FIELD_ID, TASK_TYPE } from '../constants';
+import { FieldId, TASK_TYPE } from '../constants';
 import { SettingsApi } from '../db/api/settings/settingsApi';
 import { TaskApi } from '../db/api/task/taskApi';
 import { Field, FieldValue, Task } from '../db/interfaces';
@@ -36,7 +36,7 @@ export default class TaskService {
 
   async updateTaskField(
     taskId: string,
-    fieldId: FIELD_ID,
+    fieldId: FieldId,
     value: FieldValue,
   ): Promise<Field> {
     const task = await this.taskApi.getTask(taskId);

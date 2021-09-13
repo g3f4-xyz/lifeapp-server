@@ -1,4 +1,4 @@
-import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
+import { FieldId, FieldType } from '../../../../../constants';
 import setupMongo from '../../../../../utils/tests/setupMongo';
 import { FIELDS_CONFIG } from '../../../tasks/fieldsConfig';
 import { SwitchFieldModel } from '../SwitchFieldModel';
@@ -17,8 +17,8 @@ describe('SwitchFieldModel', () => {
     expect(doc).toBeInstanceOf(SwitchFieldModel);
     expect(doc.value.enabled).toBe(false);
     expect(doc.order).toBe(0);
-    expect(doc.fieldId).toBe(FIELD_ID.ACTION);
-    expect(doc.fieldType).toBe(FIELD_TYPE.SWITCH);
+    expect(doc.fieldId).toBe(FieldId.ACTION);
+    expect(doc.fieldType).toBe(FieldType.SWITCH);
     expect(doc.meta.disabled).toBe(false);
     expect(doc.meta.helperText).toBe('Informacje o testowym polu Active');
     expect(doc.meta.label).toBe('Active');

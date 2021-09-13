@@ -1,4 +1,4 @@
-import { FIELD_ID, FIELD_TYPE, TASK_TYPE } from '../../../constants';
+import { FieldId, FieldType, TASK_TYPE } from '../../../constants';
 import AppError from '../../../utils/AppError';
 import { Task, TaskListSettingsFilters } from '../../interfaces';
 import { TASK_FIELDS } from '../../models/tasks/taskFields';
@@ -62,8 +62,8 @@ const taskApi = {
             fields: {
               $elemMatch: {
                 $and: [
-                  { fieldId: FIELD_ID.TITLE },
-                  { fieldType: FIELD_TYPE.TEXT },
+                  { fieldId: FieldId.TITLE },
+                  { fieldType: FieldType.TEXT },
                   { value: { $exists: true } },
                   { ['value.text']: { $exists: true } },
                   {
@@ -83,8 +83,8 @@ const taskApi = {
                 fields: {
                   $elemMatch: {
                     $and: [
-                      { fieldId: FIELD_ID.STATUS },
-                      { fieldType: FIELD_TYPE.CHOICE },
+                      { fieldId: FieldId.STATUS },
+                      { fieldType: FieldType.CHOICE },
                       { value: { $exists: true } },
                       { ['value.id']: { $exists: true } },
                       { ['value.id']: filters.status },

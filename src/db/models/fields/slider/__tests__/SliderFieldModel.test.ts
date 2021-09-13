@@ -1,4 +1,4 @@
-import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
+import { FieldId, FieldType } from '../../../../../constants';
 import setupMongo from '../../../../../utils/tests/setupMongo';
 import { FIELDS_CONFIG } from '../../../tasks/fieldsConfig';
 import { SliderFieldModel } from '../SliderFieldModel';
@@ -17,8 +17,8 @@ describe('SliderFieldModel', () => {
     expect(doc).toBeInstanceOf(SliderFieldModel);
     expect(doc.value.progress).toBe(0);
     expect(doc.order).toBe(5);
-    expect(doc.fieldId).toBe(FIELD_ID.PROGRESS);
-    expect(doc.fieldType).toBe(FIELD_TYPE.SLIDER);
+    expect(doc.fieldId).toBe(FieldId.PROGRESS);
+    expect(doc.fieldType).toBe(FieldType.SLIDER);
     expect(doc.meta.required).toBe(false);
     expect(doc.meta.disabled).toBe(false);
     expect(doc.meta.min).toBe(0);

@@ -1,4 +1,4 @@
-import { FIELD_TYPE, TASK_TYPE } from '../../../../constants';
+import { FieldType, TASK_TYPE } from '../../../../constants';
 import setupMongo from '../../../../utils/tests/setupMongo';
 import { ChoiceFieldModel } from '../../fields/choice/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/nested/NestedFieldModel';
@@ -21,24 +21,24 @@ describe('TaskModel', () => {
       taskType: TASK_TYPE.EVENT,
       fields: [
         {
-          fieldType: FIELD_TYPE.TEXT,
-          meta: { label: `${FIELD_TYPE.TEXT}-label` },
+          fieldType: FieldType.TEXT,
+          meta: { label: `${FieldType.TEXT}-label` },
         },
         {
-          fieldType: FIELD_TYPE.CHOICE,
-          meta: { label: `${FIELD_TYPE.CHOICE}-label` },
+          fieldType: FieldType.CHOICE,
+          meta: { label: `${FieldType.CHOICE}-label` },
         },
         {
-          fieldType: FIELD_TYPE.SLIDER,
-          meta: { label: `${FIELD_TYPE.SLIDER}-label` },
+          fieldType: FieldType.SLIDER,
+          meta: { label: `${FieldType.SLIDER}-label` },
         },
         {
-          fieldType: FIELD_TYPE.SWITCH,
-          meta: { label: `${FIELD_TYPE.SWITCH}-label` },
+          fieldType: FieldType.SWITCH,
+          meta: { label: `${FieldType.SWITCH}-label` },
         },
         {
-          fieldType: FIELD_TYPE.NESTED,
-          meta: { label: `${FIELD_TYPE.NESTED}-label` },
+          fieldType: FieldType.NESTED,
+          meta: { label: `${FieldType.NESTED}-label` },
         },
       ],
     };

@@ -1,4 +1,4 @@
-import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
+import { FieldId, FieldType } from '../../../../../constants';
 import setupMongo from '../../../../../utils/tests/setupMongo';
 import { FIELDS_CONFIG } from '../../../tasks/fieldsConfig';
 import { NestedFieldModel } from '../NestedFieldModel';
@@ -18,8 +18,8 @@ describe('NestedFieldModel', () => {
     expect(doc.value.childrenValue).toBe(null);
     expect(doc.value.ownValue).toBe(null);
     expect(doc.order).toBe(5);
-    expect(doc.fieldId).toBe(FIELD_ID.CYCLE);
-    expect(doc.fieldType).toBe(FIELD_TYPE.NESTED);
+    expect(doc.fieldId).toBe(FieldId.CYCLE);
+    expect(doc.fieldType).toBe(FieldType.NESTED);
   });
 
   it('should always validate', async () => {

@@ -1,4 +1,4 @@
-import { FIELD_ID, FIELD_TYPE } from '../../../../constants';
+import { FieldId, FieldType } from '../../../../constants';
 import { Field } from '../../../interfaces';
 import mapFieldDefaultValue from '../getFieldDefaultValue';
 import SpyInstance = jest.SpyInstance;
@@ -18,23 +18,23 @@ describe('getFieldDefaultValue', () => {
 
   it('should return default values for fields by field type', async () => {
     const choiceField = mapFieldDefaultValue(({
-      fieldType: FIELD_TYPE.CHOICE,
+      fieldType: FieldType.CHOICE,
       fieldId: '',
     } as unknown) as Field);
     const nestedField = mapFieldDefaultValue(({
-      fieldType: FIELD_TYPE.NESTED,
+      fieldType: FieldType.NESTED,
       fieldId: '',
     } as unknown) as Field);
     const sliderField = mapFieldDefaultValue(({
-      fieldType: FIELD_TYPE.SLIDER,
+      fieldType: FieldType.SLIDER,
       fieldId: '',
     } as unknown) as Field);
     const switchField = mapFieldDefaultValue(({
-      fieldType: FIELD_TYPE.SWITCH,
+      fieldType: FieldType.SWITCH,
       fieldId: '',
     } as unknown) as Field);
     const textField = mapFieldDefaultValue(({
-      fieldType: FIELD_TYPE.TEXT,
+      fieldType: FieldType.TEXT,
       fieldId: '',
     } as unknown) as Field);
 
@@ -50,12 +50,12 @@ describe('getFieldDefaultValue', () => {
 
   it('should return default values for fields by field id', async () => {
     const dateTimeField = mapFieldDefaultValue(({
-      fieldType: FIELD_TYPE.TEXT,
-      fieldId: FIELD_ID.DATE_TIME,
+      fieldType: FieldType.TEXT,
+      fieldId: FieldId.DATE_TIME,
     } as unknown) as Field);
     const statusField = mapFieldDefaultValue(({
-      fieldType: FIELD_TYPE.CHOICE,
-      fieldId: FIELD_ID.STATUS,
+      fieldType: FieldType.CHOICE,
+      fieldId: FieldId.STATUS,
       meta: {
         defaultOption: 'TEST',
       },

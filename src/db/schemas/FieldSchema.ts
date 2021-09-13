@@ -1,15 +1,15 @@
 import { Schema } from 'mongoose';
-import { FIELD_ID, FIELD_TYPE } from '../../constants';
+import { FieldId, FieldType } from '../../constants';
 import { Field } from '../interfaces';
 
 export const FIELD_DEFINITION = {
   fieldId: {
     type: String,
-    enum: Object.values(FIELD_ID),
+    enum: Object.values(FieldId),
   },
   fieldType: {
     type: String,
-    enum: Object.values(FIELD_TYPE),
+    enum: Object.values(FieldType),
   },
   order: {
     type: Number,

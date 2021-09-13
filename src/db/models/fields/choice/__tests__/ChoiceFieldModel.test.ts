@@ -1,4 +1,4 @@
-import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
+import { FieldId, FieldType } from '../../../../../constants';
 import setupMongo from '../../../../../utils/tests/setupMongo';
 import { FIELDS_CONFIG } from '../../../tasks/fieldsConfig';
 import { ChoiceFieldModel } from '../ChoiceFieldModel';
@@ -17,8 +17,8 @@ describe('ChoiceFieldModel', () => {
     expect(doc).toBeInstanceOf(ChoiceFieldModel);
     expect(doc.value.id).toBe('');
     expect(doc.order).toBe(0);
-    expect(doc.fieldId).toBe(FIELD_ID.STATUS);
-    expect(doc.fieldType).toBe(FIELD_TYPE.CHOICE);
+    expect(doc.fieldId).toBe(FieldId.STATUS);
+    expect(doc.fieldType).toBe(FieldType.CHOICE);
     expect(doc.validationErrors.toString()).toBe([].toString());
     expect(doc.meta.required).toBe(true);
     expect(doc.meta.disabled).toBe(false);

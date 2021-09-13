@@ -1,5 +1,5 @@
 import { Model, Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../../../constants';
+import { FieldType } from '../../../../constants';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
 
@@ -49,6 +49,6 @@ NestedFieldSchema.methods.validateField = function(): string[] {
 export const NestedFieldModel: Model<
   FieldDocument
 > = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
-  FIELD_TYPE.NESTED,
+  FieldType.NESTED,
   NestedFieldSchema,
 );

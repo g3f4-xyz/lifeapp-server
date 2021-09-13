@@ -1,4 +1,4 @@
-import { FIELD_ID, FIELD_TYPE } from '../../../../../constants';
+import { FieldId, FieldType } from '../../../../../constants';
 import setupMongo from '../../../../../utils/tests/setupMongo';
 import { FIELDS_CONFIG } from '../../../tasks/fieldsConfig';
 import { TextFieldModel } from '../TextFieldModel';
@@ -17,8 +17,8 @@ describe('TextFieldModel', () => {
     expect(doc).toBeInstanceOf(TextFieldModel);
     expect(doc.value.text).toBe('');
     expect(doc.order).toBe(2);
-    expect(doc.fieldId).toBe(FIELD_ID.NOTE);
-    expect(doc.fieldType).toBe(FIELD_TYPE.TEXT);
+    expect(doc.fieldId).toBe(FieldId.NOTE);
+    expect(doc.fieldType).toBe(FieldType.TEXT);
     expect(doc.meta.required).toBe(false);
     expect(doc.meta.disabled).toBe(false);
     expect(doc.meta.minLength).toBe(3);

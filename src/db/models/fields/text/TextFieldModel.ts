@@ -1,5 +1,5 @@
 import { Model, Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../../../constants';
+import { FieldType } from '../../../../constants';
 import { Field } from '../../../interfaces';
 import {
   lengthValidator,
@@ -60,6 +60,6 @@ TextFieldSchema.methods.validateField = function(): string[] {
 export const TextFieldModel: Model<
   FieldDocument
 > = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
-  FIELD_TYPE.TEXT,
+  FieldType.TEXT,
   TextFieldSchema,
 );

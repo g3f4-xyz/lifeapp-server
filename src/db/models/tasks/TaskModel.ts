@@ -4,7 +4,7 @@ import { Document, Model, model, Schema } from 'mongoose';
 import {
   CYCLE,
   DAY_CYCLE,
-  FieldId,
+  FieldIdType,
   MONTH_CYCLE,
   TIME_CYCLE,
   TypeOfTask,
@@ -55,7 +55,7 @@ export const TaskFieldsSchema = TaskSchema.path('fields');
 
 export const isNotificationAtUpdateNeeded = (
   taskType: TypeOfTask,
-  lastChangedFieldId: FieldId,
+  lastChangedFieldId: FieldIdType,
 ) => {
   switch (taskType) {
     case 'ROUTINE':

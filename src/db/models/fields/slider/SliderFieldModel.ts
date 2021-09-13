@@ -1,5 +1,5 @@
 import { Model, Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../../../constants';
+import { FieldType } from '../../../../constants';
 import { progressValidator } from '../../../utils/fieldValidators';
 import iterateValidations from '../../../utils/iterateValidations';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
@@ -62,6 +62,6 @@ SliderFieldSchema.methods.validateField = function(): string[] {
 export const SliderFieldModel: Model<
   FieldDocument
 > = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
-  FIELD_TYPE.SLIDER,
+  FieldType.SLIDER,
   SliderFieldSchema,
 );

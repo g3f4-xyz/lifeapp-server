@@ -1,5 +1,5 @@
 import { Model, Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../../../constants';
+import { FieldType } from '../../../../constants';
 import { requiredValidator } from '../../../utils/fieldValidators';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
@@ -60,6 +60,6 @@ ChoiceFieldSchema.methods.validateField = function(): string[] {
 export const ChoiceFieldModel: Model<
   FieldDocument
 > = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
-  FIELD_TYPE.CHOICE,
+  FieldType.CHOICE,
   ChoiceFieldSchema,
 );

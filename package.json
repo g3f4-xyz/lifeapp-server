@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/g3f4-xyz/lifeapp-server#readme",
   "engines": {
-    "node": "14.*.*"
+    "node": "15.*.*"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "1.1.1",

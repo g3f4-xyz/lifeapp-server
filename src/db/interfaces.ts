@@ -1,7 +1,7 @@
 import { PushSubscription } from 'web-push';
 import {
-  FieldId,
-  FieldType,
+  FieldIdType,
+  FieldTypeType,
   TASK_STATUS,
   TASK_TYPE,
   TypeOfTask,
@@ -49,8 +49,8 @@ export interface FieldValue {
 export interface Field {
   _id?: any;
   id?: string;
-  fieldId: FieldId;
-  fieldType: FieldType;
+  fieldId: FieldIdType;
+  fieldType: FieldTypeType;
   order: number;
   meta: Partial<FieldMeta>;
   value: Partial<FieldValue>;
@@ -66,7 +66,7 @@ export interface Task {
   updatedAt?: Date | string;
   notificationAt?: Date;
   lastNotificationAt?: Date;
-  lastChangedFieldId?: FieldId;
+  lastChangedFieldId?: FieldIdType;
   taskType: TypeOfTask;
   fields: Field[];
 }

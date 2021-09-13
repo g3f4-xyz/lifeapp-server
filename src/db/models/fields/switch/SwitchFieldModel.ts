@@ -1,5 +1,5 @@
 import { Model, Schema } from 'mongoose';
-import { FIELD_TYPE } from '../../../../constants';
+import { FieldType } from '../../../../constants';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
 
@@ -47,6 +47,6 @@ SwitchFieldSchema.methods.validateField = function(): string[] {
 export const SwitchFieldModel: Model<
   FieldDocument
 > = ((TaskFieldsSchema as unknown) as Model<TaskDocument>).discriminator(
-  FIELD_TYPE.SWITCH,
+  FieldType.SWITCH,
   SwitchFieldSchema,
 );
