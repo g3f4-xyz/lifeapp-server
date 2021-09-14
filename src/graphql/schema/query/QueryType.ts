@@ -1,9 +1,4 @@
-import {
-  GraphQLID,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLID, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { fromGlobalId } from 'graphql-relay';
 import { Context, Settings, Task } from '../../../db/interfaces';
 import { TaskTypeEnum } from '../../enums/TaskTypeEnum';
@@ -53,8 +48,6 @@ export const QueryType = new GraphQLObjectType<undefined, Context>({
       type: new GraphQLNonNull(TaskListType),
       async resolve(_rootValue, _args, { user: { id }, taskService }) {
         const list = (await taskService.getTaskList(id)) || [];
-
-        console.log(['list'], JSON.stringify(list, null, 2));
 
         return { list };
       },

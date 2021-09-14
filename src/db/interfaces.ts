@@ -10,7 +10,6 @@ import NotificationsService from '../services/NotificationsService';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
-import UserService from '../services/UserService';
 
 export interface FieldMetaOptions {
   text: string;
@@ -128,21 +127,12 @@ export interface Settings {
   taskList: TaskListSettings;
 }
 
-export interface UserInfo {
-  name?: string;
-  photo?: string;
-  provider?: string;
-}
-
 export interface User {
-  id?: string;
-  userId: string;
-  info: UserInfo;
+  id: string;
 }
 
 export interface Context {
   user: User;
-  userService: UserService;
   taskService: TaskService;
   taskTypeService: TaskTypeService;
   settingsService: SettingsService;

@@ -84,14 +84,6 @@ export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string> = {
   TEXT: 'text',
 };
 
-export const TIME_FORMAT = 'hh:mm';
-
-export enum CONSOLE_COLORS {
-  YELLOW = '\x1b[33m%s\x1b[0m',
-  BLUE = '\x1b[34m%s\x1b[0m',
-  CYAN = '\x1b[36m%s\x1b[0m',
-}
-
 export enum CYCLE {
   TIME = 'TIME_CYCLE',
   DAY = 'DAY_CYCLE',

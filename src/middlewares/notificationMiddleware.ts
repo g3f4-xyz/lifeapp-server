@@ -1,14 +1,16 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { parse } from 'useragent';
 import { sendNotification } from 'web-push';
-import { DEMO_USER } from '../config';
 import settingsApi from '../db/api/settings/settingsApi';
-import { User } from '../db/interfaces';
 import SettingsService from '../services/SettingsService';
+import { userFromAuth0Request, AuthORequest } from './checkJwt';
 
 const settingsService = new SettingsService(settingsApi);
 
-export const notificationMiddleware = async (req: Request, res: Response) => {
+export const notificationMiddleware = async (
+  req: AuthORequest,
+  res: Response,
+) => {
   const {
     subscriptionData,
     options = {
@@ -19,7 +21,7 @@ export const notificationMiddleware = async (req: Request, res: Response) => {
     family: userAgent,
     os: { family: userDeviceType },
   } = parse(req.headers['user-agent']);
-  const { id: ownerId } = (req.user as User) || DEMO_USER;
+  const { id: ownerId } = userFromAuth0Request(req);
   await settingsService.addSubscription(
     ownerId,
     subscriptionData,

@@ -1,5 +1,4 @@
 import { GraphQLObjectType } from 'graphql';
-import { cleanApplicationMutation } from './mutations/cleanApplicationMutation';
 import { deleteSubscriptionMutation } from './mutations/deleteSubscriptionMutation';
 import { deleteTaskMutation } from './mutations/deleteTaskMutation';
 import { saveNotificationsGeneralSettingMutation } from './mutations/saveNotificationsGeneralSettingMutation';
@@ -14,7 +13,6 @@ import { testSubscriptionMutation } from './mutations/testSubscriptionMutation';
 export const MutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    cleanApplication: cleanApplicationMutation,
     deleteSubscription: deleteSubscriptionMutation,
     deleteTask: deleteTaskMutation,
     saveNotificationsGeneralSetting: saveNotificationsGeneralSettingMutation,

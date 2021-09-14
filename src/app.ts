@@ -1,14 +1,10 @@
 import * as cors from 'cors';
 import * as express from 'express';
-import * as session from 'express-session';
 import { createServer } from 'http';
 import * as morgan from 'morgan';
-import { initialize as passportInitialize } from 'passport';
-import * as socketio from 'socket.io';
 import { router } from './router';
-import UserService from './services/UserService';
 
-export default (userService: UserService) => {
+export default () => {
   const app = express();
 
   const server = createServer(app);
@@ -18,7 +14,6 @@ export default (userService: UserService) => {
   }
 
   app.use(express.json());
-  app.use(passportInitialize());
 
   app.use(
     cors({
@@ -26,45 +21,6 @@ export default (userService: UserService) => {
       credentials: true,
     }),
   );
-
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: true,
-      saveUninitialized: true,
-      cookie: {
-        sameSite: false,
-        secure: false,
-      },
-    }),
-  );
-
-  const io = socketio(server);
-
-  io.on('connect', socket => {
-    socket.on('end', function() {
-      socket.disconnect(false);
-    });
-  });
-
-  app.set('io', io);
-
-  app.get('/user-info', async (req, res) => {
-    const { socketId } = req.query;
-
-    if (req.session.passport) {
-      const io = req.app.get('io');
-      const user = await userService.getUser(req.session.passport.user);
-
-      io.in(socketId).emit(user.info.provider, user.info);
-
-      res.send(user.info);
-    } else {
-      res.send({
-        error: 'no user info',
-      });
-    }
-  });
 
   app.use(router);
 

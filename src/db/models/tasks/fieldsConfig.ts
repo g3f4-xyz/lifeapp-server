@@ -1,5 +1,5 @@
-import { FieldId, FIELD_ID_VALUE_MAP, FieldType } from "../../../constants";
-import { Field } from "../../interfaces";
+import { FieldId, FIELD_ID_VALUE_MAP, FieldType } from '../../../constants';
+import { Field } from '../../interfaces';
 
 export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
   TITLE: {
@@ -7,9 +7,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.TEXT,
     order: 1,
     meta: {
-      label: "Title",
-      helperText: "Informacje o testowym polu Title",
-      inputType: "text",
+      label: 'Title',
+      helperText: 'Informacje o testowym polu Title',
+      inputType: 'text',
       required: true,
       minLength: 0,
       maxLength: 400,
@@ -20,8 +20,8 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.SWITCH,
     order: 0,
     meta: {
-      label: "Important",
-      helperText: "Informacje o testowym polu Priority",
+      label: 'Important',
+      helperText: 'Informacje o testowym polu Priority',
       required: true,
     },
   },
@@ -30,22 +30,22 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.CHOICE,
     order: 0,
     meta: {
-      label: "Status",
-      helperText: "Informacje o testowym polu Status",
+      label: 'Status',
+      helperText: 'Informacje o testowym polu Status',
       required: true,
-      defaultOption: "TODO",
+      defaultOption: 'TODO',
       options: [
         {
-          text: "To do",
-          value: "TODO",
+          text: 'To do',
+          value: 'TODO',
         },
         {
-          text: "Done",
-          value: "DONE",
+          text: 'Done',
+          value: 'DONE',
         },
         {
-          text: "In progress",
-          value: "IN_PROGRESS",
+          text: 'In progress',
+          value: 'IN_PROGRESS',
         },
       ],
     },
@@ -55,8 +55,8 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.SWITCH,
     order: 0,
     meta: {
-      label: "Active",
-      helperText: "Informacje o testowym polu Active",
+      label: 'Active',
+      helperText: 'Informacje o testowym polu Active',
     },
   },
   DATE: {
@@ -64,9 +64,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.TEXT,
     order: 4,
     meta: {
-      label: "Date",
-      helperText: "Informacje o testowym polu Date",
-      inputType: "date-local",
+      label: 'Date',
+      helperText: 'Informacje o testowym polu Date',
+      inputType: 'date-local',
       required: false,
       minLength: 3,
       maxLength: 100,
@@ -77,9 +77,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.TEXT,
     order: 3,
     meta: {
-      label: "Date",
-      helperText: "Informacje o testowym polu Date",
-      inputType: "datetime-local",
+      label: 'Date',
+      helperText: 'Informacje o testowym polu Date',
+      inputType: 'datetime-local',
       required: false,
       minLength: 3,
       maxLength: 100,
@@ -90,9 +90,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.TEXT,
     order: 3,
     meta: {
-      label: "Duration",
-      helperText: "Informacje o testowym polu Duration",
-      inputType: "text",
+      label: 'Duration',
+      helperText: 'Informacje o testowym polu Duration',
+      inputType: 'text',
       required: false,
       minLength: 0,
       maxLength: 100,
@@ -103,9 +103,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.TEXT,
     order: 3,
     meta: {
-      label: "Location",
-      helperText: "Informacje o testowym polu Location",
-      inputType: "text",
+      label: 'Location',
+      helperText: 'Informacje o testowym polu Location',
+      inputType: 'text',
       required: false,
       minLength: 3,
       maxLength: 100,
@@ -116,9 +116,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.TEXT,
     order: 4,
     meta: {
-      label: "Person",
-      helperText: "Person helperText",
-      inputType: "text",
+      label: 'Person',
+      helperText: 'Person helperText',
+      inputType: 'text',
       required: true,
       minLength: 3,
       maxLength: 100,
@@ -129,9 +129,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.TEXT,
     order: 2,
     meta: {
-      label: "Note",
-      helperText: "Informacje o testowym polu Description",
-      inputType: "text",
+      label: 'Note',
+      helperText: 'Informacje o testowym polu Description',
+      inputType: 'text',
       required: false,
       minLength: 3,
       maxLength: 100,
@@ -142,8 +142,8 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.SLIDER,
     order: 5,
     meta: {
-      label: "Progress",
-      helperText: "Informacje o testowym polu progress",
+      label: 'Progress',
+      helperText: 'Informacje o testowym polu progress',
       required: false,
       step: 1,
       min: 0,
@@ -155,9 +155,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     fieldType: FieldType.TEXT,
     order: 6,
     meta: {
-      label: "Action",
-      helperText: "Określ jaka akcja ma nastąpić podczas każdego cyklu",
-      inputType: "text",
+      label: 'Action',
+      helperText: 'Określ jaka akcja ma nastąpić podczas każdego cyklu',
+      inputType: 'text',
       required: true,
       minLength: 3,
       maxLength: 100,
@@ -170,25 +170,25 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     meta: {
       ownMeta: {
         fieldType: FieldType.CHOICE,
-        label: "Cycle",
-        helperText: "Cycle helperText",
+        label: 'Cycle',
+        helperText: 'Cycle helperText',
         required: true,
         options: [
           {
-            text: "Time",
-            value: "TIME_CYCLE",
+            text: 'Time',
+            value: 'TIME_CYCLE',
           },
           {
-            text: "Day",
-            value: "DAY_CYCLE",
+            text: 'Day',
+            value: 'DAY_CYCLE',
           },
           {
-            text: "Week",
-            value: "WEEK_CYCLE",
+            text: 'Week',
+            value: 'WEEK_CYCLE',
           },
           {
-            text: "Month",
-            value: "MONTH_CYCLE",
+            text: 'Month',
+            value: 'MONTH_CYCLE',
           },
         ],
       },
@@ -196,33 +196,33 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
         {
           fieldType: FieldType.NESTED,
           parentValue: {
-            id: "TIME_CYCLE",
+            id: 'TIME_CYCLE',
           },
           ownMeta: {
             fieldType: FieldType.CHOICE,
-            label: "Time cycle",
-            helperText: "Time cycle helperText",
+            label: 'Time cycle',
+            helperText: 'Time cycle helperText',
             required: true,
             options: [
               {
-                text: "Half an hour",
-                value: "HALF_HOUR",
+                text: 'Half an hour',
+                value: 'HALF_HOUR',
               },
               {
-                text: "Hour",
-                value: "HOUR",
+                text: 'Hour',
+                value: 'HOUR',
               },
               {
-                text: "3 hours",
-                value: "HOURS_3",
+                text: '3 hours',
+                value: 'HOURS_3',
               },
               {
-                text: "12 hours",
-                value: "HOURS_12",
+                text: '12 hours',
+                value: 'HOURS_12',
               },
               {
-                text: "Interval in minutes",
-                value: "MINUTES",
+                text: 'Interval in minutes',
+                value: 'MINUTES',
               },
             ],
           },
@@ -230,14 +230,14 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
             {
               fieldType: FieldType.NESTED,
               parentValue: {
-                id: "MINUTES",
+                id: 'MINUTES',
               },
               ownMeta: {
                 fieldType: FieldType.TEXT,
-                label: "Minutes time cycle",
-                helperText: "Minutes time cycle helperText",
+                label: 'Minutes time cycle',
+                helperText: 'Minutes time cycle helperText',
                 required: true,
-                inputType: "number",
+                inputType: 'number',
               },
             },
           ],
@@ -245,25 +245,25 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
         {
           fieldType: FieldType.NESTED,
           parentValue: {
-            id: "DAY_CYCLE",
+            id: 'DAY_CYCLE',
           },
           ownMeta: {
             fieldType: FieldType.CHOICE,
-            label: "Day cycle",
-            helperText: "Day cycle helperText",
+            label: 'Day cycle',
+            helperText: 'Day cycle helperText',
             required: true,
             options: [
               {
-                text: "Morning",
-                value: "MORNING",
+                text: 'Morning',
+                value: 'MORNING',
               },
               {
-                text: "Noon",
-                value: "NOON",
+                text: 'Noon',
+                value: 'NOON',
               },
               {
-                text: "Evening",
-                value: "EVENING",
+                text: 'Evening',
+                value: 'EVENING',
               },
             ],
           },
@@ -271,29 +271,29 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
         {
           fieldType: FieldType.NESTED,
           parentValue: {
-            id: "WEEK_CYCLE",
+            id: 'WEEK_CYCLE',
           },
           ownMeta: {
             fieldType: FieldType.CHOICE,
-            label: "Week cycle",
-            helperText: "Week cycle helperText",
+            label: 'Week cycle',
+            helperText: 'Week cycle helperText',
             required: true,
             options: [
               {
-                text: "Week days",
-                value: "WEEK_DAYS",
+                text: 'Week days',
+                value: 'WEEK_DAYS',
               },
               {
-                text: "Weekend",
-                value: "WEEKEND",
+                text: 'Weekend',
+                value: 'WEEKEND',
               },
               {
-                text: "First day of week",
-                value: "FIRST_DAY",
+                text: 'First day of week',
+                value: 'FIRST_DAY',
               },
               {
-                text: "Last day of week",
-                value: "LAST_DAY",
+                text: 'Last day of week',
+                value: 'LAST_DAY',
               },
             ],
           },
@@ -301,25 +301,25 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
         {
           fieldType: FieldType.NESTED,
           parentValue: {
-            id: "MONTH_CYCLE",
+            id: 'MONTH_CYCLE',
           },
           ownMeta: {
             fieldType: FieldType.CHOICE,
-            label: "Month cycle",
-            helperText: "Month cycle helperText",
+            label: 'Month cycle',
+            helperText: 'Month cycle helperText',
             required: true,
             options: [
               {
-                text: "Start of the month",
-                value: "MONTH_START",
+                text: 'Start of the month',
+                value: 'MONTH_START',
               },
               {
-                text: "End of the month",
-                value: "MONTH_END",
+                text: 'End of the month',
+                value: 'MONTH_END',
               },
               {
-                text: "Middle of the month",
-                value: "MONTH_MIDDLE",
+                text: 'Middle of the month',
+                value: 'MONTH_MIDDLE',
               },
             ],
           },
@@ -333,9 +333,9 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
     order: 8,
     meta: {
       ownMeta: {
-        fieldType: "SWITCH",
-        label: "Notifications",
-        helperText: "Notifications helperText",
+        fieldType: 'SWITCH',
+        label: 'Notifications',
+        helperText: 'Notifications helperText',
         disabled: false,
         required: true,
       },
@@ -347,8 +347,8 @@ export const FIELDS_CONFIG: FIELD_ID_VALUE_MAP<Partial<Field>> = {
           },
           ownMeta: {
             fieldType: FieldType.TEXT,
-            label: "Additional note",
-            helperText: "Additional note helperText",
+            label: 'Additional note',
+            helperText: 'Additional note helperText',
             required: true,
           },
         },

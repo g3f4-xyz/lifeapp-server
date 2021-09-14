@@ -2,14 +2,10 @@ import { ObjectId } from 'mongodb';
 import { agent } from 'supertest';
 import app from '../app';
 import { TaskTypeId } from '../constants';
-import settingsApi from '../db/api/settings/settingsApi';
-import taskApi from '../db/api/task/taskApi';
-import userApi from '../db/api/user/userApi';
 import { Settings, Task, TaskType } from '../db/interfaces';
 import { SettingsModel } from '../db/models/settings/SettingsModel';
 import { TaskModel } from '../db/models/tasks/TaskModel';
 import { TaskTypeModel } from '../db/models/TaskTypeModel';
-import UserService from '../services/UserService';
 import mockMongoCollection from '../utils/tests/mockMongoCollection';
 import setupMongo from '../utils/tests/setupMongo';
 
@@ -22,7 +18,6 @@ describe('app', () => {
   const secondUser = {
     id: '0987654321',
   };
-  const userService = new UserService(taskApi, settingsApi, userApi);
 
   setupMongo({
     async beforeEachExtend() {
@@ -976,47 +971,37 @@ describe('app', () => {
 
       await mockMongoCollection<TaskType>(TaskTypeModel, [
         {
-          _id: new ObjectId('5d94cb40d4b62b5aeec482c1'),
           typeId: 'EVENT',
           label: 'string',
           description: 'string',
-          order: 1,
           parentTypeIds: ['TASK'],
           fieldsIds: ['string'],
         },
         {
-          _id: new ObjectId('5d94cb40d4b62b5aeec482c2'),
           typeId: 'GOAL',
           label: 'string',
           description: 'string',
-          order: 2,
           parentTypeIds: ['TASK'],
           fieldsIds: ['string'],
         },
         {
-          _id: new ObjectId('5d94cb40d4b62b5aeec482c3'),
           typeId: 'MEETING',
           label: 'string',
           description: 'string',
-          order: 3,
           parentTypeIds: ['TASK'],
           fieldsIds: ['string'],
         },
         {
-          _id: new ObjectId('5d94cb40dab62b5aeec481c4'),
           typeId: 'ROUTINE',
           label: 'string',
           description: 'string',
-          order: 4,
           parentTypeIds: ['TASK'],
           fieldsIds: ['string'],
         },
         {
-          _id: new ObjectId('5d94cb40d4b62b5aeec482c5'),
           typeId: 'TODO',
           label: 'string',
           description: 'string',
-          order: 5,
           parentTypeIds: ['TASK'],
           fieldsIds: ['string'],
         },
@@ -1025,7 +1010,7 @@ describe('app', () => {
   });
 
   it('should return task list', async () => {
-    const response = await agent(app(userService))
+    const response = await agent(app())
       .post('/graphql')
       .send({
         query:
@@ -2092,7 +2077,7 @@ describe('app', () => {
   });
 
   it('should return task type list', async () => {
-    const response = await agent(app(userService))
+    const response = await agent(app())
       .post('/graphql')
       .send({
         query: `
@@ -2219,7 +2204,7 @@ describe('app', () => {
   });
 
   it('should return settings', async () => {
-    const response = await agent(app(userService))
+    const response = await agent(app())
       .post('/graphql')
       .send({
         query: `
@@ -2341,7 +2326,7 @@ describe('app', () => {
   });
 
   it('should return empty todo task', async () => {
-    const response = await agent(app(userService))
+    const response = await agent(app())
       .post('/graphql')
       .send({
         variables: {
@@ -3002,7 +2987,7 @@ describe('app', () => {
   });
 
   it('should return empty goal task', async () => {
-    const response = await agent(app(userService))
+    const response = await agent(app())
       .post('/graphql')
       .send({
         variables: {
@@ -3661,7 +3646,7 @@ describe('app', () => {
   });
 
   it('should return empty event task', async () => {
-    const response = await agent(app(userService))
+    const response = await agent(app())
       .post('/graphql')
       .send({
         variables: {
@@ -4385,7 +4370,7 @@ describe('app', () => {
   });
 
   it('should return empty meeting task', async () => {
-    const response = await agent(app(userService))
+    const response = await agent(app())
       .post('/graphql')
       .send({
         variables: {
@@ -5130,7 +5115,7 @@ describe('app', () => {
   });
 
   it('should return empty routine task', async () => {
-    const response = await agent(app(userService))
+    const response = await agent(app())
       .post('/graphql')
       .send({
         variables: {
