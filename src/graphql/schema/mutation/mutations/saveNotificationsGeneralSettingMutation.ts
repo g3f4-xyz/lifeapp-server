@@ -6,7 +6,7 @@ import { SettingsNotificationsGeneralInputType } from './inputs/settings/Setting
 
 export const saveNotificationsGeneralSettingMutation = mutationWithClientMutationId(
   {
-    name: 'saveNotificationsGeneralSettingMutation',
+    name: 'SaveNotificationsGeneralSetting',
     inputFields: {
       general: {
         type: SettingsNotificationsGeneralInputType,

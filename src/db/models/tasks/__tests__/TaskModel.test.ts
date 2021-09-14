@@ -1,4 +1,4 @@
-import { FieldType, TASK_TYPE } from '../../../../constants';
+import { FieldType, TaskTypeId } from '../../../../constants';
 import setupMongo from '../../../../utils/tests/setupMongo';
 import { ChoiceFieldModel } from '../../fields/choice/ChoiceFieldModel';
 import { NestedFieldModel } from '../../fields/nested/NestedFieldModel';
@@ -18,7 +18,7 @@ describe('TaskModel', () => {
     const ownerId = '1234567890';
     const taskData = {
       ownerId,
-      taskType: TASK_TYPE.EVENT,
+      taskType: TaskTypeId.EVENT,
       fields: [
         {
           fieldType: FieldType.TEXT,

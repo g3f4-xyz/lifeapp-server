@@ -12,35 +12,27 @@ export const SliderMetaType: GraphQLObjectType<
   FieldMeta,
   Context
 > = new GraphQLObjectType({
-  name: 'SliderMetaType',
-  description: 'slider meta type',
+  name: 'SliderFieldMeta',
   fields: () => ({
     fieldType: {
-      description: 'fieldType field meta description',
       type: new GraphQLNonNull(FieldTypeEnum),
     },
     disabled: {
-      description: 'disabled field meta description',
       type: GraphQLBoolean,
     },
     required: {
-      description: 'required field meta description',
       type: new GraphQLNonNull(GraphQLBoolean),
     },
     label: {
-      description: 'label field meta description',
       type: new GraphQLNonNull(GraphQLString),
     },
     min: {
-      description: 'min field meta description',
       type: GraphQLInt,
     },
     max: {
-      description: 'max field meta description',
       type: GraphQLInt,
     },
     step: {
-      description: 'step field meta description',
       type: GraphQLInt,
     },
   }),

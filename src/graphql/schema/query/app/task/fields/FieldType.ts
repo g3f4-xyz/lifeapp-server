@@ -1,45 +1,36 @@
 import {
   GraphQLInt,
+  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLList,
   GraphQLString,
 } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { Context, Field } from '../../../../../../db/interfaces';
+import { Field } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { nodeInterface } from '../../../../../nodeDefinitions';
-import { ChoiceMetaType } from './meta/ChoiceMetaType';
-import { ChoiceValueType } from './value/ChoiceValueType';
+import { MetasUnion } from './meta/MetasUnion';
+import { ValuesUnion } from './value/ValuesUnion';
 
-export const ChoiceFieldType: GraphQLObjectType<
-  Field,
-  Context
-> = new GraphQLObjectType<Field, Context>({
-  name: 'ChoiceFieldType',
-  description: 'choice field type',
+export const FieldType = new GraphQLObjectType({
+  name: 'Field',
   fields: () => ({
-    id: globalIdField('ChoiceFieldType'),
+    id: globalIdField('Field'),
     fieldId: {
-      description: 'fieldId field description',
       type: new GraphQLNonNull(FieldIdEnum),
     },
     order: {
-      description: 'order field description',
       type: new GraphQLNonNull(GraphQLInt),
     },
     fieldType: {
-      description: 'field type description',
       type: new GraphQLNonNull(FieldTypeEnum),
     },
     value: {
-      description: 'choice value field description',
-      type: new GraphQLNonNull(ChoiceValueType),
+      type: new GraphQLNonNull(ValuesUnion),
     },
     meta: {
-      description: 'choice meta field description',
-      type: new GraphQLNonNull(ChoiceMetaType),
+      type: new GraphQLNonNull(MetasUnion),
       resolve(field) {
         const { fieldType, meta } = field;
 
@@ -47,7 +38,6 @@ export const ChoiceFieldType: GraphQLObjectType<
       },
     },
     validationErrors: {
-      description: 'choice field field validationErrors list',
       type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
     },
   }),

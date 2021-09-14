@@ -46,7 +46,7 @@ export type FieldIdType =
 
 export type FIELD_ID_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FieldId, V>;
 
-export enum TASK_TYPE {
+export enum TaskTypeId {
   GOAL = 'GOAL',
   TODO = 'TODO',
   MEETING = 'MEETING',
@@ -62,7 +62,7 @@ export enum TASK_STATUS {
   IN_PROGRESS = 'IN_PROGRESS',
 }
 
-export type TASK_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof TASK_TYPE, V>;
+export type TASK_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof TaskTypeId, V>;
 
 export enum FieldType {
   SLIDER = 'SLIDER',
@@ -74,10 +74,7 @@ export enum FieldType {
 
 export type FieldTypeType = 'SLIDER' | 'SWITCH' | 'CHOICE' | 'TEXT' | 'NESTED';
 
-export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<
-  typeof FieldType,
-  V
->;
+export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FieldType, V>;
 
 export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string> = {
   CHOICE: 'id',

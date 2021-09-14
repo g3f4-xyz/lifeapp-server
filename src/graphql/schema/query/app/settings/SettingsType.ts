@@ -6,10 +6,9 @@ import { NotificationsType } from './notifications/NotificationsType';
 import { TaskListSettingsType } from './taskList/TaskListSettingsType';
 
 export const SettingsType = new GraphQLObjectType<Settings, Context>({
-  name: 'SettingsType',
-  description: 'task type type',
+  name: 'Settings',
   fields: () => ({
-    id: globalIdField('SettingsType'),
+    id: globalIdField('Settings'),
     ownerId: {
       type: new GraphQLNonNull(GraphQLString),
     },

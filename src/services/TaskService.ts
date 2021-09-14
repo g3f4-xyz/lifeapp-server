@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { FieldId, TASK_TYPE } from '../constants';
+import { FieldId, TaskTypeId } from '../constants';
 import { SettingsApi } from '../db/api/settings/settingsApi';
 import { TaskApi } from '../db/api/task/taskApi';
 import { Field, FieldValue, Task } from '../db/interfaces';
@@ -18,8 +18,8 @@ export default class TaskService {
     return await this.taskApi.deleteTask(taskId);
   }
 
-  async getEmptyTask(ownerId: string, taskType: TASK_TYPE): Promise<Task> {
-    return await this.taskApi.getEmptyTask(ownerId, taskType);
+  async getEmptyTask(ownerId: string, typeId: TaskTypeId): Promise<Task> {
+    return await this.taskApi.getEmptyTask(ownerId, typeId);
   }
 
   async getTask(taskId: string): Promise<Task> {
@@ -51,7 +51,7 @@ export default class TaskService {
 
       if (
         isNotificationAtUpdateNeeded(
-          draftTask.taskType,
+          draftTask.typeId,
           draftTask.lastChangedFieldId,
         )
       ) {
@@ -60,7 +60,7 @@ export default class TaskService {
         );
 
         draftTask.notificationAt = calculateNotificationAt(
-          draftTask.taskType,
+          draftTask.typeId,
           draftTask.lastNotificationAt,
           lastChangedField.value,
         );

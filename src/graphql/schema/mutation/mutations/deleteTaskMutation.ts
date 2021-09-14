@@ -3,7 +3,7 @@ import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { Context } from '../../../../db/interfaces';
 
 export const deleteTaskMutation = mutationWithClientMutationId({
-  name: 'deleteTaskMutation',
+  name: 'DeleteTask',
   inputFields: {
     id: { type: GraphQLID },
   },

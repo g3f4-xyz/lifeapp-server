@@ -6,8 +6,7 @@ export const NestedValueType: GraphQLObjectType<
   FieldValue,
   Context
 > = new GraphQLObjectType({
-  name: 'NestedValueType',
-  description: 'nested value type',
+  name: 'NestedFieldValue',
   fields: () => ({
     ownValue: {
       type: ValuesUnion,

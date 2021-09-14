@@ -1,8 +1,7 @@
 import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
 export const NotificationsGeneralSettingType = new GraphQLObjectType({
-  name: 'NotificationsGeneralSettingType',
-  description: 'notifications general setting type',
+  name: 'GeneralNotificationsSettings',
   fields: () => ({
     show: {
       type: new GraphQLNonNull(GraphQLBoolean),

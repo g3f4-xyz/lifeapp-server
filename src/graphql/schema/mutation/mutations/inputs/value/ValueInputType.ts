@@ -8,8 +8,7 @@ import { NestedValueInputType } from './NestedValueInputType';
 
 export const ValueInputType: GraphQLInputObjectType = new GraphQLInputObjectType(
   {
-    name: 'ValueInputType',
-    description: 'value input type',
+    name: 'FieldValueInput',
     fields: () => ({
       enabled: {
         type: GraphQLBoolean,

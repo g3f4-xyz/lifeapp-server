@@ -1,5 +1,5 @@
 import { MongoError } from 'mongodb';
-import { MONGO_ERROR, TASK_STATUS, TASK_TYPE } from '../../../constants';
+import { MONGO_ERROR, TASK_STATUS, TaskTypeId } from '../../../constants';
 import AppError from '../../../utils/AppError';
 import {
   Settings,
@@ -195,7 +195,7 @@ const settingsApi = {
   },
   async saveTaskListTaskTypeFilter(
     ownerId: string,
-    taskTypeFilter: TASK_TYPE[],
+    taskTypeFilter: TaskTypeId[],
   ): Promise<Settings> {
     const updatedSettings = await SettingsModel.findOneAndUpdate(
       {

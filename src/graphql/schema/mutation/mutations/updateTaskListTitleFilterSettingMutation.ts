@@ -4,7 +4,7 @@ import { Context } from '../../../../db/interfaces';
 
 export const updateTaskListTitleFilterSettingMutation = mutationWithClientMutationId(
   {
-    name: 'updateTaskListTitleFilterSettingMutation',
+    name: 'UpdateTaskListTitleFilterSetting',
     inputFields: {
       title: {
         type: GraphQLString,

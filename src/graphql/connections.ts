@@ -6,17 +6,17 @@ import { TaskTypeType } from './schema/query/app/task-type-list/TaskTypeType';
 export const {
   connectionType: TaskTypeConnection,
   edgeType: TaskTypeEdge,
-} = connectionDefinitions({ name: 'TaskType', nodeType: TaskType });
+} = connectionDefinitions({ name: 'Task', nodeType: TaskType });
 
 export const {
   connectionType: TaskTypeTypeConnection,
   edgeType: TaskTypeTypeEdge,
-} = connectionDefinitions({ name: 'TaskTypeType', nodeType: TaskTypeType });
+} = connectionDefinitions({ name: 'TaskType', nodeType: TaskTypeType });
 
 export const {
   connectionType: SubscriptionTypeConnection,
   edgeType: SubscriptionTypeEdge,
 } = connectionDefinitions({
-  name: 'SubscriptionType',
+  name: 'Subscription',
   nodeType: SubscriptionType,
 });

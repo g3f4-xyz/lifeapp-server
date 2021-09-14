@@ -3,20 +3,17 @@ import { globalIdField } from 'graphql-relay';
 import { Task } from '../../../../../db/interfaces';
 import { TaskTypeEnum } from '../../../../enums/TaskTypeEnum';
 import { nodeInterface } from '../../../../nodeDefinitions';
-import { FieldsUnion } from './fields/FieldsUnion';
+import { FieldType } from './fields/FieldType';
 
 export const TaskType = new GraphQLObjectType<Task>({
-  name: 'TaskType',
-  description: 'task type',
+  name: 'Task',
   fields: () => ({
-    id: globalIdField('TaskType'),
-    taskType: {
+    id: globalIdField('Task'),
+    typeId: {
       type: new GraphQLNonNull(TaskTypeEnum),
     },
     fields: {
-      type: new GraphQLNonNull(
-        new GraphQLList(new GraphQLNonNull(FieldsUnion)),
-      ),
+      type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldType))),
     },
   }),
   interfaces: [nodeInterface],

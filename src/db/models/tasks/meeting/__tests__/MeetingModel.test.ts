@@ -1,4 +1,4 @@
-import { FieldId, TASK_TYPE } from '../../../../../constants';
+import { FieldId, TaskTypeId } from '../../../../../constants';
 import setupMongo from '../../../../../utils/tests/setupMongo';
 import { ChoiceFieldModel } from '../../../fields/choice/ChoiceFieldModel';
 import { NestedFieldModel } from '../../../fields/nested/NestedFieldModel';
@@ -19,7 +19,7 @@ describe('MeetingModel', () => {
     const ownerId = '1234567890';
     const doc = await TaskModel.create({
       ownerId,
-      taskType: TASK_TYPE.MEETING,
+      taskType: TaskTypeId.MEETING,
       fields: TASK_FIELDS.MEETING,
     });
 

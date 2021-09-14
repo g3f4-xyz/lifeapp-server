@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { TASK_STATUS, TASK_TYPE } from '../../../../constants';
+import { TASK_STATUS, TaskTypeId } from '../../../../constants';
 import AppError from '../../../../utils/AppError';
 import mockMongoCollection from '../../../../utils/tests/mockMongoCollection';
 import setupMongo from '../../../../utils/tests/setupMongo';
@@ -56,7 +56,7 @@ describe('settingsApi', () => {
           taskList: {
             filters: {
               title: '',
-              taskType: Object.values(TASK_TYPE),
+              taskType: Object.values(TaskTypeId),
               status: null,
             },
           },
@@ -80,7 +80,7 @@ describe('settingsApi', () => {
           taskList: {
             filters: {
               title: '',
-              taskType: Object.values(TASK_TYPE),
+              taskType: Object.values(TaskTypeId),
               status: null,
             },
           },
@@ -128,7 +128,7 @@ describe('settingsApi', () => {
       expect(settings.taskList).toEqual({
         filters: {
           title: '',
-          taskType: Object.values(TASK_TYPE),
+          taskType: Object.values(TaskTypeId),
           status: null,
         },
       });
@@ -159,7 +159,7 @@ describe('settingsApi', () => {
       expect(settings.taskList).toEqual({
         filters: {
           title: '',
-          taskType: Object.values(TASK_TYPE),
+          taskType: Object.values(TaskTypeId),
           status: null,
         },
       });

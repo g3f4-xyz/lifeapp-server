@@ -1,4 +1,4 @@
-import { TASK_TYPE } from '../../../../constants';
+import { TaskTypeId } from '../../../../constants';
 import setupMongo from '../../../../utils/tests/setupMongo';
 import taskApi from '../taskApi';
 
@@ -28,11 +28,11 @@ describe('taskApi', () => {
   describe('getEmptyTask', () => {
     it('should get empty todo task', async () => {
       const ownerId = '1234567890';
-      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.TODO);
+      const task = await taskApi.getEmptyTask(ownerId, TaskTypeId.TODO);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
-      expect(task.taskType).toBe(TASK_TYPE.TODO);
+      expect(task.typeId).toBe(TaskTypeId.TODO);
       expect(task.fields[0].value.text).toBe('');
       expect(task.fields[1].value.enabled).toBe(false);
       expect(task.fields[2].value.id).toBe('TODO');
@@ -43,11 +43,11 @@ describe('taskApi', () => {
 
     it('should get empty event task', async () => {
       const ownerId = '1234567890';
-      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.EVENT);
+      const task = await taskApi.getEmptyTask(ownerId, TaskTypeId.EVENT);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
-      expect(task.taskType).toBe(TASK_TYPE.EVENT);
+      expect(task.typeId).toBe(TaskTypeId.EVENT);
       expect(task.fields[0].value.text).toBe('');
       expect(task.fields[1].value.enabled).toBe(false);
       expect(task.fields[2].value.id).toBe('TODO');
@@ -61,11 +61,11 @@ describe('taskApi', () => {
 
     it('should get empty goal task', async () => {
       const ownerId = '1234567890';
-      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.GOAL);
+      const task = await taskApi.getEmptyTask(ownerId, TaskTypeId.GOAL);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
-      expect(task.taskType).toBe(TASK_TYPE.GOAL);
+      expect(task.typeId).toBe(TaskTypeId.GOAL);
       expect(task.fields[0].value.text).toBe('');
       expect(task.fields[1].value.enabled).toBe(false);
       expect(task.fields[2].value.id).toBe('TODO');
@@ -76,11 +76,11 @@ describe('taskApi', () => {
 
     it('should get empty meeting task', async () => {
       const ownerId = '1234567890';
-      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.MEETING);
+      const task = await taskApi.getEmptyTask(ownerId, TaskTypeId.MEETING);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
-      expect(task.taskType).toBe(TASK_TYPE.MEETING);
+      expect(task.typeId).toBe(TaskTypeId.MEETING);
       expect(task.fields[0].value.text).toBe('');
       expect(task.fields[1].value.enabled).toBe(false);
       expect(task.fields[2].value.id).toBe('TODO');
@@ -95,11 +95,11 @@ describe('taskApi', () => {
 
     it('should get empty routine task', async () => {
       const ownerId = '1234567890';
-      const task = await taskApi.getEmptyTask(ownerId, TASK_TYPE.ROUTINE);
+      const task = await taskApi.getEmptyTask(ownerId, TaskTypeId.ROUTINE);
 
       expect(task).toBeDefined();
       expect(task.ownerId).toBe(ownerId);
-      expect(task.taskType).toBe(TASK_TYPE.ROUTINE);
+      expect(task.typeId).toBe(TaskTypeId.ROUTINE);
       expect(task.fields[0].value.text).toBe('');
       expect(task.fields[1].value.enabled).toBe(false);
       expect(task.fields[2].value.id).toBe('TODO');

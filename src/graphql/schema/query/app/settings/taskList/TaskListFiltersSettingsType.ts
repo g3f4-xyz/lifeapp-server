@@ -7,8 +7,7 @@ import {
 import { TaskTypeEnum } from '../../../../../enums/TaskTypeEnum';
 
 export const TaskListFiltersSettingsType = new GraphQLObjectType({
-  name: 'TaskListFiltersSettingsType',
-  description: 'notifications type',
+  name: 'TaskListFiltersSettings',
   fields: () => ({
     title: {
       type: new GraphQLNonNull(GraphQLString),

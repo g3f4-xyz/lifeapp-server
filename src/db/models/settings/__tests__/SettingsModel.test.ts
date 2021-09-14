@@ -1,4 +1,4 @@
-import { TASK_TYPE } from '../../../../constants';
+import { TaskTypeId } from '../../../../constants';
 import setupMongo from '../../../../utils/tests/setupMongo';
 import { SettingsModel } from '../SettingsModel';
 
@@ -32,7 +32,7 @@ describe('SettingsModel', () => {
     expect(doc.taskList).toEqual({
       filters: {
         title: '',
-        taskType: Object.values(TASK_TYPE),
+        taskType: Object.values(TaskTypeId),
         status: null,
       },
     });

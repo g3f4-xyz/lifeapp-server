@@ -1,9 +1,9 @@
 import { GraphQLEnumType } from 'graphql';
-import { TASK_TYPE } from '../../constants';
+import { TaskTypeId } from '../../constants';
 
 export const TaskTypeEnum = new GraphQLEnumType({
-  name: 'TaskTypeEnum',
-  values: Object.keys(TASK_TYPE).reduce(
+  name: 'TaskTypeId',
+  values: Object.keys(TaskTypeId).reduce(
     (acc, value) => ({ ...acc, [value]: { value } }),
     {},
   ),

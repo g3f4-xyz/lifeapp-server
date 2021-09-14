@@ -1,4 +1,4 @@
-import { TASK_STATUS, TASK_TYPE } from '../constants';
+import { TASK_STATUS, TaskTypeId } from '../constants';
 import { SettingsApi } from '../db/api/settings/settingsApi';
 import {
   Settings,
@@ -70,8 +70,8 @@ export default class SettingsService {
 
   async updateTaskListTaskTypeFilter(
     ownerId: string,
-    taskType: TASK_TYPE[],
-  ): Promise<TASK_TYPE[]> {
+    taskType: TaskTypeId[],
+  ): Promise<TaskTypeId[]> {
     const updatedSettings = await this.settingsApi.saveTaskListTaskTypeFilter(
       ownerId,
       taskType,

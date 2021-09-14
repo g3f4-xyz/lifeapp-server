@@ -1,5 +1,5 @@
 import { ObjectId } from 'bson';
-import { TASK_TYPE } from '../../constants';
+import { TaskTypeId } from '../../constants';
 import settingsApi from '../../db/api/settings/settingsApi';
 import { Settings } from '../../db/interfaces';
 import AppError from '../../utils/AppError';
@@ -60,7 +60,7 @@ describe('SettingsService', () => {
         taskList: {
           filters: {
             title: '',
-            taskType: Object.values(TASK_TYPE),
+            taskType: Object.values(TaskTypeId),
             status: null,
           },
         },
@@ -128,7 +128,7 @@ describe('SettingsService', () => {
         taskList: {
           filters: {
             title: '',
-            taskType: Object.values(TASK_TYPE),
+            taskType: Object.values(TaskTypeId),
             status: null,
           },
         },
@@ -182,7 +182,7 @@ describe('SettingsService', () => {
           taskList: {
             filters: {
               title: '',
-              taskType: Object.values(TASK_TYPE),
+              taskType: Object.values(TaskTypeId),
               status: null,
             },
           },
@@ -244,7 +244,7 @@ describe('SettingsService', () => {
         taskList: {
           filters: {
             title: '',
-            taskType: Object.values(TASK_TYPE),
+            taskType: Object.values(TaskTypeId),
             status: null,
           },
         },

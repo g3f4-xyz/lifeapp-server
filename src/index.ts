@@ -11,6 +11,8 @@ import connectDB from './db/connect';
 import UserService from './services/UserService';
 import initWebPush from './webPush/initWebPush';
 
+console.log(['process.env.CLIENT_ORIGIN'], process.env.CLIENT_ORIGIN);
+
 (async () => {
   const userService = new UserService(taskApi, settingsApi, userApi);
 

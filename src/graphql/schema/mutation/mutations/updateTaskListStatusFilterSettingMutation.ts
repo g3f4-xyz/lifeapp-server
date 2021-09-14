@@ -4,7 +4,7 @@ import { TaskStatusEnum } from '../../../enums/TaskStatusEnum';
 
 export const updateTaskListStatusFilterSettingMutation = mutationWithClientMutationId(
   {
-    name: 'updateTaskListStatusFilterSettingMutation',
+    name: 'UpdateTaskListStatusFilterSetting',
     inputFields: {
       status: {
         type: TaskStatusEnum,

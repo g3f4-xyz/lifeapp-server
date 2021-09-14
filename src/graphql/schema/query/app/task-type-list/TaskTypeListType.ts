@@ -1,24 +1,11 @@
-import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import {
-  connectionArgs,
-  connectionFromArray,
-  globalIdField,
-} from 'graphql-relay';
-import { Context, TaskType } from '../../../../../db/interfaces';
-import { TaskTypeTypeConnection } from '../../../../connections';
-import { nodeInterface } from '../../../../nodeDefinitions';
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { TaskTypeType } from './TaskTypeType';
 
-export const TaskTypeListType = new GraphQLObjectType<TaskType[], Context>({
-  name: 'TaskTypeListType',
-  description: 'task type list type',
+export const TaskTypeListType = new GraphQLObjectType({
+  name: 'TaskTypes',
   fields: () => ({
-    id: globalIdField('TaskTypeList'),
     list: {
-      type: new GraphQLNonNull(TaskTypeTypeConnection),
-      description: 'task type list type',
-      args: connectionArgs,
-      resolve: connectionFromArray,
+      type: new GraphQLNonNull(new GraphQLList(TaskTypeType)),
     },
   }),
-  interfaces: [nodeInterface],
 });

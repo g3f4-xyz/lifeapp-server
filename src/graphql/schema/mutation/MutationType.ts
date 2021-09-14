@@ -12,7 +12,7 @@ import { updateTaskListTitleFilterSettingMutation } from './mutations/updateTask
 import { testSubscriptionMutation } from './mutations/testSubscriptionMutation';
 
 export const MutationType = new GraphQLObjectType({
-  name: 'MutationType',
+  name: 'Mutation',
   fields: () => ({
     cleanApplication: cleanApplicationMutation,
     deleteSubscription: deleteSubscriptionMutation,

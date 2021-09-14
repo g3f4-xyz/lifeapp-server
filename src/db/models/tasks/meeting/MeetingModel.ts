@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { TASK_TYPE } from '../../../../constants';
+import { TaskTypeId } from '../../../../constants';
 import { TaskDocument, TaskModel } from '../TaskModel';
 
 const MeetingSchema: Schema<TaskDocument> = new Schema({});
@@ -9,6 +9,6 @@ MeetingSchema.methods.validateFields = function() {
 };
 
 export const MeetingModel = TaskModel.discriminator<TaskDocument>(
-  TASK_TYPE.MEETING,
+  TaskTypeId.MEETING,
   MeetingSchema,
 );

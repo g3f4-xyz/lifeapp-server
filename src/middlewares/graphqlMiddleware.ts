@@ -2,7 +2,6 @@ import * as graphqlHTTP from 'express-graphql';
 import { Middleware } from 'express-graphql';
 import { DEMO_USER } from '../config';
 import settingsApi from '../db/api/settings/settingsApi';
-import taskTypeApi from '../db/api/task-type/taskTypeApi';
 import taskApi from '../db/api/task/taskApi';
 import userApi from '../db/api/user/userApi';
 import { Context } from '../db/interfaces';
@@ -27,7 +26,7 @@ export const graphqlMiddleware: Middleware = graphqlHTTP(async req => ({
       DEMO_USER),
     userService: new UserService(taskApi, settingsApi, userApi),
     taskService: new TaskService(taskApi, settingsApi),
-    taskTypeService: new TaskTypeService(taskTypeApi),
+    taskTypeService: new TaskTypeService(),
     settingsService: new SettingsService(settingsApi),
     notificationsService: new NotificationsService(settingsApi),
   } as Context,

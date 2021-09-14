@@ -1,5 +1,5 @@
 import { Document, model, Model, Schema } from 'mongoose';
-import { TASK_STATUS, TASK_TYPE } from '../../../constants';
+import { TASK_STATUS, TaskTypeId } from '../../../constants';
 import { Settings } from '../../interfaces';
 import { SubscriptionSchema } from '../../schemas/SubscriptionSchema';
 
@@ -54,10 +54,10 @@ export const SettingsSchema: Schema<Settings> = new Schema({
         type: [
           {
             type: String,
-            enum: Object.values(TASK_TYPE),
+            enum: Object.values(TaskTypeId),
           },
         ],
-        default: Object.values(TASK_TYPE),
+        default: Object.values(TaskTypeId),
       },
       status: {
         type: String,

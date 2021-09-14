@@ -1,8 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
 
 export const ChoiceValueType = new GraphQLObjectType({
-  name: 'ChoiceValueType',
-  description: 'choice value type',
+  name: 'ChoiceFieldValue',
   fields: () => ({
     id: {
       type: new GraphQLNonNull(GraphQLString),

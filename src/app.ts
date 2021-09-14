@@ -1,5 +1,4 @@
 import * as cors from 'cors';
-import { config } from 'dotenv';
 import * as express from 'express';
 import * as session from 'express-session';
 import { createServer } from 'http';
@@ -8,8 +7,6 @@ import { initialize as passportInitialize } from 'passport';
 import * as socketio from 'socket.io';
 import { router } from './router';
 import UserService from './services/UserService';
-
-config();
 
 export default (userService: UserService) => {
   const app = express();

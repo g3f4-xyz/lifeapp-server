@@ -5,7 +5,7 @@ import { TaskTypeEnum } from '../../../enums/TaskTypeEnum';
 
 export const updateTaskListTaskTypeFilterSettingMutation = mutationWithClientMutationId(
   {
-    name: 'updateTaskListTaskTypeFilterSettingMutation',
+    name: 'UpdateTaskListTaskTypeFilterSetting',
     inputFields: {
       taskType: {
         type: new GraphQLNonNull(

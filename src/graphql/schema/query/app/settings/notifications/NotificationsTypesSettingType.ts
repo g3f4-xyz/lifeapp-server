@@ -1,11 +1,10 @@
 import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType } from 'graphql';
-import { TASK_TYPE } from '../../../../../../constants';
+import { TaskTypeId } from '../../../../../../constants';
 
 export const NotificationsTypesSettingType = new GraphQLObjectType({
-  name: 'NotificationsTypesSettingType',
-  description: 'notifications schema setting type',
+  name: 'TypesNotificationsSettings',
   fields: () => ({
-    ...Object.keys(TASK_TYPE).reduce(
+    ...Object.keys(TaskTypeId).reduce(
       (acc, key) => ({
         ...acc,
         [`${key.toLowerCase()}s`]: {

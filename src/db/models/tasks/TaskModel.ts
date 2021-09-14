@@ -25,7 +25,7 @@ export const TaskSchema = new Schema(
       type: String,
       required: true,
     },
-    taskType: {
+    typeId: {
       type: String,
       required: true,
     },
@@ -54,10 +54,10 @@ export const TaskModel = model<TaskDocument, Model<TaskDocument>>(
 export const TaskFieldsSchema = TaskSchema.path('fields');
 
 export const isNotificationAtUpdateNeeded = (
-  taskType: TypeOfTask,
+  typeId: TypeOfTask,
   lastChangedFieldId: FieldIdType,
 ) => {
-  switch (taskType) {
+  switch (typeId) {
     case 'ROUTINE':
       return lastChangedFieldId === 'CYCLE';
     case 'MEETING':
@@ -189,11 +189,11 @@ export const calculateNextCycle = (fieldValue: FieldValue): Moment | null => {
 };
 
 export const calculateNotificationAt = (
-  taskType: TypeOfTask,
+  typeId: TypeOfTask,
   lastNotificationAt: Date,
   fieldValue: FieldValue,
 ): Date | null => {
-  switch (taskType) {
+  switch (typeId) {
     case 'TODO':
       return moment(lastNotificationAt)
         .add(1, 'day')

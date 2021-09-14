@@ -3,7 +3,7 @@ import {
   FieldIdType,
   FieldTypeType,
   TASK_STATUS,
-  TASK_TYPE,
+  TaskTypeId,
   TypeOfTask,
 } from '../constants';
 import NotificationsService from '../services/NotificationsService';
@@ -67,17 +67,14 @@ export interface Task {
   notificationAt?: Date;
   lastNotificationAt?: Date;
   lastChangedFieldId?: FieldIdType;
-  taskType: TypeOfTask;
+  typeId: TypeOfTask;
   fields: Field[];
 }
 
 export interface TaskType {
-  _id?: any;
-  id?: string;
   typeId: string;
   label: string;
   description: string;
-  order: number;
   parentTypeIds: string[];
   fieldsIds: string[];
 }
@@ -119,7 +116,7 @@ export interface TaskListSettings {
 
 export interface TaskListSettingsFilters {
   title: string;
-  taskType: TASK_TYPE[];
+  taskType: TaskTypeId[];
   status: TASK_STATUS;
 }
 

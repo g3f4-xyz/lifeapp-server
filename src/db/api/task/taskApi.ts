@@ -1,4 +1,4 @@
-import { FieldId, FieldType, TASK_TYPE } from '../../../constants';
+import { FieldId, FieldType, TaskTypeId } from '../../../constants';
 import AppError from '../../../utils/AppError';
 import { Task, TaskListSettingsFilters } from '../../interfaces';
 import { TASK_FIELDS } from '../../models/tasks/taskFields';
@@ -28,11 +28,11 @@ const taskApi = {
 
     return ownerId;
   },
-  async getEmptyTask(ownerId: string, taskType: TASK_TYPE): Promise<Task> {
+  async getEmptyTask(ownerId: string, typeId: TaskTypeId): Promise<Task> {
     const taskDocument = await TaskModel.create({
       ownerId,
-      taskType,
-      fields: TASK_FIELDS[taskType].map(getFieldDefaultValue),
+      typeId,
+      fields: TASK_FIELDS[typeId].map(getFieldDefaultValue),
     });
 
     await taskDocument.save();
@@ -55,7 +55,7 @@ const taskApi = {
     return (await TaskModel.find({
       ownerId,
       updatedAt: { $exists: true },
-      taskType: { $in: filters.taskType },
+      typeId: { $in: filters.taskType },
       $and: [
         ...[
           {

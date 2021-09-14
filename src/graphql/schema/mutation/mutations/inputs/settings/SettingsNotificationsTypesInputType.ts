@@ -3,13 +3,12 @@ import {
   GraphQLInputObjectType,
   GraphQLNonNull,
 } from 'graphql';
-import { TASK_TYPE } from '../../../../../../constants';
+import { TaskTypeId } from '../../../../../../constants';
 
 export const SettingsNotificationsTypesInputType = new GraphQLInputObjectType({
-  name: 'SettingsNotificationsTypesInputType',
-  description: 'settings notifications schema input type',
+  name: 'SettingsNotificationsTypesInput',
   fields: () => ({
-    ...Object.keys(TASK_TYPE).reduce(
+    ...Object.keys(TaskTypeId).reduce(
       (acc, key) => ({
         ...acc,
         [`${key.toLowerCase()}s`]: {

@@ -6,8 +6,7 @@ import {
 
 export const SettingsNotificationsGeneralInputType = new GraphQLInputObjectType(
   {
-    name: 'SettingsNotificationsGeneralInputType',
-    description: 'notifications general settings input type',
+    name: 'SettingsNotificationsGeneralInput',
     fields: () => ({
       show: {
         type: new GraphQLNonNull(GraphQLBoolean),

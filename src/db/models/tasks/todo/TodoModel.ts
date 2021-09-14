@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { TASK_TYPE } from '../../../../constants';
+import { TaskTypeId } from '../../../../constants';
 import { TaskDocument, TaskModel } from '../TaskModel';
 
 const TodoSchema: Schema<TaskDocument> = new Schema({});
@@ -9,6 +9,6 @@ TodoSchema.methods.validateFields = function() {
 };
 
 export const TodoModel = TaskModel.discriminator<TaskDocument>(
-  TASK_TYPE.TODO,
+  TaskTypeId.TODO,
   TodoSchema,
 );

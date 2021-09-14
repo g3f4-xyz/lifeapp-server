@@ -6,7 +6,7 @@ import { SettingsNotificationsTypesInputType } from './inputs/settings/SettingsN
 
 export const saveNotificationsTypesSettingMutation = mutationWithClientMutationId(
   {
-    name: 'saveNotificationsTypesSettingMutation',
+    name: 'SaveNotificationsTypesSetting',
     inputFields: {
       types: {
         type: SettingsNotificationsTypesInputType,

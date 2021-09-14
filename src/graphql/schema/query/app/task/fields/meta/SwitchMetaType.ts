@@ -11,23 +11,18 @@ export const SwitchMetaType: GraphQLObjectType<
   FieldMeta,
   Context
 > = new GraphQLObjectType({
-  name: 'SwitchMetaType',
-  description: 'switch meta type',
+  name: 'SwitchFieldMeta',
   fields: () => ({
     fieldType: {
-      description: 'fieldType',
       type: new GraphQLNonNull(FieldTypeEnum),
     },
     disabled: {
-      description: 'disabled',
       type: GraphQLBoolean,
     },
     required: {
-      description: 'required',
       type: new GraphQLNonNull(GraphQLBoolean),
     },
     label: {
-      description: 'label field description',
       type: new GraphQLNonNull(GraphQLString),
     },
   }),

@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { TASK_TYPE } from '../../../../constants';
+import { TaskTypeId } from '../../../../constants';
 import { TaskDocument, TaskModel } from '../TaskModel';
 
 const EventSchema: Schema<TaskDocument> = new Schema({});
@@ -9,6 +9,6 @@ EventSchema.methods.validateFields = function() {
 };
 
 export const EventModel = TaskModel.discriminator<TaskDocument>(
-  TASK_TYPE.EVENT,
+  TaskTypeId.EVENT,
   EventSchema,
 );

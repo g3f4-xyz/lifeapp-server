@@ -3,8 +3,7 @@ import { ValueInputType } from './ValueInputType';
 
 export const NestedValueInputType: GraphQLInputObjectType = new GraphQLInputObjectType(
   {
-    name: 'NestedValueInputType',
-    description: 'nested choice value input type',
+    name: 'NestedValueInput',
     fields: () => ({
       ownValue: {
         type: ValueInputType,

@@ -1,4 +1,4 @@
-import { FieldId, TASK_TYPE } from '../../../../../constants';
+import { FieldId, TaskTypeId } from '../../../../../constants';
 import setupMongo from '../../../../../utils/tests/setupMongo';
 import { ChoiceFieldModel } from '../../../fields/choice/ChoiceFieldModel';
 import { NestedFieldModel } from '../../../fields/nested/NestedFieldModel';
@@ -20,7 +20,7 @@ describe('GoalModel', () => {
     const ownerId = '1234567890';
     const doc = await TaskModel.create({
       ownerId,
-      taskType: TASK_TYPE.GOAL,
+      taskType: TaskTypeId.GOAL,
       fields: TASK_FIELDS.GOAL,
     });
 

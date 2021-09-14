@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { agent } from 'supertest';
 import app from '../app';
-import { TASK_TYPE } from '../constants';
+import { TaskTypeId } from '../constants';
 import settingsApi from '../db/api/settings/settingsApi';
 import taskApi from '../db/api/task/taskApi';
 import userApi from '../db/api/user/userApi';
@@ -61,7 +61,7 @@ describe('app', () => {
           taskList: {
             filters: {
               title: '',
-              taskType: Object.values(TASK_TYPE),
+              taskType: Object.values(TaskTypeId),
               status: null,
             },
           },
@@ -85,7 +85,7 @@ describe('app', () => {
           taskList: {
             filters: {
               title: '',
-              taskType: Object.values(TASK_TYPE),
+              taskType: Object.values(TaskTypeId),
               status: null,
             },
           },
@@ -95,7 +95,7 @@ describe('app', () => {
       await mockMongoCollection<Task>(TaskModel, [
         {
           _id: new ObjectId('5d94cb40d4b62b5aeec482c1'),
-          taskType: 'EVENT',
+          typeId: 'EVENT',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -264,7 +264,7 @@ describe('app', () => {
         },
         {
           _id: new ObjectId('5d94cb40d4b62b5aeec482c2'),
-          taskType: 'GOAL',
+          typeId: 'GOAL',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -382,7 +382,7 @@ describe('app', () => {
         },
         {
           _id: new ObjectId('5d94cb40d4b62b5aeec482c3'),
-          taskType: 'MEETING',
+          typeId: 'MEETING',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -568,7 +568,7 @@ describe('app', () => {
         },
         {
           _id: new ObjectId('5d94cb40dab62b5aeec481c4'),
-          taskType: 'ROUTINE',
+          typeId: 'ROUTINE',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [
@@ -856,7 +856,7 @@ describe('app', () => {
         },
         {
           _id: new ObjectId('5d94cb40d4b62b5aeec482c5'),
-          taskType: 'TODO',
+          typeId: 'TODO',
           ownerId: firstUser.id,
           updatedAt: new Date(Date.now()),
           fields: [

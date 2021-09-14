@@ -8,23 +8,18 @@ export const NestedMetaType: GraphQLObjectType<
   FieldMeta,
   Context
 > = new GraphQLObjectType({
-  name: 'NestedMetaType',
-  description: 'nested meta type',
+  name: 'NestedFieldMeta',
   fields: () => ({
     fieldType: {
-      description: 'fieldType description',
       type: new GraphQLNonNull(FieldTypeEnum),
     },
     parentValue: {
-      description: 'parentValue description',
       type: ValuesUnion,
     },
     ownMeta: {
-      description: 'ownMeta description',
       type: MetasUnion,
     },
     childrenMeta: {
-      description: 'childrenMeta description',
       type: new GraphQLList(NestedMetaType),
     },
   }),

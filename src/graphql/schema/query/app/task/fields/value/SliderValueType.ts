@@ -1,8 +1,7 @@
 import { GraphQLFloat, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 
 export const SliderValueType = new GraphQLObjectType({
-  name: 'SliderValueType',
-  description: 'slider value type',
+  name: 'SliderFieldValue',
   fields: () => ({
     progress: {
       type: new GraphQLNonNull(GraphQLFloat),
