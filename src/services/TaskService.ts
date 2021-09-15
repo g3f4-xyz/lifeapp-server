@@ -1,17 +1,17 @@
 import produce from 'immer';
 import { FieldId, TaskTypeId } from '../constants';
-import { SettingsApi } from '../db/api/settings/settingsApi';
 import { TaskApi } from '../db/api/task/taskApi';
 import { Field, FieldValue, Task } from '../db/interfaces';
 import {
   calculateNotificationAt,
   isNotificationAtUpdateNeeded,
 } from '../db/models/tasks/TaskModel';
+import SettingsService from './SettingsService';
 
 export default class TaskService {
   constructor(
     private readonly taskApi: TaskApi,
-    private readonly settingsApi: SettingsApi,
+    private readonly settingsService: SettingsService,
   ) {}
 
   async deleteTask(taskId: string) {
@@ -27,9 +27,10 @@ export default class TaskService {
   }
 
   async getTaskList(ownerId: string): Promise<Task[]> {
+    const settings = await this.settingsService.getSettings(ownerId);
     const {
       taskList: { filters },
-    } = await this.settingsApi.getSettings(ownerId);
+    } = settings;
 
     return await this.taskApi.getTaskList(ownerId, filters);
   }

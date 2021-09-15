@@ -6,9 +6,6 @@ export const DB_HOST =
     : 'mongodb://localhost/lifeapp';
 
 export const ROUTES = {
-  AUTH: '/auth',
-  DEMO: '/demo',
-  LOGOUT: '/logout',
   GRAPHQL: '/graphql',
   NOTIFICATIONS: '/notifications',
   ROOT: '/',

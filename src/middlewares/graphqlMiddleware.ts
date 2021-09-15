@@ -12,15 +12,17 @@ import { userFromAuth0Request, AuthORequest } from './checkJwt';
 
 export const graphqlMiddleware: Middleware = graphqlHTTP(
   (req: AuthORequest) => {
+    const settingsService = new SettingsService(settingsApi);
+
     return {
       schema: Schema,
       pretty: true,
       graphiql: true,
       context: {
         user: userFromAuth0Request(req),
-        taskService: new TaskService(taskApi, settingsApi),
+        taskService: new TaskService(taskApi, settingsService),
         taskTypeService: new TaskTypeService(),
-        settingsService: new SettingsService(settingsApi),
+        settingsService,
         notificationsService: new NotificationsService(settingsApi),
       } as Context,
     };
