@@ -1,6 +1,7 @@
 import { Model, Schema } from 'mongoose';
 import { FieldType } from '../../../../constants';
 import { requiredValidator } from '../../../utils/fieldValidators';
+import parseId from '../../parseId';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
 
@@ -42,9 +43,7 @@ const ChoiceFieldSchema = new Schema({
   },
 });
 
-ChoiceFieldSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+ChoiceFieldSchema.virtual('id').get(parseId);
 
 ChoiceFieldSchema.set('toJSON', {
   virtuals: true,

@@ -52,50 +52,35 @@ const taskApi = {
     ownerId: string,
     filters: TaskListSettingsFilters,
   ): Promise<Task[]> {
-    return (await TaskModel.find({
+    return TaskModel.find({
       ownerId,
-      updatedAt: { $exists: true },
       typeId: { $in: filters.taskType },
       $and: [
-        ...[
-          {
-            fields: {
-              $elemMatch: {
-                $and: [
-                  { fieldId: FieldId.TITLE },
-                  { fieldType: FieldType.TEXT },
-                  { value: { $exists: true } },
-                  { ['value.text']: { $exists: true } },
-                  {
-                    ['value.text']: {
-                      $regex: new RegExp(filters.title),
-                      $options: 'i',
-                    },
-                  },
-                ],
+        {
+          fields: {
+            $elemMatch: {
+              fieldId: FieldId.TITLE,
+              ['value.text']: {
+                $regex: new RegExp(filters.title),
+                $options: 'i',
               },
             },
           },
-        ],
+        },
         ...(filters.status
           ? [
               {
                 fields: {
                   $elemMatch: {
-                    $and: [
-                      { fieldId: FieldId.STATUS },
-                      { fieldType: FieldType.CHOICE },
-                      { value: { $exists: true } },
-                      { ['value.id']: { $exists: true } },
-                      { ['value.id']: filters.status },
-                    ],
+                    fieldId: FieldId.STATUS,
+                    ['value.id']: filters.status,
                   },
                 },
               },
             ]
           : []),
       ],
-    }).sort({ id: -1 })).map(doc => doc.toJSON());
+    }).sort({ id: -1 });
   },
   async saveTask(task: Task): Promise<Task> {
     const taskDocument = await TaskModel.findByIdAndUpdate(task.id, task, {

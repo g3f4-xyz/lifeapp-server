@@ -2,6 +2,7 @@ import { Model, Schema } from 'mongoose';
 import { FieldType } from '../../../../constants';
 import { progressValidator } from '../../../utils/fieldValidators';
 import iterateValidations from '../../../utils/iterateValidations';
+import parseId from '../../parseId';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
 
@@ -45,9 +46,7 @@ const SliderFieldSchema = new Schema({
   },
 });
 
-SliderFieldSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+SliderFieldSchema.virtual('id').get(parseId);
 
 SliderFieldSchema.set('toJSON', {
   virtuals: true,

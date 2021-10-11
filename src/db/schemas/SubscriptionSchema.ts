@@ -1,5 +1,6 @@
 import { Document, Schema } from 'mongoose';
 import { Subscription } from '../interfaces';
+import parseId from '../models/parseId';
 
 export const SubscriptionSchema: Schema<Subscription & Document> = new Schema({
   subscriptionData: {
@@ -29,9 +30,7 @@ export const SubscriptionSchema: Schema<Subscription & Document> = new Schema({
   userDeviceType: String,
 });
 
-SubscriptionSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+SubscriptionSchema.virtual('id').get(parseId);
 
 SubscriptionSchema.set('toJSON', {
   virtuals: true,

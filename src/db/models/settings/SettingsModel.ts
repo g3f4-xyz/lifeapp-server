@@ -2,6 +2,7 @@ import { Document, model, Model, Schema } from 'mongoose';
 import { TASK_STATUS, TaskTypeId } from '../../../constants';
 import { Settings } from '../../interfaces';
 import { SubscriptionSchema } from '../../schemas/SubscriptionSchema';
+import parseId from '../parseId';
 
 export const SettingsSchema: Schema<Settings> = new Schema({
   ownerId: { type: String, index: { unique: true }, required: true },
@@ -68,9 +69,7 @@ export const SettingsSchema: Schema<Settings> = new Schema({
   },
 });
 
-SettingsSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+SettingsSchema.virtual('id').get(parseId);
 
 SettingsSchema.set('toJSON', {
   virtuals: true,

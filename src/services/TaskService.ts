@@ -50,25 +50,25 @@ export default class TaskService {
 
       draftTask.fields[fieldIndex].value = value;
 
-      if (
-        isNotificationAtUpdateNeeded(
-          draftTask.typeId,
-          draftTask.lastChangedFieldId,
-        )
-      ) {
-        const lastChangedField = draftTask.fields.find(
-          field => field.fieldId === draftTask.lastChangedFieldId,
-        );
-
-        draftTask.notificationAt = calculateNotificationAt(
-          draftTask.typeId,
-          draftTask.lastNotificationAt,
-          lastChangedField.value,
-        );
-      }
-
-      draftTask.updatedAt = new Date(Date.now());
-      draftTask.lastChangedFieldId = fieldId;
+      // if (
+      //   isNotificationAtUpdateNeeded(
+      //     draftTask.typeId,
+      //     draftTask.lastChangedFieldId,
+      //   )
+      // ) {
+      //   const lastChangedField = draftTask.fields.find(
+      //     field => field.fieldId === draftTask.lastChangedFieldId,
+      //   );
+      //
+      //   draftTask.notificationAt = calculateNotificationAt(
+      //     draftTask.typeId,
+      //     draftTask.lastNotificationAt,
+      //     lastChangedField.value,
+      //   );
+      // }
+      //
+      // draftTask.updatedAt = new Date(Date.now());
+      // draftTask.lastChangedFieldId = fieldId;
     });
 
     const updatedTask = await this.taskApi.saveTask(updatedTaskData);

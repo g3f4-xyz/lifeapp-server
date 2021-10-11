@@ -17,10 +17,6 @@ export const FIELD_DEFINITION = {
   },
   meta: Object,
   value: Object,
-  validationErrors: {
-    type: [String],
-    default: [] as string[],
-  },
 };
 
 export const FieldSchema: Schema<Field> = new Schema(FIELD_DEFINITION, {

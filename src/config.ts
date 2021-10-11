@@ -1,4 +1,4 @@
-export const PORT = process.env.PORT || '30000';
+export const PORT = process.env.PORT || '9000';
 
 export const DB_HOST =
   process.env.DB === 'remote'

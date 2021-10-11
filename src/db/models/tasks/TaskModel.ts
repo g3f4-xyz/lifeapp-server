@@ -13,6 +13,7 @@ import {
 
 import { FieldValue, Task } from '../../interfaces';
 import { FieldSchema } from '../../schemas/FieldSchema';
+import parseId from '../parseId';
 import { registerFieldsDiscriminators } from '../registerFieldsDiscriminators';
 
 export interface TaskDocument extends Omit<Task, 'id' | '_id'>, Document {
@@ -38,9 +39,7 @@ export const TaskSchema = new Schema(
   { discriminatorKey: 'taskType' },
 );
 
-TaskSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+TaskSchema.virtual('id').get(parseId);
 
 TaskSchema.set('toJSON', {
   virtuals: true,

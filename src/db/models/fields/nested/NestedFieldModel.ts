@@ -1,5 +1,6 @@
 import { Model, Schema } from 'mongoose';
 import { FieldType } from '../../../../constants';
+import parseId from '../../parseId';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
 
@@ -33,9 +34,7 @@ const NestedFieldSchema = new Schema({
   },
 });
 
-NestedFieldSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+NestedFieldSchema.virtual('id').get(parseId);
 
 NestedFieldSchema.set('toJSON', {
   virtuals: true,

@@ -1,6 +1,7 @@
 import { Document, model, Model, Schema } from 'mongoose';
 
 import { TaskType } from '../interfaces';
+import parseId from './parseId';
 
 export const TaskTypeSchema: Schema<TaskType> = new Schema({
   typeId: String,
@@ -11,9 +12,7 @@ export const TaskTypeSchema: Schema<TaskType> = new Schema({
   fieldsIds: [String],
 });
 
-TaskTypeSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+TaskTypeSchema.virtual('id').get(parseId);
 
 TaskTypeSchema.set('toJSON', {
   virtuals: true,

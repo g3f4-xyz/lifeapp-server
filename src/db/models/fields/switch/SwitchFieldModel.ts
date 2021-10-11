@@ -1,5 +1,6 @@
 import { Model, Schema } from 'mongoose';
 import { FieldType } from '../../../../constants';
+import parseId from '../../parseId';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
 
@@ -31,9 +32,7 @@ const SwitchFieldSchema = new Schema({
   },
 });
 
-SwitchFieldSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+SwitchFieldSchema.virtual('id').get(parseId);
 
 SwitchFieldSchema.set('toJSON', {
   virtuals: true,

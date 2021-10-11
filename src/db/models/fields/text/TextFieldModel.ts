@@ -6,6 +6,7 @@ import {
   requiredValidator,
 } from '../../../utils/fieldValidators';
 import iterateValidations from '../../../utils/iterateValidations';
+import parseId from '../../parseId';
 import { TaskDocument, TaskFieldsSchema } from '../../tasks/TaskModel';
 import { FieldDocument } from '../FieldConfigModel';
 
@@ -40,9 +41,7 @@ const TextFieldSchema = new Schema<Field>({
   },
 });
 
-TextFieldSchema.virtual('id').get(function() {
-  return this._id.toHexString();
-});
+TextFieldSchema.virtual('id').get(parseId);
 
 TextFieldSchema.set('toJSON', {
   virtuals: true,
