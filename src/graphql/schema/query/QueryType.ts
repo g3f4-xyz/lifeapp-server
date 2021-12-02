@@ -32,16 +32,12 @@ export const QueryType = new GraphQLObjectType<undefined, Context>({
           type: TaskTypeEnum,
         },
       },
-      resolve: async (
-        _,
-        { id, typeId },
-        { user: { id: ownerId }, taskService },
-      ): Promise<Task> => {
+      resolve: async (_, { id, typeId }, { taskService }): Promise<Task> => {
         if (id && id.length > 0) {
           return await taskService.getTask(fromGlobalId(id).id);
         }
 
-        return await taskService.getEmptyTask(ownerId, typeId);
+        return await taskService.getEmptyTask(typeId);
       },
     },
     tasks: {

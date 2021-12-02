@@ -1,11 +1,6 @@
-import produce from 'immer';
 import { FieldId, TaskTypeId } from '../constants';
-import { TaskApi } from '../db/api/task/taskApi';
-import { Field, FieldValue, Task } from '../db/interfaces';
-import {
-  calculateNotificationAt,
-  isNotificationAtUpdateNeeded,
-} from '../db/models/tasks/TaskModel';
+import TaskApi from '../db/api/task/TaskApi';
+import { Field, FieldUpdate, FieldValue, Task } from '../db/interfaces';
 import SettingsService from './SettingsService';
 
 export default class TaskService {
@@ -18,8 +13,8 @@ export default class TaskService {
     return await this.taskApi.deleteTask(taskId);
   }
 
-  async getEmptyTask(ownerId: string, typeId: TaskTypeId): Promise<Task> {
-    return await this.taskApi.getEmptyTask(ownerId, typeId);
+  async getEmptyTask(typeId: TaskTypeId): Promise<Task> {
+    return await this.taskApi.addTask(typeId);
   }
 
   async getTask(taskId: string): Promise<Task> {
@@ -32,47 +27,14 @@ export default class TaskService {
       taskList: { filters },
     } = settings;
 
-    return await this.taskApi.getTaskList(ownerId, filters);
+    return await this.taskApi.getTaskList(filters);
   }
 
   async updateTaskField(
     taskId: string,
     fieldId: FieldId,
     value: FieldValue,
-  ): Promise<Field> {
-    const task = await this.taskApi.getTask(taskId);
-
-    const updatedTaskData = produce(task, draftTask => {
-      const fieldIndex = draftTask.fields.findIndex(
-        field => field.fieldId === fieldId,
-      );
-      // const validationErrors = draftTask.fields[fieldIndex].validateField();
-
-      draftTask.fields[fieldIndex].value = value;
-
-      // if (
-      //   isNotificationAtUpdateNeeded(
-      //     draftTask.typeId,
-      //     draftTask.lastChangedFieldId,
-      //   )
-      // ) {
-      //   const lastChangedField = draftTask.fields.find(
-      //     field => field.fieldId === draftTask.lastChangedFieldId,
-      //   );
-      //
-      //   draftTask.notificationAt = calculateNotificationAt(
-      //     draftTask.typeId,
-      //     draftTask.lastNotificationAt,
-      //     lastChangedField.value,
-      //   );
-      // }
-      //
-      // draftTask.updatedAt = new Date(Date.now());
-      // draftTask.lastChangedFieldId = fieldId;
-    });
-
-    const updatedTask = await this.taskApi.saveTask(updatedTaskData);
-
-    return updatedTask.fields.find(field => field.fieldId === fieldId);
+  ): Promise<FieldUpdate> {
+    return await this.taskApi.updateTaskField(taskId, fieldId, value);
   }
 }

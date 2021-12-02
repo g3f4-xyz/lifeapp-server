@@ -58,6 +58,12 @@ export interface Field {
   validateField?(): string[];
 }
 
+export interface FieldUpdate {
+  taskId: string;
+  fieldId: FieldIdType;
+  value: Partial<FieldValue>;
+}
+
 export interface Task {
   _id?: any;
   id?: string;

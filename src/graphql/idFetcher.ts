@@ -1,6 +1,8 @@
 import { fromGlobalId } from 'graphql-relay';
 import settingsApi from '../db/api/settings/settingsApi';
-import taskApi from '../db/api/task/taskApi';
+import TaskApi from '../db/api/task/taskApi';
+
+const taskApi = new TaskApi({ token: '' });
 
 const GETTERS = {
   TaskType: taskApi.getTask,

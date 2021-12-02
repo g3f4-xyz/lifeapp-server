@@ -17,7 +17,8 @@
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-var-requires": "warn",
-    "@typescript-eslint/ban-ts-ignore": "warn"
+    "@typescript-eslint/ban-ts-ignore": "warn",
+    "@typescript-eslint/no-use-before-define": ["error", { "functions": false, "classes": true, "variables": true }]
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "parser": "@typescript-eslint/parser"

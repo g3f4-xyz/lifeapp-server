@@ -14,6 +14,14 @@ export const TaskType = new GraphQLObjectType<Task>({
     },
     fields: {
       type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(FieldType))),
+      resolve(task) {
+        const { fields } = task;
+
+        return fields.map(field => ({
+          ...field,
+          id: `${task.id}${field.fieldId}`,
+        }));
+      },
     },
   }),
   interfaces: [nodeInterface],

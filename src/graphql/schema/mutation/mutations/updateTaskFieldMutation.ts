@@ -57,11 +57,12 @@ export const updateTaskFieldMutation = mutationWithClientMutationId({
     { taskService }: Context,
   ) => {
     const { id: taskIdRaw } = fromGlobalId(taskId);
-    const {
-      value: updatedValue,
-      validationErrors,
-    } = await taskService.updateTaskField(taskIdRaw, fieldId, value);
+    const { value: updatedValue } = await taskService.updateTaskField(
+      taskIdRaw,
+      fieldId,
+      value,
+    );
 
-    return { fieldId, updatedValue, validationErrors, taskId };
+    return { fieldId, updatedValue, taskId };
   },
 });
