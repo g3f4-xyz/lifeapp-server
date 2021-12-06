@@ -20,6 +20,7 @@ export default class TaskApi {
 
     return data;
   }
+
   async addTask(typeId: TaskTypeId): Promise<Task> {
     const { data } = await axios.put<Task>(
       `${this.host}/task/${typeId}`,
@@ -31,6 +32,7 @@ export default class TaskApi {
 
     return data;
   }
+
   async getTask(taskId: string): Promise<Task> {
     const { data } = await axios.get<Task>(`${this.host}/task/${taskId}`, {
       headers: { Authorization: this.authContext.token },
@@ -38,6 +40,7 @@ export default class TaskApi {
 
     return data;
   }
+
   async updateTaskField(
     taskId: string,
     fieldId: FieldId,
@@ -53,6 +56,7 @@ export default class TaskApi {
 
     return data;
   }
+
   async getTaskList(filters: TaskListSettingsFilters): Promise<Task[]> {
     const { data } = await axios.get<{ items: Task[] }>(
       `${this.host}/tasks?${buildFiltersQueryParams(filters)}`,

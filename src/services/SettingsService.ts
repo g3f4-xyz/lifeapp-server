@@ -16,20 +16,19 @@ export default class SettingsService {
   }
 
   async updateTaskListTitleFilter(title: string): Promise<string> {
-    return await this.settingsApi.saveTaskListTitleFilter(title);
+    return (await this.settingsApi.saveTaskListTitleFilter(title)).value;
   }
 
   async updateTaskListTaskTypeFilter(
     taskType: TaskTypeId[],
   ): Promise<TaskTypeId[]> {
-    return await this.settingsApi.saveTaskListTaskTypeFilter(taskType);
+    return (await this.settingsApi.saveTaskListTaskTypeFilter(taskType)).value;
   }
 
   async updateTaskListStatusFilter(
     taskStatus: TaskStatus[],
   ): Promise<TaskStatus[]> {
-    const val = await this.settingsApi.saveTaskListStatusFilter(taskStatus);
-    return await this.settingsApi.saveTaskListStatusFilter(taskStatus);
+    return (await this.settingsApi.saveTaskListStatusFilter(taskStatus)).value;
   }
 
   async updateNotificationsGeneral(

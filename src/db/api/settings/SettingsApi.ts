@@ -19,44 +19,48 @@ export default class SettingsApi {
   async getSettings(): Promise<Settings> {
     return this.webClient.get('/settings');
   }
+
   async saveNotificationsGeneral(
     general: SettingsNotificationsGeneral,
   ): Promise<SettingsNotificationsGeneral> {
     return this.webClient.post('/settings/notifications/general', general);
   }
+
   async saveNotificationsTypes(
     types: SettingsNotificationsTypes,
   ): Promise<SettingsNotificationsTypes> {
     return this.webClient.post('/settings/notifications/types', types);
   }
+
   async saveTaskListStatusFilter(
     taskStatus: TaskStatus[],
-  ): Promise<TaskStatus[]> {
-    return await this.webClient.post(
-      `/settings/taskList/filters/status?value=${taskStatus.join(',')}`,
-      null,
-    );
+  ): Promise<{ value: TaskStatus[] }> {
+    return await this.webClient.post('/settings/taskList/filters/status', {
+      value: taskStatus,
+    });
   }
-  async saveTaskListTitleFilter(title: string): Promise<string> {
-    return this.webClient.post(
-      `/settings/taskList/filters/title?value=${title}`,
-      null,
-    );
+
+  async saveTaskListTitleFilter(title: string): Promise<{ value: string }> {
+    return this.webClient.post('/settings/taskList/filters/title', {
+      value: title,
+    });
   }
+
   async saveTaskListTaskTypeFilter(
-    taskTypeFilter: TaskTypeId[],
-  ): Promise<TaskTypeId[]> {
-    return this.webClient.post(
-      `/settings/taskList/filters/taskType?value=${taskTypeFilter.join(',')}`,
-      null,
-    );
+    taskType: TaskTypeId[],
+  ): Promise<{ value: TaskTypeId[] }> {
+    return this.webClient.post('/settings/taskList/filters/taskType', {
+      value: taskType,
+    });
   }
+
   async addSubscription(subscription: Subscription): Promise<Subscription> {
     return this.webClient.put(
       '/settings/notifications/subscriptions',
       subscription,
     );
   }
+
   async deleteSubscription(subscriptionId: string): Promise<string> {
     return this.webClient.delete(
       `/settings/notifications/subscriptions/${subscriptionId}`,
