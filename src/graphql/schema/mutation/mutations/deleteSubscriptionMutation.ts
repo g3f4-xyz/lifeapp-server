@@ -3,7 +3,7 @@ import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
 import { Context } from '../../../../db/interfaces';
 
 export const deleteSubscriptionMutation = mutationWithClientMutationId({
-  name: 'deleteSubscriptionMutation',
+  name: 'DeleteSubscription',
   inputFields: {
     subscriptionId: {
       type: new GraphQLNonNull(GraphQLID),
@@ -16,13 +16,12 @@ export const deleteSubscriptionMutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async (
     { subscriptionId },
-    { user, settingsService }: Context,
+    { settingsService }: Context,
   ) => {
     try {
-      const { id: ownerId } = user;
       const { id } = await fromGlobalId(subscriptionId);
 
-      await settingsService.deleteSubscription(ownerId, id);
+      await settingsService.deleteSubscription(id);
 
       return { subscriptionId };
     } catch (error) {

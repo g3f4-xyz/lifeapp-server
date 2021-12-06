@@ -56,7 +56,7 @@ export enum TaskTypeId {
 
 export type TypeOfTask = 'GOAL' | 'TODO' | 'MEETING' | 'EVENT' | 'ROUTINE';
 
-export enum TASK_STATUS {
+export enum TaskStatus {
   TODO = 'TODO',
   DONE = 'DONE',
   IN_PROGRESS = 'IN_PROGRESS',

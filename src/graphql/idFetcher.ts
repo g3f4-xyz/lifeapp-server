@@ -1,8 +1,10 @@
 import { fromGlobalId } from 'graphql-relay';
-import settingsApi from '../db/api/settings/settingsApi';
+import SettingsApi from '../db/api/settings/settingsApi';
 import TaskApi from '../db/api/task/taskApi';
 
+// TODO co z tokenem? idFetcher dostaje context graphql
 const taskApi = new TaskApi({ token: '' });
+const settingsApi = new SettingsApi({ token: '' });
 
 const GETTERS = {
   TaskType: taskApi.getTask,

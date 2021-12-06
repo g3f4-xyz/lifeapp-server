@@ -17,15 +17,9 @@ export const saveNotificationsTypesSettingMutation = mutationWithClientMutationI
         type: new GraphQLNonNull(NotificationsTypesSettingType),
       },
     },
-    mutateAndGetPayload: async (
-      { types },
-      { user, settingsService }: Context,
-    ) => {
+    mutateAndGetPayload: async ({ types }, { settingsService }: Context) => {
       try {
-        const { id: ownerId } = user;
-
         const savedTypes = await settingsService.updateNotificationsTypes(
-          ownerId,
           types,
         );
 

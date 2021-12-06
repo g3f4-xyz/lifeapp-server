@@ -2,7 +2,7 @@ import { PushSubscription } from 'web-push';
 import {
   FieldIdType,
   FieldTypeType,
-  TASK_STATUS,
+  TaskStatus,
   TaskTypeId,
   TypeOfTask,
 } from '../constants';
@@ -122,7 +122,7 @@ export interface TaskListSettings {
 export interface TaskListSettingsFilters {
   title: string;
   taskType: TaskTypeId[];
-  status: TASK_STATUS;
+  taskStatus: TaskStatus[];
 }
 
 export interface Settings {

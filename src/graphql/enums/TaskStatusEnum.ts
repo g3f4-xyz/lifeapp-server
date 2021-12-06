@@ -1,9 +1,9 @@
 import { GraphQLEnumType } from 'graphql';
-import { TASK_STATUS } from '../../constants';
+import { TaskStatus } from '../../constants';
 
 export const TaskStatusEnum = new GraphQLEnumType({
-  name: 'TaskStatusEnum',
-  values: Object.keys(TASK_STATUS).reduce(
+  name: 'TaskStatus',
+  values: Object.keys(TaskStatus).reduce(
     (acc, value) => ({ ...acc, [value]: { value } }),
     {},
   ),

@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { TASK_STATUS, TaskTypeId } from '../../../../constants';
+import { TaskStatus, TaskTypeId } from '../../../../constants';
 import AppError from '../../../../utils/AppError';
 import mockMongoCollection from '../../../../utils/tests/mockMongoCollection';
 import setupMongo from '../../../../utils/tests/setupMongo';
@@ -328,7 +328,7 @@ describe('settingsApi', () => {
   describe('saveTaskListStatusFilter', () => {
     it('should save task list status setting', async () => {
       const ownerId = firstUser.id;
-      const status = TASK_STATUS.DONE;
+      const status = TaskStatus.DONE;
 
       const settings = await settingsApi.getSettings(ownerId);
 
@@ -344,7 +344,7 @@ describe('settingsApi', () => {
 
     it('should handle error', async () => {
       const ownerId = '123';
-      const status = TASK_STATUS.DONE;
+      const status = TaskStatus.DONE;
 
       try {
         await settingsApi.saveTaskListStatusFilter(ownerId, status);

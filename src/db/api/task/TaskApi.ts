@@ -9,7 +9,7 @@ import {
 } from '../../interfaces';
 
 export default class TaskApi {
-  private readonly host = 'http://localhost:9001';
+  private readonly host = 'http://localhost:9001'; // TODO move to env
 
   constructor(private readonly authContext: AuthContext) {}
 
@@ -66,13 +66,7 @@ export default class TaskApi {
 }
 
 function buildFiltersQueryParams(filters: TaskListSettingsFilters) {
-  let queryParamsString = `title=${
-    filters.title
-  }&taskType=${filters.taskType.join(',')}`;
-
-  if (filters.status) {
-    queryParamsString = `${queryParamsString}&status=${filters.status}`;
-  }
-
-  return queryParamsString;
+  return `title=${filters.title}&taskType=${filters.taskType.join(
+    ',',
+  )}&taskStatus=${filters.taskStatus.join(',')}`;
 }

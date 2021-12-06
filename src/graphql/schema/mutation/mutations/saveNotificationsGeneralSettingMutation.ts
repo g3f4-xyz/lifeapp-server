@@ -17,15 +17,9 @@ export const saveNotificationsGeneralSettingMutation = mutationWithClientMutatio
         type: new GraphQLNonNull(NotificationsGeneralSettingType),
       },
     },
-    mutateAndGetPayload: async (
-      { general },
-      { user, settingsService }: Context,
-    ) => {
+    mutateAndGetPayload: async ({ general }, { settingsService }: Context) => {
       try {
-        const { id: ownerId } = user;
-
         const savedGeneral = await settingsService.updateNotificationsGeneral(
-          ownerId,
           general,
         );
 

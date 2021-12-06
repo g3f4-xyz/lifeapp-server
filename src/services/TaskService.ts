@@ -21,8 +21,8 @@ export default class TaskService {
     return await this.taskApi.getTask(taskId);
   }
 
-  async getTaskList(ownerId: string): Promise<Task[]> {
-    const settings = await this.settingsService.getSettings(ownerId);
+  async getTaskList(): Promise<Task[]> {
+    const settings = await this.settingsService.getSettings();
     const {
       taskList: { filters },
     } = settings;

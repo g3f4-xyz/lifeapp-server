@@ -1,16 +1,13 @@
 import { sendNotification } from 'web-push';
 import { HttpStatus, httpStatuses } from '../constants';
-import { SettingsApi } from '../db/api/settings/settingsApi';
+import SettingsApi from '../db/api/settings/SettingsApi';
 
 export default class NotificationsService {
   constructor(private readonly settingsApi: SettingsApi) {}
 
-  async testSubscription(
-    ownerId: string,
-    subscriptionId: string,
-  ): Promise<HttpStatus> {
+  async testSubscription(subscriptionId: string): Promise<HttpStatus> {
     try {
-      const userSettings = await this.settingsApi.getSettings(ownerId);
+      const userSettings = await this.settingsApi.getSettings();
       const {
         subscriptionData,
       } = userSettings.notifications.subscriptions.find(

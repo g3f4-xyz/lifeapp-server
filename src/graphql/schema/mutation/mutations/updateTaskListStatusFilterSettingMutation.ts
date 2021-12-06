@@ -1,3 +1,4 @@
+import { GraphQLList, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { Context } from '../../../../db/interfaces';
 import { TaskStatusEnum } from '../../../enums/TaskStatusEnum';
@@ -6,26 +7,27 @@ export const updateTaskListStatusFilterSettingMutation = mutationWithClientMutat
   {
     name: 'UpdateTaskListStatusFilterSetting',
     inputFields: {
-      status: {
-        type: TaskStatusEnum,
+      taskStatus: {
+        type: new GraphQLNonNull(
+          new GraphQLList(new GraphQLNonNull(TaskStatusEnum)),
+        ),
       },
     },
     outputFields: {
-      status: {
-        type: TaskStatusEnum,
+      taskStatus: {
+        type: new GraphQLNonNull(
+          new GraphQLList(new GraphQLNonNull(TaskStatusEnum)),
+        ),
       },
     },
     mutateAndGetPayload: async (
-      { status },
-      { user, settingsService }: Context,
+      { taskStatus },
+      { settingsService }: Context,
     ) => {
       try {
-        const { id: ownerId } = user;
-
         return {
-          status: await settingsService.updateTaskListStatusFilter(
-            ownerId,
-            status,
+          taskStatus: await settingsService.updateTaskListStatusFilter(
+            taskStatus,
           ),
         };
       } catch (error) {

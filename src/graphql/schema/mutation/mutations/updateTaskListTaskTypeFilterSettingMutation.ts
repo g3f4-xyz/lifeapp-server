@@ -20,16 +20,10 @@ export const updateTaskListTaskTypeFilterSettingMutation = mutationWithClientMut
         ),
       },
     },
-    mutateAndGetPayload: async (
-      { taskType },
-      { user, settingsService }: Context,
-    ) => {
+    mutateAndGetPayload: async ({ taskType }, { settingsService }: Context) => {
       try {
-        const { id: ownerId } = user;
-
         return {
           taskType: await settingsService.updateTaskListTaskTypeFilter(
-            ownerId,
             taskType,
           ),
         };

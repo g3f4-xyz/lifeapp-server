@@ -25,7 +25,9 @@ export const ChoiceMetaType: GraphQLObjectType<
       type: GraphQLString,
     },
     options: {
-      type: new GraphQLNonNull(new GraphQLList(ChoiceOptionsMetaType)),
+      type: new GraphQLNonNull(
+        new GraphQLList(new GraphQLNonNull(ChoiceOptionsMetaType)),
+      ),
     },
     label: {
       type: new GraphQLNonNull(GraphQLString),

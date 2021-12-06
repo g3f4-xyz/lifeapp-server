@@ -1,11 +1,13 @@
 import { ObjectId } from 'bson';
 import { TaskTypeId } from '../../constants';
-import settingsApi from '../../db/api/settings/settingsApi';
+import SettingsApi from '../../db/api/settings/SettingsApi';
 import { Settings } from '../../db/interfaces';
 import AppError from '../../utils/AppError';
 import SettingsService from '../SettingsService';
 
 describe('SettingsService', () => {
+  const settingsApi = new SettingsApi({ token: '' });
+
   it('should create new service', async () => {
     const settingsService = new SettingsService(settingsApi);
 

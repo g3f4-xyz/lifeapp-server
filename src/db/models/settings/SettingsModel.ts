@@ -1,5 +1,5 @@
 import { Document, model, Model, Schema } from 'mongoose';
-import { TASK_STATUS, TaskTypeId } from '../../../constants';
+import { TaskStatus, TaskTypeId } from '../../../constants';
 import { Settings } from '../../interfaces';
 import { SubscriptionSchema } from '../../schemas/SubscriptionSchema';
 import parseId from '../parseId';
@@ -62,7 +62,7 @@ export const SettingsSchema: Schema<Settings> = new Schema({
       },
       status: {
         type: String,
-        enum: Object.values(TASK_STATUS).concat([null]),
+        enum: Object.values(TaskStatus).concat([null]),
         default: null,
       },
     },

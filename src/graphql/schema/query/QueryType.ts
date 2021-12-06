@@ -14,16 +14,12 @@ export const QueryType = new GraphQLObjectType<undefined, Context>({
     node: nodeField,
     settings: {
       type: new GraphQLNonNull(SettingsType),
-      async resolve(
-        _,
-        __,
-        { user: { id: ownerId }, settingsService },
-      ): Promise<Settings> {
-        return await settingsService.getSettings(ownerId);
+      async resolve(_, __, { settingsService }): Promise<Settings> {
+        return await settingsService.getSettings();
       },
     },
     task: {
-      type: TaskType,
+      type: new GraphQLNonNull(TaskType),
       args: {
         id: {
           type: GraphQLID,
@@ -42,8 +38,8 @@ export const QueryType = new GraphQLObjectType<undefined, Context>({
     },
     tasks: {
       type: new GraphQLNonNull(TaskListType),
-      async resolve(_rootValue, _args, { user: { id }, taskService }) {
-        const list = (await taskService.getTaskList(id)) || [];
+      async resolve(_rootValue, _args, { taskService }) {
+        const list = (await taskService.getTaskList()) || [];
 
         return { list };
       },

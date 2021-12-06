@@ -15,18 +15,10 @@ export const updateTaskListTitleFilterSettingMutation = mutationWithClientMutati
         type: GraphQLString,
       },
     },
-    mutateAndGetPayload: async (
-      { title },
-      { user, settingsService }: Context,
-    ) => {
+    mutateAndGetPayload: async ({ title }, { settingsService }: Context) => {
       try {
-        const { id: ownerId } = user;
-
         return {
-          title: await settingsService.updateTaskListTitleFilter(
-            ownerId,
-            title,
-          ),
+          title: await settingsService.updateTaskListTitleFilter(title),
         };
       } catch (error) {
         return error;

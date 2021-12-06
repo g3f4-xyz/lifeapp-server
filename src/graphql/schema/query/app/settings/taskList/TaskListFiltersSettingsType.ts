@@ -4,6 +4,7 @@ import {
   GraphQLString,
   GraphQLList,
 } from 'graphql';
+import { TaskStatusEnum } from '../../../../../enums/TaskStatusEnum';
 import { TaskTypeEnum } from '../../../../../enums/TaskTypeEnum';
 
 export const TaskListFiltersSettingsType = new GraphQLObjectType({
@@ -17,8 +18,10 @@ export const TaskListFiltersSettingsType = new GraphQLObjectType({
         new GraphQLList(new GraphQLNonNull(TaskTypeEnum)),
       ),
     },
-    status: {
-      type: GraphQLString,
+    taskStatus: {
+      type: new GraphQLNonNull(
+        new GraphQLList(new GraphQLNonNull(TaskStatusEnum)),
+      ),
     },
   }),
 });

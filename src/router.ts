@@ -6,5 +6,5 @@ import { notificationMiddleware } from './middlewares/notificationMiddleware';
 
 export const router = Router();
 
-router.use(ROUTES.GRAPHQL, checkJwt, graphqlMiddleware);
+router.use(ROUTES.GRAPHQL, graphqlMiddleware);
 router.use(ROUTES.NOTIFICATIONS, notificationMiddleware);
