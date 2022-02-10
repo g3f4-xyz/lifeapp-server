@@ -1,6 +1,5 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
-import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import { Context } from '../../../../db/interfaces';
+import { mutationWithClientMutationId } from 'graphql-relay';
 
 export const testSubscriptionMutation = mutationWithClientMutationId({
   name: 'TestSubscription',
@@ -12,18 +11,9 @@ export const testSubscriptionMutation = mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  mutateAndGetPayload: async (
-    { subscriptionId },
-    { notificationsService }: Context,
-  ) => {
+  mutateAndGetPayload: async () => {
     try {
-      const { id: subscriptionModelId } = await fromGlobalId(subscriptionId);
-
-      const statusCode = await notificationsService.testSubscription(
-        subscriptionModelId,
-      );
-
-      return { statusCode };
+      // #TODO
     } catch (error) {
       return error;
     }

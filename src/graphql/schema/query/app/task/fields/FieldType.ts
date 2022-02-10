@@ -9,7 +9,6 @@ import { globalIdField } from 'graphql-relay';
 import { Field } from '../../../../../../db/interfaces';
 import { FieldIdEnum } from '../../../../../enums/FieldIdEnum';
 import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
-import { nodeInterface } from '../../../../../nodeDefinitions';
 import { MetasUnion } from './meta/MetasUnion';
 import { ValuesUnion } from './value/ValuesUnion';
 
@@ -41,5 +40,4 @@ export const FieldType = new GraphQLObjectType({
       type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
     },
   }),
-  interfaces: [nodeInterface],
 });

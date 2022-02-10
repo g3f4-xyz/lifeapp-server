@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import * as jwt from 'express-jwt';
 import * as jwksRsa from 'jwks-rsa';
-import { User } from '../db/interfaces';
 
 if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
   throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file';
@@ -25,14 +24,6 @@ export interface AuthORequest extends Request {
 
 interface Auth0User {
   sub: string;
-}
-
-export function userFromAuth0Request(req: AuthORequest): User {
-  const auth0User = req.user;
-
-  return {
-    id: auth0User.sub,
-  };
 }
 
 export default checkJwt;

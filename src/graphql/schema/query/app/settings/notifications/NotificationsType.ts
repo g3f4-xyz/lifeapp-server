@@ -1,10 +1,5 @@
-import { GraphQLNonNull, GraphQLObjectType, GraphQLList } from 'graphql';
-import {
-  connectionArgs,
-  connectionFromArray,
-  globalIdField,
-} from 'graphql-relay';
-import { nodeInterface } from '../../../../../nodeDefinitions';
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { globalIdField } from 'graphql-relay';
 import { NotificationsGeneralSettingType } from './NotificationsGeneralSettingType';
 import { NotificationsTypesSettingType } from './NotificationsTypesSettingType';
 import { SubscriptionType } from './SubscriptionType';
@@ -25,5 +20,4 @@ export const NotificationsType = new GraphQLObjectType({
       ),
     },
   }),
-  interfaces: [nodeInterface],
 });

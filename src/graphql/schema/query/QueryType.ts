@@ -2,7 +2,6 @@ import { GraphQLID, GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { fromGlobalId } from 'graphql-relay';
 import { Context, Settings, Task } from '../../../db/interfaces';
 import { TaskTypeEnum } from '../../enums/TaskTypeEnum';
-import { nodeField } from '../../nodeDefinitions';
 import { SettingsType } from './app/settings/SettingsType';
 import { TaskListType } from './app/task-list/TaskListType';
 import { TaskTypeListType } from './app/task-type-list/TaskTypeListType';
@@ -11,7 +10,6 @@ import { TaskType } from './app/task/TaskType';
 export const QueryType = new GraphQLObjectType<undefined, Context>({
   name: 'Query',
   fields: () => ({
-    node: nodeField,
     settings: {
       type: new GraphQLNonNull(SettingsType),
       async resolve(_, __, { settingsService }): Promise<Settings> {

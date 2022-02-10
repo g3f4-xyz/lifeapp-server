@@ -1,15 +1,13 @@
 import * as graphqlHTTP from 'express-graphql';
 import { Middleware } from 'express-graphql';
 import SettingsApi from '../db/api/settings/settingsApi';
-import settingsApi from '../db/api/settings/settingsApi';
 import TaskApi from '../db/api/task/taskApi';
 import { Context } from '../db/interfaces';
 import { Schema } from '../graphql/schema/Schema';
-import NotificationsService from '../services/NotificationsService';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
-import { userFromAuth0Request, AuthORequest } from './checkJwt';
+import { AuthORequest } from './checkJwt';
 
 export const graphqlMiddleware: Middleware = graphqlHTTP(
   (req: AuthORequest) => {
@@ -32,7 +30,6 @@ export const graphqlMiddleware: Middleware = graphqlHTTP(
         taskService,
         taskTypeService: new TaskTypeService(),
         settingsService,
-        notificationsService: new NotificationsService(settingsApi),
       } as Context,
     };
   },

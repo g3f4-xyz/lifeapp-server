@@ -1,6 +1,5 @@
 import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { nodeInterface } from '../../../../../nodeDefinitions';
 
 export const SubscriptionType = new GraphQLObjectType({
   name: 'NotificationSubscription',
@@ -16,5 +15,4 @@ export const SubscriptionType = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString),
     },
   }),
-  interfaces: [nodeInterface],
 });

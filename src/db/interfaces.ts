@@ -6,7 +6,6 @@ import {
   TaskTypeId,
   TypeOfTask,
 } from '../constants';
-import NotificationsService from '../services/NotificationsService';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
@@ -142,5 +141,4 @@ export interface Context {
   taskService: TaskService;
   taskTypeService: TaskTypeService;
   settingsService: SettingsService;
-  notificationsService: NotificationsService;
 }

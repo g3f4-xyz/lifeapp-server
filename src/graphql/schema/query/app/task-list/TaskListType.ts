@@ -5,7 +5,6 @@ import {
   globalIdField,
 } from 'graphql-relay';
 import { TaskTypeConnection } from '../../../../connections';
-import { nodeInterface } from '../../../../nodeDefinitions';
 
 export const TaskListType = new GraphQLObjectType({
   name: 'Tasks',
@@ -19,5 +18,4 @@ export const TaskListType = new GraphQLObjectType({
       },
     },
   }),
-  interfaces: [nodeInterface],
 });
