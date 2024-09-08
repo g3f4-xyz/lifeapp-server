@@ -2,8 +2,7 @@
   "env": {
     "es6": true,
     "node": true,
-    "jest": true,
-    "mongo": true
+    "jest": true
   },
   "extends": [
     "eslint:recommended",
@@ -11,9 +10,6 @@
     "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
-  "globals": {
-    "__MONGODB__": true
-  },
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-var-requires": "warn",

@@ -2,15 +2,6 @@ type KEYOF_TYPE_VALUE_MAP<T, V> = {
   [K in keyof T]: V;
 };
 
-export type HttpStatus = 201 | 408 | 410 | 404;
-
-export const httpStatuses: { [key: string]: HttpStatus } = {
-  OK: 201,
-  REQUEST_TIMEOUT: 408,
-  NOT_REGISTERED: 410,
-  NOT_FOUND: 404,
-};
-
 export enum FieldId {
   TITLE = 'TITLE',
   PRIORITY = 'PRIORITY',
@@ -44,8 +35,6 @@ export type FieldIdType =
   | 'CYCLE'
   | 'NOTIFICATIONS';
 
-export type FIELD_ID_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FieldId, V>;
-
 export enum TaskTypeId {
   GOAL = 'GOAL',
   TODO = 'TODO',
@@ -61,8 +50,6 @@ export enum TaskStatus {
   DONE = 'DONE',
   IN_PROGRESS = 'IN_PROGRESS',
 }
-
-export type TASK_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof TaskTypeId, V>;
 
 export enum FieldType {
   SLIDER = 'SLIDER',
@@ -89,34 +76,4 @@ export enum CYCLE {
   DAY = 'DAY_CYCLE',
   WEEK = 'WEEK_CYCLE',
   MONTH = 'MONTH_CYCLE',
-}
-
-export enum TIME_CYCLE {
-  HOUR = 'HOUR',
-  HOURS_3 = 'HOURS_3',
-  HOURS_12 = 'HOURS_12',
-  MINUTES = 'MINUTES',
-}
-
-export enum DAY_CYCLE {
-  MORNING = 'MORNING',
-  NOON = 'NOON',
-  EVENING = 'EVENING',
-}
-
-export enum WEEK_CYCLE {
-  WEEK_DAYS = 'WEEK_DAYS',
-  WEEKEND = 'WEEKEND',
-  FIRST_DAY = 'FIRST_DAY',
-  LAST_DAY = 'LAST_DAY',
-}
-
-export enum MONTH_CYCLE {
-  END = 'MONTH_END',
-  MIDDLE = 'MONTH_MIDDLE',
-  START = 'MONTH_START',
-}
-
-export enum MONGO_ERROR {
-  DUPLICATE_KEY = 11000,
 }
