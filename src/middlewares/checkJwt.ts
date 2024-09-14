@@ -2,8 +2,8 @@ import { Request } from 'express';
 import * as jwt from 'express-jwt';
 import * as jwksRsa from 'jwks-rsa';
 
-if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
-  throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file';
+if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_API_IDENTIFIER) {
+  throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_API_IDENTIFIER in your .env file';
 }
 
 const checkJwt = jwt({
@@ -13,7 +13,7 @@ const checkJwt = jwt({
     jwksRequestsPerMinute: 5,
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
   }),
-  audience: process.env.AUTH0_AUDIENCE,
+  audience: process.env.AUTH0_API_IDENTIFIER,
   issuer: [`https://${process.env.AUTH0_DOMAIN}/`],
   algorithms: ['RS256'],
 });
