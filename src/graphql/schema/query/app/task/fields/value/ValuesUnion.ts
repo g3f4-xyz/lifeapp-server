@@ -1,12 +1,9 @@
 import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
-import {
-  FIELD_TYPE_VALUE_MAP,
-  FIELD_VALUE_KEYS_MAP,
-} from '../../../../../../../constants';
+import { fieldValueKeyMap, FieldType } from '../../../../../../../constants';
 import { FieldValue } from '../../../../../../../db/interfaces';
 
 // TODO jak rozwiązać problem cyklicznego odwołania modułu NestedValueType
-const getTypes = (): FIELD_TYPE_VALUE_MAP<GraphQLObjectType> => {
+const getTypes = (): Record<FieldType, GraphQLObjectType> => {
   const { ChoiceValueType } = require('./ChoiceValueType');
   const { SliderValueType } = require('./SliderValueType');
   const { SwitchValueType } = require('./SwitchValueType');
@@ -28,10 +25,11 @@ export const ValuesUnion = new GraphQLUnionType({
   types: () => Object.values(getTypes()),
   resolveType(value: FieldValue) {
     const types = getTypes();
-    const valueKey = Object.keys(value);
-    const typeKey = Object.keys(types).find(fieldType =>
-      valueKey.includes(FIELD_VALUE_KEYS_MAP[fieldType]),
-    );
+    const typeKey = Object.keys(types).find(
+      fieldType =>
+        Object.keys(value).includes(fieldValueKeyMap[fieldType as FieldType]),
+      // TODO after adding proper type discrimination this casting should be removed
+    ) as FieldType;
     const type = types[typeKey];
 
     if (type) {

@@ -1,7 +1,3 @@
-type KEYOF_TYPE_VALUE_MAP<T, V> = {
-  [K in keyof T]: V;
-};
-
 export enum FieldId {
   TITLE = 'TITLE',
   PRIORITY = 'PRIORITY',
@@ -51,19 +47,17 @@ export enum TaskStatus {
   IN_PROGRESS = 'IN_PROGRESS',
 }
 
-export enum FieldType {
-  SLIDER = 'SLIDER',
-  SWITCH = 'SWITCH',
-  CHOICE = 'CHOICE',
-  TEXT = 'TEXT',
-  NESTED = 'NESTED',
-}
+export const FieldTypes: FieldType[] = [
+  'SLIDER',
+  'SWITCH',
+  'CHOICE',
+  'TEXT',
+  'NESTED',
+];
 
-export type FieldTypeType = 'SLIDER' | 'SWITCH' | 'CHOICE' | 'TEXT' | 'NESTED';
+export type FieldType = 'SLIDER' | 'SWITCH' | 'CHOICE' | 'TEXT' | 'NESTED';
 
-export type FIELD_TYPE_VALUE_MAP<V> = KEYOF_TYPE_VALUE_MAP<typeof FieldType, V>;
-
-export const FIELD_VALUE_KEYS_MAP: FIELD_TYPE_VALUE_MAP<string> = {
+export const fieldValueKeyMap: Record<FieldType, string> = {
   CHOICE: 'id',
   NESTED: 'ownValue',
   SLIDER: 'progress',

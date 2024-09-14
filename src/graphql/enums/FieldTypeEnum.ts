@@ -1,9 +1,9 @@
 import { GraphQLEnumType } from 'graphql';
-import { FieldType } from '../../constants';
+import { FieldTypes } from '../../constants';
 
 export const FieldTypeEnum = new GraphQLEnumType({
   name: 'FieldType',
-  values: Object.keys(FieldType).reduce(
+  values: FieldTypes.reduce(
     (acc, value) => ({ ...acc, [value]: { value } }),
     {},
   ),

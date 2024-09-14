@@ -1,7 +1,7 @@
 import { PushSubscription } from 'web-push';
 import {
   FieldIdType,
-  FieldTypeType,
+  FieldType,
   TaskStatus,
   TaskTypeId,
   TypeOfTask,
@@ -30,11 +30,12 @@ export interface FieldMeta {
   defaultValue?: string;
   inputType?: string;
   parentValue?: FieldValue;
-  fieldType?: string;
+  fieldType?: FieldType;
   ownMeta?: FieldMeta;
   childrenMeta?: FieldMeta[];
 }
 
+// TODO it should have type field so subtypes can be discriminated
 export interface FieldValue {
   enabled?: boolean;
   progress?: number;
@@ -48,7 +49,7 @@ export interface Field {
   _id?: any;
   id?: string;
   fieldId: FieldIdType;
-  fieldType: FieldTypeType;
+  fieldType: FieldType;
   order: number;
   meta: Partial<FieldMeta>;
   value: Partial<FieldValue>;

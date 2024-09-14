@@ -1,7 +1,7 @@
 import * as graphqlHTTP from 'express-graphql';
 import { Middleware } from 'express-graphql';
-import SettingsApi from '../db/api/settings/settingsApi';
-import TaskApi from '../db/api/task/taskApi';
+import SettingsApi from '../db/api/settings/SettingsApi';
+import TaskApi from '../db/api/task/TaskApi';
 import { Context } from '../db/interfaces';
 import { Schema } from '../graphql/schema/Schema';
 import SettingsService from '../services/SettingsService';

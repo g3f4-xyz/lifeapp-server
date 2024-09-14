@@ -1,9 +1,9 @@
 import { GraphQLObjectType, GraphQLUnionType } from 'graphql';
-import { FIELD_TYPE_VALUE_MAP } from '../../../../../../../constants';
+import { FieldType } from '../../../../../../../constants';
 import { FieldMeta } from '../../../../../../../db/interfaces';
 
 // TODO jak rozwiązać problem cyklicznego odwołania modułu NestedValueType
-const getTypes = (): FIELD_TYPE_VALUE_MAP<GraphQLObjectType> => {
+const getTypes = (): Record<FieldType, GraphQLObjectType> => {
   const { ChoiceMetaType } = require('./ChoiceMetaType');
   const { SliderMetaType } = require('./SliderMetaType');
   const { SwitchMetaType } = require('./SwitchMetaType');
