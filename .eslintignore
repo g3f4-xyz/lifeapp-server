@@ -1,4 +1,0 @@
-build/*.**
-coverage/*.**
-client-packages/*.**
-node_modules/*.**

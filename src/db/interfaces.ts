@@ -45,16 +45,13 @@ export interface FieldValue {
 }
 
 export interface Field {
-  _id?: any;
-  id?: string;
+  id: string;
   fieldId: FieldIdType;
   fieldType: FieldType;
   order: number;
   meta: Partial<FieldMeta>;
   value: Partial<FieldValue>;
   validationErrors?: string[];
-
-  validateField?(): string[];
 }
 
 export interface FieldUpdate {
@@ -111,8 +108,7 @@ export interface TaskListSettingsFilters {
 }
 
 export interface Settings {
-  _id?: any;
-  id?: string;
+  id: string;
   ownerId: string;
   notifications: Notifications;
   taskList: TaskListSettings;

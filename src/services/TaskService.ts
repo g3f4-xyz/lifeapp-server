@@ -1,6 +1,6 @@
 import { FieldId, TaskTypeId } from '../constants';
 import TaskApi from '../db/api/task/TaskApi';
-import { Field, FieldUpdate, FieldValue, Task } from '../db/interfaces';
+import { FieldUpdate, FieldValue, Task } from '../db/interfaces';
 import SettingsService from './SettingsService';
 
 export default class TaskService {

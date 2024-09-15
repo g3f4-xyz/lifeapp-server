@@ -1,5 +1,5 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
-import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
+import { mutationWithClientMutationId } from 'graphql-relay';
 
 export const deleteSubscriptionMutation = mutationWithClientMutationId({
   name: 'DeleteSubscription',
@@ -18,7 +18,7 @@ export const deleteSubscriptionMutation = mutationWithClientMutationId({
     // { settingsService }: Context,
   ) => {
     try {
-      const { id } = fromGlobalId(subscriptionId);
+      // const { id } = fromGlobalId(subscriptionId);
 
       // TODO
 
