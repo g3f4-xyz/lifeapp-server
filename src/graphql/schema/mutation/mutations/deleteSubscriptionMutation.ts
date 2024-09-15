@@ -1,6 +1,5 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
-import { Context } from '../../../../db/interfaces';
 
 export const deleteSubscriptionMutation = mutationWithClientMutationId({
   name: 'DeleteSubscription',
@@ -16,12 +15,12 @@ export const deleteSubscriptionMutation = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async (
     { subscriptionId },
-    { settingsService }: Context,
+    // { settingsService }: Context,
   ) => {
     try {
-      const { id } = await fromGlobalId(subscriptionId);
+      const { id } = fromGlobalId(subscriptionId);
 
-      await settingsService.deleteSubscription(id);
+      // TODO
 
       return { subscriptionId };
     } catch (error) {

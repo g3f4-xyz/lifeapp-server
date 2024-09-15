@@ -1,5 +1,4 @@
-import * as graphqlHTTP from 'express-graphql';
-import { Middleware } from 'express-graphql';
+import { graphqlHTTP } from 'express-graphql';
 import SettingsApi from '../db/api/settings/SettingsApi';
 import TaskApi from '../db/api/task/TaskApi';
 import { Context } from '../db/interfaces';
@@ -9,28 +8,26 @@ import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
 import { AuthORequest } from './checkJwt';
 
-export const graphqlMiddleware: Middleware = graphqlHTTP(
-  (req: AuthORequest) => {
-    const settingsApi = new SettingsApi({
+export const graphqlMiddleware = graphqlHTTP((req: AuthORequest) => {
+  const settingsApi = new SettingsApi({
+    token: req.get('Authorization'),
+  });
+  const settingsService = new SettingsService(settingsApi);
+  const taskService = new TaskService(
+    new TaskApi({
       token: req.get('Authorization'),
-    });
-    const settingsService = new SettingsService(settingsApi);
-    const taskService = new TaskService(
-      new TaskApi({
-        token: req.get('Authorization'),
-      }),
-      settingsService,
-    );
+    }),
+    settingsService,
+  );
 
-    return {
-      schema: Schema,
-      pretty: true,
-      graphiql: true,
-      context: {
-        taskService,
-        taskTypeService: new TaskTypeService(),
-        settingsService,
-      } as Context,
-    };
-  },
-);
+  return {
+    schema: Schema,
+    pretty: true,
+    graphiql: true,
+    context: {
+      taskService,
+      taskTypeService: new TaskTypeService(),
+      settingsService,
+    } as Context,
+  };
+});

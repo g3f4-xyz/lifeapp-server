@@ -1,4 +1,3 @@
-import { PushSubscription } from 'web-push';
 import {
   FieldIdType,
   FieldType,
@@ -83,18 +82,6 @@ export interface TaskType {
   fieldsIds: string[];
 }
 
-export interface SubscriptionData extends PushSubscription {
-  expirationTime: string;
-}
-
-export interface Subscription {
-  _id?: any;
-  id?: string;
-  subscriptionData: SubscriptionData;
-  userAgent: string;
-  userDeviceType: string;
-}
-
 export interface SettingsNotificationsGeneral {
   show: boolean;
   vibrate: boolean;
@@ -111,7 +98,6 @@ export interface SettingsNotificationsTypes {
 export interface Notifications {
   general: SettingsNotificationsGeneral;
   types: SettingsNotificationsTypes;
-  subscriptions: Subscription[];
 }
 
 export interface TaskListSettings {

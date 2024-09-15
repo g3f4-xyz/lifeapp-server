@@ -4,8 +4,6 @@ import {
   Settings,
   SettingsNotificationsGeneral,
   SettingsNotificationsTypes,
-  Subscription,
-  SubscriptionData,
 } from '../db/interfaces';
 
 export default class SettingsService {
@@ -41,36 +39,5 @@ export default class SettingsService {
     types: SettingsNotificationsTypes,
   ): Promise<SettingsNotificationsTypes> {
     return await this.settingsApi.saveNotificationsTypes(types);
-  }
-
-  async addSubscription(
-    subscriptionData: SubscriptionData,
-    userAgent: string,
-    userDeviceType: string,
-  ): Promise<void> {
-    const userSettings = await this.settingsApi.getSettings();
-
-    const subscriptions = userSettings.notifications.subscriptions;
-    const oldSubscription = subscriptions.find(
-      subscription =>
-        subscription.subscriptionData.endpoint === subscriptionData.endpoint,
-    );
-
-    if (oldSubscription) {
-      await this.settingsApi.deleteSubscription(oldSubscription.id);
-    }
-
-    const subscription: Subscription = {
-      id: undefined,
-      subscriptionData,
-      userAgent,
-      userDeviceType,
-    };
-
-    await this.settingsApi.addSubscription(subscription);
-  }
-
-  async deleteSubscription(subscriptionId: string): Promise<void> {
-    await this.settingsApi.deleteSubscription(subscriptionId);
   }
 }

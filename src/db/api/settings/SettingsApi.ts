@@ -5,7 +5,6 @@ import {
   Settings,
   SettingsNotificationsGeneral,
   SettingsNotificationsTypes,
-  Subscription,
 } from '../../interfaces';
 
 export default class SettingsApi {
@@ -52,18 +51,5 @@ export default class SettingsApi {
     return this.webClient.post('/settings/taskList/filters/taskType', {
       value: taskType,
     });
-  }
-
-  async addSubscription(subscription: Subscription): Promise<Subscription> {
-    return this.webClient.put(
-      '/settings/notifications/subscriptions',
-      subscription,
-    );
-  }
-
-  async deleteSubscription(subscriptionId: string): Promise<string> {
-    return this.webClient.delete(
-      `/settings/notifications/subscriptions/${subscriptionId}`,
-    );
   }
 }

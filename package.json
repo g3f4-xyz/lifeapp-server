@@ -1,9 +1,9 @@
 {
-  "name": "lifeapp",
+  "name": "lifeapp-server",
   "version": "3.0.0",
-  "source": "./src/**/*.{ts,tsx}",
-  "description": "Level up with LifeApp server repository",
-  "main": "lifeapp",
+  "source": "./src/**/*.{ts}",
+  "description": "LifeApp BFF",
+  "main": "lifeapp-server",
   "scripts": {
     "dev": "NODE_ENV=development nodemon",
     "lint": "eslint $npm_package_source",
@@ -15,8 +15,7 @@
   },
   "keywords": [
     "express",
-    "graphql",
-    "web-push"
+    "graphql"
   ],
   "author": "G3F4.XYZ",
   "license": "MIT",
@@ -29,48 +28,35 @@
   },
   "homepage": "https://github.com/g3f4-xyz/lifeapp-server#readme",
   "engines": {
-    "node": ">=15.*.*"
+    "node": ">=20.*.*"
   },
   "devDependencies": {
-    "@types/jest": "24.0.11",
-    "@typescript-eslint/eslint-plugin": "2.3.2",
-    "@typescript-eslint/parser": "2.3.2",
-    "eslint": "6.5.1",
-    "eslint-config-prettier": "6.3.0",
-    "eslint-plugin-prettier": "3.1.1",
-    "jest": "24.5.0",
-    "nodemon": "1.17.4",
-    "prettier": "1.18.2",
-    "ts-jest": "24.0.0"
+    "@types/jest": "29.5.13",
+    "@typescript-eslint/eslint-plugin": "8.5.0",
+    "@typescript-eslint/parser": "8.5.0",
+    "eslint": "9.10.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-prettier": "5.2.1",
+    "jest": "29.7.0",
+    "nodemon": "3.1.4",
+    "prettier": "3.3.3",
+    "ts-jest": "29.2.5"
   },
   "dependencies": {
-    "@types/cors": "2.8.6",
-    "@types/dotenv": "6.1.1",
-    "@types/express": "4.17.1",
-    "@types/graphql": "14.5.0",
-    "@types/graphql-relay": "0.4.11",
-    "@types/moment-timezone": "0.5.12",
-    "@types/morgan": "1.7.37",
-    "@types/node": "12.7.8",
-    "@types/useragent": "2.1.1",
-    "@types/web-push": "3.3.0",
+    "@types/cors": "^2.8.17",
+    "@types/morgan": "^1.9.9",
     "axios": "1.7.7",
-    "cookie-parser": "1.4.4",
+    "cookie-parser": "1.4.6",
     "cors": "2.8.5",
-    "date-fns": "2.4.1",
-    "date-fns-timezone": "0.1.4",
-    "dotenv": "8.1.0",
-    "express": "4.17.1",
-    "express-graphql": "0.9.0",
-    "express-jwt": "6.1.0",
+    "dotenv": "16.4.5",
+    "express": "4.21.0",
+    "express-graphql": "0.12.0",
+    "express-jwt": "8.4.1",
     "graphql": "15.9.0",
     "graphql-relay": "0.9.0",
-    "immer": "4.0.1",
-    "jwks-rsa": "2.0.4",
-    "morgan": "1.9.1",
+    "jwks-rsa": "3.1.0",
+    "morgan": "1.10.0",
     "ts-node": "10.9.2",
-    "typescript": "5.6.2",
-    "useragent": "2.3.0",
-    "web-push": "3.4.0"
+    "typescript": "5.6.2"
   }
 }
