@@ -4,7 +4,10 @@ import { globalIdField } from 'graphql-relay';
 export const SubscriptionType = new GraphQLObjectType({
   name: 'NotificationSubscription',
   fields: () => ({
-    id: globalIdField('NotificationSubscription'),
+    id: globalIdField(
+      'NotificationSubscription',
+      () => 'NotificationSubscription',
+    ),
     subscriptionData: {
       type: new GraphQLNonNull(GraphQLString),
     },

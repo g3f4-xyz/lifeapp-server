@@ -12,10 +12,10 @@ import { FieldTypeEnum } from '../../../../../enums/FieldTypeEnum';
 import { MetasUnion } from './meta/MetasUnion';
 import { ValuesUnion } from './value/ValuesUnion';
 
-export const FieldType = new GraphQLObjectType({
+export const FieldType = new GraphQLObjectType<Field>({
   name: 'Field',
   fields: () => ({
-    id: globalIdField('Field'),
+    id: globalIdField('Field', (field: Field) => field.id),
     fieldId: {
       type: new GraphQLNonNull(FieldIdEnum),
     },

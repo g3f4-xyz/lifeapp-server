@@ -65,8 +65,7 @@ export interface FieldUpdate {
 }
 
 export interface Task {
-  _id?: any;
-  id?: string;
+  id: string;
   ownerId: string;
   updatedAt?: Date | string;
   notificationAt?: Date;

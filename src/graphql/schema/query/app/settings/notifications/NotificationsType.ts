@@ -7,7 +7,7 @@ import { SubscriptionType } from './SubscriptionType';
 export const NotificationsType = new GraphQLObjectType({
   name: 'NotificationsSettings',
   fields: () => ({
-    id: globalIdField('NotificationsSettings'),
+    id: globalIdField('NotificationsSettings', () => 'NotificationsSettings'),
     types: {
       type: new GraphQLNonNull(NotificationsTypesSettingType),
     },

@@ -7,7 +7,7 @@ import { FieldType } from './fields/FieldType';
 export const TaskType = new GraphQLObjectType<Task>({
   name: 'Task',
   fields: () => ({
-    id: globalIdField('Task'),
+    id: globalIdField('Task', (task: Task) => task.id),
     typeId: {
       type: new GraphQLNonNull(TaskTypeEnum),
     },

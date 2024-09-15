@@ -9,7 +9,7 @@ import { TaskTypeConnection } from '../../../../connections';
 export const TaskListType = new GraphQLObjectType({
   name: 'Tasks',
   fields: () => ({
-    id: globalIdField('Tasks'),
+    id: globalIdField('Tasks', () => 'Tasks'),
     list: {
       type: TaskTypeConnection,
       args: connectionArgs,

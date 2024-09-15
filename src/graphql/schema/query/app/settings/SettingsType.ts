@@ -7,7 +7,7 @@ import { TaskListSettingsType } from './taskList/TaskListSettingsType';
 export const SettingsType = new GraphQLObjectType<Settings, Context>({
   name: 'Settings',
   fields: () => ({
-    id: globalIdField('Settings'),
+    id: globalIdField('Settings', () => 'Settings'),
     ownerId: {
       type: new GraphQLNonNull(GraphQLString),
     },

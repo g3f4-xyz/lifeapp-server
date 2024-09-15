@@ -16,8 +16,8 @@ export default class SettingsApi {
     this.webClient = new WebClient(this.host, authContext);
   }
 
-  async getSettings(): Promise<Settings> {
-    return this.webClient.get('/settings');
+  async getSettings() {
+    return this.webClient.get<Settings>('/settings');
   }
 
   async saveNotificationsGeneral(
