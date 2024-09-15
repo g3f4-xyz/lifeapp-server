@@ -4,13 +4,12 @@ import {
   GraphQLObjectType,
   GraphQLString,
 } from 'graphql';
-import { TaskTypeEnum } from '../../../../enums/TaskTypeEnum';
 
 export const TaskTypeType = new GraphQLObjectType({
   name: 'TaskType',
   fields: () => ({
     typeId: {
-      type: new GraphQLNonNull(TaskTypeEnum),
+      type: new GraphQLNonNull(GraphQLString),
     },
     label: {
       type: new GraphQLNonNull(GraphQLString),

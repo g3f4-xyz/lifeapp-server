@@ -3,7 +3,7 @@ import SettingsApi from '../db/api/settings/SettingsApi';
 import {
   Settings,
   SettingsNotificationsGeneral,
-  SettingsNotificationsTypes,
+  SettingsNotificationsTaskType,
 } from '../db/interfaces';
 
 export default class SettingsService {
@@ -36,8 +36,8 @@ export default class SettingsService {
   }
 
   async updateNotificationsTypes(
-    types: SettingsNotificationsTypes,
-  ): Promise<SettingsNotificationsTypes> {
+    types: SettingsNotificationsTaskType,
+  ): Promise<SettingsNotificationsTaskType> {
     return await this.settingsApi.saveNotificationsTypes(types);
   }
 }

@@ -31,15 +31,15 @@ export type FieldIdType =
   | 'CYCLE'
   | 'NOTIFICATIONS';
 
-export enum TaskTypeId {
-  GOAL = 'GOAL',
-  TODO = 'TODO',
-  MEETING = 'MEETING',
-  EVENT = 'EVENT',
-  ROUTINE = 'ROUTINE',
-}
+export type TaskTypeId = string;
 
-export type TypeOfTask = 'GOAL' | 'TODO' | 'MEETING' | 'EVENT' | 'ROUTINE';
+export const PredefinedTaskTypes: string[] = [
+  'GOAL',
+  'TODO',
+  'MEETING',
+  'EVENT',
+  'ROUTINE',
+];
 
 export enum TaskStatus {
   TODO = 'TODO',

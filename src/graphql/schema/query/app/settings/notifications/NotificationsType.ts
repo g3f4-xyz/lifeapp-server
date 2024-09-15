@@ -1,7 +1,12 @@
-import { GraphQLList, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import {
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLString,
+  GraphQLObjectType,
+  GraphQLBoolean,
+} from 'graphql';
 import { globalIdField } from 'graphql-relay';
 import { NotificationsGeneralSettingType } from './NotificationsGeneralSettingType';
-import { NotificationsTypesSettingType } from './NotificationsTypesSettingType';
 import { SubscriptionType } from './SubscriptionType';
 
 export const NotificationsType = new GraphQLObjectType({
@@ -9,7 +14,23 @@ export const NotificationsType = new GraphQLObjectType({
   fields: () => ({
     id: globalIdField('NotificationsSettings', () => 'NotificationsSettings'),
     types: {
-      type: new GraphQLNonNull(NotificationsTypesSettingType),
+      type: new GraphQLNonNull(
+        new GraphQLList(
+          new GraphQLNonNull(
+            new GraphQLObjectType({
+              name: 'NotificationsSettingsTaskTypes',
+              fields: () => ({
+                enabled: {
+                  type: new GraphQLNonNull(GraphQLBoolean),
+                },
+                taskTypeId: {
+                  type: new GraphQLNonNull(GraphQLString),
+                },
+              }),
+            }),
+          ),
+        ),
+      ),
     },
     general: {
       type: new GraphQLNonNull(NotificationsGeneralSettingType),

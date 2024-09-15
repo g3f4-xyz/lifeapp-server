@@ -1,32 +1,63 @@
-import { GraphQLNonNull } from 'graphql';
+import {
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLString,
+  GraphQLObjectType,
+  GraphQLBoolean,
+  GraphQLInputObjectType,
+} from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { Context } from '../../../../db/interfaces';
-import { NotificationsTypesSettingType } from '../../query/app/settings/notifications/NotificationsTypesSettingType';
-import { SettingsNotificationsTypesInputType } from './inputs/settings/SettingsNotificationsTypesInputType';
 
-export const saveNotificationsTypesSettingMutation = mutationWithClientMutationId(
-  {
+export const saveNotificationsTypesSettingMutation =
+  mutationWithClientMutationId({
     name: 'SaveNotificationsTypesSetting',
     inputFields: {
       types: {
-        type: SettingsNotificationsTypesInputType,
+        type: new GraphQLList(
+          new GraphQLNonNull(
+            new GraphQLInputObjectType({
+              name: 'SaveNotificationsTypesSettingTypesInput',
+              fields: () => ({
+                enabled: {
+                  type: new GraphQLNonNull(GraphQLBoolean),
+                },
+                taskTypeId: {
+                  type: new GraphQLNonNull(GraphQLString),
+                },
+              }),
+            }),
+          ),
+        ),
       },
     },
     outputFields: {
       savedTypes: {
-        type: new GraphQLNonNull(NotificationsTypesSettingType),
+        type: new GraphQLList(
+          new GraphQLNonNull(
+            new GraphQLObjectType({
+              name: 'SaveNotificationsTypesSettingTypesOutput',
+              fields: () => ({
+                enabled: {
+                  type: new GraphQLNonNull(GraphQLBoolean),
+                },
+                taskTypeId: {
+                  type: new GraphQLNonNull(GraphQLString),
+                },
+              }),
+            }),
+          ),
+        ),
       },
     },
     mutateAndGetPayload: async ({ types }, { settingsService }: Context) => {
       try {
-        const savedTypes = await settingsService.updateNotificationsTypes(
-          types,
-        );
+        const savedTypes =
+          await settingsService.updateNotificationsTypes(types);
 
         return { savedTypes };
       } catch (error) {
         return error;
       }
     },
-  },
-);
+  });

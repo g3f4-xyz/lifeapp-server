@@ -1,7 +1,11 @@
-import { GraphQLID, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import {
+  GraphQLID,
+  GraphQLNonNull,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 import { fromGlobalId } from 'graphql-relay';
 import { Context, Settings, Task } from '../../../db/interfaces';
-import { TaskTypeEnum } from '../../enums/TaskTypeEnum';
 import { SettingsType } from './app/settings/SettingsType';
 import { TaskListType } from './app/task-list/TaskListType';
 import { TaskTypeListType } from './app/task-type-list/TaskTypeListType';
@@ -23,7 +27,7 @@ export const QueryType = new GraphQLObjectType<undefined, Context>({
           type: GraphQLID,
         },
         typeId: {
-          type: TaskTypeEnum,
+          type: GraphQLString,
         },
       },
       resolve: async (_, { id, typeId }, { taskService }): Promise<Task> => {

@@ -1,10 +1,4 @@
-import {
-  FieldIdType,
-  FieldType,
-  TaskStatus,
-  TaskTypeId,
-  TypeOfTask,
-} from '../constants';
+import { FieldIdType, FieldType, TaskStatus, TaskTypeId } from '../constants';
 import SettingsService from '../services/SettingsService';
 import TaskService from '../services/TaskService';
 import TaskTypeService from '../services/TaskTypeService';
@@ -67,7 +61,7 @@ export interface Task {
   notificationAt?: Date;
   lastNotificationAt?: Date;
   lastChangedFieldId?: FieldIdType;
-  typeId: TypeOfTask;
+  typeId: string;
   fields: Field[];
 }
 
@@ -84,17 +78,14 @@ export interface SettingsNotificationsGeneral {
   vibrate: boolean;
 }
 
-export interface SettingsNotificationsTypes {
-  events: boolean;
-  goals: boolean;
-  meetings: boolean;
-  routines: boolean;
-  todos: boolean;
+export interface SettingsNotificationsTaskType {
+  taskTypeId: string;
+  enabled: boolean;
 }
 
 export interface Notifications {
   general: SettingsNotificationsGeneral;
-  types: SettingsNotificationsTypes;
+  types: SettingsNotificationsTaskType[];
 }
 
 export interface TaskListSettings {

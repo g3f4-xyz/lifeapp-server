@@ -4,7 +4,7 @@ import WebClient from '../../../utils/WebClient';
 import {
   Settings,
   SettingsNotificationsGeneral,
-  SettingsNotificationsTypes,
+  SettingsNotificationsTaskType,
 } from '../../interfaces';
 
 export default class SettingsApi {
@@ -26,8 +26,8 @@ export default class SettingsApi {
   }
 
   async saveNotificationsTypes(
-    types: SettingsNotificationsTypes,
-  ): Promise<SettingsNotificationsTypes> {
+    types: SettingsNotificationsTaskType,
+  ): Promise<SettingsNotificationsTaskType> {
     return this.webClient.post('/settings/notifications/types', types);
   }
 
